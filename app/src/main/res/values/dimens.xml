@@ -1,0 +1,413 @@
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--  通用样式  -->
+    <!-- 通用布局边距 -->
+    <dimen name="normal_margin10">10dp</dimen>
+
+    <!-- 按钮高度 -->
+    <dimen name="btn_height30">30dp</dimen>
+    <dimen name="btn_height40">40dp</dimen>
+    <dimen name="btn_height50">50dp</dimen>
+    <dimen name="btn_margin10">10dp</dimen>
+    <dimen name="btn_margin12">12dp</dimen>
+
+    <!-- RadioButton -->
+    <dimen name="rb_width16">16dp</dimen>
+    <dimen name="rb_height16">16dp</dimen>
+    <dimen name="tv_rb_left4">4dp</dimen>
+    <dimen name="tv_rb_right10">10dp</dimen>
+    <dimen name="tv_rb_right16">16dp</dimen>
+    <dimen name="tv_rb_right26">26dp</dimen>
+    <dimen name="tv_rb_right60">60dp</dimen>
+
+    <!-- CheckBox -->
+    <dimen name="cb_width20">20dp</dimen>
+    <dimen name="cb_height20">20dp</dimen>
+    <dimen name="cb_margin6">6dp</dimen>
+    <dimen name="cb_margin10">10dp</dimen>
+    <dimen name="tv_cb_min_height30">30dp</dimen>
+    <dimen name="tv_cb_medium_height40">40dp</dimen>
+
+
+    <!-- 直线(父宽) -->
+    <dimen name="line_width_parent_height1">1dp</dimen>
+    <dimen name="line_width_parent_margin10">10dp</dimen>
+
+    <!-- 图标高宽间距(+/-/x/* icon) -->
+    <dimen name="icon_min_width20">20dp</dimen>
+    <dimen name="icon_min_height20">20dp</dimen>
+    <dimen name="icon_min_width26">26dp</dimen>
+    <dimen name="icon_min_height26">26dp</dimen>
+    <dimen name="icon_min_width30">30dp</dimen>
+    <dimen name="icon_min_height30">30dp</dimen>
+    <dimen name="icon_margin4">4dp</dimen>
+    <!-- add_white(+) 高宽 -->
+    <dimen name="icon_width12">12dp</dimen>
+    <dimen name="icon_height12">12dp</dimen>
+
+    <!-- 图标高宽(照相机 icon) -->
+    <dimen name="icon_camera_width80">80dp</dimen>
+    <dimen name="icon_camera_height80">80dp</dimen>
+
+    <!-- 自定义下拉列表 -->
+    <dimen name="list_margin2">2dp</dimen>
+    <dimen name="list_margin12">12dp</dimen>
+
+    <!-- 一般悬浮弹出框 -->
+    <!--布局边距-->
+    <dimen name="dialog_margin2">2dp</dimen>
+    <dimen name="dialog_margin10">10dp</dimen>
+    <dimen name="dialog_margin12">12dp</dimen>
+    <dimen name="dialog_margin16">16dp</dimen>
+    <dimen name="dialog_margin20">20dp</dimen>
+    <dimen name="dialog_margin30">30dp</dimen>
+    <!--高宽度-->
+    <dimen name="dialog_height36">36dp</dimen>
+    <dimen name="dialog_height40">40dp</dimen>
+    <dimen name="dialog_height50">50dp</dimen>
+    <!--(悬浮弹出框ListView)高宽度-->
+    <dimen name="dialog_listview_height160">160dp</dimen>
+    <dimen name="dialog_listview_height200">200dp</dimen>
+
+
+    <!--(多选列表)悬浮弹出框-->
+    <!--布局边距-->
+    <dimen name="view_dialog_margin2">2dp</dimen>
+    <dimen name="view_dialog_margin4">4dp</dimen>
+    <dimen name="view_dialog_margin6">6dp</dimen>
+    <dimen name="view_dialog_margin8">8dp</dimen>
+    <dimen name="view_dialog_margin10">10dp</dimen>
+    <dimen name="view_dialog_margin12">12dp</dimen>
+    <dimen name="view_dialog_margin14">14dp</dimen>
+    <dimen name="view_dialog_margin16">16dp</dimen>
+    <!--高宽度-->
+    <dimen name="view_dialog_height2">2dp</dimen>
+    <dimen name="view_dialog_height28">28dp</dimen>
+
+
+    <!--时间选择器-->
+    <!--布局边距-->
+    <dimen name="timepicker_margin6">6dp</dimen>
+    <dimen name="timepicker_margin8">8dp</dimen>
+    <dimen name="timepicker_margin10">10dp</dimen>
+    <dimen name="timepicker_margin12">12dp</dimen>
+    <dimen name="timepicker_margin15">15dp</dimen>
+    <dimen name="timepicker_margin37">37dp</dimen>
+    <dimen name="timepicker_margin20">20dp</dimen>
+    <dimen name="timepicker_margin29">29dp</dimen>
+    <!--高宽度-->
+    <dimen name="timepicker_width80">80dp</dimen>
+    <dimen name="timepicker_width271">271dp</dimen>
+    <dimen name="timepicker_height36">36dp</dimen>
+    <dimen name="timepicker_height160">160dp</dimen>
+
+    <!-- 页面属性 -->
+    <!--main_tab-->
+    <!--布局边距-->
+    <dimen name="main_margin2">2dp</dimen>
+    <dimen name="main_margin3">3dp</dimen>
+    <dimen name="main_margin6">6dp</dimen>
+    <!--高宽度-->
+    <dimen name="main_height50">50dp</dimen>
+
+    <!--登录-->
+    <!--布局边距-->
+    <dimen name="login_margin2">2dp</dimen>
+    <dimen name="login_margin10">10dp</dimen>
+    <dimen name="login_margin12">12dp</dimen>
+    <dimen name="login_margin16">16dp</dimen>
+    <dimen name="login_margin20">20dp</dimen>
+    <dimen name="login_margin26">26dp</dimen>
+    <dimen name="login_margin30">30dp</dimen>
+    <dimen name="login_margin40">40dp</dimen>
+    <dimen name="login_margin50">50dp</dimen>
+    <!--高宽度-->
+    <dimen name="login_height40">40dp</dimen>
+    <dimen name="login_height50">50dp</dimen>
+    <dimen name="login_height150">150dp</dimen>
+    <dimen name="login_height200">200dp</dimen>
+    <dimen name="login_height300">300dp</dimen>
+
+
+    <!--事故报告：简报-->
+    <!--布局边距-->
+    <dimen name="fr_margin2">2dp</dimen>
+    <dimen name="fr_margin4">4dp</dimen>
+    <dimen name="fr_margin6">6dp</dimen>
+    <dimen name="fr_margin8">8dp</dimen>
+    <dimen name="fr_margin10">10dp</dimen>
+    <dimen name="fr_margin14">14dp</dimen>
+    <dimen name="fr_margin16">16dp</dimen>
+    <dimen name="fr_margin18">18dp</dimen>
+    <dimen name="fr_margin20">20dp</dimen>
+    <dimen name="fr_margin50">50dp</dimen>
+
+    <!--高宽度-->
+    <dimen name="fr_height230">230dp</dimen>
+    <dimen name="icon_width50">50dp</dimen>
+    <dimen name="icon_height50">50dp</dimen>
+
+
+
+    <!--事故报告：详情-->
+    <!--布局边距-->
+    <dimen name="rl_acde_margin4">4dp</dimen>
+    <dimen name="rl_acde_margin5">5dp</dimen>
+    <dimen name="rl_acde_margin8">8dp</dimen>
+    <dimen name="rl_acde_margin10">10dp</dimen>
+    <dimen name="rl_acde_margin12">12dp</dimen>
+    <dimen name="rl_acde_margin14">14dp</dimen>
+    <dimen name="rl_acde_margin20">20dp</dimen>
+    <dimen name="rl_acde_margin30">30dp</dimen>
+    <dimen name="rl_acde_margin40">40dp</dimen>
+    <dimen name="rl_acde_margin42">42dp</dimen>
+    <dimen name="rl_acde_margin">72dp</dimen>
+    <dimen name="rl_acde_margin68">68dp</dimen>
+    <dimen name="rl_acde_margin80">80dp</dimen>
+    <!--高度-->
+    <dimen name="rl_acde_height40">40dp</dimen>
+    <!--灰色字体左边距-->
+    <dimen name="tv_acde_margin20">20dp</dimen>
+
+
+    <!-- 我方/对方-->
+    <dimen name="my_margin16">16dp</dimen>
+
+
+    <!--事故列表-->
+    <dimen name="acli_height40">40dp</dimen>
+    <dimen name="acli_margin6">6dp</dimen>
+    <dimen name="acli_margin10">10dp</dimen>
+    <dimen name="acli_margin20">20dp</dimen>
+    <dimen name="acli_margin32">32dp</dimen>
+
+
+    <!--事故报告：简报-->
+    <!--布局边距-->
+    <dimen name="acfo_margin20">20dp</dimen>
+    <!--高宽度-->
+
+
+
+    <!--新增简报-->
+    <!--布局边距-->
+    <dimen name="adbu_margin2">2dp</dimen>
+    <dimen name="adbu_margin4">4dp</dimen>
+    <dimen name="adbu_margin6">6dp</dimen>
+    <dimen name="adbu_margin8">8dp</dimen>
+    <dimen name="adbu_margin10">10dp</dimen>
+    <dimen name="adbu_margin20">20dp</dimen>
+    <dimen name="adbu_margin_left40">40dp</dimen>
+    <!--高宽度-->
+    <dimen name="adbu_width30">30dp</dimen>
+    <dimen name="adbu_height30">30dp</dimen>
+    <dimen name="adbu_height36">36dp</dimen>
+    <dimen name="adbu_height40">40dp</dimen>
+
+
+    <!--修改简报-->
+    <!--布局边距-->
+    <dimen name="updu_margin1">1dp</dimen>
+    <dimen name="updu_margin2">2dp</dimen>
+    <dimen name="updu_margin4">4dp</dimen>
+    <dimen name="updu_margin6">6dp</dimen>
+    <dimen name="updu_margin8">8dp</dimen>
+    <dimen name="updu_margin10">10dp</dimen>
+    <dimen name="updu_margin11">11dp</dimen>
+    <dimen name="updu_margin18">18dp</dimen>
+    <dimen name="updu_margin20">20dp</dimen>
+    <dimen name="updu_margin22">22dp</dimen>
+    <dimen name="updu_margin24">24dp</dimen>
+    <dimen name="updu_margin26">26dp</dimen>
+    <dimen name="updu_margin28">28dp</dimen>
+    <dimen name="updu_margin30">30dp</dimen>
+    <dimen name="updu_margin34">34dp</dimen>
+    <dimen name="updu_margin38">38dp</dimen>
+    <dimen name="updu_margin40">40dp</dimen>
+    <dimen name="updu_margin42">42dp</dimen>
+    <dimen name="updu_margin48">48dp</dimen>
+    <dimen name="updu_margin100">10dp</dimen>
+
+    <!--高宽度-->
+    <dimen name="updu_width30">30dp</dimen>
+    <dimen name="updu_height30">30dp</dimen>
+    <dimen name="updu_height36">36dp</dimen>
+    <dimen name="updu_height40">40dp</dimen>
+    <dimen name="updu_height50">50dp</dimen>
+
+
+    <!--流转选择-->
+    <!--布局边距-->
+    <dimen name="chfl_margin4">4dp</dimen>
+    <dimen name="chfl_margin6">6dp</dimen>
+    <dimen name="chfl_margin8">8dp</dimen>
+    <dimen name="chfl_margin10">10dp</dimen>
+    <dimen name="chfl_margin20">20dp</dimen>
+    <dimen name="chfl_margin30">30dp</dimen>
+    <dimen name="chfl_margin40">40dp</dimen>
+    <!--高宽度-->
+    <dimen name="chfl_height50">50dp</dimen>
+
+
+    <!--伤亡修改-->
+    <!--布局边距-->
+    <dimen name="moca_margin2">2dp</dimen>
+    <dimen name="moca_margin4">4dp</dimen>
+    <dimen name="moca_margin6">6dp</dimen>
+    <dimen name="moca_margin8">8dp</dimen>
+    <dimen name="moca_margin10">10dp</dimen>
+    <dimen name="moca_margin14">14dp</dimen>
+    <dimen name="moca_margin16">16dp</dimen>
+    <dimen name="moca_margin20">20dp</dimen>
+    <dimen name="moca_margin24">24dp</dimen>
+    <dimen name="moca_margin28">28dp</dimen>
+    <dimen name="moca_margin30">30dp</dimen>
+    <dimen name="moca_margin32">32dp</dimen>
+    <dimen name="moca_margin42">42dp</dimen>
+    <dimen name="moca_margin50">50dp</dimen>
+    <!--高宽度-->
+    <dimen name="moca_width150">150dp</dimen>
+    <dimen name="moca_height2">2dp</dimen>
+    <dimen name="moca_height30">30dp</dimen>
+    <dimen name="moca_height36">36dp</dimen>
+    <dimen name="moca_height60">60dp</dimen>
+    <dimen name="moca_height160">160dp</dimen>
+
+
+    <!--伤亡情况-->
+    <!--布局边距-->
+    <dimen name="upca_margin2">2dp</dimen>
+    <dimen name="upca_margin4">4dp</dimen>
+    <dimen name="upca_margin10">10dp</dimen>
+    <dimen name="upca_margin12">12dp</dimen>
+    <dimen name="upca_margin14">14dp</dimen>
+    <dimen name="upca_margin16">16dp</dimen>
+    <dimen name="upca_margin20">20dp</dimen>
+    <dimen name="upca_margin28">28dp</dimen>
+    <dimen name="upca_margin32">32dp</dimen>
+    <dimen name="upca_margin36">36dp</dimen>
+    <dimen name="upca_margin70">70dp</dimen>
+    <!--高宽度-->
+    <dimen name="upca_width100">100dp</dimen>
+    <dimen name="upca_height40">40dp</dimen>
+    <dimen name="upca_height30">30dp</dimen>
+    <dimen name="upca_height50">50dp</dimen>
+
+
+    <!--修改详情-->
+    <!--布局边距-->
+    <dimen name="upde_margin2">2dp</dimen>
+    <dimen name="upde_margin4">4dp</dimen>
+    <dimen name="upde_margin6">6dp</dimen>
+    <dimen name="upde_margin8">8dp</dimen>
+    <dimen name="upde_margin10">10dp</dimen>
+    <dimen name="upde_margin14">14dp</dimen>
+    <dimen name="upde_margin18">18dp</dimen>
+    <dimen name="upde_margin20">20dp</dimen>
+    <dimen name="upde_margin26">26dp</dimen>
+    <dimen name="upde_margin30">30dp</dimen>
+    <dimen name="upde_margin34">34dp</dimen>
+    <dimen name="upde_margin38">38dp</dimen>
+    <dimen name="upde_margin40">40dp</dimen>
+    <dimen name="upde_margin42">42dp</dimen>
+    <dimen name="upde_margin48">48dp</dimen>
+    <dimen name="upde_margin58">58dp</dimen>
+    <dimen name="upde_margin50">50dp</dimen>
+    <dimen name="upde_margin60">60dp</dimen>
+    <!--高宽度-->
+    <dimen name="upde_height36">36dp</dimen>
+    <dimen name="upde_height40">40dp</dimen>
+
+
+
+    <!--修改报告-->
+    <!--布局边距-->
+    <dimen name="upre_width80">80dp</dimen>
+    <dimen name="upre_height80">80dp</dimen>
+    <!--高宽度-->
+    <dimen name="upre_margin20">20dp</dimen>
+    <dimen name="upre_margin40">40dp</dimen>
+
+
+    <!--修改拍照-->
+    <!--布局边距-->
+    <dimen name="upta_margin8">8dp</dimen>
+    <dimen name="upta_margin10">10dp</dimen>
+    <dimen name="upta_margin12">12dp</dimen>
+    <dimen name="upta_margin15">15dp</dimen>
+    <dimen name="upta_margin18">18dp</dimen>
+    <dimen name="upta_margin20">20dp</dimen>
+    <dimen name="upta_margin30">30dp</dimen>
+    <!--高宽度-->
+    <dimen name="upta_height56">56dp</dimen>
+    <dimen name="upta_height60">60dp</dimen>
+    <dimen name="upta_height100">100dp</dimen>
+    <dimen name="upta_height120">120dp</dimen>
+    <dimen name="upta_height138">138dp</dimen>
+    <dimen name="upta_height130">130dp</dimen>
+
+    <!--我的-->
+    <!--布局边距-->
+    <dimen name="fr_my_margin12">12dp</dimen>
+    <dimen name="fr_my_margin2">2dp</dimen>
+    <dimen name="fr_my_margin4">4dp</dimen>
+    <dimen name="fr_my_margin8">8dp</dimen>
+
+
+    <!-- 空件布局 margins2 -->
+    <dimen name="margin_very_tiny">2dp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">16dp</dimen>
+    <dimen name="margin_medium">15dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_huge">64dp</dimen>
+    <dimen name="margin_top">20dp</dimen>
+    <dimen name="margin_order">14dp</dimen>
+    <dimen name="margin_fit">12dp</dimen>
+    <dimen name="margin_fit_6">6dp</dimen>
+    <dimen name="margin_fit_10">10dp</dimen>
+    <dimen name="margin_fit_top">8dp</dimen>
+    <dimen name="btn_margin">30dp</dimen>
+    <dimen name="btn_margin_right">20dp</dimen>
+    <dimen name="btn_height">40dp</dimen>
+    <dimen name="greenbtn_height">30dp</dimen>
+    <dimen name="bluebtn_height">50dp</dimen>
+    <dimen name="edittext_width">250dp</dimen>
+
+    <!-- 字体大小 -->
+    <dimen name="font_very_tiny">10sp</dimen>
+    <dimen name="font_tiny">12sp</dimen>
+    <dimen name="font_small">14sp</dimen>
+    <dimen name="font_medium">16sp</dimen>
+    <dimen name="font_large">18sp</dimen>
+    <dimen name="font_xlarge">20sp</dimen>
+    <dimen name="font_huge">22sp</dimen>
+    <dimen name="font_mhuge">26sp</dimen>
+    <dimen name="font_xhuge">28sp</dimen>
+    <dimen name="font_xxhuge">38sp</dimen>
+    <dimen name="font_xxxhuge">50sp</dimen>
+    <dimen name="head_height">30dp</dimen>
+    <dimen name="commont_radius">4dp</dimen>
+    <dimen name="order_font">20px</dimen>
+    <dimen name="edit_textSize">16sp</dimen>
+    <dimen name="font_min_size">15sp</dimen>
+    <dimen name="font_size">18sp</dimen>
+
+    <!--字体行间距-->
+    <dimen name="tv_linear1_lineSpacingExtra">1dp</dimen>
+    <dimen name="tv_linear2_lineSpacingExtra">2dp</dimen>
+
+    <!--弧度-->
+    <dimen name="radian_min">6dp</dimen>
+    <dimen name="radian_xmin">8dp</dimen>
+    <dimen name="radian_xmax">10dp</dimen>
+    <dimen name="radian_max_edit">5dp</dimen>
+    <dimen name="radian_xhmax">50dp</dimen>
+    <dimen name="radian_xxmax">100dp</dimen>
+    <!--TabBar弧度-->
+    <dimen name="radian_my_tabbar">27dp</dimen>
+
+
+</resources>

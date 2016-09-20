@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--主题颜色-->
+    <color name="tv_gray_color">#999</color>
+    <color name="tv_font_color">#333</color>
+    <color name="tv_font_gray_color">#7f8080</color>
+    <color name="round_green">#2BAF2B</color>
+    <color name="img_red">#ED1C24</color>
+    <color name="tv_red">#FF5722</color>
+
+    <color name="head">#fd5722</color>
+    <color name="dark_gray_color">#f0f0f2</color>
+    <color name="line_min_gray">#E5E5E5</color>
+    <color name="line_max_gray">#E5E7EE</color>
+    <color name="gray_min_color">#D9D9D9</color>
+    <color name="gray_color">#8E929C</color>
+    <color name="background_gray">#efefef</color>
+    <color name="login_bg_color">#FFFFFF</color>
+    <color name="edt_login_color">#CCCCCC</color>
+    <color name="edt_text_color">#8E929C</color>
+    <color name="btnlogin_isclick_color">#FF7F27</color>
+    <color name="btnlogin_isnotclick_color">#FFA726</color>
+    <color name="btnlogin_bg_gray">#ffb2b2b2</color>
+    <color name="btn_ok_gray">#BBBBBB</color>
+
+    <color name="black">#000000</color>
+    <color name="main_tab_bg">#000000</color>
+    <color name="main_tab_color">#999999</color>
+    <color name="main_tab_true">#FD5722</color>
+    <color name="main_tab_button_selete">#3a3a3a</color>
+    <color name="main_tab_button_normal">#FFFFFF</color>
+    <color name="gray_background">#f4f5f5</color>
+
+    <color name="line_color">#f0f1f1</color>
+    <color name="line_gray">#BBBBBB</color>
+    <color name="line_dark">#888888</color>
+
+    <color name="radioBtn_noclicked">#DEDEDE</color>
+    <color name="btn_update_noclicked">#2BAF2B</color>
+    <color name="btn_update_clicked">#00BA00</color>
+    <color name="btn_noclicked">#FFA726</color>
+    <color name="btn_clicked">#FF7F27</color>
+    <color name="btn_casualty_clicked">#FF5722</color>
+    <color name="btn_casualty_noclicked">#FF7043</color>
+    <color name="btn_ok_isclicked">#FF5722</color>
+    <color name="btn_ok_noclicked">#FF7043</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="title_gray">#E3E4E6</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="font_gray">#8E95A2</color>
+    <color name="font_black">#6a6a6a</color>
+    <color name="background_gray2">#e4e4e4</color>
+    <!-- 列表项分割线颜色 -->
+    <color name="listview_divider_color">#CCCCCC</color>
+</resources>
