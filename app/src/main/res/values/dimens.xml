@@ -150,7 +150,6 @@
     <dimen name="icon_height50">50dp</dimen>
 
 
-
     <!--事故报告：详情-->
     <!--布局边距-->
     <dimen name="rl_acde_margin4">4dp</dimen>
@@ -188,7 +187,6 @@
     <!--布局边距-->
     <dimen name="acfo_margin20">20dp</dimen>
     <!--高宽度-->
-
 
 
     <!--新增简报-->
@@ -321,7 +319,6 @@
     <dimen name="upde_height40">40dp</dimen>
 
 
-
     <!--修改报告-->
     <!--布局边距-->
     <dimen name="upre_width80">80dp</dimen>
@@ -388,7 +385,7 @@
     <dimen name="font_xhuge">28sp</dimen>
     <dimen name="font_xxhuge">38sp</dimen>
     <dimen name="font_xxxhuge">50sp</dimen>
-    <dimen name="head_height">30dp</dimen>
+    <dimen name="head_height">50dp</dimen>
     <dimen name="commont_radius">4dp</dimen>
     <dimen name="order_font">20px</dimen>
     <dimen name="edit_textSize">16sp</dimen>

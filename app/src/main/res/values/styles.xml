@@ -8,4 +8,62 @@
         　　<item name="android:maxHeight">76dip</item>
     </style>
 
+    <style name="xxl_list_normal_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">38px</item>
+    </style>
+    <style name="xxl_list_bold_text" parent="xxl_list_normal_text">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">44px</item>
+    </style>
+
+
+    <style name="xl_list_normal_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">34px</item>
+    </style>
+
+    <style name="xl_list_bold_text" parent="xl_list_normal_text">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">38px</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="l_list_normal_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">28px</item>
+    </style>
+
+    <style name="l_list_bold_text" parent="l_list_normal_text">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">34px</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!--页面顶部 日期 线路编号 调度员 天气 字体风格-->
+    <style name="page_top_tv_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">40px</item>
+    </style>
+
+    <!--AlderDialog主题-->
+    <style name="alder_dialog"  parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowTitleStyle">@style/Base.DialogWindowTitle.AppCompat</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+    </style>
 </resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_car_sequence"
+        tools:text = "1"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_car_code"
+        tools:text = "12345"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_driver"
+        tools:text = "李白"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_trainman"
+        tools:text = "王五"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_plan_time"
+        tools:text = "12:00"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_interval_time"
+        tools:text = "8"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_system_enter_time"
+        tools:text = "-"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_enter_time"
+        tools:text = "-"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_send_time"
+        tools:text = "-"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_send_state"
+        tools:text = "自动"
+        style="@style/xxl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_state"
+        tools:text = "已读"
+        style="@style/xxl_list_normal_text"/>
+
+</LinearLayout>

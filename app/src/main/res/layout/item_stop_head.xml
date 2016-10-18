@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="80dp">
+    <TextView
+        android:id="@+id/tv_car_sequence"
+        android:text = "发车顺序"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_car_code"
+        android:text = "车牌号"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_driver"
+        android:text = "驾驶员"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_trainman"
+        android:text = "乘务员"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_plan_time"
+        android:text = "计划发车\n时间"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_interval_time"
+        android:text = "发车间隔\n(分钟)"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_system_enter_time"
+        android:text = "进场时间\n(系统)"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_enter_time"
+        android:text = "进场时间\n(人工)"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_state"
+        android:text = "通知状态"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_stop_time"
+        android:text = "停班时间"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_remark"
+        android:text = "备注"
+        style="@style/xl_list_bold_text"/>
+    <TextView
+        android:id="@+id/tv_operator"
+        android:text = "操作"
+        style="@style/xl_list_bold_text"/>
+</LinearLayout>

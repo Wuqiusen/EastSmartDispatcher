@@ -1,11 +1,13 @@
 package com.zxw.dispatch;
 
-import android.util.Log;
+
+import com.zxw.dispatch.utils.Base64;
+import com.zxw.dispatch.utils.DESPlus;
+import com.zxw.dispatch.utils.SpUtils;
+
+import junit.framework.Assert;
 
 import org.junit.Test;
-
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * author：CangJie on 2016/9/6 11:49
@@ -15,26 +17,21 @@ public class MainActivityTest{
     private static final String TAG = "MainActivityTest";
     @Test
     public void test_rxjava(){
-        Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                subscriber.onNext("Hello World");
-            }
-        }).subscribe(new Subscriber<String>() {
-            @Override
-            public void onCompleted() {
-                Log.w(TAG, "onCompleted: " );
-            }
+        String code = SpUtils.getCache(MyApplication.mContext, SpUtils.CODE);
+        String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
 
-            @Override
-            public void onError(Throwable e) {
 
-            }
+        Assert.assertEquals(code, keyCode);
+    }
 
-            @Override
-            public void onNext(String s) {
-                Log.w(TAG, "onNext: "+ s );
-            }
-        });
+    @Test
+    public void test_des() throws Exception {
+        DESPlus des = new DESPlus();
+
+        //50584a2c4b88d536
+        //f7adeedbfb8e2114
+//        Assert.assertEquals(Base64.encode("徐".getBytes("utf-8")), des.encrypt(Base64.encode("徐".getBytes("utf-8")));
+//        System.out.println(des.encrypt(Base64.encode("徐".getBytes("utf-8"))));
+        Assert.assertEquals("", des.encrypt(Base64.encode("徐".getBytes("utf-8"))));
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
 
-import com.zxw.dispatch.MainActivity;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.LoginPresenter;
 import com.zxw.dispatch.presenter.view.LoginView;
@@ -28,6 +27,38 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
         ButterKnife.bind(this);
         showTitle("用户登录");
 
+//        et_username.setOnLoadValueListener(new OnLoadValueListener() {
+//            @Override
+//            public void onLoadValue() {
+////                List<Car> carCode = new ArrayList();
+////                Car car1 = new Car();
+////                car1.id = 3;
+////                car1.vehicleCode = "fd222";
+////                carCode.add(car1);
+////                Car car2 = new Car();
+////                car2.id = 5;
+////                car2.vehicleCode = "fd226";
+////                carCode.add(car2);
+//                QuerySource source = new QuerySource();
+//                source.queryVehcile(new Subscriber<List<Vehcile>>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<Vehcile> vehciles) {
+//
+//                    }
+//                });
+//                et_username.setCarAdapter(new CarAdapter(carCode, et_username, mContext));
+//            }
+//        });
     }
 
     @Override

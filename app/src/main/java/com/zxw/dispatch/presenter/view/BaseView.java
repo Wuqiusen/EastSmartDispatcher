@@ -9,4 +9,5 @@ public interface BaseView {
     void hideLoading();
 
     void disPlay(String s);
+    void finish();
 }

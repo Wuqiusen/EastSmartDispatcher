@@ -3,6 +3,8 @@ package com.zxw.dispatch.utils;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.zxw.dispatch.MyApplication;
+
 
 public class ToastHelper {
     private static final String TAG = "ToastHelper";
@@ -30,5 +32,8 @@ public class ToastHelper {
                 mToast.setDuration(Toast.LENGTH_SHORT);
             }
             mToast.show();
+    }
+    public static void showToast(String text){
+        showToast(text, MyApplication.mContext);
     }
 }

@@ -1,15 +1,15 @@
 package com.zxw.dispatch.ui.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
 
 import com.zxw.dispatch.utils.ClickUtil;
 import com.zxw.dispatch.utils.ToastHelper;
 
 
-public abstract class BaseActivity extends FragmentActivity{
+public abstract class BaseActivity extends Activity {
     public Context mContext;
 
     @Override

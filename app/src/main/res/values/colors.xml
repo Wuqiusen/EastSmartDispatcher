@@ -54,6 +54,6 @@
     <color name="font_gray">#8E95A2</color>
     <color name="font_black">#6a6a6a</color>
     <color name="background_gray2">#e4e4e4</color>
-    <!-- 列表项分割线颜色 -->
-    <color name="listview_divider_color">#CCCCCC</color>
+
+    <color name="dividing_line_gray">#e0e0e0</color>
 </resources>

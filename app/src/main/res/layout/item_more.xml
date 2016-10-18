@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="80dp">
+    <TextView
+        android:id="@+id/tv_car_sequence"
+        tools:text = "发车顺序"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_car_code"
+        tools:text = "车牌号"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_driver"
+        tools:text = "驾驶员"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_trainman"
+        tools:text = "乘务员"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_plan_time"
+        tools:text = "计划发车\n时间"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_interval_time"
+        tools:text = "发车间隔\n(分钟)"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_system_enter_time"
+        tools:text = "进场时间\n(系统)"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_enter_time"
+        tools:text = "进场时间\n(人工)"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_more_time"
+        tools:text = "操作时间"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_more_type"
+        tools:text = "类型"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_more_detail"
+        tools:text = "详情"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_state"
+        tools:text = "通知状态"
+        style="@style/l_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_operator"
+        android:text = "操作"
+        android:textColor="@color/img_red"
+        style="@style/l_list_normal_text"/>
+</LinearLayout>

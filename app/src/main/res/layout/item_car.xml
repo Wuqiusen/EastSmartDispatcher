@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_car_sequence"
+        tools:text = "1"
+        style="@style/xl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_car_code"
+        tools:text = "粤B12345"
+        style="@style/xl_list_normal_text"
+        android:clickable="false"
+        android:focusable="false"
+        />
+    <TextView
+        android:id="@+id/tv_driver"
+        tools:text = "李白"
+        style="@style/xl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_trainman"
+        tools:text = "王五"
+        style="@style/xl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_plan_time"
+        tools:text = "12:00"
+        style="@style/xl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_interval_time"
+        tools:text = "8"
+        style="@style/xl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_system_enter_time"
+        tools:text = "-"
+        style="@style/xl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_enter_time"
+        tools:text = "-"
+        style="@style/xl_list_normal_text"/>
+    <TextView
+        android:id="@+id/tv_state"
+        tools:text = "已读"
+        style="@style/xl_list_normal_text"/>
+    <LinearLayout
+        android:id="@+id/btn_operator"
+        tools:text = "操作巴拉巴拉巴拉"
+        style="@style/xl_list_normal_text"
+        android:orientation="horizontal"
+        android:layout_weight="2">
+        <Button
+            android:id="@+id/start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="发"/>
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="停"/>
+        <Button
+            android:id="@+id/end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="收"/>
+        <Button
+            android:id="@+id/more"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="更"/>
+        </LinearLayout>
+
+</LinearLayout>

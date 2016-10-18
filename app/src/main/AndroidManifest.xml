@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zxw.dispatch">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Light.NoTitleBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".ui.WelcomeActivity">
             <intent-filter>
@@ -24,7 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.LoginActivity"></activity>
+        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.DepartActivity" >
+        </activity>
+        <activity android:name=".ui.SendActivity" />
+        <activity
+            android:name=".ui.DialogActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" />
+        <activity android:name=".ui.StopActivity" />
+        <activity android:name=".ui.BackActivity" />
+        <activity android:name=".ui.MoreActivity"/>
     </application>
 
 </manifest>

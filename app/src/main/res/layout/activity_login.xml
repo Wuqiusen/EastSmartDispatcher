@@ -14,13 +14,13 @@
         android:id="@+id/et_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="zxzs"
+        android:text="000001"
         android:hint="用户名"/>
     <EditText
         android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="123123"
+        android:text="123456"
         android:hint="密码"/>
     <Button
         android:id="@+id/btn_login"

@@ -1,6 +1,8 @@
 package com.zxw.dispatch.presenter;
 
+import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.presenter.view.BaseView;
+import com.zxw.dispatch.utils.SpUtils;
 
 /**
  * author：CangJie on 2016/8/18 14:38
@@ -13,15 +15,16 @@ public class BasePresenter<V extends BaseView> {
     public BasePresenter(V mvpView) {
         this.mvpView = mvpView;
     }
-//    protected String keyCode(){
-//        return SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
-//    }
+
+    protected String keyCode(){
+        return SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
+    }
 //    protected String userName(){
 //        return SpUtils.getCache(MyApplication.mContext, SpUtils.USERPHONE);
 //    }
-//    protected String userId(){
-//        return SpUtils.getCache(MyApplication.mContext, SpUtils.USERID);
-//    }
+    protected String code(){
+        return SpUtils.getCache(MyApplication.mContext, SpUtils.CODE);
+    }
 //    protected String timestamp(){
 //        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 //        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
