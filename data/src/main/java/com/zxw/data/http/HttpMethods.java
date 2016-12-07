@@ -25,7 +25,7 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-    public static final String BASE_URL = "http://192.168.0.93:8080/yd_app/";
+    public static final String BASE_URL = "http://192.168.0.90:8080/yd_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
@@ -104,9 +104,9 @@ public class HttpMethods {
     }
 
     // 排序
-    public void sortVehicle(Subscriber<BaseBean> subscriber, String code, String keyCode, int opId, int sortNum){
+    public void sortVehicle(Subscriber<BaseBean> subscriber, String code, String keyCode, int opId, int replaceId){
         HttpInterfaces.Operater operater = retrofit.create(HttpInterfaces.Operater.class);
-        Observable<BaseBean> observable = operater.sortVehicle(code, keyCode, opId, sortNum);
+        Observable<BaseBean> observable = operater.sortVehicle(code, keyCode, opId, replaceId);
         toSubscribe(observable, subscriber);
     }
 

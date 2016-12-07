@@ -186,7 +186,7 @@ public class BrowseTest {
     @Test
     public void testSortVehicle(){
         int opId = 13;
-        int sortNum = 2;
+        int replaceId = 2;
         HttpMethods.getInstance().sortVehicle(new Subscriber<BaseBean>() {
             @Override
             public void onCompleted() {
@@ -202,7 +202,7 @@ public class BrowseTest {
             public void onNext(BaseBean baseBean) {
 
             }
-        }, code, keyCode, opId, sortNum);
+        }, code, keyCode, opId, replaceId);
     }
 
     @Test

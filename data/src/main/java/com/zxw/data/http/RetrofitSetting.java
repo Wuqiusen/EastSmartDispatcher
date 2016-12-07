@@ -19,7 +19,8 @@ public class RetrofitSetting {
         if(retrofit == null){
             //手动创建一个OkHttpClient并设置超时时间`
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.DAYS);
+            builder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+            builder.readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
             retrofit = new Retrofit.Builder()
                     .client(builder.build())
                     .addConverterFactory(GsonConverterFactory.create())

@@ -108,7 +108,7 @@ public class DragListAdapter extends BaseAdapter {
     public void update(int start, int end) {
         WaitVehicle startVehicle = mDatas.get(start);
         WaitVehicle endVehicle = mDatas.get(end);
-        presenter.sortVehicle(startVehicle.id, endVehicle.sortNum);
+        presenter.sortVehicle(startVehicle.id, endVehicle.id);
     }
 
     @Override

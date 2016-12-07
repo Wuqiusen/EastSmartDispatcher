@@ -104,7 +104,7 @@ public class DepartPresenter extends BasePresenter<DepartView> {
      如增加成功, 则重新加载车辆列表,
      若增加失败, 则显示returnInfo 并隐藏Loading图层
      */
-    public void sortVehicle(int opId, int sortNum){
+    public void sortVehicle(int opId, int replaceId){
         mSource.sortVehicle(new Subscriber<BaseBean>() {
             @Override
             public void onCompleted() {
@@ -122,7 +122,7 @@ public class DepartPresenter extends BasePresenter<DepartView> {
                 mvpView.disPlay(baseBean.returnInfo);
                 loadCarData();
             }
-        }, code(), keyCode(), opId, sortNum);
+        }, code(), keyCode(), opId, replaceId);
     }
 
     /**

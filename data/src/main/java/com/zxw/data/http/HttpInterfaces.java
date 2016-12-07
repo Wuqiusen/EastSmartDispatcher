@@ -192,7 +192,7 @@ public class HttpInterfaces {
          * @param code 用户名
          * @param keyCode 唯一标识
          * @param opId 车辆待发车操作列表中每条记录唯一标识id
-         * @param sortNum 调号后排序号
+         * @param replaceId 被替换的记录唯一标识id
          * @return 500/505
          */
         @FormUrlEncoded
@@ -200,7 +200,7 @@ public class HttpInterfaces {
         Observable<BaseBean> sortVehicle(@Field("code") String code,
                                          @Field("keyCode") String keyCode,
                                          @Field("opId") int opId,
-                                         @Field("sortNum") int sortNum);
+                                         @Field("replaceId") int replaceId);
 
         /**
          * 调度员手工增加车辆待操作列表记录
