@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * email：cangjie2016@gmail.com
  */
 public class RetrofitSetting {
-    private static final int DEFAULT_TIMEOUT = 1;
+    private static final int DEFAULT_TIMEOUT = 120;
     private static Retrofit retrofit;
 
     public static Retrofit getInstance(){

@@ -25,7 +25,8 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-    public static final String BASE_URL = "http://192.168.0.90:8080/yd_app/";
+    public static final String BASE_URL = "http://120.24.252.195:8080/yd_app/";
+//    public static final String BASE_URL = "http://192.168.0.90:8080/yd_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
