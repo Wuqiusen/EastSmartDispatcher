@@ -43,11 +43,8 @@ public class SendCarDialog extends AlertDialog.Builder {
     private void init(Context context) {
         container = View.inflate(context, R.layout.dialog_alter, null);
         et_car_code = (SmartEditText) container.findViewById(R.id.et_car_code);
-        et_car_code.setInputType(SmartEditText.CAR_CODE);
         et_driver = (SmartEditText) container.findViewById(R.id.et_driver);
-        et_driver.setInputType(SmartEditText.DRIVER);
         et_trainman = (SmartEditText) container.findViewById(R.id.et_trainman);
-        et_trainman.setInputType(SmartEditText.TRAINMAN);
         et_plan_time = (EditText) container.findViewById(R.id.et_plan_time);
         et_interval_time = (EditText) container.findViewById(R.id.et_interval_time);
         et_enter_time = (EditText) container.findViewById(R.id.et_enter_time);
@@ -132,13 +129,12 @@ public class SendCarDialog extends AlertDialog.Builder {
     }
 
     private void initEditTextListener() {
-        et_car_code.initEditTextListener();
-        et_driver.initEditTextListener();
-        et_trainman.initEditTextListener();
+        et_car_code.addQueryCarCodeEditTextListener();
+        et_driver.addQueryDriverEditTextListener();
+        et_trainman.addQueryTrainManEditTextListener();
     }
 
     public SendCarDialog create( final OnDialogCreateConfirmListener listener){
-        et_car_code.setInputType();
         initEditTextListener();
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override

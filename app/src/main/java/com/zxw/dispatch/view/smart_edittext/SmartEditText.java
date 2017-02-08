@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -35,7 +36,7 @@ import rx.functions.Action1;
  * email：cangjie2016@gmail.com
  */
 public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectItemListener, PersonAdapter.OnSelectItemListener {
-    private int inputType = CAR_CODE;
+    private int inputType = -1;
     public static final int CAR_CODE = 0;
     public static final int DRIVER = 1;
     public static final int TRAINMAN = 2;
@@ -50,6 +51,8 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     private CarAdapter mCarAdapter;
     private PersonAdapter mPersonAdapter;
     private QuerySource mSource;
+
+    private boolean isQuery = true;
 
     public SmartEditText(Context context) {
         this(context, null);
@@ -94,41 +97,59 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
     }
 
-    public void initEditTextListener() {
+    public void addQueryDriverEditTextListener() {
+        initInputType(DRIVER);
+        initEditTextListener();
+    }
+
+    public void addQueryCarCodeEditTextListener() {
+        initInputType(CAR_CODE);
+        initEditTextListener();
+    }
+
+    public void addQueryTrainManEditTextListener() {
+        initInputType(TRAINMAN);
+        initEditTextListener();
+    }
+
+    private void initEditTextListener() {
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(final CharSequence s, int start, int before, int count) {
-                DebugLog.w("onTextChanged"+s.toString() + start + "" +before +"" + count);
-                if (s.length() == 0)
-                    return;
-                delayQuery(s);
+                DebugLog.w("onTextChanged" + s.toString());
+                DebugLog.w("start : " + start +", before : "+ before +", count " + count);
+                if (count != 0){
+                    if (isQuery)
+                        delayQuery(s.toString().trim());
+                }
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                DebugLog.w("beforeTextChanged"+s.toString() + start + ""  +"" + count);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                DebugLog.w("afterTextChanged"+s.toString());
+                isQuery = true;
             }
         });
     }
 
-    private void delayQuery(final CharSequence s) {
+    private void delayQuery(final String s) {
+        if (TextUtils.isEmpty(s))
+            return;
         rx.Observable.timer(600, TimeUnit.MILLISECONDS)
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
                         switch (inputType) {
                             case CAR_CODE:
-                                queryVehicle(s.toString().trim());
+                                queryVehicle(s);
                                 break;
                             case DRIVER:
                             case TRAINMAN:
-                                queryPerson(s.toString().trim());
+                                queryPerson(s);
                                 break;
                         }
                     }
@@ -203,7 +224,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         popupWindow.showAsDropDown(SmartEditText.this);
     }
 
-    public void setInputType(int inputType) {
+    private void initInputType(int inputType) {
         this.inputType = inputType;
     }
 
@@ -224,6 +245,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
 
     @Override
     public void onSelectItemListener(Vehcile vehcile) {
+        stopNextEditTextWatcherEvent();
         DebugLog.w(vehcile.vehicleCode);
         mSelectVehcile = vehcile;
         mEditText.setText(vehcile.vehicleCode);
@@ -231,8 +253,13 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         popupWindow.dismiss();
     }
 
+    private void stopNextEditTextWatcherEvent() {
+        isQuery = false;
+    }
+
     @Override
     public void onSelectItemListener(Person person) {
+        stopNextEditTextWatcherEvent();
         DebugLog.w(person.personnelName);
         mSelectPerson = person;
         mEditText.setText(person.personnelName);
@@ -252,22 +279,19 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         mEditText.setText(str);
     }
 
-    public void setVehcile(String name, int id){
+    public void setVehcile(String name, int id) {
         Vehcile vehcile = new Vehcile();
         vehcile.vehicleCode = name;
         vehcile.id = id;
         mSelectVehcile = vehcile;
-        inputType = CAR_CODE;
         mEditText.setText(name);
-        setInputType();
     }
 
-    public void setPerson(String name, int id, int type){
+    public void setPerson(String name, int id, int type) {
         Person person = new Person();
         person.personnelName = name;
         person.id = id;
         mSelectPerson = person;
-        inputType = type;
         mEditText.setText(name);
     }
 
