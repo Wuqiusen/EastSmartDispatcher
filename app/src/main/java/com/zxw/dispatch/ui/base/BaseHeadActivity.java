@@ -2,6 +2,7 @@ package com.zxw.dispatch.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.utils.AnimationHelper;
 import com.zxw.dispatch.utils.SpUtils;
+import com.zxw.dispatch.utils.ToastHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -115,6 +117,14 @@ public abstract class BaseHeadActivity extends BaseActivity {
         ibtn_headRightImageButton.setImageResource(iBtnResource);
         ibtn_headRightImageButton.setVisibility(View.VISIBLE);
         ibtn_headRightImageButton.setOnClickListener(listener);
+    }
+
+    public boolean checkIsEmpty(String str, String toast) {
+        if (TextUtils.isEmpty(str)) {
+            ToastHelper.showToast(toast, mContext);
+            return true;
+        }
+        return false;
     }
 
     public ImageButton getRightImageButton() {

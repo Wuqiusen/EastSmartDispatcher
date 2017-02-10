@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:wqs="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/margin_fit"
+    android:paddingTop="@dimen/margin_fit"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/btn_margin"
+            android:layout_marginRight="@dimen/btn_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="输入工号："
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/font_medium"
+                />
+
+            <com.zxw.dispatch.view.MyEditText
+                android:id="@+id/tv_user_code"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bluebtn_height"
+                android:layout_marginLeft="16dp"
+                wqs:hint="请输入工号"
+                wqs:inputType="pwd"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/btn_margin"
+            android:layout_marginRight="@dimen/btn_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/margin_fit"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="输入新密码："
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/font_medium"
+                />
+
+            <com.zxw.dispatch.view.MyEditText
+                android:id="@+id/et_user_pwd_new"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bluebtn_height"
+                wqs:hint="请输入新的密码"
+                wqs:inputType="pwd"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/btn_margin"
+            android:layout_marginRight="@dimen/btn_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/margin_fit"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请再次输入："
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/font_medium"
+                />
+
+            <com.zxw.dispatch.view.MyEditText
+                android:id="@+id/tv_user_pwd_twice"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bluebtn_height"
+                wqs:hint="请再次输入"
+                wqs:inputType="pwd"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/btn_margin"
+            android:layout_marginRight="@dimen/btn_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/margin_fit"
+            android:paddingTop="@dimen/margin_fit">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="验证码：        "
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/font_medium"
+
+                />
+
+            <com.zxw.dispatch.view.MyEditText
+                android:id="@+id/et_smscode"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/bluebtn_height"
+                android:layout_weight="1"
+                wqs:hint="验证码"
+                wqs:inputType="num"
+                />
+
+            <Button
+                android:id="@+id/btn_get_code"
+                style="@style/getCode_button_style"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="获取验证码"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/btn_change_pwd_send"
+                style="@style/blueBtn_style"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bluebtn_height"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_fit"
+                android:text="提交"
+                android:textSize="@dimen/font_large"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</ScrollView>

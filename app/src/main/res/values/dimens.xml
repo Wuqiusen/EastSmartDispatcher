@@ -400,9 +400,12 @@
     <dimen name="radian_min">6dp</dimen>
     <dimen name="radian_xmin">8dp</dimen>
     <dimen name="radian_xmax">10dp</dimen>
+    <dimen name="radian_btn">25dp</dimen>
+    <dimen name="radian_my_edit">40dp</dimen>
     <dimen name="radian_max_edit">5dp</dimen>
     <dimen name="radian_xhmax">50dp</dimen>
     <dimen name="radian_xxmax">100dp</dimen>
+
     <!--TabBar弧度-->
     <dimen name="radian_my_tabbar">27dp</dimen>
 
