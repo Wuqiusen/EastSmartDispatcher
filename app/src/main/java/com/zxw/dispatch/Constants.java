@@ -6,4 +6,7 @@ package com.zxw.dispatch;
  */
 public class Constants {
     public static boolean DEBUG_LOG = true;
+
+    public static final int AUTO_TYPE = 1; // 自动发车
+    public static final int MANUAL_TYPE = 2; // 手动发车
 }

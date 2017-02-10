@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.WaitVehicle;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.DepartPresenter;
+import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 
 import java.util.List;
@@ -23,12 +24,17 @@ public class DragListAdapter extends BaseAdapter {
     private List<WaitVehicle> mDatas;
 
     private Context mContext;
-    private DepartPresenter presenter;
+    private MainPresenter presenter;
 
-    public DragListAdapter(Context context, DepartPresenter presenter, List<WaitVehicle> arrayTitles) {
+    public DragListAdapter(Context context, MainPresenter presenter, List<WaitVehicle> arrayTitles) {
         this.mContext = context;
         this.mDatas = arrayTitles;
         this.presenter = presenter;
+    }
+    public DragListAdapter(Context context, DepartPresenter presenter, List<WaitVehicle> arrayTitles) {
+//        this.mContext = context;
+//        this.mDatas = arrayTitles;
+//        this.presenter = presenter;
     }
 
     @Override

@@ -96,40 +96,6 @@ import com.zxw.dispatch.utils.DebugLog;
 
         return false;
     }
-//
-//
-//    float x, y, currentX, currentY, difX, difY;
-//
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent event) {
-//        DebugLog.w("listview dispatchTouchEvent");
-//        switch (event.getAction()){
-//            case MotionEvent.ACTION_DOWN :
-//                x = event.getX();
-//                y = event.getY();
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                currentX = event.getX();
-//                currentY = event.getY();
-//                break;
-//        }
-//        difX = currentX - x;
-//        difY = currentY - y;
-//
-//        // 垂直方向移动比水平方向移动 大 true 则 listView消费触摸事件
-//        // 小 false 则 TextView自己消费触摸事件, 弹出修改框
-//        boolean flag = Math.abs(difY) > Math.abs(difX);
-//        DebugLog.w("difY > difX " + flag);
-//
-//        // 计算完了 把刚获得的xy值设置为参照值
-//        x = currentX;
-//        y = currentY;
-//
-//        if(flag){
-//            return false;
-//        }
-//        return super.dispatchTouchEvent(event);
-//    }
 
     /**
      * 触摸事件处理
