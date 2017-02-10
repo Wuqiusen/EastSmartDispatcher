@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="main_tab_font_select">#388bff</color>
+    <color name="main_tab_font_normal">#7c8da7</color>
+    <!-- 应用主题颜色-->
+    <color name="btn_app_theme1">#29b216</color>
+    <color name="btn_app_theme2">#ffb0c32d</color>
+    <color name="btn_app_theme3">#0074c4</color>
+    <color name="btn_app_theme4">#5393ed</color>
+
+
     <!--主题颜色-->
     <color name="tv_gray_color">#999</color>
     <color name="tv_font_color">#333</color>
     <color name="tv_font_gray_color">#7f8080</color>
+    <color name="tv_font_blue_color">#5393ed</color>
     <color name="round_green">#2BAF2B</color>
     <color name="img_red">#ED1C24</color>
     <color name="tv_red">#FF5722</color>
@@ -22,6 +33,7 @@
     <color name="btnlogin_isnotclick_color">#FFA726</color>
     <color name="btnlogin_bg_gray">#ffb2b2b2</color>
     <color name="btn_ok_gray">#BBBBBB</color>
+    <color name="myEt_divider_color">#eaeaea</color>
 
     <color name="black">#000000</color>
     <color name="main_tab_bg">#000000</color>
@@ -44,6 +56,9 @@
     <color name="btn_casualty_noclicked">#FF7043</color>
     <color name="btn_ok_isclicked">#FF5722</color>
     <color name="btn_ok_noclicked">#FF7043</color>
+    <color name="btn_ok_isclicked1">#5393ed</color>
+    <color name="btn_ok_noclicked1">#0074c4</color>
+    <color name="btn_is_enabled">#6a6a6a</color>
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
