@@ -2,13 +2,16 @@ package com.zxw.data.http;
 
 import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
+import com.zxw.data.bean.ChangePwdBean;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
+import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.Vehcile;
+import com.zxw.data.bean.VersionBean;
 import com.zxw.data.bean.WaitVehicle;
 
 import java.util.List;
@@ -23,6 +26,40 @@ import rx.Observable;
  * email：cangjie2016@gmail.com
  */
 public class HttpInterfaces {
+    /**
+     * 版本更新{新增，待修改URL、参数}
+     */
+    public interface UpdateVersion{
+        @FormUrlEncoded
+        @POST("phone/rearview/version")
+        Observable<BaseBean<VersionBean>> updateVersion(@Field("keyCode") String keyCode);
+    }
+    /**
+     * 获取验证码{新增，待修改URL、参数}
+     */
+    public interface ObtainSmsCode{
+        @FormUrlEncoded
+        @POST("code/phone/login/sms")
+        Observable<BaseBean<SmsCodeBean>> obtainSmsCode(@Field("code") String code,
+                                                        @Field("keyCode") String keyCode);
+    }
+
+    /**
+     * 修改密码{新增，待修改URL、参数}
+     */
+    public interface ChangeUserPwd{
+        @FormUrlEncoded
+        @POST("user/phone/set/account/psw")
+        Observable<BaseBean<ChangePwdBean>> changePwd(@Field("code") String code,
+                                                      @Field("keyCode") String keyCode,
+                                                      @Field("password") String password,
+                                                      @Field("smsCode") String smsCode);
+    }
+
+
+
+
+
     /**
      * 用户信息
      */
