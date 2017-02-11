@@ -6,6 +6,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +39,13 @@ public class MyDialog extends AlertDialog {
     private ImageView imageView;
     private Button cancel;
     private Button query;
+
+    private View mDialogView;
+    private AnimationSet mModalInAnim;
+    private AnimationSet mModalOutAnim;
+    private boolean mCloseFromCancel;
+
+
     /**
      * HAVEBUTTON:有两个按钮，NOBUTTON：没有按钮， PROGRESS：进度条
      * IMAGEVIEW：图片， ONEBUTTON：一个按钮
@@ -67,19 +77,48 @@ public class MyDialog extends AlertDialog {
 
     public MyDialog(Activity activity, String title, String mesg, String type) {
         super(activity);
-//        backContext = activity;
         backactivity = activity;
         mtitle = title;
         mmesg = mesg;
         mtype = type;
+        mModalInAnim = (AnimationSet) AnimationUtils.loadAnimation(getContext(), R.anim.modal_in);
+        mModalOutAnim = (AnimationSet) AnimationUtils.loadAnimation(getContext(), R.anim.modal_out);
+//      mModalInAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_in);
+//      mModalOutAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_out);
+        mModalOutAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mDialogView.setVisibility(View.GONE);
+                mDialogView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCloseFromCancel) {
+                            MyDialog.super.cancel();
+                        } else {
+                            MyDialog.super.dismiss();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_mydialog);
+        mDialogView = getWindow().getDecorView().findViewById(android.R.id.content);
         imageView =(ImageView) findViewById(R.id.img_dialog_station);
         dialog_progressbar =(ProgressBar) findViewById(R.id.dialog_progressbar);
         title = (TextView) findViewById(R.id.title_img);
@@ -150,8 +189,7 @@ public class MyDialog extends AlertDialog {
         }
     }
 
-    public void ProgressPlan(long total, long current){
-
+    public void ProgressPlan(long total, float current) {
         dialog_progressbar.setMax((int) total);
         dialog_progressbar.setProgress((int) current);
         if (dialog_progressbar.getMax() != 0) {
@@ -160,6 +198,11 @@ public class MyDialog extends AlertDialog {
         } else {
             ToastHelper.showToast("当前网络状态不良,请稍后重试", backactivity);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        mDialogView.startAnimation(mModalInAnim);
     }
 
     public void ButtonCancel(View.OnClickListener listener){

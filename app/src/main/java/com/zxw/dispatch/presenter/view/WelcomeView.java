@@ -7,6 +7,6 @@ import com.zxw.data.bean.VersionBean;
  * 邮箱：1299242483@qq.com
  */
 public interface WelcomeView extends BaseView {
-    void respondVersionSuccess(long startTime,VersionBean versionBean);
-    void respondVersionFailed(String errorMessage,long startTime,String keyCode);
+    void loadMain();
+    void getVersionDataSuccess(VersionBean versionBean);
 }

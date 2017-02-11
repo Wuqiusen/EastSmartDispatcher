@@ -16,9 +16,13 @@ import com.zxw.data.bean.WaitVehicle;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -26,14 +30,25 @@ import rx.Observable;
  * email：cangjie2016@gmail.com
  */
 public class HttpInterfaces {
+
     /**
-     * 版本更新{新增，待修改URL、参数}
+     * 版本更新
      */
     public interface UpdateVersion{
+        /**
+         * 获取版本信息
+         */
         @FormUrlEncoded
-        @POST("phone/rearview/version")
-        Observable<BaseBean<VersionBean>> updateVersion(@Field("keyCode") String keyCode);
+        @POST
+        Observable<BaseBean<VersionBean>> checkVersion(@Url String url, @Field("keyCode") String keyCode);
+        /**
+         * 下载安装包
+         */
+        @GET
+        Call<ResponseBody> getFile(@Url String url);
     }
+
+
     /**
      * 获取验证码{新增，待修改URL、参数}
      */

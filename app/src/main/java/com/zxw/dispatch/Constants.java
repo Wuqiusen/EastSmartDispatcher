@@ -14,10 +14,10 @@ public class Constants {
         public static final int LOGIN_OVER = 510;
     }
 
-    public static final class APP_PATH {
-        public static final String ERRORPATH = "DISPATCHER/error/";
-        public static final String SECONDPATH = "DISPATCHER/download";
-        public static final String APKNAME = "DISPATCHER.apk";
+    public class Path{
+        public static final String ERRORPATH = "DriverPhone/error";
+        public static final String SECONDPATH = "DriverPhone/download";
+        public static final String APKNAME = "DriverPhone.apk";
     }
 
 

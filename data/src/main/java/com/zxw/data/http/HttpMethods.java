@@ -61,12 +61,14 @@ public class HttpMethods {
         }
     }
 
-    // 版本更新{新增: URL和参数 待修改}
-    public void updateVersion(Subscriber<VersionBean> subscriber,String keyCode){
-        HttpInterfaces.UpdateVersion version= retrofit.create(HttpInterfaces.UpdateVersion.class);
-        Observable<VersionBean> observable = version.updateVersion(keyCode).map(new HttpResultFunc<VersionBean>());
-        toSubscribe(observable,subscriber);
+    // 版本更新{新增：URL和参数 待修改}
+    public void checkVersion(Subscriber<VersionBean> subscriber,String keyCode) {
+        HttpInterfaces.UpdateVersion updateVersion = retrofit.create(HttpInterfaces.UpdateVersion.class);
+        Observable<VersionBean> observable = updateVersion.checkVersion("http://slb.szebus.net/version/phone/last/data", keyCode)
+                .map(new HttpResultFunc<VersionBean>());
+        toSubscribe(observable, subscriber);
     }
+
 
     // 获取验证码{新增：URL和参数 待修改}
     public void obtainCode(Subscriber<SmsCodeBean> subscriber, String code, String keyCode){
@@ -81,8 +83,6 @@ public class HttpMethods {
         Observable<ChangePwdBean> observable = changePwd.changePwd(code,keyCode,newPwd,smsCode).map(new HttpResultFunc<ChangePwdBean>());
         toSubscribe(observable,subscriber);
     }
-
-
 
     public void login(Subscriber<LoginBean> subscriber, String code, String password, String time){
         HttpInterfaces.User user = retrofit.create(HttpInterfaces.User.class);

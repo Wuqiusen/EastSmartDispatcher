@@ -1,9 +1,12 @@
 package com.zxw.dispatch.presenter;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 
 import com.zxw.data.bean.VersionBean;
+import com.zxw.data.http.HttpMethods;
 import com.zxw.data.source.WelcomeSource;
 import com.zxw.data.utils.MD5;
 import com.zxw.dispatch.MyApplication;
@@ -28,11 +31,10 @@ public class WelcomePresenter extends BasePresenter<WelcomeView> {
         this.mSource = new WelcomeSource();
     }
 
-    public void checkVersion() {
-        final long startTime = System.currentTimeMillis();
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-        final String keyCode = MD5.MD5Encode(df.format(new Date()));
-        mSource.loadUpdateAppVersion(new Subscriber<VersionBean>() {
+    public void checkVersion(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.CHINA);//设置日期格式
+        final String keycode2 = MD5.MD5Encode(df.format(new Date()));
+        mSource.checkVersion(new Subscriber<VersionBean>() {
             @Override
             public void onCompleted() {
 
@@ -40,26 +42,15 @@ public class WelcomePresenter extends BasePresenter<WelcomeView> {
 
             @Override
             public void onError(Throwable e) {
-                // 获取版本失败，则重新获取
-                mvpView.respondVersionFailed(e.getMessage(),startTime,keyCode);
-                if (e.getMessage().contains("hostname"))
-                    return;
-                //mvpView.disPlay(e.getMessage());
-                //保存到本地
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
-                String filePath = Environment.getExternalStorageDirectory()+"/";
-                String fileName = "log.txt";
-                String log = "工号:" + SpUtils.getCache(MyApplication.mContext, SpUtils.CODE) +"\n"
-                        + "result : " + e.getMessage() +"\n"
-                        + format.format(new Date());
-                MyApplication.writeTxtToFile(log, filePath, fileName);
+                   mvpView.disPlay(e.getMessage());
+                   mvpView.loadMain();
             }
 
             @Override
             public void onNext(VersionBean versionBean) {
-                 mvpView.respondVersionSuccess(startTime,versionBean);
+                   mvpView.getVersionDataSuccess(versionBean);
             }
-        },keyCode);
-
+        },keycode2);
     }
+
 }

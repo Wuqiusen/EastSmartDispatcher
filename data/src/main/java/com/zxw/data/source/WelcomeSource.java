@@ -10,7 +10,8 @@ import rx.Subscriber;
  * 邮箱：1299242483@qq.com
  */
 public class WelcomeSource {
-    public void loadUpdateAppVersion(Subscriber<VersionBean> subscriber, String keyCode){
-        HttpMethods.getInstance().updateVersion(subscriber,keyCode);
+
+    public void checkVersion(Subscriber<VersionBean> subscriber, String keyCode){
+        HttpMethods.getInstance().checkVersion(subscriber,keyCode);
     }
 }

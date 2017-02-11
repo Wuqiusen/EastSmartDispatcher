@@ -54,7 +54,7 @@ public class MyApplication extends Application {
                 String errorLog = sw.toString();
 
                 //保存到本地
-                String filePath = Environment.getExternalStorageDirectory()+"/"+Constants.APP_PATH.ERRORPATH;
+                String filePath = Environment.getExternalStorageDirectory()+"/"+Constants.Path.ERRORPATH;
                 String fileName = "log.txt";
                 writeTxtToFile(errorLog, filePath, fileName);
 
