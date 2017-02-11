@@ -1,5 +1,8 @@
 package com.zxw.dispatch.presenter;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.SendHistory;
@@ -9,15 +12,15 @@ import com.zxw.data.source.DepartSource;
 import com.zxw.data.source.LineSource;
 import com.zxw.data.source.SendSource;
 import com.zxw.data.source.StopSource;
-import com.zxw.dispatch.Constants;
 import com.zxw.dispatch.presenter.view.MainView;
+import com.zxw.dispatch.service.CarPlanService;
 import com.zxw.dispatch.view.DragListAdapter;
 
 import java.util.List;
 
 import rx.Subscriber;
 
-import static com.zxw.dispatch.MyApplication.mContext;
+import static com.zxw.dispatch.Constants.MANUAL_TYPE;
 
 /**
  * author：CangJie on 2016/9/20 17:26
@@ -31,9 +34,13 @@ public class MainPresenter extends BasePresenter<MainView> {
     private StopSource mStopSource = new StopSource();
     private Line mCurrentLine;
     private DragListAdapter mDragListAdapter;
+    private Context mContext;
+    private Intent serviceIntent;
+    private int lineId, stationId;
 
-    public MainPresenter(MainView mvpView) {
+    public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
+        this.mContext = context;
     }
 
     public void loadLineList(){
@@ -61,12 +68,12 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void onSelectLine(Line line) {
         this.mCurrentLine = line;
-        refreshList(mCurrentLine);
+        stationId = mCurrentLine.lineStationList.get(0).stationId;
+        lineId = mCurrentLine.id;
+        refreshList();
     }
 
-    private void loadGoneCarList(Line mCurrentLine) {
-        int stationId = mCurrentLine.lineStationList.get(0).stationId;
-        int lineId = mCurrentLine.id;
+    private void loadGoneCarList() {
         mSendSource.loadSend(new Subscriber<List<SendHistory>>() {
             @Override
             public void onCompleted() {
@@ -87,9 +94,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, code(), lineId, stationId, keyCode(), 1, 20);
     }
 
-    private void loadSendCarList(Line mCurrentLine){
-        int stationId = mCurrentLine.lineStationList.get(0).stationId;
-        int lineId = mCurrentLine.id;
+    private void loadSendCarList(){
         mDepartSource.loadWaitVehicle(new Subscriber<List<WaitVehicle>>() {
             @Override
             public void onCompleted() {
@@ -128,7 +133,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onNext(BaseBean baseBean) {
                 mvpView.disPlay(baseBean.returnInfo);
-                refreshList(mCurrentLine);
+                refreshList();
             }
         }, code(), keyCode(), opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
     }
@@ -149,9 +154,9 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onNext(BaseBean baseBean) {
                 mvpView.disPlay(baseBean.returnInfo);
-                refreshList(mCurrentLine);
+                refreshList();
             }
-        }, code(), keyCode(), opId, Constants.MANUAL_TYPE);
+        }, code(), keyCode(), opId, MANUAL_TYPE);
     }
 
     public void sortVehicle(int opId, int replaceId) {
@@ -170,21 +175,19 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onNext(BaseBean baseBean) {
                 mvpView.disPlay(baseBean.returnInfo);
-                refreshList(mCurrentLine);
+                refreshList();
             }
         }, code(), keyCode(), opId, replaceId);
     }
 
-    public void refreshList(Line mCurrentLine){
-        loadSendCarList(mCurrentLine);
-        loadGoneCarList(mCurrentLine);
-        loadStopCarList(mCurrentLine);
+    public void refreshList(){
+        loadSendCarList();
+        loadGoneCarList();
+        loadStopCarList();
 
     }
 
-    private void loadStopCarList(Line mCurrentLine) {
-        int stationId = mCurrentLine.lineStationList.get(0).stationId;
-        int lineId = mCurrentLine.id;
+    private void loadStopCarList() {
         mStopSource.loadStop(new Subscriber<List<StopHistory>>() {
             @Override
             public void onCompleted() {
@@ -205,6 +208,26 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mvpView.loadStopCarList(stopHistories);
             }
         }, code(), lineId, stationId, keyCode(), 1, 20);
+    }
+
+    /**
+     * 点击自动发车
+     */
+    public void selectAuto() {
+        serviceIntent = new Intent(mContext,CarPlanService.class);
+        serviceIntent.putExtra("stationId", stationId);
+        serviceIntent.putExtra("lineId", lineId);
+        mContext.startService(serviceIntent);
+    }
+
+    /**
+     * 点击手动发车
+     */
+    public void selectManual() {
+        Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
+        intent.putExtra("stationId", stationId);
+        intent.putExtra("lineId", lineId);
+        mContext.sendBroadcast(intent);
     }
 
 }

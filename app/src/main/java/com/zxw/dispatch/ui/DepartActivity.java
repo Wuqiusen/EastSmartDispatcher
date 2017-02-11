@@ -1,8 +1,12 @@
 package com.zxw.dispatch.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.zxw.data.bean.Line;
 import com.zxw.dispatch.R;
@@ -23,9 +27,12 @@ import butterknife.OnClick;
 public class DepartActivity extends PresenterActivity<DepartPresenter> implements DepartView {
     @Bind(R.id.lv)
     DragListView mDragListView;
+    @Bind(R.id.ll_loading)
+    LinearLayout llLoading;
     private Line.LineStation station;
     private int lineId;
     private String lineName;
+    private MsgReceiver msgReceiver;
 
     @Override
     protected DepartPresenter createPresenter() {
@@ -41,7 +48,6 @@ public class DepartActivity extends PresenterActivity<DepartPresenter> implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car);
         ButterKnife.bind(this);
-
         showTitle(station.stationName);
         showBackButton();
 
@@ -56,6 +62,13 @@ public class DepartActivity extends PresenterActivity<DepartPresenter> implement
         showRadioGroup(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //动态注册广播接收器
+                if (msgReceiver == null){
+                    msgReceiver = new MsgReceiver();
+                    IntentFilter intentFilter = new IntentFilter();
+                    intentFilter.addAction("com.zxw.dispatch.MSG_RECEIVER");
+                    registerReceiver(msgReceiver, intentFilter);
+                }
                 presenter.selectAuto();
             }
         }, new View.OnClickListener() {
@@ -68,7 +81,7 @@ public class DepartActivity extends PresenterActivity<DepartPresenter> implement
     }
 
     @OnClick(R.id.btn_add)
-    public void add(){
+    public void add() {
         presenter.add();
     }
 
@@ -90,5 +103,33 @@ public class DepartActivity extends PresenterActivity<DepartPresenter> implement
 
             }
         });
+    }
+
+
+    @Override
+    public void showCtrlCarLoading() {
+        llLoading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideCtrlCarLoading() {
+        llLoading.setVisibility(View.GONE);
+    }
+
+    public class MsgReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //刷新数据
+            presenter.loadCarData();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (msgReceiver != null)
+        unregisterReceiver(msgReceiver);
+        super.onDestroy();
     }
 }

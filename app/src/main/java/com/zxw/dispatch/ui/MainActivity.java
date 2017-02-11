@@ -1,7 +1,10 @@
 package com.zxw.dispatch.ui;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +32,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener {
 
@@ -42,35 +46,37 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     DragListView mSendRV;
     private MainAdapter mLineAdapter;
     private AlertDialog mManualStopDialog, mStopCarDialog;
+    private MsgReceiver msgReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        creatRexeiver();
         initView();
         presenter.loadLineList();
     }
 
     private void initView() {
-//        showTitle("主界面");
-//        showBackButton(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                SpUtils.logOut(mContext);
-//                MainActivity.this.startActivity(new Intent(mContext, LoginActivity.class));
-//                finish();
-//            }
-//        });
         hideHeadArea();
         hideTitle();
     }
 
+    private void creatRexeiver(){
+        //动态注册广播接收器
+        if (msgReceiver == null){
+            msgReceiver = new MsgReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction("com.zxw.dispatch.MSG_RECEIVER");
+            registerReceiver(msgReceiver, intentFilter);
+        }
+    }
 
 
     @Override
     protected MainPresenter createPresenter() {
-        return new MainPresenter(this);
+        return new MainPresenter(MainActivity.this, this);
     }
 
     @Override
@@ -81,7 +87,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mLineRV.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
     }
-
 
 
     @Override
@@ -112,8 +117,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void loadStopCarList(List<StopHistory> stopHistories) {
-        mStopRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
-        mStopRV.setAdapter(new StopAdapter(stopHistories, this, new StopAdapter.OnClickStopCarListListener(){
+        mStopRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mStopRV.setAdapter(new StopAdapter(stopHistories, this, new StopAdapter.OnClickStopCarListListener() {
             @Override
             public void onClickManualButtonListener() {
                 showManualStopDialog();
@@ -136,14 +141,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mStopCarDialog != null && mStopCarDialog.isShowing())
+                if (mStopCarDialog != null && mStopCarDialog.isShowing())
                     mStopCarDialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mStopCarDialog != null && mStopCarDialog.isShowing())
+                if (mStopCarDialog != null && mStopCarDialog.isShowing())
                     mStopCarDialog.dismiss();
             }
         });
@@ -159,14 +164,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mManualStopDialog != null && mManualStopDialog.isShowing())
+                if (mManualStopDialog != null && mManualStopDialog.isShowing())
                     mManualStopDialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mManualStopDialog != null && mManualStopDialog.isShowing())
+                if (mManualStopDialog != null && mManualStopDialog.isShowing())
                     mManualStopDialog.dismiss();
             }
         });
@@ -176,5 +181,34 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Override
     public void onSelectLine(Line line) {
         presenter.onSelectLine(line);
+    }
+
+    @OnClick({R.id.rb_main_automatic, R.id.rb_main_manual})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rb_main_automatic:
+                //动态注册广播接收器
+                if (msgReceiver == null){
+                    msgReceiver = new MsgReceiver();
+                    IntentFilter intentFilter = new IntentFilter();
+                    intentFilter.addAction("com.zxw.dispatch.MSG_RECEIVER");
+                    registerReceiver(msgReceiver, intentFilter);
+                }
+                presenter.selectAuto();
+                break;
+            case R.id.rb_main_manual:
+                presenter.selectManual();
+                break;
+        }
+    }
+
+    public class MsgReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //刷新数据
+            presenter.refreshList();
+        }
+
     }
 }

@@ -205,6 +205,22 @@
                         <TextView
                             style="@style/main_activity_top_button"
                             android:text="指令反馈"/>
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/rb_main_automatic"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="自动发车"/>
+                            <RadioButton
+                                android:id="@+id/rb_main_manual"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:checked="true"
+                                android:text="手动发车"/>
+                        </RadioGroup>
                     </LinearLayout>
                     <com.zxw.dispatch.view.DragListView
                         android:id="@+id/lv_send_car"

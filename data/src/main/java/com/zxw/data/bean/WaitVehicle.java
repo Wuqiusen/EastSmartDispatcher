@@ -1,10 +1,12 @@
 package com.zxw.data.bean;
 
+import java.io.Serializable;
+
 /**
  * author：CangJie on 2016/10/12 17:13
  * email：cangjie2016@gmail.com
  */
-public class WaitVehicle {
+public class WaitVehicle implements Serializable{
     public int id;
     public String inTime1;
     public String inTime2;

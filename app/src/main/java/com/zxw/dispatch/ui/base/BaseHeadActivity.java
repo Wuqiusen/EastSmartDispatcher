@@ -1,5 +1,6 @@
 package com.zxw.dispatch.ui.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.ui.WeatherDialogActivity;
 import com.zxw.dispatch.utils.AnimationHelper;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
@@ -46,6 +48,7 @@ public abstract class BaseHeadActivity extends BaseActivity {
 
 
     View mContantArea;
+    public final static int WEATHER_RESULT =1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +150,12 @@ public abstract class BaseHeadActivity extends BaseActivity {
         tv_user.setText(userName);
         weather = "天气：" + weather;
         tv_weather.setText(weather);
+        tv_weather.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(BaseHeadActivity.this, WeatherDialogActivity.class), WEATHER_RESULT);
+            }
+        });
     }
 
     protected void showRadioGroup(@NonNull OnClickListener autoListener, @NonNull OnClickListener manualListener){
@@ -172,5 +181,13 @@ public abstract class BaseHeadActivity extends BaseActivity {
         rg_depart = (RadioGroup) findViewById(R.id.rg_depart);
         rb_automatic = (RadioButton) findViewById(R.id.rb_automatic);
         rb_manual = (RadioButton) findViewById(R.id.rb_manual);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == WEATHER_RESULT && resultCode == RESULT_OK){
+            tv_weather.setText(data.getStringExtra("weather"));
+        }
     }
 }

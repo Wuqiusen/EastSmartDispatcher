@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:id="@+id/tv_weather_sun"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="晴天"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:onClick="sunDay"/>
+    <TextView
+        android:id="@+id/tv_weather_cloudy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="阴天"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:onClick="cloudyDay"/>
+    <TextView
+        android:id="@+id/tv_weather_rain"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="雨天"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:onClick="rainDay"/>
+    <TextView
+        android:id="@+id/tv_weather_fog"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="雾天"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:onClick="fogDay"/>
+
+</LinearLayout>

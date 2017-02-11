@@ -1,6 +1,7 @@
 package com.zxw.dispatch.view;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.DepartPresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
+import com.zxw.dispatch.utils.ToastHelper;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class DragListAdapter extends BaseAdapter {
     private List<WaitVehicle> mDatas;
 
     private Context mContext;
+    private  TextView tv_interval_time;
     private MainPresenter presenter;
 
     public DragListAdapter(Context context, MainPresenter presenter, List<WaitVehicle> arrayTitles) {
@@ -67,7 +70,7 @@ public class DragListAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_plan_time);
         tv_plan_time.setText(DisplayTimeUtil.substring(mDatas.get(position).projectTime));
 
-        TextView tv_interval_time = (TextView) view
+        tv_interval_time = (TextView) view
                 .findViewById(R.id.tv_interval_time);
         tv_interval_time.setText(mDatas.get(position).spaceMin);
 
@@ -99,6 +102,10 @@ public class DragListAdapter extends BaseAdapter {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (TextUtils.isEmpty(tv_interval_time.getText().toString())){
+                    ToastHelper.showToast("请先填写发车时间");
+                    return;
+                }
                 presenter.sendVehicle(mDatas.get(position).id);
             }
         });

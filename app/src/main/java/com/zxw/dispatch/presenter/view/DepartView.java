@@ -8,4 +8,7 @@ import com.zxw.dispatch.view.DragListAdapter;
  */
 public interface DepartView extends BaseView{
     void loadLine(DragListAdapter adapter);
+
+    void showCtrlCarLoading();
+    void hideCtrlCarLoading();
 }

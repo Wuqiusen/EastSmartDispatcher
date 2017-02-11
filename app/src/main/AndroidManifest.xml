@@ -71,6 +71,12 @@
         <activity android:name=".ui.StopActivity" />
         <activity android:name=".ui.BackActivity" />
         <activity android:name=".ui.MoreActivity"/>
+        <service android:name=".service.CarPlanService"
+            >
+
+        </service>
+        <activity android:name=".ui.WeatherDialogActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
     </application>
 
 </manifest>

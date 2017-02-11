@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/item_car_head"/>
-    <include layout="@layout/include_division"/>
-    <com.zxw.dispatch.view.DragListView
-        android:id="@+id/lv"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:descendantFocusability="blocksDescendants"
-        />
-    <Button
-        android:id="@+id/btn_add"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include layout="@layout/item_car_head"/>
+        <include layout="@layout/include_division"/>
+        <com.zxw.dispatch.view.DragListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:descendantFocusability="blocksDescendants"
+            />
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="增加"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_loading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="增加"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:clickable="true">
+        <ProgressBar
+            style="@style/myProgressBarStyleLarge"
+            android:id="@+id/pb_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateDuration="700"
+            android:background="@drawable/tool_pb_bg"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+</FrameLayout>
