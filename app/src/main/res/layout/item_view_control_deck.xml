@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="1"
+            />
+
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="粤B03444"/>
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="7:00"/>
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="30min"/>
+
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="15min"
+            android:id="@+id/textView3" />
+
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="7:00"/>
+
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="张三"
+            android:id="@+id/textView2" />
+
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="李华"/>
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="单班"/>
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="主站"/>
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="正在运营"/>
+        <TextView
+            style="@style/content_car_font_main_style"
+            tools:text="小修"/>
+        <TextView
+            style="@style/content_car_font_main_style"
+            android:clickable="true"
+            tools:text="查看"
+            android:textColor="@color/main_tab_font"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"
+            android:src="@drawable/feedback_icon"/>
+
+    </LinearLayout>
+</RelativeLayout>

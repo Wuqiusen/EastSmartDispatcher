@@ -5,6 +5,8 @@
     <!--  通用样式  -->
     <!-- 通用布局边距 -->
     <dimen name="normal_margin10">10dp</dimen>
+    <dimen name="normal_margin20">20dp</dimen>
+
 
     <!-- 按钮高度 -->
     <dimen name="btn_height30">30dp</dimen>
@@ -408,6 +410,11 @@
 
     <!--TabBar弧度-->
     <dimen name="radian_my_tabbar">27dp</dimen>
+
+<!--新增-->
+    <!--控制台-->
+    <!--布局间距-->
+
 
 
 </resources>

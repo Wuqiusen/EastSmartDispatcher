@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="260dp"
+    android:layout_height="140dp"
+    android:layout_margin="@dimen/acli_margin32"
+    android:background="@drawable/ll_stop_car_white_btn_bg"
+    android:orientation="horizontal">
+    <TextView
+        android:id="@+id/tv_car_code"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="手动发车"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_xxxhuge"
+        />
+
+</LinearLayout>

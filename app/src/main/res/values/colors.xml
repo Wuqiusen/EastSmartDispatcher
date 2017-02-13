@@ -9,7 +9,6 @@
     <color name="btn_app_theme3">#0074c4</color>
     <color name="btn_app_theme4">#5393ed</color>
 
-
     <!--主题颜色-->
     <color name="tv_gray_color">#999</color>
     <color name="tv_font_color">#333</color>
@@ -71,4 +70,26 @@
     <color name="background_gray2">#e4e4e4</color>
 
     <color name="dividing_line_gray">#e0e0e0</color>
+
+<!--新增-->
+    <!--应用主题背景-->
+    <color name="background_bg_gray">#F0F5F9</color>
+    <color name="background_bg_gray1">#F0F6FA</color>
+    <color name="background_bg_red">#CA0020</color>
+    <color name="background_bg_green">#349E63</color>
+
+    <!--标题栏部分-->
+    <color name="title_bar_bg_style1">#4E6682</color>
+    <color name="scroll_bar_bg">#73B9EC</color>
+    <color name="line_level_bg">#6E839D</color>
+    <color name="line_level_bg1">#FB9E2B</color>
+    <color name="line_level_bg2">#6DB5E5</color>
+    <color name="line_level_bg3">#797979</color>
+
+    <!--字体-->
+    <color name="font_white">#FFFFFF</color>
+    <color name="font_blue">#8394A9</color>
+    <color name="font_navy_blue">#72869F</color>
+
+
 </resources>

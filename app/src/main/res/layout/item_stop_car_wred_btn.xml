@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="160dp"
+    android:background="@drawable/ll_stop_car_red_btn_bg"
+    android:layout_margin="@dimen/acli_margin32"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="14dp"
+        android:background="@drawable/ll_stop_car_red_btn_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="粤"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_xxxhuge"/>
+
+        <TextView
+            android:id="@+id/tv_car_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="B1222"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_xxxhuge"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
