@@ -2,9 +2,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
+
     >
     <!--请手动添加发车列表的车辆dialog-->
-    <!--请确认是否将添加发车列表的车辆dialog-->
     <RelativeLayout
         android:layout_width="400dp"
         android:layout_height="wrap_content"
@@ -24,25 +24,24 @@
             android:textColor="@color/white"/>
 
         <EditText
-            android:id="@+id/et_car_name"
+            android:id="@+id/et_car_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:textCursorDrawable="@drawable/color_cursor"
             android:layout_below="@+id/title_img"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
         <LinearLayout
-            android:id="@+id/ll_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/et_car_name"
+            android:layout_below="@+id/et_car_code"
             android:layout_marginTop="@dimen/margin_fit"
             android:layout_marginLeft="@dimen/margin_order"
             android:layout_marginRight="@dimen/margin_order"
             >
             <Button
-                android:id="@+id/query_dialog"
+                android:id="@+id/btn_confirm"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
@@ -51,7 +50,7 @@
                 android:textColor="@color/font_black"
              />
             <Button
-                android:id="@+id/cancel_dialog"
+                android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"

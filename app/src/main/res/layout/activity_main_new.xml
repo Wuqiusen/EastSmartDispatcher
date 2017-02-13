@@ -13,7 +13,6 @@
         android:orientation="horizontal">
        <!--标题栏: 左边部分-->
        <LinearLayout
-           android:id="@+id/ll_login_msg"
            android:layout_width="0dp"
            android:layout_weight="1"
            android:layout_height="wrap_content"
@@ -27,14 +26,14 @@
                android:drawableLeft="@drawable/my_icon"
                android:gravity="center_vertical"
                android:drawablePadding="@dimen/normal_margin10"
-               tools:text="李兰"
+               android:text="李兰"
                style="@style/titleBar_white_font_style"
-               android:id="@+id/textView4" />
+                />
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:paddingLeft="@dimen/normal_margin10"
-               tools:text="2017"
+               android:text="2017"
                style="@style/titleBar_white_font_style"
                />
            <TextView
@@ -47,7 +46,7 @@
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               tools:text="2"
+               android:text="2"
                style="@style/titleBar_white_font_style"
                />
            <TextView
@@ -60,7 +59,7 @@
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               tools:text="8"
+               android:text="8"
                style="@style/titleBar_white_font_style"
                />
        </LinearLayout>
@@ -83,6 +82,7 @@
                 android:layout_marginTop="@dimen/normal_margin10"
                 >
                 <TextView
+                    android:id="@+id/tv_controller"
                     style="@style/main_tab_font_style"
                     tools:text="操控台"
                     />
@@ -98,6 +98,7 @@
                 android:layout_marginTop="@dimen/normal_margin10"
                 >
                 <TextView
+                    android:id="@+id/tv_schedule"
                     style="@style/main_tab_font_style"
                     tools:text="排班计划"
                     />
@@ -113,6 +114,7 @@
                 android:layout_marginTop="@dimen/normal_margin10"
                 >
                 <TextView
+                    android:id="@+id/tv_fix"
                     style="@style/main_tab_font_style"
                     tools:text="维修计划"
                     />
@@ -128,6 +130,7 @@
                 android:layout_marginTop="@dimen/normal_margin10"
                 >
                 <TextView
+                    android:id="@+id/tv_line_map"
                     style="@style/main_tab_font_style"
                     tools:text="线路运行图"
                     />
@@ -143,6 +146,7 @@
                 android:layout_marginTop="@dimen/normal_margin10"
                 >
                 <TextView
+                    android:id="@+id/tv_refuel"
                     style="@style/main_tab_font_style"
                     tools:text="作业计划"
                     />
@@ -157,7 +161,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="0.5">
             <ImageView
-                android:id="@+id/img_setup"
+                android:id="@+id/img_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

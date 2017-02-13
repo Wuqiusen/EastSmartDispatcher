@@ -5,7 +5,7 @@
     </solid>
 
     <stroke
-        android:width="3dp"
+        android:width="1dp"
         android:color="@color/line_level_bg3" />
 
     <corners android:radius="@dimen/radian_btn" />

@@ -41,9 +41,12 @@
                     <TextView
                         style="@style/main_activity_top_button"
                         android:text="停场时间"/>
+
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:text="发车间隔"/>
+                        android:text="发车间隔"
+                        android:id="@+id/textView3" />
+
                     <TextView
                         style="@style/main_activity_top_button"
                         android:text="实际发车时刻"/>
@@ -142,11 +145,13 @@
                           android:orientation="horizontal">
                           <!--手动发车-->
                           <LinearLayout
+                              android:id="@+id/ll_main_manual"
                               android:layout_width="wrap_content"
                               android:layout_height="match_parent"
                               android:background="@drawable/blackbtn_startcar_style"
                               android:orientation="horizontal"
                               android:gravity="center">
+
                               <TextView
                                   android:layout_width="wrap_content"
                                   android:layout_height="wrap_content"
@@ -156,10 +161,11 @@
                                   android:textColor="@color/font_black"
                                   android:text="手动发车"
 
-                                   />
+                                  android:id="@+id/textView2" />
                           </LinearLayout>
                           <!--自动发车-->
                           <LinearLayout
+                              android:id="@+id/ll_main_automatic"
                               android:layout_width="wrap_content"
                               android:layout_height="match_parent"
                               android:background="@drawable/blackbtn_startcar_style"

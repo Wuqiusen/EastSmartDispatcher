@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="260dp"
-    android:layout_height="140dp"
-    android:layout_margin="@dimen/acli_margin32"
+    android:id="@+id/ll_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
     android:background="@drawable/ll_stop_car_white_btn_bg"
     android:orientation="horizontal">
     <TextView
         android:id="@+id/tv_car_code"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:minHeight="50dp"
+        android:minWidth="80dp"
         android:gravity="center"
+        android:padding="4dp"
         android:text="手动发车"
         android:textColor="@color/font_black"
-        android:textSize="@dimen/font_xxxhuge"
+        android:textSize="@dimen/font_min_size"
         />
-
 </LinearLayout>
