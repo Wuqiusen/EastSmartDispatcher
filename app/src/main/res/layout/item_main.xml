@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:background="@color/title_bar_bg_style1">
-    <TextView
-        android:id="@+id/tv_line_no"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerInParent="true"
-        android:text="777"
-        android:textColor="@color/white"
-        android:textSize="@dimen/font_mhuge"/>
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/title_bar_bg_style1"
+        android:gravity="center"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/tv_line_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:text="777"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_mhuge"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_line_name"
-        android:layout_centerVertical="true"
-        android:layout_centerInParent="true"
-        android:text="111"
-        android:textColor="@color/white"
-        android:textSize="@dimen/font_mhuge"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_line_name"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:text="主站"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_huge"
+            />
+    </LinearLayout>
+    <View
+        android:id="@+id/view_main_tip"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:background="@color/scroll_bar_bg"/>
 </LinearLayout>

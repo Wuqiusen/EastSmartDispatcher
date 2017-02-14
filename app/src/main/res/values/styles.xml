@@ -49,7 +49,7 @@
     <style name="main_tab_font_style" parent="titleBar_white_font_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textSize">@dimen/font_mhuge</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
@@ -150,7 +150,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/font_very_tiny</item>
+        <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textColor">@color/font_blue</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_weight">0.2</item>

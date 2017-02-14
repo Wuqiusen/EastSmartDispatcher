@@ -399,6 +399,7 @@
     <dimen name="tv_linear2_lineSpacingExtra">2dp</dimen>
 
     <!--弧度-->
+    <dimen name="radian_tiny">4dp</dimen>
     <dimen name="radian_min">6dp</dimen>
     <dimen name="radian_xmin">8dp</dimen>
     <dimen name="radian_xmax">10dp</dimen>

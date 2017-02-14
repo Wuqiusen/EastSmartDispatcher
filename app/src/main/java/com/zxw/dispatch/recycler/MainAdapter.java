@@ -26,12 +26,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
     private Context mContext;
     private final LayoutInflater mLayoutInflater;
     private boolean isFirst = true;
+    private boolean isClick[];
 
     public MainAdapter(List<Line> mData, Context mContext,OnSelectLineListener listener) {
         this.mData = mData;
         this.mContext = mContext;
         this.listener = listener;
         mLayoutInflater = LayoutInflater.from(mContext);
+        isClick = new boolean[mData.size()];
     }
 
 
@@ -44,6 +46,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
     @Override
     public void onBindViewHolder(LineHolder holder, final int position) {
         if (position == 0 && isFirst){
+            setClickView(0);
             listener.onSelectLine(mData.get(position));
         }
         holder.mLineNumber.setText(mData.get(position).lineCode);
@@ -52,8 +55,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
             public void onClick(View v) {
                 listener.onSelectLine(mData.get(position));
                 isFirst = false;
+                setClickView(position);
+                notifyDataSetChanged();
             }
         });
+        if (isClick[position]){
+            holder.mTip.setVisibility(View.VISIBLE);
+        }else {
+            holder.mTip.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -66,10 +76,22 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
         TextView mLineNumber;
         @Bind(R.id.container)
         LinearLayout mContainer;
+        @Bind(R.id.view_main_tip)
+        View mTip;
 
         LineHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+        }
+    }
+
+    private void setClickView(int poi){
+        for (int i = 0; i < mData.size(); i++){
+            if (poi == i){
+                isClick[i] = true;
+            }else {
+                isClick[i] = false;
+            }
         }
     }
 

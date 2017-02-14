@@ -47,10 +47,16 @@ public class SendAdapter extends RecyclerView.Adapter<SendAdapter.LineHolder> {
         holder.mPlanTime.setText(DisplayTimeUtil.substring(send.projectTime));
         holder.mIntervalTime.setText(String.valueOf(send.spaceMin));
         holder.mSystemEnterTime.setText(DisplayTimeUtil.substring(send.inTime1));
-        holder.mEnterTime.setText(DisplayTimeUtil.substring(send.inTime2));
+//        holder.mEnterTime.setText(DisplayTimeUtil.substring(send.inTime2));
         holder.mSendTime.setText(DisplayTimeUtil.substring(send.realTime));
-        holder.mSendState.setText(send.isScan == 1 ? "自动" : "人工");
-        holder.mState.setText(send.isScan == 1 ? "已读" : "未读");
+//        holder.mSendState.setText(send.isScan == 1 ? "自动" : "人工");
+//        holder.mState.setText(send.isScan == 1 ? "已读" : "未读");
+        holder.mCheckcar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -73,14 +79,16 @@ public class SendAdapter extends RecyclerView.Adapter<SendAdapter.LineHolder> {
         TextView mIntervalTime;
         @Bind(R.id.tv_system_enter_time)
         TextView mSystemEnterTime;
-        @Bind(R.id.tv_enter_time)
-        TextView mEnterTime;
+        //        @Bind(R.id.tv_enter_time)
+//        TextView mEnterTime;
         @Bind(R.id.tv_send_time)
         TextView mSendTime;
-        @Bind(R.id.tv_send_state)
-        TextView mSendState;
-        @Bind(R.id.tv_state)
-        TextView mState;
+        //        @Bind(R.id.tv_send_state)
+//        TextView mSendState;
+//        @Bind(R.id.tv_state)
+//        TextView mState;
+        @Bind(R.id.tv_check_send_car)
+        TextView mCheckcar;
 
         LineHolder(View view) {
             super(view);

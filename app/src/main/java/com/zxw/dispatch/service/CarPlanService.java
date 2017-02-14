@@ -176,20 +176,38 @@ public class CarPlanService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            lineId = intent.getIntExtra("lineId", 0);
-            stationId = intent.getIntExtra("stationId", 0);
-            if (lineIds != null && !lineIds.isEmpty()) {
-                for (int i = 0; i < lineIds.size(); i++) {
-                    if (lineIds.get(i) == lineId) {
-                        lineIds.remove(i);
-                        stationIds.remove(i);
+            if (TextUtils.equals(intent.getStringExtra("type"), "getData")){
+                //获取自动发车列表，发送广播给Main判断该线路是否设置自动发车
+                boolean isAuto = false;
+                if (lineIds != null && !lineIds.isEmpty()) {
+                    for (Integer lineId: lineIds){
+                        if (lineId == intent.getIntExtra("lineKey", 0)) {
+                            isAuto = true;
+                        }
                     }
                 }
-            }
-            if (timerMap.get(lineId) != null) {
-                DebugLog.e("CarPlanReceiver cancel" + lineId);
-                timerMap.get(lineId).cancel();
-                timerMap.remove(lineId);
+                Intent megIntent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
+                megIntent.putExtra("isAuto", isAuto);
+                megIntent.putExtra("type", "getData");
+                sendBroadcast(megIntent);
+
+            }else {
+                //取消自动发车
+                lineId = intent.getIntExtra("lineId", 0);
+                stationId = intent.getIntExtra("stationId", 0);
+                if (lineIds != null && !lineIds.isEmpty()) {
+                    for (int i = 0; i < lineIds.size(); i++) {
+                        if (lineIds.get(i) == lineId) {
+                            lineIds.remove(i);
+                            stationIds.remove(i);
+                        }
+                    }
+                }
+                if (timerMap.get(lineId) != null) {
+                    DebugLog.e("CarPlanReceiver cancel" + lineId);
+                    timerMap.get(lineId).cancel();
+                    timerMap.remove(lineId);
+                }
             }
 
         }

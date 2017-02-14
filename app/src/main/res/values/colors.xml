@@ -75,13 +75,14 @@
     <!--应用主题背景-->
     <color name="background_bg_gray">#F0F5F9</color>
     <color name="background_bg_gray1">#F0F6FA</color>
+    <color name="background_bg_gray2">#eef3f9</color>
     <color name="background_bg_red">#CA0020</color>
     <color name="background_bg_green">#349E63</color>
 
     <!--标题栏部分-->
     <color name="title_bar_bg_style1">#4E6682</color>
     <color name="scroll_bar_bg">#73B9EC</color>
-    <color name="line_level_bg">#6E839D</color>
+    <color name="line_level_bg">#6e839d</color>
     <color name="line_level_bg1">#FB9E2B</color>
     <color name="line_level_bg2">#6DB5E5</color>
     <color name="line_level_bg3">#797979</color>

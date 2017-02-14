@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.zxw.data.bean.WaitVehicle;
@@ -78,16 +77,28 @@ public class DragListAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_system_enter_time);
         tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).inTime1));
 
-        TextView tv_enter_time = (TextView) view
-                .findViewById(R.id.tv_enter_time);
-        tv_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).inTime2));
+//        TextView tv_enter_time = (TextView) view
+//                .findViewById(R.id.tv_enter_time);
+//        tv_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).inTime2));
 
-        TextView tv_state = (TextView) view
-                .findViewById(R.id.tv_state);
-        tv_state.setText(mDatas.get(position).isScan == 1 ? "已读" : "未读");
+//        TextView tv_state = (TextView) view
+//                .findViewById(R.id.tv_state);
+//        tv_state.setText(mDatas.get(position).isScan == 1 ? "已读" : "未读");
 
-        Button moreBtn = (Button) view.findViewById(R.id.more);
-        moreBtn.setOnClickListener(new View.OnClickListener() {
+        TextView tv_send_car = (TextView) view
+                .findViewById(R.id.tv_send_car);
+
+        tv_send_car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(tv_interval_time.getText().toString())){
+                    ToastHelper.showToast("请先填写发车时间");
+                    return;
+                }
+                presenter.sendVehicle(mDatas.get(position).id);
+            }
+        });
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new SendCarDialog(mContext).change(mDatas, position, new SendCarDialog.OnDialogChangeConfirmListener() {
@@ -96,17 +107,6 @@ public class DragListAdapter extends BaseAdapter {
                         presenter.updateVehicle(opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
                     }
                 }).dialogShow();
-            }
-        });
-        Button sendBtn = (Button) view.findViewById(R.id.start);
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(tv_interval_time.getText().toString())){
-                    ToastHelper.showToast("请先填写发车时间");
-                    return;
-                }
-                presenter.sendVehicle(mDatas.get(position).id);
             }
         });
         return view;

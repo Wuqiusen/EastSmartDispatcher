@@ -84,7 +84,7 @@
                 <TextView
                     android:id="@+id/tv_controller"
                     style="@style/main_tab_font_style"
-                    tools:text="操控台"
+                    android:text="操控台"
                     />
 
                 <View style="@style/scroll_bar_select_style"/>
@@ -100,7 +100,7 @@
                 <TextView
                     android:id="@+id/tv_schedule"
                     style="@style/main_tab_font_style"
-                    tools:text="排班计划"
+                    android:text="排班计划"
                     />
                 <View style="@style/scroll_bar_select_style"
                       android:visibility="gone"/>
@@ -116,7 +116,7 @@
                 <TextView
                     android:id="@+id/tv_fix"
                     style="@style/main_tab_font_style"
-                    tools:text="维修计划"
+                    android:text="维修计划"
                     />
                 <View style="@style/scroll_bar_select_style"
                       android:visibility="gone"/>
@@ -132,7 +132,7 @@
                 <TextView
                     android:id="@+id/tv_line_map"
                     style="@style/main_tab_font_style"
-                    tools:text="线路运行图"
+                    android:text="线路运行图"
                     />
                 <View style="@style/scroll_bar_select_style"
                       android:visibility="gone"/>
@@ -148,7 +148,7 @@
                 <TextView
                     android:id="@+id/tv_refuel"
                     style="@style/main_tab_font_style"
-                    tools:text="作业计划"
+                    android:text="作业计划"
                     />
                 <View style="@style/scroll_bar_select_style"
                     android:visibility="gone"/>
@@ -179,10 +179,11 @@
       <!--左边部分-->
       <LinearLayout
           android:layout_width="0dp"
-          android:layout_weight="0.5"
+          android:layout_weight="0.7"
           android:layout_height="match_parent"
           android:background="@color/title_bar_bg_style1"
-          android:orientation="vertical">
+          android:orientation="vertical"
+          android:layout_marginTop="1dp">
           <android.support.v7.widget.RecyclerView
               android:id="@+id/rv_line"
               android:layout_width="match_parent"
@@ -202,7 +203,9 @@
           android:layout_weight="9"
           android:layout_height="match_parent"
           android:orientation="vertical">
+
           <com.zxw.dispatch.view.CustomViewPager
+              android:id="@+id/vp_main"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
           />

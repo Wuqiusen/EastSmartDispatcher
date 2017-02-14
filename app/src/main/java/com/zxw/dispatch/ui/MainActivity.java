@@ -8,15 +8,18 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
@@ -25,33 +28,38 @@ import com.zxw.dispatch.recycler.SendAdapter;
 import com.zxw.dispatch.recycler.StopAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
 import com.zxw.dispatch.utils.SpUtils;
+import com.zxw.dispatch.view.CustomViewPager;
 import com.zxw.dispatch.view.DragListAdapter;
 import com.zxw.dispatch.view.DragListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener {
+public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
+        View.OnClickListener{
 
     @Bind(R.id.rv_line)
     RecyclerView mLineRV;
-    @Bind(R.id.rv_gone_car)
     RecyclerView mGoneRV;
-    @Bind(R.id.rv_stop_car)
     RecyclerView mStopRV;
-    @Bind(R.id.lv_send_car)
     DragListView mSendRV;
+    View viewCover;
+    @Bind(R.id.vp_main)
+    CustomViewPager vpMain;
+    TextView tvAutomatic;
+    TextView tvManual;
     private MainAdapter mLineAdapter;
     private AlertDialog mManualStopDialog, mStopCarDialog;
     private MsgReceiver msgReceiver;
+    private List<View> views = new ArrayList<View>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_new);
         ButterKnife.bind(this);
         creatRexeiver();
         initView();
@@ -61,11 +69,32 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void initView() {
         hideHeadArea();
         hideTitle();
+        View view = View.inflate(mContext, R.layout.tab_view_control_deck, null);
+        mSendRV = (DragListView) view.findViewById(R.id.lv_send_car);
+        mGoneRV = (RecyclerView) view.findViewById(R.id.rv_gone_car);
+        mStopRV = (RecyclerView) view.findViewById(R.id.rv_stop_car);
+        viewCover = (View) view.findViewById(R.id.view_cover);
+        tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);
+        tvManual = (TextView) view.findViewById(R.id.tv_manual);
+        tvAutomatic.setOnClickListener(this);
+        tvManual.setOnClickListener(this);
+        views.add(view);
+        MyPagerAdapter mAdapter = new MyPagerAdapter(views, null);
+        if (vpMain != null){
+            vpMain.setAdapter(mAdapter);
+        }
+        vpMain.addView(view);
+        vpMain.setCurrentItem(0);
+        setTvBackground(1);
+        mGoneRV.setLayoutManager(new LinearLayoutManager(this));
+        mGoneRV.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL_LIST));
+        mStopRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
-    private void creatRexeiver(){
+    private void creatRexeiver() {
         //动态注册广播接收器
-        if (msgReceiver == null){
+        if (msgReceiver == null) {
             msgReceiver = new MsgReceiver();
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction("com.zxw.dispatch.MSG_RECEIVER");
@@ -84,7 +113,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mLineRV.setLayoutManager(new LinearLayoutManager(this));
         mLineAdapter = new MainAdapter(lineList, this, this);
         mLineRV.setAdapter(mLineAdapter);
-        mLineRV.addItemDecoration(new DividerItemDecoration(this,
+        mLineRV.addItemDecoration(new DividerItemDecoration(this,R.color.white,
                 DividerItemDecoration.VERTICAL_LIST));
     }
 
@@ -109,15 +138,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void loadGoneCarList(List<SendHistory> sendHistories) {
-        mGoneRV.setLayoutManager(new LinearLayoutManager(this));
         mGoneRV.setAdapter(new SendAdapter(sendHistories, this));
-        mGoneRV.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL_LIST));
     }
 
     @Override
     public void loadStopCarList(List<StopHistory> stopHistories) {
-        mStopRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
         mStopRV.setAdapter(new StopAdapter(stopHistories, this, new StopAdapter.OnClickStopCarListListener() {
             @Override
             public void onClickManualButtonListener() {
@@ -129,8 +155,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 showStopCarDialog();
             }
         }));
-        mStopRV.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.HORIZONTAL_LIST));
     }
 
     private void showStopCarDialog() {
@@ -180,34 +204,74 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void onSelectLine(Line line) {
+        Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
+        intent.putExtra("type", "getData");
+        intent.putExtra("lineKey", line.id);
+        sendBroadcast(intent);
         presenter.onSelectLine(line);
     }
 
-    @OnClick({R.id.rb_main_automatic, R.id.rb_main_manual})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.rb_main_automatic:
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_automatic:
+                setTvBackground(2);
                 //动态注册广播接收器
-                if (msgReceiver == null){
+                if (msgReceiver == null) {
                     msgReceiver = new MsgReceiver();
                     IntentFilter intentFilter = new IntentFilter();
                     intentFilter.addAction("com.zxw.dispatch.MSG_RECEIVER");
                     registerReceiver(msgReceiver, intentFilter);
                 }
                 presenter.selectAuto();
+                viewCover.setVisibility(View.VISIBLE);
+
                 break;
-            case R.id.rb_main_manual:
+            case R.id.tv_manual:
+                setTvBackground(1);
                 presenter.selectManual();
+                viewCover.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    private void setTvBackground(int poi){
+        if (poi == 1){
+            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
+            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
+            tvManual.setTextColor(getResources().getColor(R.color.white));
+            tvAutomatic.setTextColor(getResources().getColor(R.color.font_black));
+        }else {
+            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
+            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
+            tvManual.setTextColor(getResources().getColor(R.color.font_black));
+            tvAutomatic.setTextColor(getResources().getColor(R.color.white));
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(msgReceiver);
+        super.onDestroy();
     }
 
     public class MsgReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            //刷新数据
-            presenter.refreshList();
+            if (TextUtils.equals(intent.getStringExtra("type"), "getData")) {
+                if (intent.getBooleanExtra("isAuto", false)) {
+                    setTvBackground(2);
+                    viewCover.setVisibility(View.VISIBLE);
+                } else {
+                    setTvBackground(1);
+                    viewCover.setVisibility(View.GONE);
+                }
+
+            } else {
+                //刷新数据
+                presenter.refreshList();
+            }
         }
 
     }

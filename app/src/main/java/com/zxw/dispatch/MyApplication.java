@@ -26,8 +26,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         this.mContext = this;
-        Thread.currentThread().setUncaughtExceptionHandler(
-                new MyUncaughtExceptionHandler());
+//        Thread.currentThread().setUncaughtExceptionHandler(
+//                new MyUncaughtExceptionHandler());
     }
     private class MyUncaughtExceptionHandler implements
             Thread.UncaughtExceptionHandler {
