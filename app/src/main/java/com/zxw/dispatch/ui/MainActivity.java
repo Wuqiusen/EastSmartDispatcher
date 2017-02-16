@@ -116,16 +116,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         View schedulingView = View.inflate(mContext,R.layout.tab_view_scheduling_plan,null);
         views.add(schedulingView);
         tvSchedule.setOnClickListener(this);
-        views.add(schedulingView);
         // 设置按钮
         imgSetting.setOnClickListener(this);
         imgLoginOut.setOnClickListener(this);
 
         MyPagerAdapter mAdapter = new MyPagerAdapter(views, null);
-        if (vpMain != null){
-            vpMain.setAdapter(mAdapter);
-        }
+        vpMain.setAdapter(mAdapter);
         vpMain.setCurrentItem(0);
+        vpMain.setPagingEnabled(false);
         setLineBackground(0);
         setTvBackground(1);
         mGoneRV.setLayoutManager(new LinearLayoutManager(this));
