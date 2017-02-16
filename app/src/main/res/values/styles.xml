@@ -16,6 +16,13 @@
         <item name="android:paddingTop">4dp</item>
     </style>
 
+    <style name="scroll_bar_select_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">4dp</item>
+        <item name="android:background">@color/scroll_bar_bg</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
     <style name="myEdt_style">
         <item name="android:background">@drawable/et_background</item>
         <item name="android:paddingLeft">@dimen/margin_fit</item>
@@ -39,7 +46,9 @@
         <item name="android:layout_marginRight">@dimen/btn_margin</item>
         <item name="android:layout_marginLeft">@dimen/btn_margin</item>
     </style>
-    <!--主界面：操作栏字体-->
+
+<!--操控台-->
+    <!--操作栏字体-->
     <style name="titleBar_white_font_style">
         <item name="android:text">@null</item>
         <item name="android:textColor">@color/font_white</item>
@@ -53,28 +62,57 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
-
-    <!--操控台：标题类字体-->
+    <!--标题类字体-->
     <style name="title_font_main_style">
         <item name="android:textSize">@dimen/font_xhuge</item>
         <item name="android:textColor">@color/font_black</item>
         <item name="android:textStyle">bold</item>
     </style>
-   <!--操控台：信息类字体-->
+   <!--信息类字体-->
     <style name="content_car_font_main_style" parent="main_activity_top_button">
         <item name="android:text">@null</item>
         <item name="android:textStyle">normal</item>
         <item name="android:maxLines">3</item>
         <item name="android:ellipsize">end</item>
     </style>
-
-    <style name="scroll_bar_select_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">4dp</item>
-        <item name="android:background">@color/scroll_bar_bg</item>
-        <item name="android:layout_alignParentBottom">true</item>
+<!--排班计划-->
+    <!--标题类字体-->
+    <style name="titleHead_scheduling_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/normal_margin10</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <!--信息类字体-->
+    <style name="font_scheduling_body_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:layout_gravity">left|center</item>
+        <item name="android:text">@null</item>
+        <item name="android:textColor">@color/font_black</item>
+        <item name="android:textSize">@dimen/font_xlarge</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <!--主站或副站类字体-->
+    <style name="font_scheduling_station_style">
+        <item name="android:text">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/font_black</item>
+        <item name="android:layout_marginTop">@dimen/normal_margin10</item>
+        <item name="android:layout_marginBottom">@dimen/normal_margin10</item>
     </style>
 
+    <!--竖线样式-->
+    <style name="titleVerticalLine_scheduling_style">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/white</item>
+    </style>
  <!--以上新增-->
 
 

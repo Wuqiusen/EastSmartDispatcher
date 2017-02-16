@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_popwindow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="right"
-    android:orientation="vertical"
-    >
+    android:gravity="right|center_horizontal"
+    android:orientation="vertical">
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -13,58 +14,11 @@
         android:visibility="gone"
         />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:minWidth="280dp"
-        android:minHeight="180dp"
-        android:background="@color/font_black"
-        android:orientation="vertical"
-       >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingLeft="30dp"
-            android:drawablePadding="@dimen/normal_margin10"
-            android:drawableLeft="@drawable/setup_icon"
-            android:text="修改资料"
-            android:textSize="@dimen/font_xxhuge"
-            android:textColor="@color/white"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/white"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingLeft="30dp"
-            android:gravity="center"
-            android:drawablePadding="@dimen/normal_margin10"
-            android:drawableLeft="@drawable/setup_icon"
-            android:text="密码修改"
-            android:textSize="@dimen/font_xxhuge"
-            android:textColor="@color/white"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/white"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingLeft="30dp"
-            android:gravity="center"
-            android:drawablePadding="@dimen/normal_margin10"
-            android:drawableLeft="@drawable/setup_icon"
-            android:text="退出"
-            android:textSize="@dimen/font_xxhuge"
-            android:textColor="@color/white"/>
-    </LinearLayout>
-
+    <ListView
+        android:id="@+id/lv_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="#00000000"
+        />
 
 </LinearLayout>

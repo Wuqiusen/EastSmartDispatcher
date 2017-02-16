@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
     <!--已发车辆-->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -378,7 +379,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="单班副站" />
+                    android:text="单班副站"
+                    android:id="@+id/textView2" />
                 <!--支援车辆-->
                 <Button
                     android:layout_width="wrap_content"
@@ -397,8 +399,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ll_stop_car_red_btn_bg"
+
                     android:minHeight="20dp"
-                    android:minWidth="30dp" />
+                    android:minWidth="30dp"
+                    android:id="@+id/button" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -426,17 +430,18 @@
             <!--android:layout_height="0.1dp"-->
             <!--android:background="@color/gray_color" />-->
         <!--停场车辆列表-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/gray_color" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_stop_car"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:background="@color/gray_color" />
     </LinearLayout>
 
 </LinearLayout>

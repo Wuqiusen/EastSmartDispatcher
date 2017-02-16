@@ -87,7 +87,12 @@
                     android:text="操控台"
                     />
 
-                <View style="@style/scroll_bar_select_style"/>
+                <View
+                    android:id="@+id/line_control"
+                    style="@style/scroll_bar_select_style"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
             </RelativeLayout>
 
             <!--排班计划-->
@@ -102,8 +107,10 @@
                     style="@style/main_tab_font_style"
                     android:text="排班计划"
                     />
-                <View style="@style/scroll_bar_select_style"
-                      android:visibility="gone"/>
+                <View
+                    android:id="@+id/line_schedule"
+                    style="@style/scroll_bar_select_style"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <!--维修计划-->
@@ -156,6 +163,7 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_setting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -191,6 +199,7 @@
               android:layout_weight="1"/>
 
           <ImageView
+              android:id="@+id/img_login_out"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center_horizontal"

@@ -70,7 +70,7 @@
             android:text="粤"
             android:textColor="@color/white"
             android:textSize="@dimen/font_min_size"
-            android:visibility="visible"
+            android:visibility="gone"
             />
 
         <TextView
@@ -83,7 +83,7 @@
             android:text="B1222"
             android:textColor="@color/white"
             android:textSize="@dimen/font_min_size"
-            android:visibility="visible"
+            android:visibility="gone"
            />
     </LinearLayout>
 
