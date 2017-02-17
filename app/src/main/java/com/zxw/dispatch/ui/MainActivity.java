@@ -5,11 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +42,7 @@ import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
 import com.zxw.dispatch.view.DragListAdapter;
 import com.zxw.dispatch.view.DragListView;
+import com.zxw.dispatch.view.MyDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -290,8 +294,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 showPopupWindow();
                 break;
             case R.id.img_login_out:
-                doLoginOut();
-                 break;
+                isSureLoginOut();
+                break;
             case R.id.tv_automatic:
                 setTvBackground(2);
                 //动态注册广播接收器
@@ -331,8 +335,25 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         popupAdapter = new PopupAdapter(mContext,list,this);
         lv_popup.setAdapter(popupAdapter);
         mPopupWindow = new PopupWindow(popView, 400, LinearLayout.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setBackgroundDrawable(new PaintDrawable());
         mPopupWindow.showAsDropDown(rlSetting,300,10);
+    }
+
+    @Override
+    public void onPopupListener(int position) {
+        switch (position){
+            case 0:
+                ToastHelper.showToast("修改资料",mContext);
+                break;
+            case 1:
+                ToastHelper.showToast("密码修改",mContext);
+                break;
+            case 2:
+                isSureLoginOut();
+                break;
+
+        }
     }
 
     private void setTvBackground(int poi){
@@ -355,26 +376,30 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         super.onDestroy();
     }
 
-    @Override
-    public void onPopupListener(int position) {
-         switch (position){
-             case 0:
-                 ToastHelper.showToast("修改资料",mContext);
-                 break;
-             case 1:
-                 ToastHelper.showToast("密码修改",mContext);
-                 break;
-             case 2:
+    private void isSureLoginOut() {
+        final MyDialog outDialog = new MyDialog(MainActivity.this,"提示","确定要退出系统？",MyDialog.HAVEBUTTON);
+        outDialog.show();
+        outDialog.setCancelable(false);
+        outDialog.ButtonQuery(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 outDialog.dismiss();
                  doLoginOut();
-                 break;
-
-         }
+            }
+        });
+        outDialog.ButtonCancel(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 outDialog.dismiss();
+            }
+        });
     }
 
     private void doLoginOut() {
-        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-        SpUtils.logOut(mContext);
-        startActivity(intent);
+          Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+          SpUtils.logOut(mContext);
+          startActivity(intent);
+          finish();
     }
 
     public class MsgReceiver extends BroadcastReceiver {
@@ -397,4 +422,5 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         }
 
     }
+
 }
