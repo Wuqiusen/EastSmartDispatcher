@@ -15,9 +15,9 @@ public class Constants {
     }
 
     public class Path{
-        public static final String ERRORPATH = "DriverPhone/error";
-        public static final String SECONDPATH = "DriverPhone/download";
-        public static final String APKNAME = "DriverPhone.apk";
+        public static final String ERRORPATH = "Dispatcher/error";
+        public static final String SECONDPATH = "Dispatcher/download";
+        public static final String APKNAME = "Dispatcher.apk";
     }
 
 
