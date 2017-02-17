@@ -11,7 +11,8 @@
         android:layout_height="0dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/ll_already_start_cars"
@@ -321,6 +322,7 @@
         android:layout_height="1dp"
         android:layout_gravity="bottom"
         android:background="@color/line_level_bg2" />
+
     <!--停场车辆-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -362,12 +364,12 @@
                     android:background="@drawable/ll_stop_car_red_btn_bg"
                     android:minHeight="8dp"
                     android:minWidth="30dp" />
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="单班主站" />
+
                 <!--单班副站-->
                 <Button
                     android:layout_width="wrap_content"
@@ -375,13 +377,13 @@
                     android:background="@drawable/ll_stop_car_green_btn_bg"
                     android:minHeight="8dp"
                     android:minWidth="30dp" />
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="单班副站"
                     android:id="@+id/textView2" />
+
                 <!--支援车辆-->
                 <Button
                     android:layout_width="wrap_content"
@@ -389,35 +391,22 @@
                     android:background="@drawable/ll_stop_car_blue_btn_bg"
                     android:minHeight="8dp"
                     android:minWidth="30dp" />
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="支援车辆" />
+
                 <!--双班主站-->
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ll_stop_car_red_btn_bg"
-
-                    android:minHeight="20dp"
-                    android:minWidth="30dp"
-                    android:id="@+id/button" />
-
+                <include layout="@layout/smart_bilayerredbtn" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="双班主站" />
-                <!--双班副站-->
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ll_stop_car_green_btn_bg"
-                    android:minHeight="20dp"
-                    android:minWidth="30dp" />
 
+                <!--双班副站-->
+                <include layout="@layout/smart_bilayergreenbtn" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -446,5 +435,8 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp" />
     </LinearLayout>
+
+
+
 
 </LinearLayout>
