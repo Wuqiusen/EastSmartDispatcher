@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:minHeight="20dp"
     android:minWidth="30dp"
-    android:layout_margin="6dp"
+    android:layout_margin="4dp"
     android:background="@drawable/ll_stop_car_red_btn_bg"
     android:orientation="vertical"
     >
