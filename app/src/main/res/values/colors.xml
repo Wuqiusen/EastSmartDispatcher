@@ -78,6 +78,7 @@
     <color name="background_bg_gray2">#eef3f9</color>
     <color name="background_bg_red">#CA0020</color>
     <color name="background_bg_green">#349E63</color>
+    <color name="background_bg_blue">#73B9EC</color>
 
     <!--标题栏部分-->
     <color name="title_bar_bg_style1">#4E6682</color>

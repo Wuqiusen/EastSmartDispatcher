@@ -1,9 +1,8 @@
 package com.zxw.dispatch.recycler;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.ToastHelper;
 
 import java.util.List;
@@ -49,23 +49,28 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.LineHolder> {
 
     @Override
     public void onBindViewHolder(LineHolder holder, final int position) {
-        if (position == 0) {
-            setBtnShowStyle(holder,0,mContext.getResources().getColor(R.color.white));
-            holder.tvCarCodeOne.setText("手动添加");
-            holder.llParentContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ToastHelper.showToast("added");
-                    if(listener != null)
-                        listener.onClickManualButtonListener();
-                }
-            });
+        final StopHistory stop = mData.get(position);
+        if (position == 0){
+              holder.tvCarCode.setText("手动添加");
+              setBtnStyle(holder,1);
+              holder.llReuse.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                       ToastHelper.showToast("added");
+                       if(listener != null)
+                         listener.onClickManualButtonListener();
+                  }
+              });
         }
-        else if (position == 1){
-            final StopHistory stop = mData.get(position);
-            setBtnShowStyle(holder,1,R.drawable.ll_stop_car_green_btn_bg);
-            holder.tvCarCodeOne.setText("car"+ position);
-            holder.llParentContainer.setOnClickListener(new View.OnClickListener() {
+        else if(position ==1){
+            if (!TextUtils.isEmpty(stop.vehCode)){
+                holder.tvCarCode.setText("粤"+ stop.vehCode);
+            }else{
+                holder.tvCarCode.setText("粤" + "1295");
+                DebugLog.e(stop.vehCode + "");
+            }
+            setBtnStyle(holder,2);
+            holder.llReuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(listener != null)
@@ -73,51 +78,55 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.LineHolder> {
                 }
             });
         }
-        else if (position == 2){
-            setBtnShowStyle(holder,2,R.drawable.ll_stop_car_red_btn_bg);
-            holder.tvCarCodeTwo.setText("car"+ position);
-        }
-        else{
-            setBtnShowStyle(holder,1,R.drawable.ll_stop_car_blue_btn_bg);
-            holder.tvCarCodeOne.setText("car"+ position);
+        else if(position == 2){
+            holder.tvCarCode.setText("粤" + "1382");
+            setBtnStyle(holder,5);
+            holder.llReuse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null)
+                        listener.onClickStopCarListener(stop);
+                }
+            });
+        }else{
+            holder.tvCarCode.setText("粤" + "1214");
+            setBtnStyle(holder,4);
         }
 
     }
 
-    private void setBtnShowStyle(LineHolder holder,int type,int drawableResId){
+    private void setBtnStyle(LineHolder holder,int type){
            switch (type){
-               case 0:
-                   // 手动添加
-                   holder.llTwoContainer.setVisibility(View.GONE);
-                   holder.llOneContainer.setVisibility(View.VISIBLE);
-                   holder.llOneContainer.setMinimumHeight(146);
-                   holder.llOneContainer.setGravity(Gravity.CENTER_VERTICAL);
-                   holder.tvOne.setVisibility(View.GONE);
-                   holder.tvCarCodeOne.setVisibility(View.VISIBLE);
-                   holder.tvCarCodeOne.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                   break;
                case 1:
-                   // 单层（红、绿、蓝）
-                   holder.llTwoContainer.setVerticalGravity(View.GONE);
-                   holder.llOneContainer.setVisibility(View.VISIBLE);
-                   holder.tvOne.setVisibility(View.VISIBLE);
-                   holder.tvCarCodeOne.setVisibility(View.VISIBLE);
-                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                       holder.tvCarCodeOne.setTextColor(mContext.getResources().getColor(R.color.font_white));
-                       holder.llParentContainer.setBackground(mContext.getResources().getDrawable(drawableResId));
-                   }
+                   // 手动添加
+                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_white_btn_bg));
+                   holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                   holder.tvCarCode.setTextColor(mContext.getResources().getColor(R.color.font_gray));
                    break;
                case 2:
-                   // 双层（红、绿）
-                   holder.llOneContainer.setVisibility(View.GONE);
-                   holder.llTwoContainer.setVisibility(View.VISIBLE);
-                   holder.tvTwo.setVisibility(View.VISIBLE);
-                   holder.tvCarCodeTwo.setVisibility(View.VISIBLE);
-                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                       holder.tvCarCodeOne.setTextColor(mContext.getResources().getColor(R.color.font_white));
-                       holder.llParentContainer.setBackground(mContext.getResources().getDrawable(drawableResId));
-                       holder.llTwoContainer.setBackground(mContext.getResources().getDrawable(drawableResId));
-                   }
+                   // 单层（绿）
+                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
+                   holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_green));
+                   break;
+               case 3:
+                   // 单层（红）
+                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
+                   holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_red));
+                   break;
+               case 4:
+                   // 单层（蓝）
+                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_blue_btn_bg));
+                   holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
+                   break;
+               case 5:
+                   // 双层（红）
+                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
+                   holder.llLayerReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
+                   break;
+               case 6:
+                   // 双层（绿）
+                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
+                   holder.llLayerReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
                    break;
            }
     }
@@ -129,22 +138,12 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.LineHolder> {
     }
 
     static class LineHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.ll_container_parent)
-        LinearLayout llParentContainer;
-        // 布局1
-        @Bind(R.id.ll_container_one)
-        LinearLayout llOneContainer;
-        @Bind(R.id.tv_one)
-        TextView tvOne;
-        @Bind(R.id.tv_car_code_one)
-        TextView tvCarCodeOne;
-        // 布局2
-        @Bind(R.id.ll_container_two)
-        LinearLayout llTwoContainer;
-        @Bind(R.id.tv_two)
-        TextView tvTwo;
-        @Bind(R.id.tv_car_code_two)
-        TextView tvCarCodeTwo;
+        @Bind(R.id.ll_reuse)
+        LinearLayout llReuse;
+        @Bind(R.id.ll_layer_reuse)
+        LinearLayout llLayerReuse;
+        @Bind(R.id.tv_car_code)
+        TextView tvCarCode;
 
         LineHolder(View view) {
             super(view);
