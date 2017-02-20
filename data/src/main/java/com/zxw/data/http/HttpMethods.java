@@ -180,5 +180,12 @@ public class HttpMethods {
         toSubscribe(map, subscriber);
     }
 
+    //上传异常日志
+    public void upLoadLog(Subscriber<BaseBean> subscriber,String log, String phone, String key){
+        HttpInterfaces.UpLoadLog upLoadLog = retrofit.create(HttpInterfaces.UpLoadLog.class);
+        Observable<BaseBean> observable = upLoadLog.upLoadLog("http://120.24.252.195:7002/app_ebus/upload/phone/error/log",log, phone, key);
+        toSubscribe(observable, subscriber);
+    }
+
 
 }

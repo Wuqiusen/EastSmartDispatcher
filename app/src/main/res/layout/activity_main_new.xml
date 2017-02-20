@@ -21,45 +21,21 @@
            >
 
            <TextView
+               android:id="@+id/tv_user_name"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:drawableLeft="@drawable/my_icon"
                android:gravity="center_vertical"
                android:drawablePadding="@dimen/normal_margin10"
-               android:text="李兰"
+               tools:text="李兰"
                style="@style/titleBar_white_font_style"
                 />
            <TextView
+               android:id="@+id/tv_system_date"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:paddingLeft="@dimen/normal_margin10"
-               android:text="2017"
-               style="@style/titleBar_white_font_style"
-               />
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="-"
-               android:textColor="@color/font_white"
-               android:textSize="@dimen/font_medium"
-               />
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="2"
-               style="@style/titleBar_white_font_style"
-               />
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="-"
-               android:textColor="@color/font_white"
-               android:textSize="@dimen/font_medium"
-               />
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="8"
+               tools:text="2017-2-15"
                style="@style/titleBar_white_font_style"
                />
        </LinearLayout>

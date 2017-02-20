@@ -24,7 +24,6 @@ import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.MyDialog;
 
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -82,6 +81,7 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
         animationSet.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                presenter.upLoadLog();
 
             }
 

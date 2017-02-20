@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.zxw.dispatch.utils.DebugLog;
+import com.zxw.dispatch.utils.SpUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +53,7 @@ public class MyApplication extends Application {
 
                 ex.printStackTrace(err);
                 String errorLog = sw.toString();
+                SpUtils.cacheErrorLog(MyApplication.this, errorLog, SpUtils.getCache(MyApplication.this, SpUtils.NAME));
 
                 //保存到本地
                 String filePath = Environment.getExternalStorageDirectory()+"/"+Constants.Path.ERRORPATH;

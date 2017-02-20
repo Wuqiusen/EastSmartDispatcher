@@ -322,4 +322,11 @@ public class HttpInterfaces {
                                         @Field("spaceMin") int spaceMin,
                                         @Field("inTime2") String inTime2);
     }
+    public interface UpLoadLog{
+        @FormUrlEncoded
+        @POST
+        Observable<BaseBean> upLoadLog(@Url String url,@Field("log") String log,
+                                         @Field("phone") String phone,
+                                         @Field("key") String key);
+    }
 }

@@ -3,6 +3,9 @@ package com.zxw.dispatch.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * author：CangJie on 2016/9/28 14:11
  * email：cangjie2016@gmail.com
@@ -38,5 +41,24 @@ public class SpUtils {
         }
         SharedPreferences.Editor edit = sp.edit();
         edit.remove(CODE).remove(KEYCODE).commit();
+    }
+    public static void cacheErrorLog(Context mContext,String errorLog,String userPhone){
+        if(sp == null){
+            initSp(mContext,CACHE_FILE_NAME);
+        }
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("errorLog",errorLog);
+        edit.putString("errorLogName", userPhone);
+        edit.commit();
+    }
+    public static List<String> getErrorLog(Context mContext){
+        if(sp == null){
+            initSp(mContext,CACHE_FILE_NAME);
+        }
+        List<String> list = new ArrayList<String>();
+        list.add(sp.getString("errorLog", ""));
+        list.add(sp.getString("errorLogName", ""));
+
+        return list;
     }
 }

@@ -10,9 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,12 +42,13 @@ import com.zxw.dispatch.view.DragListAdapter;
 import com.zxw.dispatch.view.DragListView;
 import com.zxw.dispatch.view.MyDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
         PopupAdapter.OnPopupWindowListener,View.OnClickListener{
@@ -81,6 +80,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     CustomViewPager vpMain;
     TextView tvAutomatic;
     TextView tvManual;
+    @Bind(R.id.tv_user_name)
+    TextView tvUserName;
+    @Bind(R.id.tv_system_date)
+    TextView tvDate;
     private MainAdapter mLineAdapter;
     private PopupAdapter popupAdapter;
     private AlertDialog mManualStopDialog, mStopCarDialog;
@@ -88,7 +91,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private ListView lv_popup =null;
     private MsgReceiver msgReceiver;
     private List<View> views = new ArrayList<View>();
-
+    private boolean isHaveSendCar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +106,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void initView() {
         hideHeadArea();
         hideTitle();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        tvUserName.setText(SpUtils.getCache(mContext, SpUtils.NAME));
+        tvDate.setText(formatter.format(curDate));
         // 控制台
         View view = View.inflate(mContext, R.layout.tab_view_control_deck, null);
         mSendRV = (DragListView) view.findViewById(R.id.lv_send_car);
@@ -135,8 +142,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 DividerItemDecoration.VERTICAL_LIST));
         mStopRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
-
-
 
     private void creatRexeiver() {
         //动态注册广播接收器
@@ -173,6 +178,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void loadSendCarList(DragListAdapter mDragListAdapter) {
+        isHaveSendCar = false;
         mSendRV.setAdapter(mDragListAdapter);
         mSendRV.setMyDragListener(new DragListView.MyDragListener() {
             @Override
@@ -180,6 +186,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
             }
         });
+        if (mDragListAdapter.getCount() > 0) isHaveSendCar = true;
     }
 
     @Override
@@ -297,6 +304,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 isSureLoginOut();
                 break;
             case R.id.tv_automatic:
+                if (!isHaveSendCar){
+                    ToastHelper.showToast("该线路没有待发车辆", mContext);
+                    return;
+                }
                 setTvBackground(2);
                 //动态注册广播接收器
                 if (msgReceiver == null) {
@@ -307,6 +318,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 }
                 presenter.selectAuto();
                 viewCover.setVisibility(View.VISIBLE);
+
                 break;
             case R.id.tv_manual:
                 setTvBackground(1);
@@ -362,7 +374,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
             tvManual.setTextColor(getResources().getColor(R.color.white));
             tvAutomatic.setTextColor(getResources().getColor(R.color.font_black));
-        }else {
+        } else {
             tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
             tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
             tvManual.setTextColor(getResources().getColor(R.color.font_black));
