@@ -6,7 +6,7 @@
     android:layout_centerInParent="true"
     android:gravity="center"
     android:orientation="horizontal"
-    android:weightSum="55">
+    >
 
     <TextView
         android:id="@+id/tv_car_sequence"
@@ -26,7 +26,7 @@
         android:maxLines="1"
         android:minWidth="6dp"
         tools:text="粤B03444"
-        android:layout_weight="3"/>
+        android:layout_weight="4"/>
 
     <TextView
         android:id="@+id/tv_plan_time"
@@ -38,17 +38,17 @@
         android:layout_weight="4"/>
 
     <TextView
-        android:id="@+id/tv_system_enter_time"
+        android:id="@+id/tv_arrive_time"
         style="@style/content_car_font_main_style"
         android:layout_width="0dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:minWidth="6dp"
-        tools:text="30min"
+        tools:text="7:00"
         android:layout_weight="4"/>
 
     <TextView
-
+        android:id="@+id/tv_stop_time"
         style="@style/content_car_font_main_style"
         android:layout_width="0dp"
         android:ellipsize="end"
@@ -64,7 +64,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:minWidth="6dp"
-        tools:text="7:00"
+        tools:text="25min"
         android:layout_weight="4"/>
 
     <TextView
@@ -98,6 +98,7 @@
         android:layout_weight="3"/>
 
     <TextView
+        android:id="@+id/tv_schedule_status"
         style="@style/content_car_font_main_style"
         android:layout_width="0dp"
         android:ellipsize="end"
@@ -107,6 +108,7 @@
         android:layout_weight="3.5"/>
 
     <TextView
+        android:id="@+id/tv_station_status"
         style="@style/content_car_font_main_style"
         android:layout_width="0dp"
         android:ellipsize="end"
@@ -116,6 +118,7 @@
         android:layout_weight="3.5"/>
 
     <TextView
+        android:id="@+id/tv_work_status"
         style="@style/content_car_font_main_style"
         android:layout_width="0dp"
         android:ellipsize="end"
@@ -125,6 +128,7 @@
         android:layout_weight="4"/>
 
     <TextView
+        android:id="@+id/tv_no_work_status"
         style="@style/content_car_font_main_style"
         android:layout_width="0dp"
         android:ellipsize="end"

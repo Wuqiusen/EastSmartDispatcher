@@ -17,7 +17,8 @@ public class StopSource {
     String time[] = new String[]{"1100", "0600", "0610", "0630", "0620", "0634", "0644", "0655", "0710","0810", "0712", "0730","0750"};
     String state[] = new String[]{"已读","未读"};
 
-    public void loadStop(Subscriber<List<StopHistory>> subscriber, String code, int lineId, int stationId, String keyCode, int pageNo, int pageSize){
-        HttpMethods.getInstance().stopHistory(subscriber, code, lineId, stationId, keyCode, pageNo, pageSize);
+    public void loadStop(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
+        HttpMethods.getInstance().getStopVehicle(subscriber, userId, keyCode, lineId);
     }
+
 }

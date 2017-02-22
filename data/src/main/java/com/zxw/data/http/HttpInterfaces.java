@@ -9,12 +9,10 @@ import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
-import com.zxw.data.bean.ScheduleHistoryBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
 import com.zxw.data.bean.StopHistory;
-import com.zxw.data.bean.StopVehicleBean;
 import com.zxw.data.bean.Vehcile;
 import com.zxw.data.bean.VersionBean;
 import com.zxw.data.bean.WaitVehicle;
@@ -269,9 +267,9 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/vehicle/stop/list")
-        Observable<BaseBean<List<StopVehicleBean>>> getStopVehcile(@Field("userId") String userId,
+        Observable<BaseBean<List<StopHistory>>> getStopVehcile(@Field("userId") String userId,
                                                                    @Field("keyCode") String keyCode,
-                                                                   @Field("lineId") String lineId);
+                                                                   @Field("lineId") int lineId);
 
         /**
          * 根据Id获取已发车记录列表
@@ -282,9 +280,9 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/schedule/history/list")
-        Observable<BaseBean<List<ScheduleHistoryBean>>> getScheduleHistory(@Field("userId") String userId,
+        Observable<BaseBean<List<SendHistory>>> getScheduleHistory(@Field("userId") String userId,
                                                                            @Field("keyCode") String keyCode,
-                                                                           @Field("lineId") String lineId);
+                                                                           @Field("lineId") int lineId);
 
     }
 

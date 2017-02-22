@@ -107,7 +107,8 @@ public class MainPresenter extends BasePresenter<MainView> {
             public void onNext(List<SendHistory> sendHistories) {
                 mvpView.loadGoneCarList(sendHistories);
             }
-        }, userId(), lineId, stationId, keyCode(), 1, 20);
+        }, userId(), keyCode(), lineId);
+
     }
 
     private void loadSendCarList(){
@@ -197,8 +198,9 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void refreshList(){
         loadSendCarList();
-//        loadGoneCarList();
-//        loadStopCarList();
+        loadGoneCarList();
+        loadStopCarList();
+
     }
 
     private void loadStopCarList() {
@@ -215,13 +217,10 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<StopHistory> stopHistories) {
-                stopHistories.add(0, new StopHistory());
-                stopHistories.add(new StopHistory());
-                stopHistories.add(new StopHistory());
                 stopHistories.add(new StopHistory());
                 mvpView.loadStopCarList(stopHistories);
             }
-        }, userId(), lineId, stationId, keyCode(), 1, 20);
+        }, userId(), keyCode(), lineId);
     }
 
     /**

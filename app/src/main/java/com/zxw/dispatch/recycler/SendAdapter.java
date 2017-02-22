@@ -2,6 +2,7 @@ package com.zxw.dispatch.recycler;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,25 +40,37 @@ public class SendAdapter extends RecyclerView.Adapter<SendAdapter.LineHolder> {
 
     @Override
     public void onBindViewHolder(LineHolder holder, final int position) {
-        SendHistory send = mData.get(position);
-        holder.mCarSequence.setText(String.valueOf(send.sortNum));
-        holder.mCarCode.setText(send.vehCode);
-        holder.mDriver.setText(send.sjName);
-        holder.mTrainman.setText(send.scName);
-        holder.mPlanTime.setText(DisplayTimeUtil.substring(send.projectTime));
-        holder.mIntervalTime.setText(String.valueOf(send.spaceMin));
-        holder.mSystemEnterTime.setText(DisplayTimeUtil.substring(send.inTime1));
-//        holder.mEnterTime.setText(DisplayTimeUtil.substring(send.inTime2));
-        holder.mSendTime.setText(DisplayTimeUtil.substring(send.realTime));
-//        holder.mSendState.setText(send.isScan == 1 ? "自动" : "人工");
-//        holder.mState.setText(send.isScan == 1 ? "已读" : "未读");
-        holder.mCheckcar.setOnClickListener(new View.OnClickListener() {
+        SendHistory history = mData.get(position);
+        holder.tvCarSequence.setText(String.valueOf(position + 1));
+        holder.tvCarCode.setText(history.code);
+        holder.tvDriver.setText(history.driverName);
+        if (history.stewardName != null && !TextUtils.isEmpty(history.stewardName))
+            holder.tvTrainman.setText(history.stewardName);
+        holder.tvPlanTime.setText(DisplayTimeUtil.substring(history.vehTime));
+        if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime))
+        holder.tvArriveTime.setText(DisplayTimeUtil.substring(history.arriveTime));
+//        holder.tvStopTime.setText(String.valueOf(history.vehTime));
+        holder.tvIntervalTime.setText(String.valueOf(history.spaceTime));
+//        holder.tvSendTime.setText(String.valueOf(history.vehTime));
+        holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
+//        holder.tvStationStatus.setText(String.valueOf(history.vehTime));
+        holder.tvWorkStatus.setText(history.type == 1? "正线运营": "");
+        if (history.unRunTaskStatus == 1){
+            holder.tvNoWorkStatus.setText("无");
+        }else if (history.unRunTaskStatus == 2){
+            holder.tvNoWorkStatus.setText("有");
+        }else {
+            holder.tvNoWorkStatus.setText("完成");
+        }
+        holder.tvCheckSendCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -66,30 +79,33 @@ public class SendAdapter extends RecyclerView.Adapter<SendAdapter.LineHolder> {
 
     static class LineHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_car_sequence)
-        TextView mCarSequence;
+        TextView tvCarSequence;
         @Bind(R.id.tv_car_code)
-        TextView mCarCode;
-        @Bind(R.id.tv_driver)
-        TextView mDriver;
-        @Bind(R.id.tv_trainman)
-        TextView mTrainman;
+        TextView tvCarCode;
         @Bind(R.id.tv_plan_time)
-        TextView mPlanTime;
+        TextView tvPlanTime;
+        @Bind(R.id.tv_arrive_time)
+        TextView tvArriveTime;
+        @Bind(R.id.tv_stop_time)
+        TextView tvStopTime;
         @Bind(R.id.tv_interval_time)
-        TextView mIntervalTime;
-        @Bind(R.id.tv_system_enter_time)
-        TextView mSystemEnterTime;
-        //        @Bind(R.lineId.tv_enter_time)
-//        TextView mEnterTime;
+        TextView tvIntervalTime;
         @Bind(R.id.tv_send_time)
-        TextView mSendTime;
-        //        @Bind(R.lineId.tv_send_state)
-//        TextView mSendState;
-//        @Bind(R.lineId.tv_state)
-//        TextView mState;
+        TextView tvSendTime;
+        @Bind(R.id.tv_driver)
+        TextView tvDriver;
+        @Bind(R.id.tv_trainman)
+        TextView tvTrainman;
+        @Bind(R.id.tv_schedule_status)
+        TextView tvScheduleStatus;
+        @Bind(R.id.tv_station_status)
+        TextView tvStationStatus;
+        @Bind(R.id.tv_work_status)
+        TextView tvWorkStatus;
+        @Bind(R.id.tv_no_work_status)
+        TextView tvNoWorkStatus;
         @Bind(R.id.tv_check_send_car)
-        TextView mCheckcar;
-
+        TextView tvCheckSendCar;
         LineHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

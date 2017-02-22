@@ -18,7 +18,7 @@ public class SendSource {
     String state[] = new String[]{"已读","未读"};
     String sendState[] = new String[]{"手动","自动"};
 
-    public void loadSend(Subscriber<List<SendHistory>> subscriber, String code, int lineId, int stationId, String keyCode, int pageNo, int pageSize){
-        HttpMethods.getInstance().sendHistory(subscriber, code, lineId, stationId, keyCode, pageNo, pageSize);
+    public void loadSend(Subscriber<List<SendHistory>> subscriber, String userId, String keyCode, int lineId){
+        HttpMethods.getInstance().getScheduleHistory(subscriber, userId, keyCode, lineId);
     }
 }

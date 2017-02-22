@@ -2,18 +2,14 @@ package com.zxw.dispatch.recycler;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.R;
-import com.zxw.dispatch.utils.DebugLog;
-import com.zxw.dispatch.utils.ToastHelper;
 
 import java.util.List;
 
@@ -50,86 +46,65 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.LineHolder> {
 
     @Override
     public void onBindViewHolder(LineHolder holder, final int position) {
-        final StopHistory stop = mData.get(position);
         // 依据backStyle显示按钮样式(后期删除position判断)
-        int mBackStyle = stop.backStyle;
-        if (mBackStyle == 1 || position == 0){       // 手动添加
-              holder.tvCarCode.setText("手动添加");
-              setBtnStyle(holder,1);
-              holder.llReuse.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                       if(listener != null)
-                         listener.onClickManualButtonListener();
-                  }
-              });
-        }else if(mBackStyle == 2 || position == 1){  // 单层(绿)
-            setBtnStyle(holder,2);
-            isVehCodeEmpty(holder,stop.vehCode);
+        if (position == 0){
+            // 手动添加
+            holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_white_btn_bg));
+            holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+            holder.tvCarCode.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+            holder.tvCarCode.setText("手动添加");
             holder.llReuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(listener != null)
-                        listener.onClickStopCarListener(stop);
+                        listener.onClickManualButtonListener();
                 }
             });
-        }else if(mBackStyle == 3 || position == 2){  // 单层(红)
-            setBtnStyle(holder,3);
-            isVehCodeEmpty(holder,stop.vehCode);
-        }else if(mBackStyle == 4){ // 单层(蓝)
-            setBtnStyle(holder,4);
-            isVehCodeEmpty(holder,stop.vehCode);
-        }else if(mBackStyle == 5){ // 双层(红)
-            setBtnStyle(holder,5);
-            isVehCodeEmpty(holder,stop.vehCode);
-        }else{                     // 双层(绿)
-            setBtnStyle(holder,6);
-            isVehCodeEmpty(holder,stop.vehCode);
+        }else {
+            setBtnStyle(holder, mData.get(position - 1));
         }
 
     }
 
-    private void isVehCodeEmpty(LineHolder holder, String vehCode){
-        if (!TextUtils.isEmpty(vehCode)){
-            holder.tvCarCode.setText("粤BB"+ vehCode);
-        }else{
-            holder.tvCarCode.setText("粤BB" + "1234");
-            DebugLog.e(vehCode + "");
-        }
-    }
-
-    private void setBtnStyle(LineHolder holder,int type){
-           switch (type){
+    private void setBtnStyle(LineHolder holder, final StopHistory stop){
+           switch (stop.type){
                case 1:
-                   // 手动添加
-                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_white_btn_bg));
-                   holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                   holder.tvCarCode.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                   break;
-               case 2:
                    // 单层（绿）
                    holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
                    holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_green));
+                   holder.tvCarCode.setText(stop.code);
+                   holder.llReuse.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           if(listener != null)
+                               listener.onClickStopCarListener(stop);
+                       }
+                   });
                    break;
-               case 3:
+               case 2:
                    // 单层（红）
                    holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
                    holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_red));
+                   holder.tvCarCode.setText(stop.code);
                    break;
-               case 4:
+               case 3:
                    // 单层（蓝）
                    holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_blue_btn_bg));
                    holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
+                   holder.tvCarCode.setText(stop.code);
+                   holder.tvCarCode.setText(stop.code);
                    break;
-               case 5:
+               case 4:
                    // 双层（红）
                    holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
                    holder.llLayerReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
+                   holder.tvCarCode.setText(stop.code);
                    break;
-               case 6:
+               case 5:
                    // 双层（绿）
                    holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
                    holder.llLayerReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
+                   holder.tvCarCode.setText(stop.code);
                    break;
            }
     }
