@@ -78,11 +78,11 @@ public class DragListAdapter extends BaseAdapter {
         tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).inTime1));
 
 //        TextView tv_enter_time = (TextView) view
-//                .findViewById(R.id.tv_enter_time);
+//                .findViewById(R.lineId.tv_enter_time);
 //        tv_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).inTime2));
 
 //        TextView tv_state = (TextView) view
-//                .findViewById(R.id.tv_state);
+//                .findViewById(R.lineId.tv_state);
 //        tv_state.setText(mDatas.get(position).isScan == 1 ? "已读" : "未读");
 
         TextView tv_send_car = (TextView) view

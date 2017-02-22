@@ -21,7 +21,7 @@ public class Person {
         return "Person{" +
                 "companyId=" + companyId +
                 ", companyName='" + companyName + '\'' +
-                ", id=" + id +
+                ", lineId=" + id +
                 ", isDele='" + isDele + '\'' +
                 ", orgId=" + orgId +
                 ", orgName='" + orgName + '\'' +

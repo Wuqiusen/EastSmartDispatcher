@@ -49,11 +49,27 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         ButterKnife.bind(this);
+//        String userId = "2";
+//        String keyCode =  "671ff584c1e01f2616c4ffd16be9ac37";
+//        int objId =  15;
+//        HttpMethods.getInstance().sendCar(new Subscriber<BaseBean>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(BaseBean lineParams) {
+//            }
+//        }, userId, keyCode, objId);
         initData();
         hideHeadArea();
-
         animation();
-
     }
 
     private void initData() {
@@ -93,8 +109,8 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
             @Override
             public void onAnimationEnd(Animation animation) {
                 // 版本更新
-                 presenter.checkVersion();
-
+//                 presenter.checkVersion();
+                loadMain();
             }
         });
         img_welcome.startAnimation(animationSet);
@@ -141,9 +157,8 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
         }
     }
 
-
     public boolean isUserLogin(){
-        String code = SpUtils.getCache(MyApplication.mContext, SpUtils.CODE);
+        String code = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
         String keycode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
         DebugLog.w(code);
         DebugLog.w(keycode);
@@ -153,7 +168,7 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
     }
 
     public void goToMainPage() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SelectDispatcherPointActivity.class);
         startActivity(intent);
         finish();//关闭当前界面
     }

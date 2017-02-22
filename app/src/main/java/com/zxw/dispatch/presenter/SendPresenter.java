@@ -40,6 +40,6 @@ public class SendPresenter extends BasePresenter<SendView> {
             public void onNext(List<SendHistory> sendHistories) {
                 mvpView.loadSend(sendHistories);
             }
-        }, code(), lineId, stationId, keyCode(), 1, 20);
+        }, userId(), lineId, stationId, keyCode(), 1, 20);
     }
 }

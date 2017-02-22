@@ -3,12 +3,15 @@ package com.zxw.data.http;
 import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
+import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.Line;
+import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
-import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SendHistory;
+import com.zxw.data.bean.SmsCodeBean;
+import com.zxw.data.bean.SpotBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.Vehcile;
 import com.zxw.data.bean.VersionBean;
@@ -54,8 +57,8 @@ public class HttpInterfaces {
      */
     public interface ObtainSmsCode{
         @FormUrlEncoded
-        @POST("code/phone/login/sms")
-        Observable<BaseBean<SmsCodeBean>> obtainSmsCode(@Field("code") String code,
+        @POST("userId/phone/login/sms")
+        Observable<BaseBean<SmsCodeBean>> obtainSmsCode(@Field("userId") String code,
                                                         @Field("keyCode") String keyCode);
     }
 
@@ -65,7 +68,7 @@ public class HttpInterfaces {
     public interface ChangeUserPwd{
         @FormUrlEncoded
         @POST("user/phone/set/account/psw")
-        Observable<BaseBean<ChangePwdBean>> changePwd(@Field("code") String code,
+        Observable<BaseBean<ChangePwdBean>> changePwd(@Field("userId") String code,
                                                       @Field("keyCode") String keyCode,
                                                       @Field("password") String password,
                                                       @Field("smsCode") String smsCode);
@@ -80,16 +83,38 @@ public class HttpInterfaces {
      */
     public interface User{
         @FormUrlEncoded
-        @POST("phone/visitor/login")
+        @POST("phone/control/manage/login")
         Observable<BaseBean<LoginBean>> login(@Field("code") String code,
                                               @Field("password") String password,
                                               @Field("time") String time);
+        @FormUrlEncoded
+        @POST("phone/control/manage/spot/list")
+        Observable<BaseBean<List<SpotBean>>> dispatcherSpotList(@Field("userId") String code,
+                                                                @Field("keyCode") String keyCode);
     }
 
     /**
      * 获取数据
      */
     public interface Browse{
+
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/property")
+        Observable<BaseBean<LineParams>> lineParams(@Field("userId") String userId,
+                                               @Field("keyCode") String keyCode,
+                                               @Field("lineId") int lineId);
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/send")
+        Observable<BaseBean> sendCar(@Field("userId") String userId,
+                                               @Field("keyCode") String keyCode,
+                                               @Field("objId") int objId);
+
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/list")
+        Observable<BaseBean<List<DepartCar>>> departList(@Field("userId") String userId,
+                                                         @Field("keyCode") String keyCode,
+                                                         @Field("lineId") int lineId);
+
         /**
          *
          * @param code 工号
@@ -99,9 +124,10 @@ public class HttpInterfaces {
          * @return 线路列表的观察者
          */
         @FormUrlEncoded
-        @POST("phone/dispatcher/line/data")
-        Observable<BaseBean<List<Line>>> lines(@Field("code") String code,
+        @POST("phone/control/manage/task/line/list")
+        Observable<BaseBean<List<Line>>> lines(@Field("userId") String code,
                                                @Field("keyCode") String keyCode,
+                                               @Field("spotId") int spotId,
                                                @Field("pageNo") int pageNo,
                                                @Field("pageSize") int pageSize);
         /**
@@ -116,7 +142,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/vehicle/wait/deal/data")
-        Observable<BaseBean<List<WaitVehicle>>> waitVehicle(@Field("code") String code,
+        Observable<BaseBean<List<WaitVehicle>>> waitVehicle(@Field("userId") String code,
                                                             @Field("keyCode") String keyCode,
                                                             @Field("lineId") int lineId,
                                                             @Field("stationId") int stationId,
@@ -136,7 +162,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/vehicle/send/history/data")
-        Observable<BaseBean<List<SendHistory>>> sendHistory(@Field("code") String code,
+        Observable<BaseBean<List<SendHistory>>> sendHistory(@Field("userId") String code,
                                                             @Field("keyCode") String keyCode,
                                                             @Field("lineId") int lineId,
                                                             @Field("stationId") int stationId,
@@ -156,7 +182,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/vehicle/back/history/data")
-        Observable<BaseBean<List<BackHistory>>> backHistory(@Field("code") String code,
+        Observable<BaseBean<List<BackHistory>>> backHistory(@Field("userId") String code,
                                                             @Field("keyCode") String keyCode,
                                                             @Field("lineId") int lineId,
                                                             @Field("stationId") int stationId,
@@ -175,7 +201,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/vehicle/stop/history/data")
-        Observable<BaseBean<List<StopHistory>>> stopHistory(@Field("code") String code,
+        Observable<BaseBean<List<StopHistory>>> stopHistory(@Field("userId") String code,
                                                             @Field("keyCode") String keyCode,
                                                             @Field("lineId") int lineId,
                                                             @Field("stationId") int stationId,
@@ -194,7 +220,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/vehicle/else/history/data")
-        Observable<BaseBean<List<MoreHistory>>> moreHistory(@Field("code") String code,
+        Observable<BaseBean<List<MoreHistory>>> moreHistory(@Field("userId") String code,
                                                             @Field("keyCode") String keyCode,
                                                             @Field("lineId") int lineId,
                                                             @Field("stationId") int stationId,
@@ -210,7 +236,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/date/person/data")
-        Observable<BaseBean<List<Person>>> queryPerson(@Field("code") String code,
+        Observable<BaseBean<List<Person>>> queryPerson(@Field("userId") String code,
                                                        @Field("keyCode") String keyCode,
                                                        @Field("perName") String perName,
                                                        @Field("type") int type,
@@ -225,7 +251,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/date/vehicle/data")
-        Observable<BaseBean<List<Vehcile>>> queryVehcile(@Field("code") String code,
+        Observable<BaseBean<List<Vehcile>>> queryVehcile(@Field("userId") String code,
                                                      @Field("keyCode") String keyCode,
                                                      @Field("vehCode") String vehCode,
                                                      @Field("pageNo") int pageNo,
@@ -249,7 +275,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/vehicle/to/adjust/sort")
-        Observable<BaseBean> sortVehicle(@Field("code") String code,
+        Observable<BaseBean> sortVehicle(@Field("userId") String code,
                                          @Field("keyCode") String keyCode,
                                          @Field("opId") int opId,
                                          @Field("replaceId") int replaceId);
@@ -271,7 +297,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/vehicle/to/add")
-        Observable<BaseBean> addVehicle(@Field("code") String code,
+        Observable<BaseBean> addVehicle(@Field("userId") String code,
                                         @Field("keyCode") String keyCode,
                                         @Field("lineId") int lineId,
                                         @Field("stationId") int stationId,
@@ -292,7 +318,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/vehicle/to/send")
-        Observable<BaseBean> sendVehicle(@Field("code") String code,
+        Observable<BaseBean> sendVehicle(@Field("userId") String code,
                                          @Field("keyCode") String keyCode,
                                          @Field("opId") int opId,
                                          @Field("type") int type);
@@ -312,7 +338,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/vehicle/to/update")
-        Observable<BaseBean> updateVehicle(@Field("code") String code,
+        Observable<BaseBean> updateVehicle(@Field("userId") String code,
                                         @Field("keyCode") String keyCode,
                                         @Field("opId") int opId,
                                         @Field("vehId") int vehId,

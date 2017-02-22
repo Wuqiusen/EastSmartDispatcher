@@ -14,7 +14,7 @@ public class SpUtils {
     private static SharedPreferences sp;
     private final static String CACHE_FILE_NAME = "eastSmartDispatch";
 
-    public final static String CODE = "code";
+    public final static String USER_ID = "userId";
     public final static String KEYCODE = "keycode";
     public final static String NAME = "name";
 
@@ -40,7 +40,7 @@ public class SpUtils {
             initSp(mContext, CACHE_FILE_NAME);
         }
         SharedPreferences.Editor edit = sp.edit();
-        edit.remove(CODE).remove(KEYCODE).commit();
+        edit.remove(USER_ID).remove(KEYCODE).commit();
     }
     public static void cacheErrorLog(Context mContext,String errorLog,String userPhone){
         if(sp == null){

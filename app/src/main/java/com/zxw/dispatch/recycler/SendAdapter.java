@@ -79,13 +79,13 @@ public class SendAdapter extends RecyclerView.Adapter<SendAdapter.LineHolder> {
         TextView mIntervalTime;
         @Bind(R.id.tv_system_enter_time)
         TextView mSystemEnterTime;
-        //        @Bind(R.id.tv_enter_time)
+        //        @Bind(R.lineId.tv_enter_time)
 //        TextView mEnterTime;
         @Bind(R.id.tv_send_time)
         TextView mSendTime;
-        //        @Bind(R.id.tv_send_state)
+        //        @Bind(R.lineId.tv_send_state)
 //        TextView mSendState;
-//        @Bind(R.id.tv_state)
+//        @Bind(R.lineId.tv_state)
 //        TextView mState;
         @Bind(R.id.tv_check_send_car)
         TextView mCheckcar;

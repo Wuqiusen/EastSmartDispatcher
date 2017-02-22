@@ -17,7 +17,7 @@ public class MainActivityTest{
     private static final String TAG = "MainActivityTest";
     @Test
     public void test_rxjava(){
-        String code = SpUtils.getCache(MyApplication.mContext, SpUtils.CODE);
+        String code = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
         String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
 
 

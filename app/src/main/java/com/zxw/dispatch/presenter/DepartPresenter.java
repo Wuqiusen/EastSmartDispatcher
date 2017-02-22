@@ -65,7 +65,7 @@ public class DepartPresenter extends BasePresenter<DepartView> {
                 mDragListAdapter = new DragListAdapter(mContext, DepartPresenter.this, mDatas);
                 mvpView.loadLine(mDragListAdapter);
             }
-        }, code(), lineId, stationId, keyCode(), 1, 20);
+        }, userId(), lineId, stationId, keyCode(), 1, 20);
 
     }
 
@@ -96,7 +96,7 @@ public class DepartPresenter extends BasePresenter<DepartView> {
                         mvpView.disPlay(baseBean.returnInfo);
                         loadCarData();
                     }
-                }, code(), keyCode(), lineId, stationId, vehId, sjId, scId, projectTime, spaceMin, inTime2, sortNum);
+                }, userId(), keyCode(), lineId, stationId, vehId, sjId, scId, projectTime, spaceMin, inTime2, sortNum);
             }
         }).dialogShow();
     }
@@ -124,7 +124,7 @@ public class DepartPresenter extends BasePresenter<DepartView> {
                 mvpView.disPlay(baseBean.returnInfo);
                 loadCarData();
             }
-        }, code(), keyCode(), opId, replaceId);
+        }, userId(), keyCode(), opId, replaceId);
     }
 
     /**
@@ -149,7 +149,7 @@ public class DepartPresenter extends BasePresenter<DepartView> {
                 mvpView.disPlay(baseBean.returnInfo);
                 loadCarData();
             }
-        }, code(), keyCode(), opId, currentType);
+        }, userId(), keyCode(), opId, currentType);
     }
 
     /**
@@ -197,6 +197,6 @@ public class DepartPresenter extends BasePresenter<DepartView> {
                 mvpView.disPlay(baseBean.returnInfo);
                 loadCarData();
             }
-        }, code(), keyCode(), opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
+        }, userId(), keyCode(), opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
     }
 }

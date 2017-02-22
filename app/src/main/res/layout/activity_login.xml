@@ -14,7 +14,7 @@
         android:id="@+id/et_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="000001"
+        android:text="000000"
         android:hint="用户名"/>
     <EditText
         android:id="@+id/et_password"

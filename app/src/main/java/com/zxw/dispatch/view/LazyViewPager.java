@@ -59,7 +59,7 @@ import java.util.Comparator;
  *
  * <p>Note this class is currently under early design and
  * development.  The API will likely change in later updates of
- * the compatibility library, requiring changes to the source code
+ * the compatibility library, requiring changes to the source userId
  * of apps when they are compiled against the newer version.</p>
  */
 public class LazyViewPager extends ViewGroup {
@@ -1036,7 +1036,7 @@ public class LazyViewPager extends ViewGroup {
                 */
                 final int activePointerId = mActivePointerId;
                 if (activePointerId == INVALID_POINTER) {
-                    // If we don't have a valid id, the touch down wasn't on content.
+                    // If we don't have a valid lineId, the touch down wasn't on content.
                     break;
                 }
 

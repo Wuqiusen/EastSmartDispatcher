@@ -40,39 +40,6 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initView();
-
-//        et_username.setOnLoadValueListener(new OnLoadValueListener() {
-//            @Override
-//            public void onLoadValue() {
-////                List<Car> carCode = new ArrayList();
-////                Car car1 = new Car();
-////                car1.id = 3;
-////                car1.vehicleCode = "fd222";
-////                carCode.add(car1);
-////                Car car2 = new Car();
-////                car2.id = 5;
-////                car2.vehicleCode = "fd226";
-////                carCode.add(car2);
-//                QuerySource source = new QuerySource();
-//                source.queryVehcile(new Subscriber<List<Vehcile>>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<Vehcile> vehciles) {
-//
-//                    }
-//                });
-//                et_username.setCarAdapter(new CarAdapter(carCode, et_username, mContext));
-//            }
-//        });
     }
 
     private void initView() {
@@ -106,7 +73,7 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
 
     @Override
     public void loginSuccess() {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, SelectDispatcherPointActivity.class));
         finish();
     }
 

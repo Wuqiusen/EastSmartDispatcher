@@ -46,7 +46,7 @@ public class ForgetPwdPresenter extends BasePresenter<ForgetPwdView>{
            public void onNext(SmsCodeBean smsCodeBean) {
                mvpView.smsCodeGetSuccess(smsCodeBean);
            }
-       },SpUtils.getCache(fContext,SpUtils.CODE),SpUtils.getCache(fContext,SpUtils.KEYCODE));
+       },SpUtils.getCache(fContext,SpUtils.USER_ID),SpUtils.getCache(fContext,SpUtils.KEYCODE));
     }
 
 
@@ -72,7 +72,7 @@ public class ForgetPwdPresenter extends BasePresenter<ForgetPwdView>{
                 mvpView.disPlay("修改密码成功！");
                 mvpView.finish();
             }
-        },SpUtils.getCache(fContext,SpUtils.CODE),SpUtils.getCache(fContext,SpUtils.KEYCODE),etNewPwd,etSmsCode);
+        },SpUtils.getCache(fContext,SpUtils.USER_ID),SpUtils.getCache(fContext,SpUtils.KEYCODE),etNewPwd,etSmsCode);
     }
 
 

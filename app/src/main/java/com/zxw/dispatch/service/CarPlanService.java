@@ -45,7 +45,7 @@ public class CarPlanService extends Service {
     private CarPlanReceiver carPlanReceiver;
 
     DepartSource mSource = new DepartSource();
-    String code = SpUtils.getCache(mContext, SpUtils.CODE);
+    String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
     String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
 
     @Nullable

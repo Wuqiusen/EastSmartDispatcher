@@ -37,7 +37,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
             @Override
             public void onNext(LoginBean loginBean) {
-                SpUtils.setCache(MyApplication.mContext, SpUtils.CODE, loginBean.code);
+                SpUtils.setCache(MyApplication.mContext, SpUtils.USER_ID, loginBean.userId);
                 SpUtils.setCache(MyApplication.mContext, SpUtils.NAME, loginBean.name);
                 SpUtils.setCache(MyApplication.mContext, SpUtils.KEYCODE, loginBean.keyCode);
             }

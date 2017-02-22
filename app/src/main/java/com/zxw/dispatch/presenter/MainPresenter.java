@@ -43,9 +43,8 @@ public class MainPresenter extends BasePresenter<MainView> {
         this.mContext = context;
     }
 
-    public void loadLineList(){
+    public void loadLineList(int spotId){
         mvpView.showLoading();
-
         mLineSource.loadLine(new Subscriber<List<Line>>() {
             @Override
             public void onCompleted() {
@@ -63,14 +62,14 @@ public class MainPresenter extends BasePresenter<MainView> {
             public void onNext(List<Line> lineBeen) {
                 mvpView.loadLine(lineBeen);
             }
-        }, code(), keyCode(), 1, 20);
+        }, userId(), keyCode(), spotId, 1, 20);
     }
 
     public void onSelectLine(Line line) {
         this.mCurrentLine = line;
-        stationId = mCurrentLine.lineStationList.get(0).stationId;
-        lineId = mCurrentLine.id;
-        refreshList();
+//        stationId = mCurrentLine.lineStationList.get(0).stationId;
+        lineId = mCurrentLine.lineId;
+//        refreshList();
     }
 
     private void loadGoneCarList() {
@@ -91,7 +90,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             public void onNext(List<SendHistory> sendHistories) {
                 mvpView.loadGoneCarList(sendHistories);
             }
-        }, code(), lineId, stationId, keyCode(), 1, 20);
+        }, userId(), lineId, stationId, keyCode(), 1, 20);
     }
 
     private void loadSendCarList(){
@@ -114,7 +113,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles);
                 mvpView.loadSendCarList(mDragListAdapter);
             }
-        }, code(),  lineId, stationId, keyCode(), 1, 20);
+        }, userId(),  lineId, stationId, keyCode(), 1, 20);
     }
 
     public void updateVehicle(int opId, int vehId, int sjId, String scId, String projectTime, int spaceMin, String inTime2) {
@@ -135,7 +134,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mvpView.disPlay(baseBean.returnInfo);
                 refreshList();
             }
-        }, code(), keyCode(), opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
+        }, userId(), keyCode(), opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
     }
 
     public void sendVehicle(int opId) {
@@ -156,7 +155,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mvpView.disPlay(baseBean.returnInfo);
                 refreshList();
             }
-        }, code(), keyCode(), opId, MANUAL_TYPE);
+        }, userId(), keyCode(), opId, MANUAL_TYPE);
     }
 
     public void sortVehicle(int opId, int replaceId) {
@@ -177,7 +176,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mvpView.disPlay(baseBean.returnInfo);
                 refreshList();
             }
-        }, code(), keyCode(), opId, replaceId);
+        }, userId(), keyCode(), opId, replaceId);
     }
 
     public void refreshList(){
@@ -207,7 +206,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 stopHistories.add(new StopHistory());
                 mvpView.loadStopCarList(stopHistories);
             }
-        }, code(), lineId, stationId, keyCode(), 1, 20);
+        }, userId(), lineId, stationId, keyCode(), 1, 20);
     }
 
     /**

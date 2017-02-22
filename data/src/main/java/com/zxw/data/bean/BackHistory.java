@@ -26,7 +26,7 @@ public class BackHistory {
     public String toString() {
         return "BackHistory{" +
                 "backTime='" + backTime + '\'' +
-                ", id=" + id +
+                ", lineId=" + id +
                 ", inTime1='" + inTime1 + '\'' +
                 ", inTime2='" + inTime2 + '\'' +
                 ", isScan=" + isScan +

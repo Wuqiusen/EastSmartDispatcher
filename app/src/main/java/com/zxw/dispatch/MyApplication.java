@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
 
+import com.facebook.stetho.Stetho;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 
@@ -29,6 +30,7 @@ public class MyApplication extends Application {
         this.mContext = this;
 //        Thread.currentThread().setUncaughtExceptionHandler(
 //                new MyUncaughtExceptionHandler());
+        Stetho.initializeWithDefaults(this);
     }
     private class MyUncaughtExceptionHandler implements
             Thread.UncaughtExceptionHandler {

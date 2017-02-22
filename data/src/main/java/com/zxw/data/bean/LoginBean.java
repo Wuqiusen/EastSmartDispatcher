@@ -5,7 +5,7 @@ package com.zxw.data.bean;
  * email：cangjie2016@gmail.com
  */
 public class LoginBean {
-    public String code;
+    public String userId;
     public String keyCode;
     public String name;
 }

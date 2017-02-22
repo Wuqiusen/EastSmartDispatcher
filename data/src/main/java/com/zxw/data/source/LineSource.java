@@ -12,7 +12,7 @@ import rx.Subscriber;
  * email：cangjie2016@gmail.com
  */
 public class LineSource {
-    public void loadLine(Subscriber<List<Line>> subscriber, String code, String keyCode, int pageNo, int pageSize) {
-        HttpMethods.getInstance().lines(subscriber, code, keyCode, pageNo, pageSize);
+    public void loadLine(Subscriber<List<Line>> subscriber, String code, String keyCode, int spotId, int pageNo, int pageSize) {
+        HttpMethods.getInstance().lines(subscriber, code, keyCode, spotId, pageNo, pageSize);
     }
 }

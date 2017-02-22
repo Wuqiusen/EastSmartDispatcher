@@ -173,7 +173,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
                                      public void onNext(List<Vehcile> vehciles) {
                                          displayVehcile(vehciles);
                                      }
-                                 }, SpUtils.getCache(MyApplication.mContext, SpUtils.CODE),
+                                 }, SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID),
                     SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE),
                     str,
                     1, 20);
@@ -197,7 +197,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
                                     public void onNext(List<Person> persons) {
                                         displayPerson(persons);
                                     }
-                                }, SpUtils.getCache(MyApplication.mContext, SpUtils.CODE),
+                                }, SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID),
                     SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE),
                     new DESPlus().encrypt(Base64.encode(str.getBytes("utf-8"))), inputType,
                     1, 20);

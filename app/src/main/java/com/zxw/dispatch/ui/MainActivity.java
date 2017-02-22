@@ -100,7 +100,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         ButterKnife.bind(this);
         creatRexeiver();
         initView();
-        presenter.loadLineList();
+        int spotId = getIntent().getIntExtra("spotId", -1);
+        presenter.loadLineList(spotId);
     }
 
     private void initView() {
@@ -167,7 +168,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mLineRV.addItemDecoration(new DividerItemDecoration(this,R.color.white,
                 DividerItemDecoration.VERTICAL_LIST));
     }
-
 
     @Override
     public void reLogin() {
@@ -259,7 +259,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void onSelectLine(Line line) {
         Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
         intent.putExtra("type", "getData");
-        intent.putExtra("lineKey", line.id);
+        intent.putExtra("lineKey", line.lineId);
         sendBroadcast(intent);
         presenter.onSelectLine(line);
     }

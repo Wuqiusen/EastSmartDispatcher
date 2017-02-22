@@ -22,8 +22,8 @@ public class BasePresenter<V extends BaseView> {
 //    protected String userName(){
 //        return SpUtils.getCache(MyApplication.mContext, SpUtils.USERPHONE);
 //    }
-    protected String code(){
-        return SpUtils.getCache(MyApplication.mContext, SpUtils.CODE);
+    protected String userId(){
+        return SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
     }
 //    protected String timestamp(){
 //        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");

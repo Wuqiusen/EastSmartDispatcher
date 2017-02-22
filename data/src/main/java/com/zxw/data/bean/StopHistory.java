@@ -25,7 +25,7 @@ public class StopHistory {
     @Override
     public String toString() {
         return "StopHistory{" +
-                "id=" + id +
+                "lineId=" + id +
                 ", inTime1='" + inTime1 + '\'' +
                 ", inTime2='" + inTime2 + '\'' +
                 ", isScan=" + isScan +

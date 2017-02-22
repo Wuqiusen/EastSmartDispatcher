@@ -24,7 +24,7 @@ public class SendHistory {
     @Override
     public String toString() {
         return "SendHistory{" +
-                "id=" + id +
+                "lineId=" + id +
                 ", inTime1='" + inTime1 + '\'' +
                 ", inTime2='" + inTime2 + '\'' +
                 ", isScan=" + isScan +

@@ -33,4 +33,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile files('libs/library-2.4.0.jar')
     compile project(':data')
+    compile 'com.facebook.stetho:stetho:1.4.2'
 }

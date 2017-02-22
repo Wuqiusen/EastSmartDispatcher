@@ -38,6 +38,6 @@ public class EndPresenter extends BasePresenter<EndView> {
             public void onNext(List<BackHistory> backHistories) {
                 mvpView.loadEnd(backHistories);
             }
-        }, code(), lineId, stationId, keyCode(), 1, 20);
+        }, userId(), lineId, stationId, keyCode(), 1, 20);
     }
 }

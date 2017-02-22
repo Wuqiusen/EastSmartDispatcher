@@ -22,7 +22,7 @@ public class Vehcile {
         return "Vehcile{" +
                 "companyId=" + companyId +
                 ", companyName='" + companyName + '\'' +
-                ", id=" + id +
+                ", lineId=" + id +
                 ", isDele='" + isDele + '\'' +
                 ", lineCode='" + lineCode + '\'' +
                 ", lineId=" + lineId +

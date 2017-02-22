@@ -38,6 +38,6 @@ public class StopPresenter extends BasePresenter<StopView> {
             public void onNext(List<StopHistory> stopHistories) {
                 mvpView.loadStop(stopHistories);
             }
-        }, code(), lineId, stationId, keyCode(), 1, 20);
+        }, userId(), lineId, stationId, keyCode(), 1, 20);
     }
 }

@@ -38,6 +38,6 @@ public class MorePresenter extends BasePresenter<MoreView> {
             public void onNext(List<MoreHistory> moreHistories) {
                 mvpView.loadMore(moreHistories);
             }
-        }, code(), lineId, stationId, keyCode(), 1, 20);
+        }, userId(), lineId, stationId, keyCode(), 1, 20);
     }
 }

@@ -3,12 +3,15 @@ package com.zxw.data.http;
 import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
+import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.Line;
+import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
-import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SendHistory;
+import com.zxw.data.bean.SmsCodeBean;
+import com.zxw.data.bean.SpotBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.Vehcile;
 import com.zxw.data.bean.VersionBean;
@@ -28,8 +31,8 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-    public static final String BASE_URL = "http://120.24.252.195:8080/yd_app/";
-//    public static final String BASE_URL = "http://192.168.0.90:8080/yd_app/";
+//    public static final String BASE_URL = "http://120.24.252.195:8080/yd_app/";
+    public static final String BASE_URL = "http://192.168.0.114:8080/yd_control_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
@@ -54,7 +57,7 @@ public class HttpMethods {
     private class HttpResultFunc<T> implements Func1<BaseBean<T>, T> {
         @Override
         public T call(BaseBean<T> httpResult) {
-            if (httpResult.returnCode == 505) {
+            if (httpResult.returnCode == 505 || httpResult.returnCode == 510) {
                 throw new ApiException(httpResult.returnCode ,httpResult.returnInfo);
             }
             return httpResult.returnData;
@@ -90,9 +93,15 @@ public class HttpMethods {
         toSubscribe(observable, subscriber);
     }
 
-    public void lines(Subscriber<List<Line>> subscriber, String code, String keyCode, int pageNo, int pageSize){
+    public void dispatcherSpotList(Subscriber<List<SpotBean>> subscriber, String userId, String keyCode){
+        HttpInterfaces.User user = retrofit.create(HttpInterfaces.User.class);
+        Observable<List<SpotBean>> observable = user.dispatcherSpotList(userId, keyCode).map(new HttpResultFunc<List<SpotBean>>());
+        toSubscribe(observable, subscriber);
+    }
+
+    public void lines(Subscriber<List<Line>> subscriber, String code, String keyCode, int spotId, int pageNo, int pageSize){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<List<Line>> map = browse.lines(code, keyCode, pageNo, pageSize).map(new HttpResultFunc<List<Line>>());
+        Observable<List<Line>> map = browse.lines(code, keyCode, spotId, pageNo, pageSize).map(new HttpResultFunc<List<Line>>());
         toSubscribe(map, subscriber);
     }
 
@@ -187,5 +196,22 @@ public class HttpMethods {
         toSubscribe(observable, subscriber);
     }
 
+    //查询售票方式和作业计划方式
+    public void lineParams(Subscriber<LineParams> subscriber, String userId, String keyCode, int lineId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<LineParams> map = browse.lineParams(userId, keyCode, lineId).map(new HttpResultFunc<LineParams>());
+        toSubscribe(map, subscriber);
+    }
+
+    public void departList(Subscriber<List<DepartCar>> subscriber, String userId, String keyCode, int lineId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<DepartCar>> map = browse.departList(userId, keyCode, lineId).map(new HttpResultFunc<List<DepartCar>>());
+        toSubscribe(map, subscriber);
+    }
+    public void sendCar(Subscriber<BaseBean> subscriber, String userId, String keyCode, int objId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<BaseBean> map = browse.sendCar(userId, keyCode, objId);
+        toSubscribe(map, subscriber);
+    }
 
 }

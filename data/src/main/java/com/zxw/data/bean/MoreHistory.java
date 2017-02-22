@@ -25,7 +25,7 @@ public class MoreHistory {
     @Override
     public String toString() {
         return "MoreHistory{" +
-                "id=" + id +
+                "lineId=" + id +
                 ", inTime1='" + inTime1 + '\'' +
                 ", inTime2='" + inTime2 + '\'' +
                 ", isScan=" + isScan +
