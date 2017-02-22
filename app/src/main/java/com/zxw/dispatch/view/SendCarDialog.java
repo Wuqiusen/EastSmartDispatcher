@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.zxw.data.bean.WaitVehicle;
 import com.zxw.dispatch.R;
@@ -21,10 +22,12 @@ import java.util.List;
 /**
  * author：CangJie on 2016/10/9 14:46
  * email：cangjie2016@gmail.com
+ *
  */
 public class SendCarDialog extends AlertDialog.Builder {
     private Context mContext;
     private AlertDialog show;
+    private TextView tv_title;
     private SmartEditText et_car_code;
     private SmartEditText et_driver;
     private SmartEditText et_trainman;
@@ -42,6 +45,7 @@ public class SendCarDialog extends AlertDialog.Builder {
 
     private void init(Context context) {
         container = View.inflate(context, R.layout.dialog_alter, null);
+        tv_title = (TextView) container.findViewById(R.id.tv_title);
         et_car_code = (SmartEditText) container.findViewById(R.id.et_car_code);
         et_driver = (SmartEditText) container.findViewById(R.id.et_driver);
         et_trainman = (SmartEditText) container.findViewById(R.id.et_trainman);
@@ -57,9 +61,8 @@ public class SendCarDialog extends AlertDialog.Builder {
                 dismiss();
             }
         });
-
-        this.setView(container)
-                .setTitle("修改信息");
+        tv_title.setText("修改信息");
+        this.setView(container);
     }
 
     private void modifyWindowParams(){

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -50,26 +51,21 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.LineHolder> {
     @Override
     public void onBindViewHolder(LineHolder holder, final int position) {
         final StopHistory stop = mData.get(position);
-        if (position == 0){
+        // 依据backStyle显示按钮样式(后期删除position判断)
+        int mBackStyle = stop.backStyle;
+        if (mBackStyle == 1 || position == 0){       // 手动添加
               holder.tvCarCode.setText("手动添加");
               setBtnStyle(holder,1);
               holder.llReuse.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                       ToastHelper.showToast("added");
                        if(listener != null)
                          listener.onClickManualButtonListener();
                   }
               });
-        }
-        else if(position ==1){
-            if (!TextUtils.isEmpty(stop.vehCode)){
-                holder.tvCarCode.setText("粤"+ stop.vehCode);
-            }else{
-                holder.tvCarCode.setText("粤" + "1295");
-                DebugLog.e(stop.vehCode + "");
-            }
+        }else if(mBackStyle == 2 || position == 1){  // 单层(绿)
             setBtnStyle(holder,2);
+            isVehCodeEmpty(holder,stop.vehCode);
             holder.llReuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -77,22 +73,29 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.LineHolder> {
                         listener.onClickStopCarListener(stop);
                 }
             });
-        }
-        else if(position == 2){
-            holder.tvCarCode.setText("粤" + "1382");
-            setBtnStyle(holder,5);
-            holder.llReuse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null)
-                        listener.onClickStopCarListener(stop);
-                }
-            });
-        }else{
-            holder.tvCarCode.setText("粤" + "1214");
+        }else if(mBackStyle == 3 || position == 2){  // 单层(红)
+            setBtnStyle(holder,3);
+            isVehCodeEmpty(holder,stop.vehCode);
+        }else if(mBackStyle == 4){ // 单层(蓝)
             setBtnStyle(holder,4);
+            isVehCodeEmpty(holder,stop.vehCode);
+        }else if(mBackStyle == 5){ // 双层(红)
+            setBtnStyle(holder,5);
+            isVehCodeEmpty(holder,stop.vehCode);
+        }else{                     // 双层(绿)
+            setBtnStyle(holder,6);
+            isVehCodeEmpty(holder,stop.vehCode);
         }
 
+    }
+
+    private void isVehCodeEmpty(LineHolder holder, String vehCode){
+        if (!TextUtils.isEmpty(vehCode)){
+            holder.tvCarCode.setText("粤BB"+ vehCode);
+        }else{
+            holder.tvCarCode.setText("粤BB" + "1234");
+            DebugLog.e(vehCode + "");
+        }
     }
 
     private void setBtnStyle(LineHolder holder,int type){

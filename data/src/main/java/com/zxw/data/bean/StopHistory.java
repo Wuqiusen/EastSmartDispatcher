@@ -21,6 +21,9 @@ public class StopHistory {
     public int spaceMin;
     public String stopTime;
     public String vehCode;
+    // 背景样式
+    public int backStyle;
+
 
     @Override
     public String toString() {
@@ -42,4 +45,5 @@ public class StopHistory {
                 ", vehCode='" + vehCode + '\'' +
                 '}';
     }
+
 }
