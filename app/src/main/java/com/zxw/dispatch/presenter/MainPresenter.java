@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.zxw.data.bean.BaseBean;
+import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.Line;
+import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
-import com.zxw.data.bean.WaitVehicle;
+import com.zxw.data.http.HttpMethods;
 import com.zxw.data.source.DepartSource;
 import com.zxw.data.source.LineSource;
 import com.zxw.data.source.SendSource;
@@ -19,8 +21,6 @@ import com.zxw.dispatch.view.DragListAdapter;
 import java.util.List;
 
 import rx.Subscriber;
-
-import static com.zxw.dispatch.Constants.MANUAL_TYPE;
 
 /**
  * author：CangJie on 2016/9/20 17:26
@@ -37,6 +37,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private Context mContext;
     private Intent serviceIntent;
     private int lineId, stationId;
+    private LineParams mLineParams;
 
     public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
@@ -65,11 +66,27 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), spotId, 1, 20);
     }
 
-    public void onSelectLine(Line line) {
-        this.mCurrentLine = line;
+    public void onSelectLine(final Line line) {
+        HttpMethods.getInstance().lineParams(new Subscriber<LineParams>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(LineParams lineParams) {
+                mLineParams = lineParams;
+                mCurrentLine = line;
 //        stationId = mCurrentLine.lineStationList.get(0).stationId;
-        lineId = mCurrentLine.lineId;
-//        refreshList();
+                lineId = mCurrentLine.lineId;
+                refreshList();
+            }
+        }, userId(), keyCode(),line.lineId);
     }
 
     private void loadGoneCarList() {
@@ -94,7 +111,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     private void loadSendCarList(){
-        mDepartSource.loadWaitVehicle(new Subscriber<List<WaitVehicle>>() {
+        mDepartSource.departList(new Subscriber<List<DepartCar>>() {
             @Override
             public void onCompleted() {
                 mvpView.hideLoading();
@@ -108,12 +125,11 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
 
             @Override
-            public void onNext(List<WaitVehicle> waitVehicles) {
-//                mDatas = waitVehicles;
-                mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles);
+            public void onNext(List<DepartCar> waitVehicles) {
+                mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams);
                 mvpView.loadSendCarList(mDragListAdapter);
             }
-        }, userId(),  lineId, stationId, keyCode(), 1, 20);
+        }, userId(), keyCode(), lineId);
     }
 
     public void updateVehicle(int opId, int vehId, int sjId, String scId, String projectTime, int spaceMin, String inTime2) {
@@ -138,7 +154,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void sendVehicle(int opId) {
-        mDepartSource.sendVehicle(new Subscriber<BaseBean>() {
+        mDepartSource.sendCar(new Subscriber<BaseBean>() {
             @Override
             public void onCompleted() {
 
@@ -155,7 +171,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mvpView.disPlay(baseBean.returnInfo);
                 refreshList();
             }
-        }, userId(), keyCode(), opId, MANUAL_TYPE);
+        }, userId(), keyCode(), opId);
     }
 
     public void sortVehicle(int opId, int replaceId) {
@@ -181,9 +197,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void refreshList(){
         loadSendCarList();
-        loadGoneCarList();
-        loadStopCarList();
-
+//        loadGoneCarList();
+//        loadStopCarList();
     }
 
     private void loadStopCarList() {
@@ -229,4 +244,22 @@ public class MainPresenter extends BasePresenter<MainView> {
         mContext.sendBroadcast(intent);
     }
 
+    public void manualAddStopCar(String carId, String driverId, String stewardId) {
+        mDepartSource.vehicleStopCtrl(new Subscriber<BaseBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(BaseBean baseBean) {
+                refreshList();
+            }
+        }, userId(), keyCode(), carId, driverId, mLineParams.getSaleType(),stewardId, String.valueOf(mCurrentLine.lineId));
+    }
 }

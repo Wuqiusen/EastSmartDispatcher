@@ -230,9 +230,9 @@ public class HttpMethods {
     }
 
     public void vehicleStopCtrl(Subscriber<BaseBean> subscriber, String userId, String keyCode,
-                                String vehicleId, String driverId, int saleType, String taskEditRunId){
+                                String vehicleId, String driverId, int saleType, String stewardId, String taskEditRunId){
         HttpInterfaces.Operater operater = retrofit.create(HttpInterfaces.Operater.class);
-        Observable<BaseBean> map = operater.vehicleStopCtrl(userId, keyCode, vehicleId, driverId, saleType, taskEditRunId);
+        Observable<BaseBean> map = operater.vehicleStopCtrl(userId, keyCode, vehicleId, driverId, saleType, stewardId, taskEditRunId);
         toSubscribe(map, subscriber);
     }
 

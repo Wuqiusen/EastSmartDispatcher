@@ -10,7 +10,6 @@ import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.ScheduleHistoryBean;
-import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
@@ -391,6 +390,7 @@ public class HttpInterfaces {
                                            @Field("vehicleId") String vehicleId,
                                            @Field("driverId") String driverId,
                                            @Field("saleType") int saleType,
+                                           @Field("stewardId") String stewardId,
                                            @Field("taskEditRunId") String taskEditRunId);
 
         /**

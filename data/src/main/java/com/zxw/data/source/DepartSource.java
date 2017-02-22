@@ -1,6 +1,7 @@
 package com.zxw.data.source;
 
 import com.zxw.data.bean.BaseBean;
+import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.WaitVehicle;
 import com.zxw.data.http.HttpMethods;
 
@@ -29,8 +30,8 @@ public class DepartSource {
         HttpMethods.getInstance().addVehicle(subscriber, code, keyCode, lineId, stationId, vehId, sjId, scId, projectTime, spaceMin, inTime2, sortNum);
     }
 
-    public void sendVehicle(Subscriber<BaseBean> subscriber, String code, String keyCode, int opId, int type){
-        HttpMethods.getInstance().sendVehicle(subscriber, code, keyCode, opId, type);
+    public void sendCar(Subscriber<BaseBean> subscriber, String code, String keyCode, int opId){
+        HttpMethods.getInstance().sendCar(subscriber, code, keyCode, opId);
     }
 
     public void updateVehicle(Subscriber<BaseBean> subscriber, String code,
@@ -39,4 +40,13 @@ public class DepartSource {
                               int spaceMin, String inTime2){
         HttpMethods.getInstance().updateVehicle(subscriber, code, keyCode, opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
     }
+
+    public void departList(Subscriber<List<DepartCar>> subscriber, String userId, String keyCode, int lineId){
+        HttpMethods.getInstance().departList(subscriber, userId, keyCode, lineId);
+    }
+    public void vehicleStopCtrl(Subscriber<BaseBean> subscriber, String userId, String keyCode,
+                                String vehicleId, String driverId, int saleType, String stewardId, String taskEditRunId){
+        HttpMethods.getInstance().vehicleStopCtrl(subscriber, userId, keyCode, vehicleId, driverId, saleType, stewardId, taskEditRunId);
+    }
+
 }

@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.WaitVehicle;
 import com.zxw.data.source.DepartSource;
-import com.zxw.dispatch.Constants;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 
@@ -78,7 +77,7 @@ public class CarPlanService extends Service {
 
 
     private void sendCar(final int lineId, final int stationId, int opId) {
-        mSource.sendVehicle(new Subscriber<BaseBean>() {
+        mSource.sendCar(new Subscriber<BaseBean>() {
             @Override
             public void onCompleted() {
                 loadCarDataTimer(lineId, stationId);
@@ -98,7 +97,7 @@ public class CarPlanService extends Service {
                 intent.putExtra("stationId", stationId);
                 sendBroadcast(intent);
             }
-        }, code, keyCode, opId, Constants.AUTO_TYPE);
+        }, code, keyCode, opId);
 
     }
 

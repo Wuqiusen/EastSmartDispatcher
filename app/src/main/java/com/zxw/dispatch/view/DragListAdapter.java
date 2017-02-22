@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.zxw.data.bean.WaitVehicle;
+import com.zxw.data.bean.DepartCar;
+import com.zxw.data.bean.LineParams;
 import com.zxw.dispatch.R;
-import com.zxw.dispatch.presenter.DepartPresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.utils.ToastHelper;
@@ -22,21 +22,18 @@ import java.util.List;
  * email：cangjie2016@gmail.com
  */
 public class DragListAdapter extends BaseAdapter {
-    private List<WaitVehicle> mDatas;
+    private List<DepartCar> mDatas;
 
     private Context mContext;
     private  TextView tv_interval_time;
     private MainPresenter presenter;
+    private LineParams mLineParams;
 
-    public DragListAdapter(Context context, MainPresenter presenter, List<WaitVehicle> arrayTitles) {
+    public DragListAdapter(Context context, MainPresenter presenter, List<DepartCar> waitVehicles, LineParams mLineParams) {
         this.mContext = context;
-        this.mDatas = arrayTitles;
+        this.mDatas = waitVehicles;
         this.presenter = presenter;
-    }
-    public DragListAdapter(Context context, DepartPresenter presenter, List<WaitVehicle> arrayTitles) {
-//        this.mContext = context;
-//        this.mDatas = arrayTitles;
-//        this.presenter = presenter;
+        this.mLineParams = mLineParams;
     }
 
     @Override
@@ -55,27 +52,27 @@ public class DragListAdapter extends BaseAdapter {
 
         TextView tv_car_code = (TextView) view
                 .findViewById(R.id.tv_car_code);
-        tv_car_code.setText(mDatas.get(position).vehCode);
+        tv_car_code.setText(mDatas.get(position).getCode());
 
         TextView tv_driver = (TextView) view
                 .findViewById(R.id.tv_driver);
-        tv_driver.setText(mDatas.get(position).sjName);
+        tv_driver.setText(mDatas.get(position).getDriverName());
 
         TextView tv_trainman = (TextView) view
                 .findViewById(R.id.tv_trainman);
-        tv_trainman.setText(mDatas.get(position).scName);
+        tv_trainman.setText(mDatas.get(position).getStewardName());
 
         TextView tv_plan_time = (TextView) view
                 .findViewById(R.id.tv_plan_time);
-        tv_plan_time.setText(DisplayTimeUtil.substring(mDatas.get(position).projectTime));
+//        tv_plan_time.setText(DisplayTimeUtil.substring(mDatas.get(position).get));
 
         tv_interval_time = (TextView) view
                 .findViewById(R.id.tv_interval_time);
-        tv_interval_time.setText(mDatas.get(position).spaceMin);
+        tv_interval_time.setText(String.valueOf(mDatas.get(position).getSpaceTime()));
 
         TextView tv_system_enter_time = (TextView) view
                 .findViewById(R.id.tv_system_enter_time);
-        tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).inTime1));
+        tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getArriveTime()));
 
 //        TextView tv_enter_time = (TextView) view
 //                .findViewById(R.lineId.tv_enter_time);
@@ -95,18 +92,18 @@ public class DragListAdapter extends BaseAdapter {
                     ToastHelper.showToast("请先填写发车时间");
                     return;
                 }
-                presenter.sendVehicle(mDatas.get(position).id);
+                presenter.sendVehicle(mDatas.get(position).getId());
             }
         });
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SendCarDialog(mContext).change(mDatas, position, new SendCarDialog.OnDialogChangeConfirmListener() {
-                    @Override
-                    public void onDialogChangeConfirm(int opId, int vehId, int sjId, String scId, String projectTime, int spaceMin, String inTime2) {
-                        presenter.updateVehicle(opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
-                    }
-                }).dialogShow();
+//                new SendCarDialog(mContext).change(mDatas, position, new SendCarDialog.OnDialogChangeConfirmListener() {
+//                    @Override
+//                    public void onDialogChangeConfirm(int opId, int vehId, int sjId, String scId, String projectTime, int spaceMin, String inTime2) {
+//                        presenter.updateVehicle(opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
+//                    }
+//                }).dialogShow();
             }
         });
         return view;
@@ -119,9 +116,9 @@ public class DragListAdapter extends BaseAdapter {
      * @param end   松开时候的position
      */
     public void update(int start, int end) {
-        WaitVehicle startVehicle = mDatas.get(start);
-        WaitVehicle endVehicle = mDatas.get(end);
-        presenter.sortVehicle(startVehicle.id, endVehicle.id);
+        DepartCar startVehicle = mDatas.get(start);
+        DepartCar endVehicle = mDatas.get(end);
+        presenter.sortVehicle(startVehicle.getId(), endVehicle.getId());
     }
 
     @Override

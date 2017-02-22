@@ -30,12 +30,33 @@
             android:minHeight="50dp"
             android:textCursorDrawable="@drawable/color_cursor"
             android:layout_below="@+id/title_img"
+            android:hint="车辆id"
+            android:visibility="visible"/>
+
+        <EditText
+            android:id="@+id/et_driver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:layout_below="@+id/et_car_code"
+            android:hint="司机id"
+            android:visibility="visible"/>
+
+        <EditText
+            android:id="@+id/et_steward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:layout_below="@+id/et_driver"
+            android:hint="乘务员id"
             android:visibility="visible"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/et_car_code"
+            android:layout_below="@+id/et_steward"
             android:layout_marginTop="@dimen/margin_fit"
             android:layout_marginLeft="@dimen/margin_order"
             android:layout_marginRight="@dimen/margin_order"

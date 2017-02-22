@@ -19,14 +19,14 @@ public class LineParams {
      * timeType : 1
      */
 
-    private String saleType;
+    private int saleType;
     private int timeType;
 
-    public String getSaleType() {
+    public int getSaleType() {
         return saleType;
     }
 
-    public void setSaleType(String saleType) {
+    public void setSaleType(int saleType) {
         this.saleType = saleType;
     }
 
