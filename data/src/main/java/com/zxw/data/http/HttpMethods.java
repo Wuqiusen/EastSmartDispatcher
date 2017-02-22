@@ -9,10 +9,12 @@ import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
+import com.zxw.data.bean.ScheduleHistoryBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
 import com.zxw.data.bean.StopHistory;
+import com.zxw.data.bean.StopVehicleBean;
 import com.zxw.data.bean.Vehcile;
 import com.zxw.data.bean.VersionBean;
 import com.zxw.data.bean.WaitVehicle;
@@ -213,5 +215,33 @@ public class HttpMethods {
         Observable<BaseBean> map = browse.sendCar(userId, keyCode, objId);
         toSubscribe(map, subscriber);
     }
+    public void getStopVehicle(Subscriber<List<StopVehicleBean>> subscriber, String userId, String keyCode, String lineId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<StopVehicleBean>> map = browse.getStopVehcile(userId, keyCode, lineId)
+                .map(new HttpResultFunc<List<StopVehicleBean>>());
+        toSubscribe(map, subscriber);
+    }
+
+    public void getScheduleHistory(Subscriber<List<ScheduleHistoryBean>> subscriber, String userId, String keyCode, String lineId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<ScheduleHistoryBean>> map = browse.getScheduleHistory(userId, keyCode, lineId)
+                .map(new HttpResultFunc<List<ScheduleHistoryBean>>());
+        toSubscribe(map, subscriber);
+    }
+
+    public void vehicleStopCtrl(Subscriber<BaseBean> subscriber, String userId, String keyCode,
+                                String vehicleId, String driverId, int saleType, String taskEditRunId){
+        HttpInterfaces.Operater operater = retrofit.create(HttpInterfaces.Operater.class);
+        Observable<BaseBean> map = operater.vehicleStopCtrl(userId, keyCode, vehicleId, driverId, saleType, taskEditRunId);
+        toSubscribe(map, subscriber);
+    }
+
+    public void vehicleToSchedule(Subscriber<BaseBean> subscriber, String userId, String keyCode,
+                                String lineId, String objId, int workScheduleType){
+        HttpInterfaces.Operater operater = retrofit.create(HttpInterfaces.Operater.class);
+        Observable<BaseBean> map = operater.vehicleToSchedule(userId, keyCode, lineId, objId, workScheduleType);
+        toSubscribe(map, subscriber);
+    }
+
 
 }
