@@ -7,9 +7,11 @@ import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
+import com.zxw.data.bean.ScheduleHistoryBean;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
+import com.zxw.data.bean.StopVehicleBean;
 import com.zxw.data.bean.Vehcile;
 import com.zxw.data.bean.VersionBean;
 import com.zxw.data.bean.WaitVehicle;
@@ -232,8 +234,31 @@ public class HttpInterfaces {
                                                      @Field("pageSize") int pageSize);
 
 
+        /**
+         * 根据线路id获取停场车辆列表
+         * @param userId
+         * @param keyCode
+         * @param lineId
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/vehicle/stop/list")
+        Observable<BaseBean<List<StopVehicleBean>>> getStopVehcile(@Field("userId") String userId,
+                                                                   @Field("keyCode") String keyCode,
+                                                                   @Field("lineId") String lineId);
 
-
+        /**
+         * 根据Id获取已发车记录列表
+         * @param userId
+         * @param keyCode
+         * @param lineId
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/history/list")
+        Observable<BaseBean<List<ScheduleHistoryBean>>> getScheduleHistory(@Field("userId") String userId,
+                                                                           @Field("keyCode") String keyCode,
+                                                                           @Field("lineId") String lineId);
 
     }
 
@@ -321,6 +346,42 @@ public class HttpInterfaces {
                                         @Field("projectTime") String projectTime,
                                         @Field("spaceMin") int spaceMin,
                                         @Field("inTime2") String inTime2);
+
+        /**
+         * 手动进站
+         * @param userId
+         * @param keyCode
+         * @param vehicleId
+         * @param driverId
+         * @param saleType
+         * @param taskEditRunId
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/vehicle/stop/add")
+        Observable<BaseBean> vehicleStopCtrl(@Field("userId") String userId,
+                                           @Field("keyCode") String keyCode,
+                                           @Field("vehicleId") String vehicleId,
+                                           @Field("driverId") String driverId,
+                                           @Field("saleType") int saleType,
+                                           @Field("taskEditRunId") String taskEditRunId);
+
+        /**
+         * 停车列表拉进待发车
+         * @param userId
+         * @param keyCode
+         * @param lineId
+         * @param objId
+         * @param workScheduleType
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/vehicle/stop/to/schedule")
+        Observable<BaseBean> vehicleToSchedule(@Field("userId") String userId,
+                                             @Field("keyCode") String keyCode,
+                                             @Field("lineId") String lineId,
+                                             @Field("objId") String objId,
+                                             @Field("workScheduleType") int workScheduleType);
     }
     public interface UpLoadLog{
         @FormUrlEncoded
@@ -329,4 +390,5 @@ public class HttpInterfaces {
                                          @Field("phone") String phone,
                                          @Field("key") String key);
     }
+
 }
