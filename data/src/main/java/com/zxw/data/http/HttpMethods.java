@@ -9,6 +9,7 @@ import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
+import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
@@ -241,5 +242,25 @@ public class HttpMethods {
         toSubscribe(map, subscriber);
     }
 
+    public void getPersonDoubleList(Subscriber<List<PersonInfo>> subscriber, String userId, String keyCode, int objId, int type){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<PersonInfo>> map = browse.getPersonDoubleList(userId, keyCode, objId, type)
+                .map(new HttpResultFunc<List<PersonInfo>>());
+        toSubscribe(map, subscriber);
+    }
+
+    public void getPersonAllList(Subscriber<List<PersonInfo>> subscriber, String userId, String keyCode, String content, int type){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<PersonInfo>> map = browse.getPersonAllList(userId, keyCode, content, type)
+                .map(new HttpResultFunc<List<PersonInfo>>());
+        toSubscribe(map, subscriber);
+    }
+
+    public void changePersonInfo(Subscriber<BaseBean> subscriber, String userId, String keyCode,
+                                  int objId, int personId, int type){
+        HttpInterfaces.Operater operater = retrofit.create(HttpInterfaces.Operater.class);
+        Observable<BaseBean> map = operater.changePersonInfo(userId, keyCode, objId, personId, type);
+        toSubscribe(map, subscriber);
+    }
 
 }

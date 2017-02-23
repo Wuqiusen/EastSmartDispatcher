@@ -9,6 +9,7 @@ import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
+import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
@@ -284,6 +285,39 @@ public class HttpInterfaces {
                                                                            @Field("keyCode") String keyCode,
                                                                            @Field("lineId") int lineId);
 
+        /**
+         * 获取双班驾驶员或乘务员信息
+         * @param userId
+         * @param keyCode
+         * @param objId
+         * @param type
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/person/double/list")
+        Observable<BaseBean<List<PersonInfo>>> getPersonDoubleList(@Field("userId") String userId,
+                                                                   @Field("keyCode") String keyCode,
+                                                                   @Field("objId") int objId,
+                                                                   @Field("type") int type);
+
+        /**
+         * 获取车队所有驾驶员或乘务员信息
+         * @param userId
+         * @param keyCode
+         * @param content
+         * @param type
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/person/all/list")
+        Observable<BaseBean<List<PersonInfo>>> getPersonAllList(@Field("userId") String userId,
+                                                                @Field("keyCode") String keyCode,
+                                                                @Field("content") String content,
+                                                                @Field("type") int type);
+
+
+
+
     }
 
     public interface Operater{
@@ -407,6 +441,14 @@ public class HttpInterfaces {
                                              @Field("lineId") String lineId,
                                              @Field("objId") String objId,
                                              @Field("workScheduleType") int workScheduleType);
+
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/person/change/value")
+        Observable<BaseBean> changePersonInfo(@Field("userId") String userId,
+                                                                @Field("keyCode") String keyCode,
+                                                                @Field("objId") int objId,
+                                                                @Field("personId") int personId,
+                                                                @Field("type") int type);
     }
     public interface UpLoadLog{
         @FormUrlEncoded
