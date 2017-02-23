@@ -261,4 +261,23 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
         }, userId(), keyCode(), carId, driverId, mLineParams.getSaleType(),stewardId, String.valueOf(mCurrentLine.lineId));
     }
+
+    public void vehicleToSchedule(StopHistory stopCar) {
+        mDepartSource.vehicleToSchedule(new Subscriber<BaseBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(BaseBean baseBean) {
+                refreshList();
+            }
+        }, userId(), keyCode(), String.valueOf(mCurrentLine.lineId), String.valueOf(stopCar.id), mLineParams.getTimeType());
+    }
 }

@@ -31,6 +31,7 @@
             android:textCursorDrawable="@drawable/color_cursor"
             android:layout_below="@+id/title_img"
             android:hint="车辆id"
+            android:text="7172"
             android:visibility="visible"/>
 
         <EditText
@@ -41,6 +42,7 @@
             android:textCursorDrawable="@drawable/color_cursor"
             android:layout_below="@+id/et_car_code"
             android:hint="司机id"
+            android:text="18"
             android:visibility="visible"/>
 
         <EditText

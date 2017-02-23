@@ -49,4 +49,8 @@ public class DepartSource {
         HttpMethods.getInstance().vehicleStopCtrl(subscriber, userId, keyCode, vehicleId, driverId, saleType, stewardId, taskEditRunId);
     }
 
+    public void vehicleToSchedule(Subscriber<BaseBean> subscriber, String userId, String keyCode,
+                                  String lineId, String objId, int workScheduleType){
+        HttpMethods.getInstance().vehicleToSchedule(subscriber, userId, keyCode, lineId, objId, workScheduleType);
+    }
 }

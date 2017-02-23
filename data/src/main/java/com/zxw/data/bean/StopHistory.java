@@ -7,5 +7,5 @@ package com.zxw.data.bean;
 public class StopHistory {
     public String code;
     public int type;
-
+    public int id;
 }

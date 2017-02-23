@@ -204,12 +204,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
             @Override
             public void onClickStopCarListener(StopHistory stopCar) {
-                showStopCarDialog();
+                showVehicleToScheduleDialog(stopCar);
             }
         }));
     }
 
-    private void showStopCarDialog() {
+    private void showVehicleToScheduleDialog(final StopHistory stopCar) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         View container = View.inflate(mContext, R.layout.dialog_stop_car, null);
         Button btn_confirm = (Button) container.findViewById(R.id.btn_confirm);
@@ -217,8 +217,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mStopCarDialog != null && mStopCarDialog.isShowing())
+                if (mStopCarDialog != null && mStopCarDialog.isShowing()){
+                    presenter.vehicleToSchedule(stopCar);
                     mStopCarDialog.dismiss();
+                }
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
