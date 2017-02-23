@@ -14,7 +14,7 @@ import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
 import com.zxw.data.bean.StopHistory;
-import com.zxw.data.bean.Vehcile;
+import com.zxw.data.bean.Vehicle;
 import com.zxw.data.bean.VersionBean;
 import com.zxw.data.bean.WaitVehicle;
 
@@ -252,11 +252,11 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/dispatcher/date/vehicle/data")
-        Observable<BaseBean<List<Vehcile>>> queryVehcile(@Field("userId") String code,
-                                                     @Field("keyCode") String keyCode,
-                                                     @Field("vehCode") String vehCode,
-                                                     @Field("pageNo") int pageNo,
-                                                     @Field("pageSize") int pageSize);
+        Observable<BaseBean<List<Vehicle>>> queryVehcile(@Field("userId") String code,
+                                                         @Field("keyCode") String keyCode,
+                                                         @Field("vehCode") String vehCode,
+                                                         @Field("pageNo") int pageNo,
+                                                         @Field("pageSize") int pageSize);
 
 
         /**

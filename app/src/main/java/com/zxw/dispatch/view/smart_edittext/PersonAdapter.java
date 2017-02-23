@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.zxw.data.bean.Person;
+import com.zxw.data.bean.PersonInfo;
 import com.zxw.dispatch.R;
 
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class PersonAdapter extends BaseAdapter{
 
-        private List<Person> mData;
+        private List<PersonInfo> mData;
     private OnSelectItemListener listener;
     private Context mContext;
 
-        public PersonAdapter(List<Person> mData, OnSelectItemListener listener, Context context){
+        public PersonAdapter(List<PersonInfo> mData, OnSelectItemListener listener, Context context){
         this.mData = mData;
         this.listener = listener;
             this.mContext = context;
@@ -53,7 +53,7 @@ public class PersonAdapter extends BaseAdapter{
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv.setText(mData.get(position).personnelName);
+        holder.tv.setText(mData.get(position).personName);
         holder.tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +64,7 @@ public class PersonAdapter extends BaseAdapter{
     }
 
         public interface OnSelectItemListener{
-        void onSelectItemListener(Person vehcile);
+        void onSelectItemListener(PersonInfo vehcile);
     }
 
     public class ViewHolder{

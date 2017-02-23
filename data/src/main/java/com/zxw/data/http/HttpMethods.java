@@ -14,7 +14,7 @@ import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
 import com.zxw.data.bean.StopHistory;
-import com.zxw.data.bean.Vehcile;
+import com.zxw.data.bean.Vehicle;
 import com.zxw.data.bean.VersionBean;
 import com.zxw.data.bean.WaitVehicle;
 
@@ -175,10 +175,10 @@ public class HttpMethods {
     }
 
     //查询车号
-    public void queryVehcile(Subscriber<List<Vehcile>> subscriber, String code,
+    public void queryVehcile(Subscriber<List<Vehicle>> subscriber, String code,
                              String keyCode, String vehCode, int pageNo, int pageSize){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<List<Vehcile>> map = browse.queryVehcile(code, keyCode, vehCode, pageNo, pageSize).map(new HttpResultFunc<List<Vehcile>>());
+        Observable<List<Vehicle>> map = browse.queryVehcile(code, keyCode, vehCode, pageNo, pageSize).map(new HttpResultFunc<List<Vehicle>>());
         toSubscribe(map, subscriber);
     }
 

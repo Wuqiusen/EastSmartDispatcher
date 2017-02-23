@@ -22,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
-import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
@@ -32,13 +31,13 @@ import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.recycler.MainAdapter;
-import com.zxw.dispatch.recycler.SendAdapter;
+import com.zxw.dispatch.recycler.GoneAdapter;
 import com.zxw.dispatch.recycler.StopAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
-import com.zxw.dispatch.view.DragListAdapter;
+import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.view.DragListView;
 import com.zxw.dispatch.view.MyDialog;
 
@@ -92,6 +91,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private MsgReceiver msgReceiver;
     private List<View> views = new ArrayList<View>();
     private boolean isHaveSendCar = false;
+    private TextView tv_steward_send;
+    private TextView tv_steward_gone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         viewCover = (View) view.findViewById(R.id.view_cover);
         tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);
         tvManual = (TextView) view.findViewById(R.id.tv_manual);
+        tv_steward_send = (TextView) view.findViewById(R.id.tv_steward_send);
+        tv_steward_gone = (TextView) view.findViewById(R.id.tv_steward_gone);
         tvAutomatic.setOnClickListener(this);
         tvManual.setOnClickListener(this);
         tvController.setOnClickListener(this);
@@ -186,12 +189,13 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
             }
         });
-        if (mDragListAdapter.getCount() > 0) isHaveSendCar = true;
+        if (mDragListAdapter.getCount() > 0)
+            isHaveSendCar = true;
     }
 
     @Override
-    public void loadGoneCarList(List<SendHistory> sendHistories) {
-        mGoneRV.setAdapter(new SendAdapter(sendHistories, this));
+    public void loadGoneCarList(GoneAdapter goneAdapter) {
+        mGoneRV.setAdapter(goneAdapter);
     }
 
     @Override
@@ -207,6 +211,18 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 showVehicleToScheduleDialog(stopCar);
             }
         }));
+    }
+
+    @Override
+    public void hideStewardName() {
+        tv_steward_send.setVisibility(View.GONE);
+        tv_steward_gone.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showStewardName() {
+        tv_steward_send.setVisibility(View.VISIBLE);
+        tv_steward_gone.setVisibility(View.VISIBLE);
     }
 
     private void showVehicleToScheduleDialog(final StopHistory stopCar) {

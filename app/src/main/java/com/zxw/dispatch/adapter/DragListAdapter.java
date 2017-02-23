@@ -1,4 +1,4 @@
-package com.zxw.dispatch.view;
+package com.zxw.dispatch.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -14,6 +14,7 @@ import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.utils.ToastHelper;
+import com.zxw.dispatch.view.dialog.AlertNameDialog;
 
 import java.util.List;
 
@@ -57,10 +58,39 @@ public class DragListAdapter extends BaseAdapter {
         TextView tv_driver = (TextView) view
                 .findViewById(R.id.tv_driver);
         tv_driver.setText(mDatas.get(position).getDriverName());
+        tv_driver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertNameDialog alertNameDialog = new AlertNameDialog(mContext);
+                alertNameDialog.showDriverDialog(mDatas.get(position).getId(), mDatas.get(position).getDriverName(), new AlertNameDialog.OnAlertDriverListener() {
+                    @Override
+                    public void onAlertDriverListener(int driverId) {
+                        presenter.alertPeople(mDatas.get(position).getId(), driverId, AlertNameDialog.TYPE_DRIVER);
+                    }
+                });
+            }
+        });
 
         TextView tv_trainman = (TextView) view
                 .findViewById(R.id.tv_trainman);
-        tv_trainman.setText(mDatas.get(position).getStewardName());
+        if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
+            tv_trainman.setVisibility(View.GONE);
+        }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
+            tv_trainman.setVisibility(View.VISIBLE);
+            tv_trainman.setText(mDatas.get(position).getStewardName());
+            tv_trainman.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertNameDialog alertNameDialog = new AlertNameDialog(mContext);
+                    alertNameDialog.showStewardDialog(mDatas.get(position).getId(), mDatas.get(position).getStewardName(), new AlertNameDialog.OnAlertStewardListener() {
+                        @Override
+                        public void onAlertStewardListener(int stewardId) {
+                            presenter.alertPeople(mDatas.get(position).getId(), stewardId, AlertNameDialog.TYPE_DRIVER);
+                        }
+                    });
+                }
+            });
+        }
 
         TextView tv_plan_time = (TextView) view
                 .findViewById(R.id.tv_plan_time);
@@ -106,6 +136,7 @@ public class DragListAdapter extends BaseAdapter {
 //                }).dialogShow();
             }
         });
+
         return view;
     }
 

@@ -1,9 +1,9 @@
 package com.zxw.dispatch.presenter.view;
 
 import com.zxw.data.bean.Line;
-import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
-import com.zxw.dispatch.view.DragListAdapter;
+import com.zxw.dispatch.adapter.DragListAdapter;
+import com.zxw.dispatch.recycler.GoneAdapter;
 
 import java.util.List;
 
@@ -18,7 +18,11 @@ public interface MainView extends BaseView {
 
     void loadSendCarList(DragListAdapter mDragListAdapter);
 
-    void loadGoneCarList(List<SendHistory> sendHistories);
+    void loadGoneCarList(GoneAdapter sendHistories);
 
     void loadStopCarList(List<StopHistory> stopHistories);
+
+    void hideStewardName();
+
+    void showStewardName();
 }

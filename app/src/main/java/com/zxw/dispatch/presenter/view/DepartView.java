@@ -1,6 +1,6 @@
 package com.zxw.dispatch.presenter.view;
 
-import com.zxw.dispatch.view.DragListAdapter;
+import com.zxw.dispatch.adapter.DragListAdapter;
 
 /**
  * author：CangJie on 2016/9/21 11:14

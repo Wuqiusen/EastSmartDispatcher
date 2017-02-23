@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.utils.DebugLog;
 
 /**

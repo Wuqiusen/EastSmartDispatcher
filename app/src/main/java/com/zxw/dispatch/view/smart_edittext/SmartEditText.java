@@ -15,8 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
-import com.zxw.data.bean.Person;
-import com.zxw.data.bean.Vehcile;
+import com.zxw.data.bean.PersonInfo;
+import com.zxw.data.bean.Vehicle;
+import com.zxw.data.http.HttpMethods;
 import com.zxw.data.source.QuerySource;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
@@ -43,8 +44,8 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     private OnLoadValueListener listener;
     private Context mContext;
 
-    private Vehcile mSelectVehcile;
-    private Person mSelectPerson;
+    private Vehicle mSelectVehicle;
+    private PersonInfo mSelectPerson;
     private ListView popItem;
     private PopupWindow popupWindow;
     private EditText mEditText;
@@ -158,7 +159,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
 
     private void queryVehicle(String str) {
         if (str.length() >= 3) {
-            mSource.queryVehcile(new Subscriber<List<Vehcile>>() {
+            mSource.queryVehcile(new Subscriber<List<Vehicle>>() {
                                      @Override
                                      public void onCompleted() {
 
@@ -170,8 +171,8 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
                                      }
 
                                      @Override
-                                     public void onNext(List<Vehcile> vehciles) {
-                                         displayVehcile(vehciles);
+                                     public void onNext(List<Vehicle> vehicles) {
+                                         displayVehcile(vehicles);
                                      }
                                  }, SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID),
                     SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE),
@@ -182,31 +183,32 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
 
     private void queryPerson(String str) {
         try {
-            mSource.queryPerson(new Subscriber<List<Person>>() {
-                                    @Override
-                                    public void onCompleted() {
+            String encrypt = new DESPlus().encrypt(Base64.encode(str.getBytes("utf-8")));
+            HttpMethods.getInstance().getPersonAllList(new Subscriber<List<PersonInfo>>() {
+                                                           @Override
+                                                           public void onCompleted() {
 
-                                    }
+                                                           }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        DebugLog.w(e.getMessage());
-                                    }
+                                                           @Override
+                                                           public void onError(Throwable e) {
 
-                                    @Override
-                                    public void onNext(List<Person> persons) {
-                                        displayPerson(persons);
-                                    }
-                                }, SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID),
+                                                           }
+
+                                                           @Override
+                                                           public void onNext(List<PersonInfo> persons) {
+                                                               displayPerson(persons);
+                                                           }
+                                                       },SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID),
                     SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE),
-                    new DESPlus().encrypt(Base64.encode(str.getBytes("utf-8"))), inputType,
-                    1, 20);
+                    encrypt, inputType);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
-    private void displayPerson(List<Person> persons) {
+    private void displayPerson(List<PersonInfo> persons) {
         DebugLog.w(persons.size() + "size");
         if (persons.size() == 0)
             return;
@@ -215,11 +217,11 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         popupWindow.showAsDropDown(SmartEditText.this);
     }
 
-    private void displayVehcile(List<Vehcile> vehciles) {
-        DebugLog.w(vehciles.size() + "size");
-        if (vehciles.size() == 0)
+    private void displayVehcile(List<Vehicle> vehicles) {
+        DebugLog.w(vehicles.size() + "size");
+        if (vehicles.size() == 0)
             return;
-        mCarAdapter = new CarAdapter(vehciles, SmartEditText.this, mContext);
+        mCarAdapter = new CarAdapter(vehicles, SmartEditText.this, mContext);
         popItem.setAdapter(mCarAdapter);
         popupWindow.showAsDropDown(SmartEditText.this);
     }
@@ -227,16 +229,11 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     private void initInputType(int inputType) {
         this.inputType = inputType;
     }
-
-    public int getInfoId() {
-        if (inputType == CAR_CODE) {
-            if (mSelectVehcile != null)
-                return mSelectVehcile.id;
-            return -1;
-        }
-        if (mSelectPerson != null)
-            return mSelectPerson.id;
-        return -1;
+    public Vehicle getVehicleInfo() {
+                return mSelectVehicle;
+    }
+    public PersonInfo getPeopleInfo(){
+        return mSelectPerson;
     }
 
     public void setOnLoadValueListener(OnLoadValueListener listener) {
@@ -244,11 +241,11 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     }
 
     @Override
-    public void onSelectItemListener(Vehcile vehcile) {
+    public void onSelectItemListener(Vehicle vehicle) {
         stopNextEditTextWatcherEvent();
-        DebugLog.w(vehcile.vehicleCode);
-        mSelectVehcile = vehcile;
-        mEditText.setText(vehcile.vehicleCode);
+        DebugLog.w(vehicle.vehicleCode);
+        mSelectVehicle = vehicle;
+        mEditText.setText(vehicle.vehicleCode);
         mEditText.setSelection(mEditText.length());
         popupWindow.dismiss();
     }
@@ -258,13 +255,17 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     }
 
     @Override
-    public void onSelectItemListener(Person person) {
+    public void onSelectItemListener(PersonInfo person) {
         stopNextEditTextWatcherEvent();
-        DebugLog.w(person.personnelName);
+        DebugLog.w(person.personName);
         mSelectPerson = person;
-        mEditText.setText(person.personnelName);
+        mEditText.setText(person.personName);
         mEditText.setSelection(mEditText.length());
         popupWindow.dismiss();
+    }
+
+    public int getInfoId() {
+        return -1;
     }
 
     public interface OnLoadValueListener {
@@ -280,22 +281,25 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     }
 
     public void setVehcile(String name, int id) {
-        Vehcile vehcile = new Vehcile();
-        vehcile.vehicleCode = name;
-        vehcile.id = id;
-        mSelectVehcile = vehcile;
+        Vehicle vehicle = new Vehicle();
+        vehicle.vehicleCode = name;
+        vehicle.id = id;
+        mSelectVehicle = vehicle;
         mEditText.setText(name);
     }
 
     public void setPerson(String name, int id, int type) {
-        Person person = new Person();
-        person.personnelName = name;
-        person.id = id;
+        PersonInfo person = new PersonInfo();
+        person.personName = name;
+        person.personId = id;
         mSelectPerson = person;
         mEditText.setText(name);
     }
 
     public void setInputType(){
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+    }
+    public void clear(){
+        mEditText.setText("");
     }
 }

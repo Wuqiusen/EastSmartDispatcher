@@ -15,8 +15,9 @@ import com.zxw.data.source.LineSource;
 import com.zxw.data.source.SendSource;
 import com.zxw.data.source.StopSource;
 import com.zxw.dispatch.presenter.view.MainView;
+import com.zxw.dispatch.recycler.GoneAdapter;
 import com.zxw.dispatch.service.CarPlanService;
-import com.zxw.dispatch.view.DragListAdapter;
+import com.zxw.dispatch.adapter.DragListAdapter;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private Intent serviceIntent;
     private int lineId, stationId;
     private LineParams mLineParams;
+    public final static int TYPE_SALE_AUTO = 1, TYPE_SALE_MANUAL = 2;
 
     public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
@@ -81,8 +83,13 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onNext(LineParams lineParams) {
                 mLineParams = lineParams;
+                // 自动售票,隐藏乘务员字段
+                if (mLineParams.getSaleType() == TYPE_SALE_AUTO){
+                    mvpView.hideStewardName();
+                }else if(mLineParams.getSaleType() == TYPE_SALE_MANUAL){
+                    mvpView.showStewardName();
+                }
                 mCurrentLine = line;
-//        stationId = mCurrentLine.lineStationList.get(0).stationId;
                 lineId = mCurrentLine.lineId;
                 refreshList();
             }
@@ -105,7 +112,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<SendHistory> sendHistories) {
-                mvpView.loadGoneCarList(sendHistories);
+                mvpView.loadGoneCarList(new GoneAdapter(sendHistories, mContext, mLineParams));
             }
         }, userId(), keyCode(), lineId);
 
@@ -257,6 +264,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(BaseBean baseBean) {
+                if(baseBean.returnCode == 505)
+                    mvpView.disPlay(baseBean.returnInfo);
                 refreshList();
             }
         }, userId(), keyCode(), carId, driverId, mLineParams.getSaleType(),stewardId, String.valueOf(mCurrentLine.lineId));
@@ -276,8 +285,31 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(BaseBean baseBean) {
+                if(baseBean.returnCode == 505)
+                    mvpView.disPlay(baseBean.returnInfo);
                 refreshList();
             }
         }, userId(), keyCode(), String.valueOf(mCurrentLine.lineId), String.valueOf(stopCar.id), mLineParams.getTimeType());
+    }
+
+    public void alertPeople(int id, int peopleId, int type) {
+        mDepartSource.changePersonInfo(new Subscriber<BaseBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(BaseBean baseBean) {
+                if (baseBean.returnCode == 505)
+                    mvpView.disPlay(baseBean.returnInfo);
+                refreshList();
+            }
+        }, userId(), keyCode(), id, peopleId, type);
     }
 }

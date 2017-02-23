@@ -69,6 +69,7 @@
                     android:layout_weight="3"/>
 
                 <TextView
+                    android:id="@+id/tv_steward_gone"
                     style="@style/main_activity_top_button"
                     android:text="乘务员"
                     android:layout_weight="3"/>
@@ -255,6 +256,7 @@
                 android:layout_weight="3"/>
 
             <TextView
+                android:id="@+id/tv_steward_send"
                 style="@style/main_activity_top_button"
                 android:text="乘务员"
                 android:layout_weight="3"/>

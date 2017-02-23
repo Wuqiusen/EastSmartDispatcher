@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.zxw.data.bean.Vehcile;
+import com.zxw.data.bean.Vehicle;
 import com.zxw.dispatch.R;
 
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class CarAdapter extends BaseAdapter{
 
-        private List<Vehcile> mData;
+        private List<Vehicle> mData;
     private OnSelectItemListener listener;
     private Context mContext;
 
-        public CarAdapter(List<Vehcile> mData, OnSelectItemListener listener, Context context){
+        public CarAdapter(List<Vehicle> mData, OnSelectItemListener listener, Context context){
         this.mData = mData;
         this.listener = listener;
             this.mContext = context;
@@ -64,7 +64,7 @@ public class CarAdapter extends BaseAdapter{
     }
 
         public interface OnSelectItemListener{
-        void onSelectItemListener(Vehcile vehcile);
+        void onSelectItemListener(Vehicle vehicle);
     }
 
     public class ViewHolder{

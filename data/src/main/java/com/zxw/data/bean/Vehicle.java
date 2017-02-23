@@ -4,7 +4,7 @@ package com.zxw.data.bean;
  * author：CangJie on 2016/10/17 09:21
  * email：cangjie2016@gmail.com
  */
-public class Vehcile {
+public class Vehicle {
     public int companyId;
     public String companyName;
     public int id;
@@ -19,7 +19,7 @@ public class Vehcile {
 
     @Override
     public String toString() {
-        return "Vehcile{" +
+        return "Vehicle{" +
                 "companyId=" + companyId +
                 ", companyName='" + companyName + '\'' +
                 ", lineId=" + id +

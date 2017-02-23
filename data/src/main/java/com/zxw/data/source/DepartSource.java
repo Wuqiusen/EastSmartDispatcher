@@ -53,4 +53,8 @@ public class DepartSource {
                                   String lineId, String objId, int workScheduleType){
         HttpMethods.getInstance().vehicleToSchedule(subscriber, userId, keyCode, lineId, objId, workScheduleType);
     }
+    public void changePersonInfo(Subscriber<BaseBean> subscriber, String userId, String keyCode,
+                                 int objId, int personId, int type){
+        HttpMethods.getInstance().changePersonInfo(subscriber, userId, keyCode, objId, personId, type);
+    }
 }
