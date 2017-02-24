@@ -431,7 +431,7 @@ public class HttpInterfaces {
          * @param keyCode
          * @param lineId
          * @param objId
-         * @param workScheduleType
+         * @param workSchedule
          * @return
          */
         @FormUrlEncoded
@@ -440,7 +440,7 @@ public class HttpInterfaces {
                                              @Field("keyCode") String keyCode,
                                              @Field("lineId") String lineId,
                                              @Field("objId") String objId,
-                                             @Field("workScheduleType") int workScheduleType);
+                                             @Field("workSchedule") int workSchedule);
 
         @FormUrlEncoded
         @POST("phone/control/manage/task/person/change/value")
