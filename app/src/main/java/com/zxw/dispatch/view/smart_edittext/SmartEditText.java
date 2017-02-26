@@ -181,7 +181,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         }
     }
 
-    private void queryPerson(String str) {
+        private void queryPerson(String str) {
         try {
             String encrypt = new DESPlus().encrypt(Base64.encode(str.getBytes("utf-8")));
             HttpMethods.getInstance().getPersonAllList(new Subscriber<List<PersonInfo>>() {

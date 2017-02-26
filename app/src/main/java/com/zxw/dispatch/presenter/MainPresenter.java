@@ -289,7 +289,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                     mvpView.disPlay(baseBean.returnInfo);
                 refreshList();
             }
-        }, userId(), keyCode(), String.valueOf(mCurrentLine.lineId), String.valueOf(stopCar.id), mLineParams.getTimeType());
+        }, userId(), keyCode(), String.valueOf(stopCar.id), mLineParams.getTimeType());
     }
 
     public void alertPeople(int id, int peopleId, int type) {

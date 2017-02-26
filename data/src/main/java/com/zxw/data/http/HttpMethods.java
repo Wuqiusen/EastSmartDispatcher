@@ -235,10 +235,9 @@ public class HttpMethods {
         toSubscribe(map, subscriber);
     }
 
-    public void vehicleToSchedule(Subscriber<BaseBean> subscriber, String userId, String keyCode,
-                                String lineId, String objId, int workScheduleType){
+    public void vehicleToSchedule(Subscriber<BaseBean> subscriber, String userId, String keyCode, String objId, int workScheduleType){
         HttpInterfaces.Operater operater = retrofit.create(HttpInterfaces.Operater.class);
-        Observable<BaseBean> map = operater.vehicleToSchedule(userId, keyCode, lineId, objId, workScheduleType);
+        Observable<BaseBean> map = operater.vehicleToSchedule(userId, keyCode, objId, workScheduleType);
         toSubscribe(map, subscriber);
     }
 

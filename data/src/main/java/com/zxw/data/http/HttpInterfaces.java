@@ -429,18 +429,16 @@ public class HttpInterfaces {
          * 停车列表拉进待发车
          * @param userId
          * @param keyCode
-         * @param lineId
          * @param objId
-         * @param workSchedule
+         * @param workScheduleType
          * @return
          */
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/vehicle/stop/to/schedule")
         Observable<BaseBean> vehicleToSchedule(@Field("userId") String userId,
                                              @Field("keyCode") String keyCode,
-                                             @Field("lineId") String lineId,
                                              @Field("objId") String objId,
-                                             @Field("workSchedule") int workSchedule);
+                                             @Field("workScheduleType") int workScheduleType);
 
         @FormUrlEncoded
         @POST("phone/control/manage/task/person/change/value")
