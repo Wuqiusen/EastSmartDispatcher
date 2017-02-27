@@ -49,24 +49,6 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         ButterKnife.bind(this);
-//        String userId = "2";
-//        String keyCode =  "671ff584c1e01f2616c4ffd16be9ac37";
-//        int objId =  15;
-//        HttpMethods.getInstance().sendCar(new Subscriber<BaseBean>() {
-//            @Override
-//            public void onCompleted() {
-//
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//
-//            }
-//
-//            @Override
-//            public void onNext(BaseBean lineParams) {
-//            }
-//        }, userId, keyCode, objId);
         initData();
         hideHeadArea();
         animation();
@@ -109,8 +91,8 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
             @Override
             public void onAnimationEnd(Animation animation) {
                 // 版本更新
-//                 presenter.checkVersion();
-                loadMain();
+                 presenter.checkVersion();
+//                loadMain();
             }
         });
         img_welcome.startAnimation(animationSet);
@@ -143,6 +125,8 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
                     });
                 }
             });
+        }else{
+            loadMain();
         }
     }
 

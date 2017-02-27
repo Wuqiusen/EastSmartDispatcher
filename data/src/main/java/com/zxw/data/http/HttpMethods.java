@@ -68,7 +68,7 @@ public class HttpMethods {
     // 版本更新{新增：URL和参数 待修改}
     public void checkVersion(Subscriber<VersionBean> subscriber,String keyCode) {
         HttpInterfaces.UpdateVersion updateVersion = retrofit.create(HttpInterfaces.UpdateVersion.class);
-        Observable<VersionBean> observable = updateVersion.checkVersion("http://slb.szebus.net/version/phone/last/data", keyCode)
+        Observable<VersionBean> observable = updateVersion.checkVersion(BASE_URL + "phone/control/manage/app/new/version", keyCode)
                 .map(new HttpResultFunc<VersionBean>());
         toSubscribe(observable, subscriber);
     }

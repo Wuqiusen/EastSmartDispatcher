@@ -44,7 +44,7 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST
-        Observable<BaseBean<VersionBean>> checkVersion(@Url String url, @Field("keyCode") String keyCode);
+        Observable<BaseBean<VersionBean>> checkVersion(@Url String url, @Field("time") String keyCode);
         /**
          * 下载安装包
          */

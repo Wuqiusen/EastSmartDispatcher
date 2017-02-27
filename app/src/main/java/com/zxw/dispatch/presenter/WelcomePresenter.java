@@ -16,7 +16,6 @@ import com.zxw.dispatch.utils.ToastHelper;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import rx.Subscriber;
 
@@ -35,8 +34,7 @@ public class WelcomePresenter extends BasePresenter<WelcomeView> {
     }
 
     public void checkVersion(){
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.CHINA);//设置日期格式
-        final String keycode2 = MD5.MD5Encode(df.format(new Date()));
+        String time = String.valueOf(new Date().getTime());
         mSource.checkVersion(new Subscriber<VersionBean>() {
             @Override
             public void onCompleted() {
@@ -53,7 +51,7 @@ public class WelcomePresenter extends BasePresenter<WelcomeView> {
             public void onNext(VersionBean versionBean) {
                    mvpView.getVersionDataSuccess(versionBean);
             }
-        },keycode2);
+        },time);
     }
 
     public void upLoadLog(){
