@@ -205,7 +205,7 @@ public class DragListAdapter extends BaseAdapter {
      * 发车间隔
      */
     private void openCarIntervalDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
         View view = View.inflate(mContext,R.layout.view_update_car_interval_dialog,null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -232,7 +232,7 @@ public class DragListAdapter extends BaseAdapter {
      * 任务类型
      */
     private void openTaskTypeDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
         View view = View.inflate(mContext,R.layout.view_task_type_dialog,null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -259,7 +259,7 @@ public class DragListAdapter extends BaseAdapter {
      * 非营运任务
      */
     private void openNoOperationTaskDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
         View view = View.inflate(mContext,R.layout.view_no_operation_task_dialog,null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -281,7 +281,7 @@ public class DragListAdapter extends BaseAdapter {
      * @param position
      */
     private void openConfirmCarDialog(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
         View view = View.inflate(mContext,R.layout.view_message_confirm_dialog,null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -310,7 +310,7 @@ public class DragListAdapter extends BaseAdapter {
      * 支援
      */
     private void openSupportCarDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
         View view = View.inflate(mContext,R.layout.view_support_car_dialog,null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);

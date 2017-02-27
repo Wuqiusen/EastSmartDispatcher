@@ -83,7 +83,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
     }
 
     private void openCarMsgDialog() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
                 View view = View.inflate(mContext,R.layout.view_check_car_details_dialog,null);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
                 view.setLayoutParams(params);
