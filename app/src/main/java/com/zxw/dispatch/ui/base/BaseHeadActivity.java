@@ -79,6 +79,10 @@ public abstract class BaseHeadActivity extends BaseActivity {
         rel_base_headArea.setVisibility(View.GONE);
     }
 
+    public void showHeadAreaBackground(){
+        rel_base_headArea.setVisibility(View.VISIBLE);
+        rel_base_headArea.setBackgroundColor(mContext.getResources().getColor(R.color.title_bar_bg_style1));
+    }
 
     public void showLoading() {
         mLoading.setVisibility(View.VISIBLE);
@@ -111,6 +115,10 @@ public abstract class BaseHeadActivity extends BaseActivity {
         btn_headTitle.setVisibility(View.GONE);
     }
 
+    public void showColorTitle(String title){
+        btn_headTitle.setText(title);
+        btn_headTitle.setTextColor(mContext.getResources().getColor(R.color.font_white));
+    }
     public void showRightImageButton(int iBtnResource) {
         ibtn_headRightImageButton.setImageResource(iBtnResource);
         ibtn_headRightImageButton.setVisibility(View.VISIBLE);
@@ -120,6 +128,10 @@ public abstract class BaseHeadActivity extends BaseActivity {
         ibtn_headRightImageButton.setImageResource(iBtnResource);
         ibtn_headRightImageButton.setVisibility(View.VISIBLE);
         ibtn_headRightImageButton.setOnClickListener(listener);
+    }
+    public void showLeftImageButton(OnClickListener listener){
+        ibtn_headLeftImageButton.setVisibility(View.VISIBLE);
+        ibtn_headLeftImageButton.setOnClickListener(listener);
     }
 
     public boolean checkIsEmpty(String str, String toast) {

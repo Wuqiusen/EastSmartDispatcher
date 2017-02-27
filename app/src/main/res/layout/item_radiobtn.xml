@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="horizontal">
+    <RadioButton
+        android:id="@+id/rb_task"
+        style="@style/rb_bg_style"
+        android:layout_margin="@dimen/margin_fit_6"
+        />
+    <TextView
+        android:id="@+id/tv_task_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="@dimen/normal_margin10"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:maxLength="6"
+        android:text="大站快车"
+        android:textSize="@dimen/font_small"
+        />
+
+</LinearLayout>

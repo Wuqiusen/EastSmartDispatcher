@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,7 +38,9 @@ public class PopupAdapter extends BaseAdapter{
             holder = new ViewHolder();
             rootView = LayoutInflater.from(mContext).inflate(R.layout.item_pupupwindow,null);
             holder.ll_setting = (LinearLayout) rootView.findViewById(R.id.ll_setting);
+            holder.img_identify = (ImageView) rootView.findViewById(R.id.img_identify);
             holder.tv_name = (TextView) rootView.findViewById(R.id.tv_name);
+            setImageStyle(holder,position);
             rootView.setTag(holder);
         }else{
             holder = (ViewHolder) rootView.getTag();
@@ -62,6 +65,20 @@ public class PopupAdapter extends BaseAdapter{
         return rootView;
     }
 
+    private void setImageStyle(ViewHolder holder,final int position) {
+        switch (position){
+            case 0:
+                holder.img_identify.setBackground(mContext.getResources().getDrawable(R.drawable.update_information_icon));
+                break;
+            case 1:
+                holder.img_identify.setBackground(mContext.getResources().getDrawable(R.drawable.update_password_icon));
+                break;
+            case 2:
+                holder.img_identify.setBackground(mContext.getResources().getDrawable(R.drawable.login_out_icon));
+                break;
+        }
+    }
+
     @Override
     public int getCount() {
         return mTitleList.size();
@@ -80,6 +97,7 @@ public class PopupAdapter extends BaseAdapter{
     public class ViewHolder{
           LinearLayout ll_setting;
           TextView tv_name;
+          ImageView img_identify;
     }
 
 

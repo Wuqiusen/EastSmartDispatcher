@@ -1,11 +1,15 @@
 package com.zxw.dispatch.recycler;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.LineParams;
@@ -56,7 +60,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
 //        holder.tvStopTime.setText(String.valueOf(history.vehTime));
         holder.tvIntervalTime.setText(String.valueOf(history.spaceTime));
 //        holder.tvSendTime.setText(String.valueOf(history.vehTime));
-        holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
+//        holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班"); ///
 //        holder.tvStationStatus.setText(String.valueOf(history.vehTime));
         holder.tvWorkStatus.setText(history.type == 1? "正线运营": "");
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
@@ -64,21 +68,37 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
             holder.tvTrainman.setVisibility(View.VISIBLE);
         }
-        if (history.unRunTaskStatus == 1){
-            holder.tvNoWorkStatus.setText("无");
-        }else if (history.unRunTaskStatus == 2){
-            holder.tvNoWorkStatus.setText("有");
-        }else {
-            holder.tvNoWorkStatus.setText("完成");
-        }
+//        if (history.unRunTaskStatus == 1){
+//            holder.tvNoWorkStatus.setText("无");
+//        }else if (history.unRunTaskStatus == 2){
+//            holder.tvNoWorkStatus.setText("有");
+//        }else {
+//            holder.tvNoWorkStatus.setText("完成");
+//        }
         holder.tvCheckSendCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                   openCarMsgDialog();  // 查看
             }
         });
     }
 
+    private void openCarMsgDialog() {
+        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext,R.layout.view_check_car_details_dialog,null);
+        Button btn_close = (Button) view.findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
+        mDialog.setContentView(view,params);
+        mDialog.setCancelable(true);
+        mDialog.show();
+    }
 
 
     @Override
@@ -95,8 +115,8 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         TextView tvPlanTime;
         @Bind(R.id.tv_arrive_time)
         TextView tvArriveTime;
-        @Bind(R.id.tv_stop_time)
-        TextView tvStopTime;
+//        @Bind(R.id.tv_stop_time)
+//        TextView tvStopTime;
         @Bind(R.id.tv_interval_time)
         TextView tvIntervalTime;
         @Bind(R.id.tv_send_time)
@@ -105,14 +125,14 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         TextView tvDriver;
         @Bind(R.id.tv_trainman)
         TextView tvTrainman;
-        @Bind(R.id.tv_schedule_status)
-        TextView tvScheduleStatus;
-        @Bind(R.id.tv_station_status)
-        TextView tvStationStatus;
+//        @Bind(R.id.tv_schedule_status)
+//        TextView tvScheduleStatus;
+//        @Bind(R.id.tv_station_status)
+//        TextView tvStationStatus;
         @Bind(R.id.tv_work_status)
         TextView tvWorkStatus;
-        @Bind(R.id.tv_no_work_status)
-        TextView tvNoWorkStatus;
+//        @Bind(R.id.tv_no_work_status)
+//        TextView tvNoWorkStatus;
         @Bind(R.id.tv_check_send_car)
         TextView tvCheckSendCar;
         LineHolder(View view) {

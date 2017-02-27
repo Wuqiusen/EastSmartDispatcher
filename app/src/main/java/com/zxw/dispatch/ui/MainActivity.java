@@ -133,6 +133,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvSchedule.setOnClickListener(this);
         // 设置按钮
         imgSetting.setOnClickListener(this);
+
         imgLoginOut.setOnClickListener(this);
 
         MyPagerAdapter mAdapter = new MyPagerAdapter(views, null);
@@ -281,6 +282,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void onSelectLine(Line line) {
+        //传递线路id查询是否该线路已开启自动发车
         Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
         intent.putExtra("type", "getData");
         intent.putExtra("lineKey", line.lineId);
@@ -373,7 +375,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mPopupWindow = new PopupWindow(popView, 400, LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
         mPopupWindow.setBackgroundDrawable(new PaintDrawable());
-        mPopupWindow.showAsDropDown(rlSetting,300,10);
+        mPopupWindow.showAsDropDown(rlSetting,300,4);
     }
 
     @Override

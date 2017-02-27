@@ -16,6 +16,8 @@
     <dimen name="btn_margin12">12dp</dimen>
 
     <!-- RadioButton -->
+    <dimen name="rb_width14">14dp</dimen>
+    <dimen name="rb_height14">14dp</dimen>
     <dimen name="rb_width16">16dp</dimen>
     <dimen name="rb_height16">16dp</dimen>
     <dimen name="tv_rb_left4">4dp</dimen>
@@ -65,6 +67,7 @@
     <dimen name="dialog_margin16">16dp</dimen>
     <dimen name="dialog_margin20">20dp</dimen>
     <dimen name="dialog_margin30">30dp</dimen>
+    <dimen name="dialog_margin50">50dp</dimen>
     <!--高宽度-->
     <dimen name="dialog_height36">36dp</dimen>
     <dimen name="dialog_height40">40dp</dimen>

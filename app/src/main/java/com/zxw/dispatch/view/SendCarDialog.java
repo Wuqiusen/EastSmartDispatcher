@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.zxw.data.bean.WaitVehicle;
+import com.zxw.data.bean.DepartCar;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.smart_edittext.SmartEditText;
@@ -75,14 +75,14 @@ public class SendCarDialog extends AlertDialog.Builder {
         dialogWindow.setAttributes(p);
     }
 
-    public SendCarDialog change(final List<WaitVehicle> mDatas, final int position, final OnDialogChangeConfirmListener listener){
-        et_car_code.setVehcile(mDatas.get(position).vehCode, mDatas.get(position).vehId);
-        et_driver.setPerson(mDatas.get(position).sjName, mDatas.get(position).sjId, SmartEditText.DRIVER);
-        et_trainman.setPerson(mDatas.get(position).scName, mDatas.get(position).scId, SmartEditText.TRAINMAN);
-        initEditTextListener();
-        et_plan_time.setText(mDatas.get(position).projectTime);
-        et_interval_time.setText(mDatas.get(position).spaceMin);
-        et_enter_time.setText(mDatas.get(position).inTime2);
+    public SendCarDialog change(final List<DepartCar> mDatas, final int position, final OnDialogChangeConfirmListener listener){
+//        et_car_code.setVehcile(mDatas.get(position).getCode(), mDatas.get(position).ge);
+//        et_driver.setPerson(mDatas.get(position).sjName, mDatas.get(position).sjId, SmartEditText.DRIVER);
+//        et_trainman.setPerson(mDatas.get(position).scName, mDatas.get(position).scId, SmartEditText.TRAINMAN);
+//        initEditTextListener();
+//        et_plan_time.setText(mDatas.get(position).getArriveTime());
+//        et_interval_time.setText(mDatas.get(position).getSpaceTime());
+//        et_enter_time.setText(mDatas.get(position).inTime2);
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +124,7 @@ public class SendCarDialog extends AlertDialog.Builder {
                         return;
                     }
 
-                listener.onDialogChangeConfirm(mDatas.get(position).id, vehId, driverId, trainmanId, planTime, Integer.valueOf(intervalTime), enterTime);
+                listener.onDialogChangeConfirm(mDatas.get(position).getId(), vehId, driverId, trainmanId, planTime, Integer.valueOf(intervalTime), enterTime);
                 dismiss();
             }
         });

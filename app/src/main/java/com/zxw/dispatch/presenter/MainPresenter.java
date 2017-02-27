@@ -40,6 +40,8 @@ public class MainPresenter extends BasePresenter<MainView> {
     private int lineId, stationId;
     private LineParams mLineParams;
     public final static int TYPE_SALE_AUTO = 1, TYPE_SALE_MANUAL = 2;
+    private List<DepartCar> mWaitVehicles;
+    private boolean isAuto = false;
 
     public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
@@ -134,6 +136,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
+                mWaitVehicles = waitVehicles;
                 mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams);
                 mvpView.loadSendCarList(mDragListAdapter);
             }
@@ -235,7 +238,6 @@ public class MainPresenter extends BasePresenter<MainView> {
      */
     public void selectAuto() {
         serviceIntent = new Intent(mContext,CarPlanService.class);
-        serviceIntent.putExtra("stationId", stationId);
         serviceIntent.putExtra("lineId", lineId);
         mContext.startService(serviceIntent);
     }
@@ -245,7 +247,6 @@ public class MainPresenter extends BasePresenter<MainView> {
      */
     public void selectManual() {
         Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
-        intent.putExtra("stationId", stationId);
         intent.putExtra("lineId", lineId);
         mContext.sendBroadcast(intent);
     }

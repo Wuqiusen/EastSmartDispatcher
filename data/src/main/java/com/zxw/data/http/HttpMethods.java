@@ -211,7 +211,8 @@ public class HttpMethods {
     }
     public void sendCar(Subscriber<BaseBean> subscriber, String userId, String keyCode, int objId){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<BaseBean> map = browse.sendCar(userId, keyCode, objId);
+        Observable<BaseBean> map = browse.sendCar(userId, keyCode, objId)
+                .map(new HttpResultFunc());
         toSubscribe(map, subscriber);
     }
     public void getStopVehicle(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){

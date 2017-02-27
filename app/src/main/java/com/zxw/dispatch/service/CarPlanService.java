@@ -9,20 +9,16 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.zxw.data.bean.BaseBean;
-import com.zxw.data.bean.WaitVehicle;
+import com.zxw.data.bean.DepartCar;
 import com.zxw.data.source.DepartSource;
 import com.zxw.dispatch.utils.DebugLog;
+import com.zxw.dispatch.utils.SendCarUtils;
 import com.zxw.dispatch.utils.SpUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import rx.Subscriber;
 
@@ -36,16 +32,13 @@ import static com.zxw.dispatch.MyApplication.mContext;
 
 public class CarPlanService extends Service {
     private int lineId;
-    private int stationId;
     private List<Integer> lineIds = new ArrayList<>();
-    private List<Integer> stationIds = new ArrayList<>();
-    private Map<Integer, Timer> timerMap = new HashMap<>();
-    private Map<Map<Integer, Integer>, WaitVehicle> dataMap = new HashMap<>();
     private CarPlanReceiver carPlanReceiver;
+    private Map<Integer,SendCarUtils> autoData = new HashMap<>();
 
-    DepartSource mSource = new DepartSource();
-    String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
-    String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
+    private DepartSource mSource = new DepartSource();
+    private String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
+    private String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
 
     @Nullable
     @Override
@@ -65,108 +58,78 @@ public class CarPlanService extends Service {
         }
         if (intent != null) {
             lineId = intent.getIntExtra("lineId", 0);
-            stationId = intent.getIntExtra("stationId", 0);
             lineIds.add(lineId);
-            stationIds.add(stationId);
-
-            loadCarDataTimer(lineId, stationId);
+            loadCarDataTimer(lineId);
         }
-
         return super.onStartCommand(intent, flags, startId);
     }
 
 
-    private void sendCar(final int lineId, final int stationId, int opId) {
-        mSource.sendCar(new Subscriber<BaseBean>() {
+    /**
+     * 获取待发车数据
+     * @param lineId
+     */
+    public void loadCarDataTimer(final int lineId) {
+        mSource.departList(new Subscriber<List<DepartCar>>() {
             @Override
             public void onCompleted() {
-                loadCarDataTimer(lineId, stationId);
             }
 
             @Override
             public void onError(Throwable e) {
-
             }
 
             @Override
-            public void onNext(BaseBean baseBean) {
-                DebugLog.e("sendCar" + lineId);
-                //发送广播更新列表数据
+            public void onNext(final List<DepartCar> waitVehicles) {
+                DebugLog.e("loadCarDataTimer" + lineId);
+                //如果获取数据为空则停止该线路自动发车功能
+                if (waitVehicles == null && waitVehicles.isEmpty()){
+                    if (autoData.get(lineId) != null){
+                        autoData.remove(lineId);
+                        //通知main设置为手动发车
+                        Intent megIntent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
+                        megIntent.putExtra("isAuto", false);
+                        megIntent.putExtra("type", "getData");
+                        sendBroadcast(megIntent);
+                    }
+                }else {
+                    createSendCarUtil(lineId, waitVehicles);
+                }
+
+            }
+        }, code,  keyCode,lineId);
+    }
+
+    /**
+     * 创建自动发车工具
+     * @param lineId
+     * @param waitVehicles
+     */
+    private void createSendCarUtil(int lineId, List<DepartCar> waitVehicles){
+        SendCarUtils sendCarUtils = new SendCarUtils(lineId, waitVehicles);
+        sendCarUtils.setOnSendCarResult(new SendCarUtils.SendCarResult() {
+            @Override
+            public void onSendCarSuccess(int lineId) {
+                //发车成功，发送广播更新列表数据
                 Intent intent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
                 intent.putExtra("lineId", lineId);
-                intent.putExtra("stationId", stationId);
                 sendBroadcast(intent);
             }
-        }, code, keyCode, opId);
-
-    }
-
-    public void loadCarDataTimer(final int lineId, final int stationId) {
-        final Map<Integer, Integer> map = new HashMap<>();
-        map.put(lineId, stationId);
-        mSource.loadWaitVehicle(new Subscriber<List<WaitVehicle>>() {
-            @Override
-            public void onCompleted() {
-            }
 
             @Override
-            public void onError(Throwable e) {
-                loadCarDataTimer(lineId, stationId);
-            }
-
-            @Override
-            public void onNext(final List<WaitVehicle> waitVehicles) {
-                DebugLog.e("loadCarDataTimer" + lineId);
-                if (waitVehicles != null && !waitVehicles.isEmpty()) {
-                    dataMap.put(map, waitVehicles.get(0));
-                    //定时器
-                    Timer t = new Timer();
-                    t.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            checkTime(lineId, stationId, waitVehicles.get(0));
-                        }
-                    }, 0, 1000 * 30);
-                    timerMap.put(lineId, t);
-                } else {
-                    if (timerMap.get(lineId) != null) {
-                        DebugLog.e("loadCarDataTimer cancel" +lineId);
-                        timerMap.get(lineId).cancel();
-                    }
-                }
-
+            public void onSendCarFail(int lineId) {
+                //发送失败，重新获取发车列表
+                autoData.remove(lineId);
+                loadCarDataTimer(lineId);
 
             }
-        }, code, lineId, stationId, keyCode, 1, 1);
+        });
+        autoData.put(lineId, sendCarUtils);
     }
 
-    public void checkTime(final int lineId, final int stationId, final WaitVehicle w) {
-        SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
-        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-        String str = formatter.format(curDate);
-        if (checkLine(lineId)) {
-            DebugLog.e("lineId:" + lineId);
-            if (w.projectTime != null && !TextUtils.isEmpty(w.projectTime)) {
-                if (Integer.valueOf(w.projectTime) <= Integer.valueOf(str)) {
-                    timerMap.get(lineId).cancel();
-                    sendCar(lineId, stationId, w.id);
-                }
-            }
-        } else {
-            DebugLog.w("del:" + lineId);
-            timerMap.get(lineId).cancel();//如果没有该线路id则取消定时器
-            timerMap.remove(lineId);
-        }
-    }
 
-    private boolean checkLine(int lineId) {
-        for (Integer id : lineIds) {
-            if (id == lineId) {
-                return true;
-            }
-        }
-        return false;
-    }
+
+
 
     /**
      * 广播接收器
@@ -175,11 +138,11 @@ public class CarPlanService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getStringExtra("type"), "getData")){
+            if (TextUtils.equals(intent.getStringExtra("type"), "getData")) {
                 //获取自动发车列表，发送广播给Main判断该线路是否设置自动发车
                 boolean isAuto = false;
                 if (lineIds != null && !lineIds.isEmpty()) {
-                    for (Integer lineId: lineIds){
+                    for (Integer lineId : lineIds) {
                         if (lineId == intent.getIntExtra("lineKey", 0)) {
                             isAuto = true;
                         }
@@ -190,22 +153,16 @@ public class CarPlanService extends Service {
                 megIntent.putExtra("type", "getData");
                 sendBroadcast(megIntent);
 
-            }else {
+            } else {
                 //取消自动发车
                 lineId = intent.getIntExtra("lineId", 0);
-                stationId = intent.getIntExtra("stationId", 0);
                 if (lineIds != null && !lineIds.isEmpty()) {
                     for (int i = 0; i < lineIds.size(); i++) {
                         if (lineIds.get(i) == lineId) {
                             lineIds.remove(i);
-                            stationIds.remove(i);
+                            autoData.remove(lineId);//移除自动发车
                         }
                     }
-                }
-                if (timerMap.get(lineId) != null) {
-                    DebugLog.e("CarPlanReceiver cancel" + lineId);
-                    timerMap.get(lineId).cancel();
-                    timerMap.remove(lineId);
                 }
             }
 
