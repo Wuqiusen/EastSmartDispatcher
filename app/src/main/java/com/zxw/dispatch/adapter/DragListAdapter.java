@@ -1,6 +1,7 @@
 package com.zxw.dispatch.adapter;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -199,80 +200,78 @@ public class DragListAdapter extends BaseAdapter {
 
 
 
-
-
     /**
      * 发车间隔
      */
     private void openCarIntervalDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
-        View view = View.inflate(mContext,R.layout.view_update_car_interval_dialog,null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        view.setLayoutParams(params);
-        builder.setView(view);
+        View view = View.inflate(mContext,R.layout.view_update_car_interval_dialog,null);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
-        final AlertDialog sDialog = builder.show();
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sDialog.dismiss();
+                mDialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 sDialog.dismiss();
+                mDialog.dismiss();
             }
         });
+        mDialog.setContentView(view,params);
+        mDialog.setCancelable(true);
+        mDialog.show();
     }
 
     /**
      * 任务类型
      */
     private void openTaskTypeDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
-        View view = View.inflate(mContext,R.layout.view_task_type_dialog,null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        view.setLayoutParams(params);
-        builder.setView(view);
+        View view = View.inflate(mContext,R.layout.view_task_type_dialog,null);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
-        final AlertDialog tDialog = builder.show();
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tDialog.dismiss();
+                mDialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tDialog.dismiss();
+                mDialog.dismiss();
             }
         });
+        mDialog.setContentView(view,params);
+        mDialog.setCancelable(true);
+        mDialog.show();
     }
 
     /**
      * 非营运任务
      */
     private void openNoOperationTaskDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
-        View view = View.inflate(mContext,R.layout.view_no_operation_task_dialog,null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        view.setLayoutParams(params);
-        builder.setView(view);
+        View view = View.inflate(mContext,R.layout.view_no_operation_task_dialog,null);
         Button btn_close = (Button) view.findViewById(R.id.btn_close);
-        final AlertDialog eDialog = builder.show();
         btn_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eDialog.dismiss();
+                mDialog.dismiss();
             }
         });
+        mDialog.setContentView(view,params);
+        mDialog.setCancelable(true);
+        mDialog.show();
 
     }
 
@@ -281,56 +280,56 @@ public class DragListAdapter extends BaseAdapter {
      * @param position
      */
     private void openConfirmCarDialog(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
-        View view = View.inflate(mContext,R.layout.view_message_confirm_dialog,null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        view.setLayoutParams(params);
-        builder.setView(view);
+        View view = View.inflate(mContext,R.layout.view_message_confirm_dialog,null);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
-        final AlertDialog nDialog = builder.show();
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 确定发车
                 presenter.sendVehicle(mDatas.get(position).getId());
-                nDialog.dismiss();
+                sDialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nDialog.dismiss();
+                sDialog.dismiss();
             }
         });
+        sDialog.setContentView(view,params);
+        sDialog.setCancelable(true);
+        sDialog.show();
     }
 
     /**
      * 支援
      */
     private void openSupportCarDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
-        View view = View.inflate(mContext,R.layout.view_support_car_dialog,null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        view.setLayoutParams(params);
-        builder.setView(view);
+        View view = View.inflate(mContext,R.layout.view_support_car_dialog,null);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
-        final AlertDialog sDialog = builder.show();
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sDialog.dismiss();
+                mDialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sDialog.dismiss();
+                mDialog.dismiss();
             }
         });
+        mDialog.setContentView(view,params);
+        mDialog.setCancelable(true);
+        mDialog.show();
     }
 
     /***

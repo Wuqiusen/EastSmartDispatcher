@@ -1,6 +1,7 @@
 package com.zxw.dispatch.recycler;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -83,19 +84,20 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
     }
 
     private void openCarMsgDialog() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.customDialog);
-                View view = View.inflate(mContext,R.layout.view_check_car_details_dialog,null);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                view.setLayoutParams(params);
-                builder.setView(view);
-                Button btn_close = (Button) view.findViewById(R.id.btn_close);
-                final AlertDialog sDialog = builder.show();
-                btn_close.setOnClickListener(new View.OnClickListener() {
+        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext,R.layout.view_check_car_details_dialog,null);
+        Button btn_close = (Button) view.findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                         sDialog.dismiss();
+                        mDialog.dismiss();
                     }
                 });
+        mDialog.setContentView(view,params);
+        mDialog.setCancelable(true);
+        mDialog.show();
     }
 
 
