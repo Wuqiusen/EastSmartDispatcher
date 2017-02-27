@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.zxw.data.bean.DepartCar;
@@ -34,6 +33,7 @@ public class DragListAdapter extends BaseAdapter {
 
     private Context mContext;
     private  TextView tv_interval_time;
+    private  TextView  tv_plan_time;
     private MainPresenter presenter;
     private LineParams mLineParams;
     private Calendar mDate;
@@ -104,9 +104,9 @@ public class DragListAdapter extends BaseAdapter {
         }
 
         // 计划时刻
-        TextView tv_plan_time = (TextView) view
+        tv_plan_time = (TextView) view
                 .findViewById(R.id.tv_plan_time);
-        //tv_plan_time.setText(DisplayTimeUtil.substring(mDatas.get(position).get));
+        tv_plan_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getVehTime()));
         tv_plan_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +126,7 @@ public class DragListAdapter extends BaseAdapter {
         tv_interval_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                     openCarIntervalDialog();
+                     openCarIntervalDialog(position);
             }
         });
         // 到站时刻
@@ -155,10 +155,17 @@ public class DragListAdapter extends BaseAdapter {
         // 发车
         TextView tv_send_car = (TextView) view
                 .findViewById(R.id.tv_send_car);
+        TextView tv_is_double = (TextView) view
+                .findViewById(R.id.tv_is_double);
+        TextView tv_work_type = (TextView) view
+                .findViewById(R.id.tv_work_type);
+        tv_is_double.setText(mDatas.get(position).getIsDouble() == 0 ?"单班":"双班");
+        tv_work_type.setText(mDatas.get(position).getType() == 1 ? "正线运营":"");
+
         tv_send_car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(tv_interval_time.getText().toString())){
+                if (TextUtils.isEmpty(tv_plan_time.getText().toString())){
                     ToastHelper.showToast("请先填写发车时间");
                     return;
                 }
@@ -203,7 +210,7 @@ public class DragListAdapter extends BaseAdapter {
     /**
      * 发车间隔
      */
-    private void openCarIntervalDialog() {
+    private void openCarIntervalDialog(final int position) {
         final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -213,6 +220,7 @@ public class DragListAdapter extends BaseAdapter {
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.sendVehicle(mDatas.get(position).getId());
                 mDialog.dismiss();
             }
         });

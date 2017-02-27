@@ -103,6 +103,7 @@
         android:visibility="gone"/>
     <!--应跑单次-->
     <TextView
+        android:id="@+id/tv_is_double"
         style="@style/content_car_font_main_style"
         android:layout_width="0dp"
         android:ellipsize="end"
@@ -123,6 +124,7 @@
         android:layout_weight="3.5"/>
     <!--归属站-->
     <TextView
+        android:id="@+id/tv_work_type"
         style="@style/content_car_font_main_style"
         android:layout_width="0dp"
         android:ellipsize="end"

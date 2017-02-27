@@ -62,6 +62,13 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.LineHolder> {
             });
         }else {
             setBtnStyle(holder, mData.get(position - 1));
+            holder.llReuse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null)
+                        listener.onClickStopCarListener(mData.get(position - 1));
+                }
+            });
         }
 
     }
@@ -73,13 +80,7 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.LineHolder> {
                    holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
                    holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_green));
                    holder.tvCarCode.setText(stop.code);
-                   holder.llReuse.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           if(listener != null)
-                               listener.onClickStopCarListener(stop);
-                       }
-                   });
+
                    break;
                case 2:
                    // 单层（红）

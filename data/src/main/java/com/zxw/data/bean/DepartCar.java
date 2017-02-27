@@ -1,10 +1,12 @@
 package com.zxw.data.bean;
 
+import java.io.Serializable;
+
 /**
  * author：CangJie on 2017/2/21 18:50
  * email：cangjie2016@gmail.com
  */
-public class DepartCar {
+public class DepartCar implements Serializable {
 
     /**
      * arriveTime : 0535

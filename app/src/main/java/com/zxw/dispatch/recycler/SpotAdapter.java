@@ -1,6 +1,5 @@
 package com.zxw.dispatch.recycler;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -49,7 +48,6 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 Intent intent = new Intent(mContext, MainActivity.class);
                 intent.putExtra("spotId", mData.get(position).getSpotId());
                 mContext.startActivity(intent);
-                ((Activity)mContext).finish();
             }
         });
     }

@@ -282,6 +282,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void onSelectLine(Line line) {
+        //传递线路id查询是否该线路已开启自动发车
         Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
         intent.putExtra("type", "getData");
         intent.putExtra("lineKey", line.lineId);
