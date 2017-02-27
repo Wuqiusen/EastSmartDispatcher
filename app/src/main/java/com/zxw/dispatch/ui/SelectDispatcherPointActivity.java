@@ -1,8 +1,10 @@
 package com.zxw.dispatch.ui;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.SelectDispatcherPointPresenter;
@@ -26,13 +28,28 @@ public class SelectDispatcherPointActivity extends PresenterActivity<SelectDispa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_dispatcher_point);
+        initView();
         ButterKnife.bind(this);
         presenter.loadDispatcherPoint();
     }
 
+    private void initView() {
+        showColorTitle("请选择调度站");
+        showHeadAreaBackground();
+        showLeftImageButton(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
     @Override
     public void showSpotList(SpotAdapter spotAdapter) {
-        mSpotRV.setLayoutManager(new LinearLayoutManager(this));
+//      mSpotRV.setLayoutManager(new LinearLayoutManager(this));
+        GridLayoutManager layoutManager = new GridLayoutManager(this,3);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mSpotRV.setLayoutManager(layoutManager);
         mSpotRV.setAdapter(spotAdapter);
         mSpotRV.addItemDecoration(new DividerItemDecoration(this,R.color.white,
                 DividerItemDecoration.VERTICAL_LIST));

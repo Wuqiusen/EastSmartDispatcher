@@ -26,8 +26,6 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
     @Bind(R.id.tv_forget_password)
     TextView tv_forgetPwd;
 
-
-
     @Override
     protected LoginPresenter createPresenter() {
         return new LoginPresenter(this);

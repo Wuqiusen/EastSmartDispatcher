@@ -1,11 +1,15 @@
 package com.zxw.dispatch.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.zxw.data.bean.DepartCar;
@@ -14,8 +18,10 @@ import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.utils.ToastHelper;
+import com.zxw.dispatch.view.TimePlanPickerDialog;
 import com.zxw.dispatch.view.dialog.AlertNameDialog;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -29,6 +35,10 @@ public class DragListAdapter extends BaseAdapter {
     private  TextView tv_interval_time;
     private MainPresenter presenter;
     private LineParams mLineParams;
+    private Calendar mDate;
+    private int mHour,mMinute;
+    private String sHour = null;
+    private String sMinute = null;
 
     public DragListAdapter(Context context, MainPresenter presenter, List<DepartCar> waitVehicles, LineParams mLineParams) {
         this.mContext = context;
@@ -92,17 +102,77 @@ public class DragListAdapter extends BaseAdapter {
             });
         }
 
+        // 计划时刻
         TextView tv_plan_time = (TextView) view
                 .findViewById(R.id.tv_plan_time);
-//        tv_plan_time.setText(DisplayTimeUtil.substring(mDatas.get(position).get));
+        //tv_plan_time.setText(DisplayTimeUtil.substring(mDatas.get(position).get));
+        tv_plan_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TimePlanPickerDialog(mContext, new TimePlanPickerDialog.OnTimePickerListener() {
+                    @Override
+                    public void onTimePicker(String sHour, String sMinute) {
+                             ToastHelper.showToast(sHour+":"+sMinute,mContext);
 
+                    }
+                }).show();
+            }
+        });
+        // 发车间隔
         tv_interval_time = (TextView) view
                 .findViewById(R.id.tv_interval_time);
         tv_interval_time.setText(String.valueOf(mDatas.get(position).getSpaceTime()));
-
+        tv_interval_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                     openCarIntervalDialog();
+            }
+        });
+        // 到站时刻
         TextView tv_system_enter_time = (TextView) view
                 .findViewById(R.id.tv_system_enter_time);
         tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getArriveTime()));
+
+        // 任务类型
+        TextView tv_task_type = (TextView) view.findViewById(R.id.tv_task_type);
+        tv_task_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTaskTypeDialog();
+            }
+        });
+
+        // 非营运任务
+        TextView tv_no_operation_task = (TextView) view.findViewById(R.id.tv_no_operation_task);
+        tv_no_operation_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNoOperationTaskDialog();
+            }
+        });
+
+        // 发车
+        TextView tv_send_car = (TextView) view
+                .findViewById(R.id.tv_send_car);
+        tv_send_car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(tv_interval_time.getText().toString())){
+                    ToastHelper.showToast("请先填写发车时间");
+                    return;
+                }
+                openConfirmCarDialog(position);
+            }
+        });
+        // 支援
+        TextView tv_support = (TextView) view.findViewById(R.id.tv_support);
+        tv_support.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    openSupportCarDialog();
+            }
+        });
+
 
 //        TextView tv_enter_time = (TextView) view
 //                .findViewById(R.lineId.tv_enter_time);
@@ -112,19 +182,6 @@ public class DragListAdapter extends BaseAdapter {
 //                .findViewById(R.lineId.tv_state);
 //        tv_state.setText(mDatas.get(position).isScan == 1 ? "已读" : "未读");
 
-        TextView tv_send_car = (TextView) view
-                .findViewById(R.id.tv_send_car);
-
-        tv_send_car.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(tv_interval_time.getText().toString())){
-                    ToastHelper.showToast("请先填写发车时间");
-                    return;
-                }
-                presenter.sendVehicle(mDatas.get(position).getId());
-            }
-        });
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +195,142 @@ public class DragListAdapter extends BaseAdapter {
         });
 
         return view;
+    }
+
+
+
+
+
+    /**
+     * 发车间隔
+     */
+    private void openCarIntervalDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = View.inflate(mContext,R.layout.view_update_car_interval_dialog,null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(params);
+        builder.setView(view);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        final AlertDialog sDialog = builder.show();
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sDialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 sDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 任务类型
+     */
+    private void openTaskTypeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = View.inflate(mContext,R.layout.view_task_type_dialog,null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(params);
+        builder.setView(view);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        final AlertDialog tDialog = builder.show();
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tDialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 非营运任务
+     */
+    private void openNoOperationTaskDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = View.inflate(mContext,R.layout.view_no_operation_task_dialog,null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(params);
+        builder.setView(view);
+        Button btn_close = (Button) view.findViewById(R.id.btn_close);
+        final AlertDialog eDialog = builder.show();
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eDialog.dismiss();
+            }
+        });
+
+    }
+
+    /**
+     * 发车
+     * @param position
+     */
+    private void openConfirmCarDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = View.inflate(mContext,R.layout.view_message_confirm_dialog,null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(params);
+        builder.setView(view);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        final AlertDialog nDialog = builder.show();
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 确定发车
+                presenter.sendVehicle(mDatas.get(position).getId());
+                nDialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 支援
+     */
+    private void openSupportCarDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = View.inflate(mContext,R.layout.view_support_car_dialog,null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(params);
+        builder.setView(view);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        final AlertDialog sDialog = builder.show();
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sDialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sDialog.dismiss();
+            }
+        });
     }
 
     /***

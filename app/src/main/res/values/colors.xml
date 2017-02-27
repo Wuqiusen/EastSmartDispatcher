@@ -8,6 +8,9 @@
     <color name="btn_app_theme2">#ffb0c32d</color>
     <color name="btn_app_theme3">#0074c4</color>
     <color name="btn_app_theme4">#5393ed</color>
+    <color name="btn_app_theme5">#F2F2F2</color>
+    <color name="btn_app_theme6">#E9EBED</color>
+
 
     <!--主题颜色-->
     <color name="tv_gray_color">#999</color>

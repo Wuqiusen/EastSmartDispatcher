@@ -3,15 +3,16 @@
     android:id="@+id/ll_popwindow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:gravity="right|center_horizontal"
     android:orientation="vertical">
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="10dp"
         android:layout_marginRight="@dimen/normal_margin20"
         android:background="@drawable/arrow_icon"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
     <ListView

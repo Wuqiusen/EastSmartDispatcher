@@ -99,7 +99,7 @@
                 <TextView
                     android:id="@+id/tv_fix"
                     style="@style/main_tab_font_style"
-                    android:text="维修计划"
+                    android:text="非营运任务"
                     />
                 <View style="@style/scroll_bar_select_style"
                       android:visibility="gone"/>
@@ -149,6 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/normal_margin10"
                 android:layout_marginRight="@dimen/normal_margin10"
                 android:src="@drawable/setup_icon"
                 />

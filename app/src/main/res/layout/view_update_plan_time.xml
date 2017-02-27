@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ll_car_dialog"
+        android:orientation="vertical">
+        <Button
+            style="@style/font_dialog_title_style"
+            android:text="修改计划时刻"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dialog_margin30"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <NumberPicker
+                android:id="@+id/np_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"/>
+
+            <NumberPicker
+                android:id="@+id/np_minute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/normal_margin10"
+                android:button="@null"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_confirm"
+                style="@style/btn_dialog_style"
+                android:text="确定"
+                />
+            <Button
+                android:id="@+id/btn_cancel"
+                style="@style/btn_dialog_style"
+                android:text="取消"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

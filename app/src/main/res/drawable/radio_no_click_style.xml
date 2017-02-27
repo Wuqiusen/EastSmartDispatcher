@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+    <!--圆心填充色-->
+    <solid android:color="@color/line_color"/>
+    <!--圆弧度-->
+    <corners android:radius="100dp" />
+    <!--圆弧边大小和颜色-->
+    <stroke
+        android:width="1dp"
+        android:color="@color/line_dark" />
+</shape>
