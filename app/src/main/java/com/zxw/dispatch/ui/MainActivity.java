@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -444,7 +445,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.w("onReceive---", "Main广播已接收");
             if (TextUtils.equals(intent.getStringExtra("type"), "getData")) {
+                Log.w("onReceive---", "更新发车状态");
                 if (intent.getBooleanExtra("isAuto", false)) {
                     setTvBackground(2);
                     viewCover.setVisibility(View.VISIBLE);
@@ -454,6 +457,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 }
 
             } else {
+                Log.w("onReceive---", "刷新数据");
                 //刷新数据
                 presenter.refreshList();
             }

@@ -26,14 +26,11 @@ import static com.zxw.dispatch.MyApplication.mContext;
 public class SendCarUtils {
     private int lineID;
     private List<DepartCar> departCars;
-    private int sendIndex = 0;
     private Timer mTimer = new Timer();
-    DepartSource mSource = new DepartSource();
-    String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
-    String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
+    private DepartSource mSource = new DepartSource();
+    private String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
+    private String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
     private SendCarResult sendCarResult;
-    private Thread thread;
-    private TimerTask timerTask;
 
     public SendCarUtils(int lineId, List<DepartCar> waitVehicleList) {
         this.lineID = lineId;
@@ -47,46 +44,28 @@ public class SendCarUtils {
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (checkTime(departCars.get(0))) {
-                    Log.w("createTimer---", "checkTime");
-                    isSendSuccess();
+                Log.w("createTimer---", "定时器运行");
+                if (departCars != null && !departCars.isEmpty()){
+                    if (checkTime(departCars.get(0))) {
+                        Log.w("createTimer---", "checkTime");
+                        sendCar();
+                    }
+                }else {
+                    Log.w("createTimer---", "定时器停止");
+                    if (mTimer != null) mTimer.cancel();
+                    if (sendCarResult != null) {
+                        sendCarResult.onSendCarFail(lineID);
+                    }
                 }
 
             }
         }, 0, 1000 * 30);
-//        if (checkTime(departCars.get(0))){
-//            if (isSendSuccess()){
-//                departCars.remove(0);
-//                createTimer();
-//            }
-//        }else {
-//            if (thread != null){
-//                thread.start();
-//            }else {
-//                sleepTime().start();
-//            }
-//
-//        }
 
     }
 
-    private Thread sleepTime() {
-        return thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(30 * 1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                createTimer();
-            }
-        });
-    }
 
 
-    private void isSendSuccess() {
-        Log.w("isSendSuccess---", departCars.get(0).getCode() + "已经发车");
+    private void sendCar() {
         mSource.sendCar(new Subscriber<BaseBean>() {
             @Override
             public void onCompleted() {
@@ -94,7 +73,7 @@ public class SendCarUtils {
 
             @Override
             public void onError(Throwable e) {
-                Log.w("isSendSuccess---", departCars.get(0).getCode() + "发车失败");
+                Log.w("sendCar---", departCars.get(0).getCode() + "发车失败");
                 if (sendCarResult != null) {
                     sendCarResult.onSendCarFail(lineID);
                 }
@@ -104,7 +83,7 @@ public class SendCarUtils {
             @Override
             public void onNext(BaseBean baseBean) {
                 DebugLog.e("sendCar" + lineID);
-                Log.w("isSendSuccess---", departCars.get(0).getCode() + "已经发出");
+                Log.w("sendCar---", departCars.get(0).getCode() + "已经发出");
                 if (sendCarResult != null) {
                     sendCarResult.onSendCarSuccess(lineID);
                 }
@@ -112,7 +91,7 @@ public class SendCarUtils {
                 mTimer.cancel();
                 createTimer();
             }
-        }, code, keyCode, departCars.get(sendIndex).getId());
+        }, code, keyCode, departCars.get(0).getId());
     }
 
     private boolean checkTime(final DepartCar w) {
@@ -127,6 +106,10 @@ public class SendCarUtils {
             }
         }
         return false;
+    }
+
+    public void setTimerCancel(){
+        mTimer.cancel();
     }
 
     public interface SendCarResult {
