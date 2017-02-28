@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,19 +26,19 @@ import com.zxw.data.bean.Line;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.adapter.PopupAdapter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
-import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.GoneAdapter;
+import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.StopAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
-import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.view.DragListView;
 import com.zxw.dispatch.view.MyDialog;
 
@@ -465,9 +464,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             if (TextUtils.equals(intent.getStringExtra("type"), "getData")) {
                 Log.w("onReceive---", "更新发车状态");
                 if (intent.getBooleanExtra("isAuto", false)) {
+                    Log.w("onReceive---", "自动发车");
                     setTvBackground(2);
                     viewCover.setVisibility(View.VISIBLE);
                 } else {
+                    Log.w("onReceive---", "手动发车");
                     setTvBackground(1);
                     viewCover.setVisibility(View.GONE);
                 }

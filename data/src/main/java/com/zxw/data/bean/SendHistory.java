@@ -12,7 +12,7 @@ public class SendHistory {
     public Integer id;
     public Integer isDouble;
     public Integer runNum;
-    public Integer runNumReal;
+    public String runNumReal;
     public String spaceTime;
     public Integer type;
     public Integer unRunTaskStatus;

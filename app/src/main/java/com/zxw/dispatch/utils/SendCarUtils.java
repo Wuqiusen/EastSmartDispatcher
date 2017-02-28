@@ -9,7 +9,9 @@ import com.zxw.data.source.DepartSource;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,43 +28,79 @@ import static com.zxw.dispatch.MyApplication.mContext;
 public class SendCarUtils {
     private int lineID;
     private List<DepartCar> departCars;
-    private Timer mTimer = new Timer();
+    private Timer mTimer = null;
+    private TimerTask mTimerTask = null;
     private DepartSource mSource = new DepartSource();
     private String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
     private String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
     private SendCarResult sendCarResult;
+    private Map<Integer, Boolean> sendResult = new HashMap<>();//是否发车成功
+    private Map<Integer, Boolean> isSend = new HashMap<>();//是否已发车
 
     public SendCarUtils(int lineId, List<DepartCar> waitVehicleList) {
         this.lineID = lineId;
         this.departCars = waitVehicleList;
-        createTimer();
+        createSendResult();
+        startTimer();
     }
 
-    private void createTimer() {
+    private void createSendResult() {
+        for (DepartCar departCar : departCars) {
+            isSend.put(departCar.getId(), false);
+            sendResult.put(departCar.getId(), false);
+        }
+    }
+
+    private void startTimer() {
 //        //定时器
         Log.w("createTimer---", "创建定时器");
-        mTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Log.w("createTimer---", "定时器运行");
-                if (departCars != null && !departCars.isEmpty()){
-                    if (checkTime(departCars.get(0))) {
-                        Log.w("createTimer---", "checkTime");
-                        sendCar();
-                    }
-                }else {
-                    Log.w("createTimer---", "定时器停止");
-                    if (mTimer != null) mTimer.cancel();
-                    if (sendCarResult != null) {
-                        sendCarResult.onSendCarFail(lineID);
-                    }
-                }
-
-            }
-        }, 0, 1000 * 30);
+        createTimeTool();
+        mTimer.schedule(mTimerTask, 0, 1000 * 30);
 
     }
 
+    private void stopTimer() {
+        Log.w("stopTimer---", "停止定时器");
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+        if (mTimerTask != null) {
+            mTimerTask.cancel();
+            mTimerTask = null;
+        }
+    }
+
+    private void createTimeTool() {
+        if (mTimer == null) {
+            mTimer = new Timer();
+        }
+        if (mTimerTask == null) {
+            mTimerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Log.w("createTimer---", "定时器运行");
+                    if (departCars != null && !departCars.isEmpty()) {
+                        if (!isSend.get(departCars.get(0).getId()) && !sendResult.get(departCars.get(0).getId())) {
+                            if (checkTime(departCars.get(0))) {
+                                isSend.put(departCars.get(0).getId(), true);
+                                Log.w("createTimer---", "checkTime");
+                                sendCar();
+                            }
+                        }
+                    } else {
+                        Log.w("createTimer---", "定时器停止");
+                        if (mTimer != null) mTimer.cancel();
+                        if (sendCarResult != null) {
+                            sendCarResult.onSendCarFail(lineID);
+                        }
+                    }
+
+                }
+            };
+        }
+
+    }
 
 
     private void sendCar() {
@@ -87,9 +125,12 @@ public class SendCarUtils {
                 if (sendCarResult != null) {
                     sendCarResult.onSendCarSuccess(lineID);
                 }
-                departCars.remove(0);
-                mTimer.cancel();
-                createTimer();
+                sendResult.put(departCars.get(0).getId(), true);
+                if (isSend.get(departCars.get(0).getId()) && sendResult.get(departCars.get(0).getId())) {
+                    departCars.remove(0);
+                    stopTimer();
+                    startTimer();
+                }
             }
         }, code, keyCode, departCars.get(0).getId());
     }
@@ -108,8 +149,8 @@ public class SendCarUtils {
         return false;
     }
 
-    public void setTimerCancel(){
-        mTimer.cancel();
+    public void setTimerCancel() {
+        stopTimer();
     }
 
     public interface SendCarResult {

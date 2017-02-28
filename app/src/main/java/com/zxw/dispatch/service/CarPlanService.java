@@ -43,6 +43,8 @@ public class CarPlanService extends Service {
     private DepartSource mSource = new DepartSource();
     private String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
     private String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
+    private  Intent megIntent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
+    private Intent updateIntent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
 
     @Nullable
     @Override
@@ -91,17 +93,17 @@ public class CarPlanService extends Service {
             public void onNext(final List<DepartCar> waitVehicles) {
                 DebugLog.e("loadCarDataTimer" + lineId);
                 //如果获取数据为空则停止该线路自动发车功能
-                if (waitVehicles == null && waitVehicles.isEmpty()) {
+                if (waitVehicles == null || waitVehicles.isEmpty()) {
                     if (autoData.get(lineId) != null) {
                         autoData.remove(lineId);
                         removeAutoData(lineId);
                         //通知main设置为手动发车
-                      checkIsAuto(lineId);
                     }
+                    checkIsAuto(lineId);
                 } else {
                     createSendCarUtil(lineId, waitVehicles);
+                    updateFailCount(lineId);
                 }
-                updateFailCount(lineId);
 
             }
         }, code, keyCode, lineId);
@@ -114,7 +116,11 @@ public class CarPlanService extends Service {
     private void failSleep(final int lineId){
         Log.e("failSleep---", "加载失败");
         failData.put(lineId, failData.get(lineId) + 1);
-        if (failData.get(lineId) > 2){
+        Log.e("failSleep---", "失败次数：" + failData.get(lineId));
+        if (failData.get(lineId) == 2){
+            if (failTimer.get(lineId) == null){
+                failTimer.put(lineId, new Timer());
+            }
             failTimer.get(lineId).schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -122,13 +128,14 @@ public class CarPlanService extends Service {
                     loadCarDataTimer(lineId);
                 }
             }, 0, 1000 * 30);
-        }else {
+        }else if (failData.get(lineId) < 2){
             loadCarDataTimer(lineId);
         }
     }
     //更新失败次数
     private void updateFailCount(int lineId){
         failData.put(lineId, 0);
+        if (failTimer.get(lineId) != null)
         failTimer.get(lineId).cancel();
     }
 
@@ -144,9 +151,8 @@ public class CarPlanService extends Service {
             @Override
             public void onSendCarSuccess(int lineId) {
                 //发车成功，发送广播更新列表数据
-                Intent intent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
-                intent.putExtra("lineId", lineId);
-                sendBroadcast(intent);
+                updateIntent.putExtra("lineId", lineId);
+                sendBroadcast(updateIntent);
                 checkIsAuto(lineId);
             }
 
@@ -193,7 +199,7 @@ public class CarPlanService extends Service {
             }
         }
 
-        Intent megIntent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
+        //发送广播更新发车模式
         megIntent.putExtra("isAuto", isAuto);
         megIntent.putExtra("type", "getData");
         sendBroadcast(megIntent);
@@ -211,6 +217,7 @@ public class CarPlanService extends Service {
                     lineIds.remove(i);
                     autoData.get(lineId).setTimerCancel();
                     autoData.remove(lineId);//移除自动发车
+                    failTimer.remove(lineId);
                 }
             }
         }
