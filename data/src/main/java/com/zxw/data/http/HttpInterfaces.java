@@ -331,7 +331,7 @@ public class HttpInterfaces {
          * @return 500/505
          */
         @FormUrlEncoded
-        @POST("phone/dispatcher/vehicle/to/adjust/sort")
+        @POST("phone/control/manage/task/line/schedule/adjust/sort")
         Observable<BaseBean> sortVehicle(@Field("userId") String code,
                                          @Field("keyCode") String keyCode,
                                          @Field("opId") int opId,

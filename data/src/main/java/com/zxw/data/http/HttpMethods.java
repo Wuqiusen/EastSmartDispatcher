@@ -33,7 +33,7 @@ import rx.schedulers.Schedulers;
  */
 public class HttpMethods {
 //    public static final String BASE_URL = "http://120.24.252.195:8080/yd_app/";
-    public static final String BASE_URL = "http://192.168.0.114:8080/yd_control_app/";
+    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
@@ -211,8 +211,7 @@ public class HttpMethods {
     }
     public void sendCar(Subscriber<BaseBean> subscriber, String userId, String keyCode, int objId){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<BaseBean> map = browse.sendCar(userId, keyCode, objId)
-                .map(new HttpResultFunc());
+        Observable<BaseBean> map = browse.sendCar(userId, keyCode, objId);
         toSubscribe(map, subscriber);
     }
     public void getStopVehicle(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){

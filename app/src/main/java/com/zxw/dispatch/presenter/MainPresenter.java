@@ -179,7 +179,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(BaseBean baseBean) {
-                mvpView.disPlay(baseBean.returnInfo);
+                if(baseBean.returnCode == 500)
+                    mvpView.disPlay("发车成功");
                 refreshList();
             }
         }, userId(), keyCode(), opId);
