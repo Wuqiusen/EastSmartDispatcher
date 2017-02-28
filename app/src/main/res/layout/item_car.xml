@@ -2,160 +2,135 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="25dp"
-    android:layout_centerInParent="true"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:minHeight="50dp"
     android:gravity="center"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
     <!--序号-->
     <TextView
         android:id="@+id/tv_car_sequence"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
-        tools:text="1"
-        android:layout_weight="2"/>
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        tools:text="123"
+        />
     <!--车号-->
     <TextView
         android:id="@+id/tv_car_code"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
+        android:layout_weight="5"
+        android:layout_height="wrap_content"
         android:background="@drawable/ll_stop_car_green_btn_bg"
         android:textColor="@color/font_white"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
-        tools:text="粤B03444"
-        android:layout_weight="4"/>
+        tools:text="粤B12345"
+        />
     <!--到站时刻-->
     <TextView
         android:id="@+id/tv_system_enter_time"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
-        tools:text="30min"
-        android:text="30min"
-        android:layout_weight="4"/>
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        tools:text="7:00"
+        />
     <!--计划时刻-->
     <TextView
         android:id="@+id/tv_plan_time"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
         tools:text="7:00"
-        android:text="30min"
-        android:layout_weight="4"/>
+        />
     <!--停场时间-->
     <TextView
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
-        tools:text="15min"
-        android:text="30min"
-        android:layout_weight="3"/>
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        tools:text="7:00"
+        />
     <!--发车间隔-->
     <TextView
         android:id="@+id/tv_interval_time"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
-        tools:text="7:00"
-        android:layout_weight="3"/>
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        tools:text="15"
+        />
     <!--单/双班-->
     <TextView
-        style="@style/content_car_font_main_style"
+        android:id="@+id/tv_is_double"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
+        android:layout_weight="3.5"
+        android:layout_height="wrap_content"
         tools:text="单班"
-        android:text="单班"
-        android:layout_weight="3.5"/>
+        />
     <!--驾驶员-->
     <TextView
         android:id="@+id/tv_driver"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
+        android:layout_weight="3"
+        android:layout_height="wrap_content"
         tools:text="张三"
-        android:layout_weight="3"/>
+        />
     <!--乘务员-->
     <TextView
         android:id="@+id/tv_trainman"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
-        tools:text="李华"
         android:layout_weight="3"
+        android:layout_height="wrap_content"
+        tools:text="李华"
         android:visibility="gone"/>
     <!--应跑单次-->
     <TextView
-        android:id="@+id/tv_is_double"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="10dp"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
         tools:text="6"
-        android:text="6"
-        android:layout_weight="3.5"/>
+        />
     <!--实跑单次-->
     <TextView
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="10dp"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
         tools:text="6"
-        android:text="6"
-        android:layout_weight="3.5"/>
+        />
     <!--归属站-->
     <TextView
-        android:id="@+id/tv_work_type"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="10dp"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
         tools:text="西乡客运站"
-        android:text="西乡客运站"
-        android:layout_weight="4"/>
-
+        />
     <!--任务类型-->
     <TextView
-        android:id="@+id/tv_task_type"
-        style="@style/content_car_font_main_style"
+        android:id="@+id/tv_work_type"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
         tools:text="正在运营"
-        android:text="正在运营"
-        android:layout_weight="4"/>
+        />
     <!--非营运任务-->
     <TextView
         android:id="@+id/tv_no_operation_task"
-        style="@style/content_car_font_main_style"
+        style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:minWidth="6dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
         tools:text="有"
-        android:text="有"
-        android:layout_weight="4"/>
+        />
     <!--操作-->
     <LinearLayout
         android:layout_width="0dp"
@@ -164,23 +139,25 @@
         android:orientation="horizontal">
         <TextView
             android:id="@+id/tv_send_car"
-            style="@style/content_car_font_main_style"
-            android:layout_width="wrap_content"
-            android:clickable="true"
-            android:minWidth="6dp"
-            android:text="发车"
+            style="@style/font_item_xml_style"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:textColor="@color/tv_font_blue_color"
+            android:clickable="true"
+            android:text="发车"
             />
         <TextView
             android:id="@+id/tv_support"
-            style="@style/content_car_font_main_style"
-            android:clickable="true"
-            android:minWidth="6dp"
-            android:text="支援"
+            style="@style/font_item_xml_style"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:textColor="@color/tv_font_blue_color"
+            android:clickable="true"
+            android:text="支援"
             />
     </LinearLayout>
-
 
     <!---->
     <!--实际发车时刻-->

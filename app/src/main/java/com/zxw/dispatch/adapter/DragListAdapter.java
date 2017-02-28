@@ -134,14 +134,6 @@ public class DragListAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_system_enter_time);
         tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getArriveTime()));
 
-        // 任务类型
-        TextView tv_task_type = (TextView) view.findViewById(R.id.tv_task_type);
-        tv_task_type.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openTaskTypeDialog();
-            }
-        });
 
         // 非营运任务
         TextView tv_no_operation_task = (TextView) view.findViewById(R.id.tv_no_operation_task);
@@ -160,7 +152,14 @@ public class DragListAdapter extends BaseAdapter {
         TextView tv_work_type = (TextView) view
                 .findViewById(R.id.tv_work_type);
         tv_is_double.setText(mDatas.get(position).getIsDouble() == 0 ?"单班":"双班");
+        // 任务类型
         tv_work_type.setText(mDatas.get(position).getType() == 1 ? "正线运营":"");
+        tv_work_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTaskTypeDialog();
+            }
+        });
 
         tv_send_car.setOnClickListener(new View.OnClickListener() {
             @Override

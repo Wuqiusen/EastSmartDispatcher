@@ -76,6 +76,18 @@
         <item name="android:minWidth">6dp</item>
         <item name="android:ellipsize">end</item>
     </style>
+    <!--item_car或item_send字体-->
+    <style name="font_item_xml_style">
+        <item name="android:minHeight">26dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">@null</item>
+        <item name="android:textSize">@dimen/font_xlarge</item>
+        <item name="android:textColor">@color/font_blue</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:minWidth">6dp</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
   <!--Dialog 弹出框-->
     <!--TitleText-->
     <style name="font_dialog_title_style">
@@ -105,7 +117,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">150dp</item>
         <item name="android:minHeight">40dp</item>
-        <item name="android:background">@drawable/btn_dialog_bg_style</item>
+        <item name="android:background">@drawable/btn_dialog_light_style</item>
         <item name="android:layout_marginTop">@dimen/normal_margin20</item>
         <item name="android:layout_marginLeft">@dimen/normal_margin10</item>
         <item name="android:layout_marginRight">@dimen/normal_margin10</item>
@@ -283,7 +295,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:textColor">@color/font_blue</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_weight">0.2</item>
