@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -91,8 +93,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private MsgReceiver msgReceiver;
     private List<View> views = new ArrayList<View>();
     private boolean isHaveSendCar = false;
+    private boolean isVisibleGoneCar = false;
     private TextView tv_steward_send;
     private TextView tv_steward_gone;
+    private TextView tvAlreadyIssued;
+    private LinearLayout llAlreadyIssuedCar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +127,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvManual = (TextView) view.findViewById(R.id.tv_manual);
         tv_steward_send = (TextView) view.findViewById(R.id.tv_steward_send);
         tv_steward_gone = (TextView) view.findViewById(R.id.tv_steward_gone);
+        tvAlreadyIssued = (TextView) view.findViewById(R.id.tv_already_issued_car);
+        llAlreadyIssuedCar = (LinearLayout)view.findViewById(R.id.ll_already_issued_car);
         tvAutomatic.setOnClickListener(this);
         tvManual.setOnClickListener(this);
         tvController.setOnClickListener(this);
+        tvAlreadyIssued.setOnClickListener(this);
         views.add(view);
 
         // 排班计划
@@ -351,6 +359,15 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 presenter.selectManual();
                 viewCover.setVisibility(View.GONE);
                 break;
+            case R.id.tv_already_issued_car:
+                if (isVisibleGoneCar){
+                    isVisibleGoneCar = false;
+                    llAlreadyIssuedCar.setVisibility(View.VISIBLE);
+                }else{
+                    isVisibleGoneCar = true;
+                    llAlreadyIssuedCar.setVisibility(View.GONE);
+                }
+
         }
     }
 
@@ -444,7 +461,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.w("onReceive---", "Main广播已接收");
             if (TextUtils.equals(intent.getStringExtra("type"), "getData")) {
+                Log.w("onReceive---", "更新发车状态");
                 if (intent.getBooleanExtra("isAuto", false)) {
                     setTvBackground(2);
                     viewCover.setVisibility(View.VISIBLE);
@@ -454,6 +473,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 }
 
             } else {
+                Log.w("onReceive---", "刷新数据");
                 //刷新数据
                 presenter.refreshList();
             }
