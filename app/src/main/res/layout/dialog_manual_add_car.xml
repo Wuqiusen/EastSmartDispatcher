@@ -5,13 +5,15 @@
 
     >
     <!--请手动添加发车列表的车辆dialog-->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:background="@drawable/ll_car_dialog"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/title_img"
@@ -23,42 +25,34 @@
             android:textSize="@dimen/font_huge"
             android:textColor="@color/white"/>
 
-        <EditText
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
             android:id="@+id/et_car_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:textCursorDrawable="@drawable/color_cursor"
-            android:layout_below="@+id/title_img"
-            android:hint="车辆id"
-            android:text="7172"
             android:visibility="visible"/>
 
-        <EditText
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
             android:id="@+id/et_driver"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:textCursorDrawable="@drawable/color_cursor"
-            android:layout_below="@+id/et_car_code"
-            android:hint="司机id"
-            android:text="18"
             android:visibility="visible"/>
 
-        <EditText
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
             android:id="@+id/et_steward"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:textCursorDrawable="@drawable/color_cursor"
-            android:layout_below="@+id/et_driver"
             android:hint="乘务员id"
             android:visibility="visible"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/et_steward"
             android:layout_marginTop="@dimen/margin_fit"
             android:layout_marginLeft="@dimen/margin_order"
             android:layout_marginRight="@dimen/margin_order"
@@ -81,7 +75,7 @@
                 android:textColor="@color/font_black"
                 />
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>

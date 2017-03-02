@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.zxw.data.bean.Vehicle;
+import com.zxw.data.bean.FuzzyVehicleBean;
 import com.zxw.dispatch.R;
 
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class CarAdapter extends BaseAdapter{
 
-        private List<Vehicle> mData;
+        private List<FuzzyVehicleBean> mData;
     private OnSelectItemListener listener;
     private Context mContext;
 
-        public CarAdapter(List<Vehicle> mData, OnSelectItemListener listener, Context context){
+        public CarAdapter(List<FuzzyVehicleBean> mData, OnSelectItemListener listener, Context context){
         this.mData = mData;
         this.listener = listener;
             this.mContext = context;
@@ -53,7 +53,7 @@ public class CarAdapter extends BaseAdapter{
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv.setText(mData.get(position).vehicleCode);
+        holder.tv.setText(mData.get(position).getCode());
         holder.tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +64,7 @@ public class CarAdapter extends BaseAdapter{
     }
 
         public interface OnSelectItemListener{
-        void onSelectItemListener(Vehicle vehicle);
+        void onSelectItemListener(FuzzyVehicleBean vehicle);
     }
 
     public class ViewHolder{

@@ -42,6 +42,7 @@ import com.zxw.dispatch.utils.DebugLog;
     private int temChangId;// 临时交换id
 
     private boolean isLock;// 是否上锁.
+    private boolean isDrag;// 是否正在拖动.
 
     private MyDragListener mMyDragListener;
 
@@ -81,7 +82,7 @@ import com.zxw.dispatch.utils.DebugLog;
             dragYOffset = (int) (ev.getRawY() - y);
 
             // 获取可拖拽的图标
-            View dragger = itemView.findViewById(R.id.tv_car_sequence);
+            View dragger = itemView.findViewById(R.id.ll_drag_handle);
             DebugLog.w(dragger.getLeft()+","+ dragger.getRight() + "=" + x);
             //点击的x坐标大于移动按钮的x坐标，就当成是按到了iv_move触发了移动
             if (dragger != null && x < dragger.getRight()) { //如果想点击item的任意位置都能进行拖拽，把x > dragger.getLeft()限定去掉就行
@@ -91,11 +92,10 @@ import com.zxw.dispatch.utils.DebugLog;
                 itemView.setDrawingCacheEnabled(true);// 开启cache.
                 Bitmap bm = Bitmap.createBitmap(itemView.getDrawingCache());// 根据cache创建一个新的bitmap对象,就是你拖着狂奔的对象
                 startDrag(bm, y);// 初始化影像
+                return true;
             }
-            return false;
         }
-
-        return false;
+        return super.onInterceptTouchEvent(ev);
     }
 
     /**
@@ -103,7 +103,7 @@ import com.zxw.dispatch.utils.DebugLog;
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        DebugLog.w("list onTouchEvent");
+        DebugLog.w("list onTouchEvent x:" + ev.getX());
         // item的view不为空，且获取的dragPosition有效
         if (dragImageView != null && dragEndPosition != INVALID_POSITION
                 && !isLock) {
@@ -159,6 +159,8 @@ import com.zxw.dispatch.utils.DebugLog;
         windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         windowManager.addView(imageView, windowParams);
         dragImageView = imageView;
+        DebugLog.w("x:"+imageView.getX());
+        DebugLog.w("dragImageView x:"+dragImageView.getX());
 
     }
 
@@ -279,4 +281,5 @@ import com.zxw.dispatch.utils.DebugLog;
     public void setMyDragListener(MyDragListener listener) {
         mMyDragListener = listener;
     }
+
 }

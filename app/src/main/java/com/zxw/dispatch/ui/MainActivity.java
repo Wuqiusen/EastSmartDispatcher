@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -41,6 +40,7 @@ import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
 import com.zxw.dispatch.view.DragListView;
 import com.zxw.dispatch.view.MyDialog;
+import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -258,33 +258,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void showManualAddStopCarDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        View container = View.inflate(mContext, R.layout.dialog_manual_add_car, null);
-        final EditText et_car_code = (EditText) container.findViewById(R.id.et_car_code);
-        final EditText et_driver = (EditText) container.findViewById(R.id.et_driver);
-        final EditText et_steward = (EditText) container.findViewById(R.id.et_steward);
-        Button btn_confirm = (Button) container.findViewById(R.id.btn_confirm);
-        Button btn_cancel = (Button) container.findViewById(R.id.btn_cancel);
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
+        new ManualAddStopCarDialog(mContext, presenter.getLineParams(), new ManualAddStopCarDialog.OnManualAddStopCarListener() {
             @Override
-            public void onClick(View v) {
-                if (mManualStopDialog != null && mManualStopDialog.isShowing()){
-                    String carId = et_car_code.getText().toString().trim();
-                    String driverId = et_driver.getText().toString().trim();
-                    String stewardId = et_steward.getText().toString().trim();
-                    presenter.manualAddStopCar(carId, driverId, stewardId);
-                    mManualStopDialog.dismiss();
-                }
+            public void manualAddStopCar(String carId, String driverId, String stewardId) {
+                presenter.manualAddStopCar(carId, driverId, stewardId);
             }
         });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mManualStopDialog != null && mManualStopDialog.isShowing())
-                    mManualStopDialog.dismiss();
-            }
-        });
-        mManualStopDialog = builder.setView(container).show();
     }
 
     @Override

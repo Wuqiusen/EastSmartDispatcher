@@ -7,26 +7,33 @@
     android:minHeight="50dp"
     android:gravity="center"
     android:orientation="horizontal">
-    <!--序号-->
-    <TextView
-        android:id="@+id/tv_car_sequence"
-        style="@style/font_item_xml_style"
+    <LinearLayout
+        android:id="@+id/ll_drag_handle"
         android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_weight="7"
         android:layout_height="wrap_content"
-        tools:text="123"
-        />
-    <!--车号-->
-    <TextView
-        android:id="@+id/tv_car_code"
-        style="@style/font_item_xml_style"
-        android:layout_width="0dp"
-        android:layout_weight="5"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ll_stop_car_green_btn_bg"
-        android:textColor="@color/font_white"
-        tools:text="粤B12345"
-        />
+        android:orientation="horizontal">
+        <!--序号-->
+        <TextView
+            android:id="@+id/tv_car_sequence"
+            style="@style/font_item_xml_style"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            tools:text="123"
+            />
+        <!--车号-->
+        <TextView
+            android:id="@+id/tv_car_code"
+            style="@style/font_item_xml_style"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ll_stop_car_green_btn_bg"
+            android:textColor="@color/font_white"
+            tools:text="粤B12345"
+            />
+    </LinearLayout>
     <!--到站时刻-->
     <TextView
         android:id="@+id/tv_system_enter_time"

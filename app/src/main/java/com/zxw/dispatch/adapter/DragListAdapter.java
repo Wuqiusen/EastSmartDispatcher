@@ -1,6 +1,5 @@
 package com.zxw.dispatch.adapter;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.text.TextUtils;
@@ -114,7 +113,7 @@ public class DragListAdapter extends BaseAdapter {
                     @Override
                     public void onTimePicker(String sHour, String sMinute) {
                              ToastHelper.showToast(sHour+":"+sMinute,mContext);
-
+                            presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
                     }
                 }).show();
             }

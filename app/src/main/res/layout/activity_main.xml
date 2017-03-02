@@ -230,8 +230,8 @@
                             android:id="@+id/lv_send_car"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:descendantFocusability="blocksDescendants"
                             />
+                        <!--android:descendantFocusability="afterDescendants"-->
                         <View
                             android:id="@+id/view_cover"
                             android:layout_width="match_parent"

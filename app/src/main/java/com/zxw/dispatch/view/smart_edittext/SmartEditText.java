@@ -15,10 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import com.zxw.data.bean.FuzzyVehicleBean;
 import com.zxw.data.bean.PersonInfo;
-import com.zxw.data.bean.Vehicle;
 import com.zxw.data.http.HttpMethods;
-import com.zxw.data.source.QuerySource;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.utils.Base64;
@@ -44,14 +43,13 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     private OnLoadValueListener listener;
     private Context mContext;
 
-    private Vehicle mSelectVehicle;
+    private FuzzyVehicleBean mSelectVehicle;
     private PersonInfo mSelectPerson;
     private ListView popItem;
     private PopupWindow popupWindow;
     private EditText mEditText;
     private CarAdapter mCarAdapter;
     private PersonAdapter mPersonAdapter;
-    private QuerySource mSource;
 
     private boolean isQuery = true;
 
@@ -69,7 +67,6 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         View.inflate(mContext, R.layout.smart_edittext, this);
         mEditText = (EditText) findViewById(R.id.et_smart);
         initPopListView(context);
-        mSource = new QuerySource();
     }
 
     private void initPopListView(Context context) {
@@ -158,26 +155,30 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     }
 
     private void queryVehicle(String str) {
-        if (str.length() >= 3) {
-            mSource.queryVehcile(new Subscriber<List<Vehicle>>() {
-                                     @Override
-                                     public void onCompleted() {
+        try {
+            if (str.length() >= 3) {
+                String desStr = new DESPlus().encrypt(Base64.encode(str.getBytes("utf-8")));
+                HttpMethods.getInstance().queryVehcile(new Subscriber<List<FuzzyVehicleBean>>() {
+                                                           @Override
+                                                           public void onCompleted() {
 
-                                     }
+                                                           }
 
-                                     @Override
-                                     public void onError(Throwable e) {
-                                         DebugLog.w(e.getMessage());
-                                     }
+                                                           @Override
+                                                           public void onError(Throwable e) {
+                                                               DebugLog.w(e.getMessage());
+                                                           }
 
-                                     @Override
-                                     public void onNext(List<Vehicle> vehicles) {
-                                         displayVehcile(vehicles);
-                                     }
-                                 }, SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID),
-                    SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE),
-                    str,
-                    1, 20);
+                                                           @Override
+                                                           public void onNext(List<FuzzyVehicleBean> vehicles) {
+                                                               displayVehcile(vehicles);
+                                                           }
+                                                       }, SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID),
+                        SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE),
+                        desStr);
+            }
+        }catch (Exception e){
+
         }
     }
 
@@ -217,7 +218,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         popupWindow.showAsDropDown(SmartEditText.this);
     }
 
-    private void displayVehcile(List<Vehicle> vehicles) {
+    private void displayVehcile(List<FuzzyVehicleBean> vehicles) {
         DebugLog.w(vehicles.size() + "size");
         if (vehicles.size() == 0)
             return;
@@ -229,7 +230,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     private void initInputType(int inputType) {
         this.inputType = inputType;
     }
-    public Vehicle getVehicleInfo() {
+    public FuzzyVehicleBean getVehicleInfo() {
                 return mSelectVehicle;
     }
     public PersonInfo getPeopleInfo(){
@@ -241,11 +242,10 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     }
 
     @Override
-    public void onSelectItemListener(Vehicle vehicle) {
+    public void onSelectItemListener(FuzzyVehicleBean vehicle) {
         stopNextEditTextWatcherEvent();
-        DebugLog.w(vehicle.vehicleCode);
         mSelectVehicle = vehicle;
-        mEditText.setText(vehicle.vehicleCode);
+        mEditText.setText(vehicle.getCode());
         mEditText.setSelection(mEditText.length());
         popupWindow.dismiss();
     }
@@ -281,9 +281,9 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     }
 
     public void setVehcile(String name, int id) {
-        Vehicle vehicle = new Vehicle();
-        vehicle.vehicleCode = name;
-        vehicle.id = id;
+        FuzzyVehicleBean vehicle = new FuzzyVehicleBean();
+        vehicle.setCode(name);
+        vehicle.setVehicleId(id);
         mSelectVehicle = vehicle;
         mEditText.setText(name);
     }

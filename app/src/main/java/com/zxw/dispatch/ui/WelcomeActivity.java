@@ -65,7 +65,6 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
 

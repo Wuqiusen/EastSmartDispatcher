@@ -314,4 +314,27 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
         }, userId(), keyCode(), id, peopleId, type);
     }
+
+    public void alertVehTime(int id, String vehTime) {
+        HttpMethods.getInstance().alertVehTime(new Subscriber() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+
+            }
+        }, userId(), keyCode(), id, vehTime);
+    }
+
+    public LineParams getLineParams() {
+        return mLineParams;
+    }
 }
