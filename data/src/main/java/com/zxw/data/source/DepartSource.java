@@ -19,7 +19,7 @@ public class DepartSource {
         HttpMethods.getInstance().waitVehicle(subscriber, code, lineId, stationId, keyCode, pageNo, pageSize);
     }
 
-    public void sortVehicle(Subscriber<BaseBean> subscriber, String code, String keyCode, int opId, int replaceId){
+    public void sortVehicle(Subscriber subscriber, String code, String keyCode, int opId, int replaceId){
         HttpMethods.getInstance().sortVehicle(subscriber, code, keyCode, opId, replaceId);
     }
 

@@ -345,9 +345,32 @@ public class DragListAdapter extends BaseAdapter {
      * @param end   松开时候的position
      */
     public void update(int start, int end) {
-        DepartCar startVehicle = mDatas.get(start);
-        DepartCar endVehicle = mDatas.get(end);
-        presenter.sortVehicle(startVehicle.getId(), endVehicle.getId());
+        final DepartCar startVehicle = mDatas.get(start);
+        final DepartCar endVehicle = mDatas.get(end);
+        final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext,R.layout.view_message_confirm_dialog,null);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        TextView tv_message = (TextView) view.findViewById(R.id.tv_message);
+        tv_message.setText("确定更换序号为" + (start + 1) + "和" + (end + 1) + "的车辆位置？");
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.sortVehicle(startVehicle.getId(), endVehicle.getId());
+                sDialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sDialog.dismiss();
+            }
+        });
+        sDialog.setContentView(view,params);
+        sDialog.setCancelable(true);
+        sDialog.show();
     }
 
     @Override

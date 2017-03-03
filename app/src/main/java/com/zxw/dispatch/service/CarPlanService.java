@@ -5,7 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,8 +46,38 @@ public class CarPlanService extends Service {
     private DepartSource mSource = new DepartSource();
     private String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
     private String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
-    private  Intent megIntent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
+    private Intent megIntent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
     private Intent updateIntent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
+    private Intent rIntent;
+
+    private final static int CANCLE_AUTO = 11;
+    private final static int IS_AUTO = 12;
+
+    Handler handler =  new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            try {
+                switch (msg.what) {
+                    case CANCLE_AUTO:
+                        Log.w("service---", "关闭自动发车");
+                        if (rIntent != null)
+                        removeAutoData(rIntent.getIntExtra("lineId", 0));
+                        break;
+                    case IS_AUTO:
+                        Log.w("service---", "判断是否自动发车");
+                        if (rIntent != null)
+                        checkIsAuto(rIntent.getIntExtra("lineKey", 0));
+                        break;
+                    default:
+                        rIntent = null;
+                        break;
+                }
+
+            } catch (Exception e) {
+            }
+        }
+    };
 
     @Nullable
     @Override
@@ -86,7 +119,7 @@ public class CarPlanService extends Service {
 
             @Override
             public void onError(Throwable e) {
-               failSleep(lineId);
+                failSleep(lineId);
             }
 
             @Override
@@ -111,14 +144,15 @@ public class CarPlanService extends Service {
 
     /**
      * 失败两次以上进行休眠
+     *
      * @param lineId
      */
-    private void failSleep(final int lineId){
+    private void failSleep(final int lineId) {
         Log.e("failSleep---", "加载失败");
         failData.put(lineId, failData.get(lineId) + 1);
         Log.e("failSleep---", "失败次数：" + failData.get(lineId));
-        if (failData.get(lineId) == 2){
-            if (failTimer.get(lineId) == null){
+        if (failData.get(lineId) == 2) {
+            if (failTimer.get(lineId) == null) {
                 failTimer.put(lineId, new Timer());
             }
             failTimer.get(lineId).schedule(new TimerTask() {
@@ -128,15 +162,16 @@ public class CarPlanService extends Service {
                     loadCarDataTimer(lineId);
                 }
             }, 0, 1000 * 30);
-        }else if (failData.get(lineId) < 2){
+        } else if (failData.get(lineId) < 2) {
             loadCarDataTimer(lineId);
         }
     }
+
     //更新失败次数
-    private void updateFailCount(int lineId){
+    private void updateFailCount(int lineId) {
         failData.put(lineId, 0);
         if (failTimer.get(lineId) != null)
-        failTimer.get(lineId).cancel();
+            failTimer.get(lineId).cancel();
     }
 
     /**
@@ -159,7 +194,7 @@ public class CarPlanService extends Service {
             @Override
             public void onSendCarFail(int lineId) {
                 //发送失败，重新获取发车列表
-               removeAutoData(lineId);
+                removeAutoData(lineId);
                 loadCarDataTimer(lineId);
 
             }
@@ -176,11 +211,18 @@ public class CarPlanService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.w("onReceive---", "广播已接收");
+            Message obtain = Message.obtain();
+            rIntent = intent;
             if (intent.getStringExtra("type") != null && TextUtils.equals(intent.getStringExtra("type"), "getData")) {
-               checkIsAuto(intent.getIntExtra("lineKey", 0));
+                obtain.what = IS_AUTO;
+                handler.sendMessage(obtain);
+
+
             } else {
                 //取消自动发车
-                removeAutoData(intent.getIntExtra("lineId", 0));
+                obtain.what = CANCLE_AUTO;
+                handler.sendMessage(obtain);
+
             }
         }
     }
@@ -188,7 +230,7 @@ public class CarPlanService extends Service {
     /**
      * 判断是否设置了自动发车
      */
-    private void checkIsAuto(int lineKey){
+    private void checkIsAuto(int lineKey) {
         //获取自动发车列表，发送广播给Main判断该线路是否设置自动发车
         boolean isAuto = false;
         if (lineIds != null && !lineIds.isEmpty()) {
@@ -207,6 +249,7 @@ public class CarPlanService extends Service {
 
     /**
      * 移除定时器
+     *
      * @param lineId
      */
     private void removeAutoData(int lineId) {
@@ -221,12 +264,45 @@ public class CarPlanService extends Service {
                 }
             }
         }
+        closeService();
     }
+
+    /**
+     * 关闭service
+     */
+    private void closeService() {
+        if (lineIds == null || lineIds.isEmpty()) {
+            Log.e("closeService---", "service数据为空");
+            this.onDestroy();
+        }
+    }
+
 
     @Override
     public void onDestroy() {
         unregisterReceiver(carPlanReceiver);
+        carPlanReceiver = null;
         super.onDestroy();
+        Log.e("onDestroy---", "service销毁");
+        clearData();
+        rIntent = null;
+    }
+
+    private void clearData() {
+        if (autoData != null && !autoData.isEmpty())
+            for (int key : autoData.keySet()) {
+                autoData.get(key).setTimerCancel();
+                autoData.remove(key);
+            }
+
+        if (failTimer != null && !failTimer.isEmpty())
+            for (int key : failTimer.keySet()) {
+                failTimer.get(key).cancel();
+                failTimer.remove(key);
+            }
+
+        failData.clear();
+        lineIds.clear();
     }
 }
 

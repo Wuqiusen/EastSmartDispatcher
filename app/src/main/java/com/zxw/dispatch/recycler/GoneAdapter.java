@@ -58,7 +58,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         holder.tvArriveTime.setText(DisplayTimeUtil.substring(history.arriveTime));
 //        holder.tvStopTime.setText(String.valueOf(history.vehTime));
         holder.tvIntervalTime.setText(String.valueOf(history.spaceTime));
-        holder.tvSendTime.setText(DisplayTimeUtil.substring(history.runNumReal));
+        holder.tvSendTime.setText(DisplayTimeUtil.substring(history.vehTimeReal));
 //        holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班"); ///
 //        holder.tvStationStatus.setText(String.valueOf(history.vehTime));
         holder.tvWorkStatus.setText(history.type == 1? "正线运营": "");

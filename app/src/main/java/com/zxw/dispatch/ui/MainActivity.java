@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -97,13 +100,48 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private TextView tv_steward_gone;
     private TextView tvAlreadyIssued;
     private LinearLayout llAlreadyIssuedCar;
+    private static final int REFRESH = 1;
+    private static final int AUTO = 2;
+    private static final int HANDLE = 3;
+    private boolean isAuto = false;
+
+    private long clickTime = 0;
+
+    Handler handler =  new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            try {
+                switch (msg.what) {
+                    case REFRESH:
+                        Log.w("onReceive---", "刷新数据");
+                        //刷新数据
+                        presenter.refreshList();
+                        break;
+                    case AUTO:
+                        Log.w("onReceive---", "自动发车");
+                        isAuto = true;
+                        setTvBackground(2);
+                        viewCover.setVisibility(View.VISIBLE);
+                        break;
+                    case HANDLE:
+                        Log.w("onReceive---", "手动发车");
+                        isAuto = false;
+                        setTvBackground(1);
+                        viewCover.setVisibility(View.GONE);
+                        break;
+                }
+            } catch (Exception e) {
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_new);
         ButterKnife.bind(this);
-        creatRexeiver();
+        createReceiver();
         initView();
         int spotId = getIntent().getIntExtra("spotId", -1);
         presenter.loadLineList(spotId);
@@ -155,7 +193,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mStopRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
-    private void creatRexeiver() {
+    private void createReceiver() {
         //动态注册广播接收器
         if (msgReceiver == null) {
             msgReceiver = new MsgReceiver();
@@ -316,26 +354,32 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 isSureLoginOut();
                 break;
             case R.id.tv_automatic:
-                if (!isHaveSendCar){
-                    ToastHelper.showToast("该线路没有待发车辆", mContext);
-                    return;
+                if ((System.currentTimeMillis() - clickTime) > 1000) {
+                    if (!isAuto){
+                        if (!isHaveSendCar){
+                            ToastHelper.showToast("该线路没有待发车辆", mContext);
+                            return;
+                        }
+                        setTvBackground(2);
+                        viewCover.setVisibility(View.VISIBLE);
+                        //动态注册广播接收器
+                        createReceiver();
+                        presenter.selectAuto();
+                        clickTime = System.currentTimeMillis();
+                        isAuto = true;
+                    }
                 }
-                setTvBackground(2);
-                //动态注册广播接收器
-                if (msgReceiver == null) {
-                    msgReceiver = new MsgReceiver();
-                    IntentFilter intentFilter = new IntentFilter();
-                    intentFilter.addAction("com.zxw.dispatch.MSG_RECEIVER");
-                    registerReceiver(msgReceiver, intentFilter);
-                }
-                presenter.selectAuto();
-                viewCover.setVisibility(View.VISIBLE);
-
                 break;
             case R.id.tv_manual:
-                setTvBackground(1);
-                presenter.selectManual();
-                viewCover.setVisibility(View.GONE);
+                if ((System.currentTimeMillis() - clickTime) > 1000) {
+                    if (isAuto){
+                        setTvBackground(1);
+                        viewCover.setVisibility(View.GONE);
+                        presenter.selectManual();
+                        clickTime = System.currentTimeMillis();
+                        isAuto = false;
+                    }
+                }
                 break;
             case R.id.tv_already_issued_car:
                 if (isVisibleGoneCar){
@@ -440,22 +484,21 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.w("onReceive---", "Main广播已接收");
+            Message obtain = Message.obtain();
             if (TextUtils.equals(intent.getStringExtra("type"), "getData")) {
                 Log.w("onReceive---", "更新发车状态");
                 if (intent.getBooleanExtra("isAuto", false)) {
-                    Log.w("onReceive---", "自动发车");
-                    setTvBackground(2);
-                    viewCover.setVisibility(View.VISIBLE);
+                    obtain.what = AUTO;
+                    handler.sendMessage(obtain);
                 } else {
-                    Log.w("onReceive---", "手动发车");
-                    setTvBackground(1);
-                    viewCover.setVisibility(View.GONE);
+                    obtain.what = HANDLE;
+                    handler.sendMessage(obtain);
                 }
-
             } else {
                 Log.w("onReceive---", "刷新数据");
                 //刷新数据
-                presenter.refreshList();
+                obtain.what = REFRESH;
+                handler.sendMessage(obtain);
             }
         }
 
