@@ -8,6 +8,7 @@ import com.zxw.data.bean.FuzzyVehicleBean;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
+import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
@@ -255,6 +256,12 @@ public class HttpMethods {
                 .map(new HttpResultFunc<List<PersonInfo>>());
         toSubscribe(map, subscriber);
     }
+    public void missionList(Subscriber<List<MissionType>> subscriber, String userId, String keyCode, String content, int type){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<MissionType>> map = browse.missionList(userId, keyCode, content, type)
+                .map(new HttpResultFunc<List<MissionType>>());
+        toSubscribe(map, subscriber);
+    }
 
     public void changePersonInfo(Subscriber<BaseBean> subscriber, String userId, String keyCode,
                                   int objId, int personId, int type){
@@ -273,6 +280,24 @@ public class HttpMethods {
                              int objId){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable map = operator.callBackScheduleCar(userId, keyCode, objId).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+    }
+    public void callBackGoneCar(Subscriber subscriber, String userId, String keyCode,
+                             int objId){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.callBackGoneCar(userId, keyCode, objId).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+    }
+    public void missionType(Subscriber subscriber, String userId, String keyCode,
+                             int objId, int type, int taskId){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.missionType(userId, keyCode, objId, type, taskId).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+    }
+    public void goneCarRemarks(Subscriber subscriber, String userId, String keyCode,
+                             int objId, int status, String remarks){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.goneCarRemarks(userId, keyCode, objId, status, remarks).map(new HttpResultFunc());
         toSubscribe(map, subscriber);
     }
 

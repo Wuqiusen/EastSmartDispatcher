@@ -8,6 +8,7 @@ import com.zxw.data.bean.FuzzyVehicleBean;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
+import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
@@ -323,6 +324,13 @@ public class HttpInterfaces {
                                                                 @Field("content") String content,
                                                                 @Field("type") int type);
 
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/type/content/list")
+        Observable<BaseBean<List<MissionType>>> missionList(@Field("userId") String userId,
+                                                            @Field("keyCode") String keyCode,
+                                                            @Field("content") String content,
+                                                            @Field("type") int type);
+
 
     }
 
@@ -474,6 +482,32 @@ public class HttpInterfaces {
         Observable<BaseBean> callBackScheduleCar(@Field("userId") String userId,
                                           @Field("keyCode") String keyCode,
                                           @Field("objId") int objId);
+
+        // 20 已发车列表撤回到待发车列表
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/history/cancel")
+        Observable<BaseBean> callBackGoneCar(@Field("userId") String userId,
+                                          @Field("keyCode") String keyCode,
+                                          @Field("objId") int objId);
+
+
+            // 23 调整任务类型
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/adjust/task/type")
+        Observable<BaseBean> missionType(@Field("userId") String userId,
+                                          @Field("keyCode") String keyCode,
+                                          @Field("objId") int objId,
+                                         @Field("type") int type,
+                                         @Field("taskId") int taskId);
+
+        // 24 已发车列表填写备注
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/history/remarks")
+        Observable<BaseBean> goneCarRemarks(@Field("userId") String userId,
+                                          @Field("keyCode") String keyCode,
+                                          @Field("objId") int objId,
+                                         @Field("status") int status,
+                                         @Field("remarks") String remarks); //DES PLUS转码
 
 
     }

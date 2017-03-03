@@ -2,12 +2,14 @@ package com.zxw.dispatch.view.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
 import com.zxw.data.bean.LineParams;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
+import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.smart_edittext.SmartEditText;
 
 /**
@@ -54,8 +56,20 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
             public void onClick(View v) {
                 if (dialog != null && dialog.isShowing()){
                     String carId = String.valueOf(et_car_code.getVehicleInfo().getVehicleId());
+                    if (TextUtils.isEmpty(carId)){
+                        ToastHelper.showToast("请输入车牌号");
+                        return;
+                    }
                     String driverId = String.valueOf(et_driver.getPeopleInfo().personId);
+                    if (TextUtils.isEmpty(driverId)){
+                        ToastHelper.showToast("请输入司机姓名");
+                        return;
+                    }
                     String stewardId = String.valueOf(et_steward.getPeopleInfo().personId);
+                    if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL && TextUtils.isEmpty(stewardId)){
+                        ToastHelper.showToast("请输入乘务员姓名");
+                        return;
+                    }
                     mListener.manualAddStopCar(carId, driverId, stewardId);
                     dialog.dismiss();
                 }
