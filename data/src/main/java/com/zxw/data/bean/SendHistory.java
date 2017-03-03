@@ -18,4 +18,5 @@ public class SendHistory {
     public Integer unRunTaskStatus;
     public String vehTime;
     public String stewardName;
+    public String vehTimeReal;
 }

@@ -42,6 +42,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     public final static int TYPE_SALE_AUTO = 1, TYPE_SALE_MANUAL = 2;
     private List<DepartCar> mWaitVehicles;
     private boolean isAuto = false;
+    private Intent receiverIntent = new Intent("com.zxw.dispatch.service.RECEIVER");
 
     public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
@@ -187,7 +188,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void sortVehicle(int opId, int replaceId) {
-        mDepartSource.sortVehicle(new Subscriber<BaseBean>() {
+        mDepartSource.sortVehicle(new Subscriber() {
             @Override
             public void onCompleted() {
 
@@ -200,8 +201,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
 
             @Override
-            public void onNext(BaseBean baseBean) {
-                mvpView.disPlay(baseBean.returnInfo);
+            public void onNext(Object o) {
                 refreshList();
             }
         }, userId(), keyCode(), opId, replaceId);
@@ -238,6 +238,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * 点击自动发车
      */
     public void selectAuto() {
+        if (serviceIntent == null)
         serviceIntent = new Intent(mContext,CarPlanService.class);
         serviceIntent.putExtra("lineId", lineId);
         mContext.startService(serviceIntent);
@@ -247,9 +248,9 @@ public class MainPresenter extends BasePresenter<MainView> {
      * 点击手动发车
      */
     public void selectManual() {
-        Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
-        intent.putExtra("lineId", lineId);
-        mContext.sendBroadcast(intent);
+//        Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
+        receiverIntent.putExtra("lineId", lineId);
+        mContext.sendBroadcast(receiverIntent);
     }
 
     public void manualAddStopCar(String carId, String driverId, String stewardId) {
