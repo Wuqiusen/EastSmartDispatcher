@@ -25,6 +25,9 @@ public class BasePresenter<V extends BaseView> {
     protected String userId(){
         return SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
     }
+    protected String name(){
+        return SpUtils.getCache(MyApplication.mContext, SpUtils.NAME);
+    }
 //    protected String timestamp(){
 //        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 //        Date curDate = new Date(System.currentTimeMillis());//获取当前时间

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -23,6 +24,13 @@
             android:text="777"
             android:textColor="@color/white"
             android:textSize="@dimen/font_xlarge"/>
+        <TextView
+            android:id="@+id/tv_time_to_send_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            tools:text="12辆"
+            android:text=""/>
     </LinearLayout>
 
     <View

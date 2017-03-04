@@ -3,7 +3,6 @@ package com.zxw.dispatch.utils;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.source.DepartSource;
 
@@ -104,7 +103,7 @@ public class SendCarUtils {
 
 
     private void sendCar() {
-        mSource.sendCar(new Subscriber<BaseBean>() {
+        mSource.sendCar(new Subscriber() {
             @Override
             public void onCompleted() {
             }
@@ -119,7 +118,7 @@ public class SendCarUtils {
             }
 
             @Override
-            public void onNext(BaseBean baseBean) {
+            public void onNext(Object o) {
                 DebugLog.e("sendCar" + lineID);
                 Log.w("sendCar---", departCars.get(0).getCode() + "已经发出");
                 if (sendCarResult != null) {

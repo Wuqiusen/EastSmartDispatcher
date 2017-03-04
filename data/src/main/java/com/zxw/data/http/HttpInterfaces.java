@@ -324,12 +324,16 @@ public class HttpInterfaces {
                                                                 @Field("content") String content,
                                                                 @Field("type") int type);
 
+        /**
+         * 获取任务类型及内容
+         * @param userId
+         * @param keyCode
+         * @return
+         */
         @FormUrlEncoded
         @POST("phone/control/manage/task/type/content/list")
         Observable<BaseBean<List<MissionType>>> missionList(@Field("userId") String userId,
-                                                            @Field("keyCode") String keyCode,
-                                                            @Field("content") String content,
-                                                            @Field("type") int type);
+                                                            @Field("keyCode") String keyCode);
 
 
     }
@@ -498,7 +502,7 @@ public class HttpInterfaces {
                                           @Field("keyCode") String keyCode,
                                           @Field("objId") int objId,
                                          @Field("type") int type,
-                                         @Field("taskId") int taskId);
+                                         @Field("taskId") String taskId);
 
         // 24 已发车列表填写备注
         @FormUrlEncoded

@@ -1,6 +1,7 @@
 package com.zxw.dispatch.ui;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,10 +22,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
+import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
@@ -36,6 +39,7 @@ import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.recycler.GoneAdapter;
 import com.zxw.dispatch.recycler.MainAdapter;
+import com.zxw.dispatch.recycler.MissionAdapter;
 import com.zxw.dispatch.recycler.StopAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
 import com.zxw.dispatch.utils.SpUtils;
@@ -49,12 +53,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
-        PopupAdapter.OnPopupWindowListener,View.OnClickListener{
+        PopupAdapter.OnPopupWindowListener, View.OnClickListener {
 
     @Bind(R.id.img_setting)
     ImageView imgSetting;
@@ -91,7 +97,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private PopupAdapter popupAdapter;
     private AlertDialog mManualStopDialog, mStopCarDialog;
     private PopupWindow mPopupWindow = null;
-    private ListView lv_popup =null;
+    private ListView lv_popup = null;
     private MsgReceiver msgReceiver;
     private List<View> views = new ArrayList<View>();
     private boolean isHaveSendCar = false;
@@ -103,11 +109,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private static final int REFRESH = 1;
     private static final int AUTO = 2;
     private static final int HANDLE = 3;
+    private static final int SEND_CAR_COUNT = 4;
     private boolean isAuto = false;
-
+    private Timer mTimer = null;
     private long clickTime = 0;
 
-    Handler handler =  new Handler(Looper.getMainLooper()) {
+    Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -129,6 +136,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                         isAuto = false;
                         setTvBackground(1);
                         viewCover.setVisibility(View.GONE);
+                        break;
+                    case SEND_CAR_COUNT:
+                        Log.w("onReceive---", "更新待发车辆数");
+                        presenter.timeToSend();
                         break;
                 }
             } catch (Exception e) {
@@ -165,7 +176,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tv_steward_send = (TextView) view.findViewById(R.id.tv_steward_send);
         tv_steward_gone = (TextView) view.findViewById(R.id.tv_steward_gone);
         tvAlreadyIssued = (TextView) view.findViewById(R.id.tv_already_issued_car);
-        llAlreadyIssuedCar = (LinearLayout)view.findViewById(R.id.ll_already_issued_car);
+        llAlreadyIssuedCar = (LinearLayout) view.findViewById(R.id.ll_already_issued_car);
         tvAutomatic.setOnClickListener(this);
         tvManual.setOnClickListener(this);
         tvController.setOnClickListener(this);
@@ -173,7 +184,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         views.add(view);
 
         // 排班计划
-        View schedulingView = View.inflate(mContext,R.layout.tab_view_scheduling_plan,null);
+        View schedulingView = View.inflate(mContext, R.layout.tab_view_scheduling_plan, null);
         views.add(schedulingView);
         tvSchedule.setOnClickListener(this);
         // 设置按钮
@@ -203,6 +214,21 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         }
     }
 
+    private void refreshSendCarTimer(){
+        if (mTimer == null){
+            mTimer = new Timer();
+            mTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    //更新待发车辆数
+                    Message obtain = Message.obtain();
+                    obtain.what = SEND_CAR_COUNT;
+                    handler.sendMessage(obtain);
+                }
+            },1000 * 30 , 1000 * 60);
+        }
+    }
+
 
     @Override
     protected MainPresenter createPresenter() {
@@ -214,8 +240,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mLineRV.setLayoutManager(new LinearLayoutManager(this));
         mLineAdapter = new MainAdapter(lineList, this, this);
         mLineRV.setAdapter(mLineAdapter);
-        mLineRV.addItemDecoration(new DividerItemDecoration(this,R.color.white,
+        mLineRV.addItemDecoration(new DividerItemDecoration(this, R.color.white,
                 DividerItemDecoration.VERTICAL_LIST));
+
+        refreshSendCarTimer();
     }
 
     @Override
@@ -259,6 +287,122 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         }));
     }
 
+    /**
+     * 任务类型对话框
+     */
+    int type;
+    String taskId;
+    MissionAdapter workMission;
+    MissionAdapter noWorkMission;
+
+    @Override
+    public void showMissionTypeDialog(List<MissionType> missionTypes, final int objId) {
+
+        final Dialog mDialog = new Dialog(mContext, R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext, R.layout.view_task_type_dialog, null);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        LinearLayout ll_line_work = (LinearLayout) view.findViewById(R.id.ll_line_work);
+        LinearLayout ll_work_mission = (LinearLayout) view.findViewById(R.id.ll_work_mission);
+        LinearLayout ll_no_work_mission = (LinearLayout) view.findViewById(R.id.ll_no_work_mission);
+        final RadioButton rb_line_work = (RadioButton) view.findViewById(R.id.rb_line_work);
+        final RadioButton rb_work_mission = (RadioButton) view.findViewById(R.id.rb_work_mission);
+        final RadioButton rb_no_work_mission = (RadioButton) view.findViewById(R.id.rb_no_work_mission);
+        RecyclerView rv_work_mission = (RecyclerView) view.findViewById(R.id.rv_work_mission);
+        RecyclerView rv_no_work_mission = (RecyclerView) view.findViewById(R.id.rv_no_work_mission);
+        rv_work_mission.setLayoutManager(new LinearLayoutManager(this));
+        rv_work_mission.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL_LIST));
+        rv_no_work_mission.setLayoutManager(new LinearLayoutManager(this));
+        rv_no_work_mission.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL_LIST));
+        ll_line_work.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rb_line_work.setChecked(true);
+                rb_work_mission.setChecked(false);
+                rb_no_work_mission.setChecked(false);
+                type = 1;
+                taskId = null;
+                workMission.choice(-1);
+                noWorkMission.choice(-1);
+            }
+        });
+        ll_work_mission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rb_line_work.setChecked(false);
+                rb_work_mission.setChecked(true);
+                rb_no_work_mission.setChecked(false);
+                noWorkMission.choice(-1);
+            }
+        });
+
+        ll_no_work_mission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rb_line_work.setChecked(false);
+                rb_work_mission.setChecked(false);
+                rb_no_work_mission.setChecked(true);
+                workMission.choice(-1);
+            }
+        });
+
+        workMission = new MissionAdapter(missionTypes.get(1).getTaskContent(), mContext,
+                new MissionAdapter.OnSelectMissionListener() {
+                    @Override
+                    public void onSelectMission(MissionType.TaskContentBean missionType) {
+                        rb_line_work.setChecked(false);
+                        rb_work_mission.setChecked(true);
+                        rb_no_work_mission.setChecked(false);
+                        type = missionType.getType();
+                        taskId = missionType.getTaskId() + "";
+                        noWorkMission.choice(-1);
+
+                    }
+                });
+        noWorkMission = new MissionAdapter(missionTypes.get(2).getTaskContent(), mContext,
+                new MissionAdapter.OnSelectMissionListener() {
+                    @Override
+                    public void onSelectMission(MissionType.TaskContentBean missionType) {
+                        rb_line_work.setChecked(false);
+                        rb_work_mission.setChecked(false);
+                        rb_no_work_mission.setChecked(true);
+                        type = missionType.getType();
+                        taskId = missionType.getTaskId() + "";
+                        workMission.choice(-1);
+                    }
+                });
+
+        rv_work_mission.setAdapter(workMission);
+        rv_no_work_mission.setAdapter(noWorkMission);
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.changeMissionType(objId, type, taskId);
+                mDialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.setContentView(view, params);
+        mDialog.setCancelable(true);
+        mDialog.show();
+
+    }
+
+    @Override
+    public void refreshTimeToSendCarNum(List<Integer> sendCarNum) {
+        mLineAdapter.setSendCarNum(sendCarNum);
+
+    }
+
     @Override
     public void hideStewardName() {
         tv_steward_send.setVisibility(View.GONE);
@@ -279,7 +423,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mStopCarDialog != null && mStopCarDialog.isShowing()){
+                if (mStopCarDialog != null && mStopCarDialog.isShowing()) {
                     presenter.vehicleToSchedule(stopCar);
                     mStopCarDialog.dismiss();
                 }
@@ -315,7 +459,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void setLineBackground(int tabPosition) {
-        switch (tabPosition){
+        switch (tabPosition) {
             case 0:
                 lineControl.setVisibility(View.VISIBLE);
                 lineControl.setBackgroundColor(mContext.getResources().getColor(R.color.scroll_bar_bg));
@@ -355,8 +499,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 break;
             case R.id.tv_automatic:
                 if ((System.currentTimeMillis() - clickTime) > 1000) {
-                    if (!isAuto){
-                        if (!isHaveSendCar){
+                    if (!isAuto) {
+                        if (!isHaveSendCar) {
                             ToastHelper.showToast("该线路没有待发车辆", mContext);
                             return;
                         }
@@ -372,7 +516,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 break;
             case R.id.tv_manual:
                 if ((System.currentTimeMillis() - clickTime) > 1000) {
-                    if (isAuto){
+                    if (isAuto) {
                         setTvBackground(1);
                         viewCover.setVisibility(View.GONE);
                         presenter.selectManual();
@@ -382,10 +526,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 }
                 break;
             case R.id.tv_already_issued_car:
-                if (isVisibleGoneCar){
+                if (isVisibleGoneCar) {
                     isVisibleGoneCar = false;
                     llAlreadyIssuedCar.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     isVisibleGoneCar = true;
                     llAlreadyIssuedCar.setVisibility(View.GONE);
                 }
@@ -394,37 +538,37 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void showPopupWindow() {
-        if (mPopupWindow == null || !mPopupWindow.isShowing()){
-              initPopupWindow();
-        }else{
-              mPopupWindow.dismiss();
-              mPopupWindow = null;
+        if (mPopupWindow == null || !mPopupWindow.isShowing()) {
+            initPopupWindow();
+        } else {
+            mPopupWindow.dismiss();
+            mPopupWindow = null;
         }
     }
 
     private void initPopupWindow() {
         List<String> list = new ArrayList<>();
-        View popView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_popupwindow,null);
+        View popView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_popupwindow, null);
         lv_popup = (ListView) popView.findViewById(R.id.lv_popup);
         list.add("修改资料");
         list.add("密码修改");
         list.add("退出");
-        popupAdapter = new PopupAdapter(mContext,list,this);
+        popupAdapter = new PopupAdapter(mContext, list, this);
         lv_popup.setAdapter(popupAdapter);
         mPopupWindow = new PopupWindow(popView, 400, LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
         mPopupWindow.setBackgroundDrawable(new PaintDrawable());
-        mPopupWindow.showAsDropDown(rlSetting,300,4);
+        mPopupWindow.showAsDropDown(rlSetting, 300, 4);
     }
 
     @Override
     public void onPopupListener(int position) {
-        switch (position){
+        switch (position) {
             case 0:
-                ToastHelper.showToast("修改资料",mContext);
+                ToastHelper.showToast("修改资料", mContext);
                 break;
             case 1:
-                ToastHelper.showToast("密码修改",mContext);
+                ToastHelper.showToast("密码修改", mContext);
                 break;
             case 2:
                 isSureLoginOut();
@@ -433,8 +577,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         }
     }
 
-    private void setTvBackground(int poi){
-        if (poi == 1){
+    private void setTvBackground(int poi) {
+        if (poi == 1) {
             tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
             tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
             tvManual.setTextColor(getResources().getColor(R.color.white));
@@ -450,33 +594,37 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Override
     protected void onDestroy() {
         unregisterReceiver(msgReceiver);
+        if (mTimer != null){
+            mTimer.cancel();
+            mTimer = null;
+        }
         super.onDestroy();
     }
 
     private void isSureLoginOut() {
-        final MyDialog outDialog = new MyDialog(MainActivity.this,"提示","确定要退出系统？",MyDialog.HAVEBUTTON);
+        final MyDialog outDialog = new MyDialog(MainActivity.this, "提示", "确定要退出系统？", MyDialog.HAVEBUTTON);
         outDialog.show();
         outDialog.setCancelable(false);
         outDialog.ButtonQuery(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 outDialog.dismiss();
-                 doLoginOut();
+                outDialog.dismiss();
+                doLoginOut();
             }
         });
         outDialog.ButtonCancel(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 outDialog.dismiss();
+                outDialog.dismiss();
             }
         });
     }
 
     private void doLoginOut() {
-          Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-          SpUtils.logOut(mContext);
-          startActivity(intent);
-          finish();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        SpUtils.logOut(mContext);
+        startActivity(intent);
+        finish();
     }
 
     public class MsgReceiver extends BroadcastReceiver {
@@ -503,5 +651,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         }
 
     }
+
 
 }

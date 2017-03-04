@@ -2,11 +2,11 @@ package com.zxw.data;
 
 import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
+import com.zxw.data.bean.FuzzyVehicleBean;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
-import com.zxw.data.bean.Vehicle;
 import com.zxw.data.bean.WaitVehicle;
 import com.zxw.data.http.HttpMethods;
 
@@ -263,7 +263,7 @@ public class BrowseTest {
     @Test
     public void testVehcile(){
         String vehCode = "n10";
-        HttpMethods.getInstance().queryVehcile(new Subscriber<List<Vehicle>>() {
+        HttpMethods.getInstance().queryVehcile(new Subscriber<List<FuzzyVehicleBean>>() {
             @Override
             public void onCompleted() {
 
@@ -275,10 +275,10 @@ public class BrowseTest {
             }
 
             @Override
-            public void onNext(List<Vehicle> vehicles) {
+            public void onNext(List<FuzzyVehicleBean> vehicles) {
                 result = vehicles.toString();
             }
-        }, code, keyCode, vehCode, 1, 20);
+        }, code, keyCode, vehCode);
         Assert.assertEquals("1", result);
     }
     @Test

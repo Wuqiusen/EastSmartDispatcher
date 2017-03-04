@@ -26,20 +26,22 @@
       <!--正线运营-->
           <LinearLayout
               android:layout_width="0dp"
-              android:layout_height="wrap_content"
+              android:layout_height="300dp"
               android:layout_marginRight="@dimen/normal_margin10"
               android:background="@color/btn_app_theme5"
-              android:minHeight="300dp"
               android:layout_weight="1"
               android:orientation="vertical">
                <LinearLayout
+                   android:id="@+id/ll_line_work"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:gravity="center_horizontal"
                    android:orientation="horizontal">
-                   <Button
+                   <RadioButton
+                       android:id="@+id/rb_line_work"
                        style="@style/rb_bg_style"
                        android:layout_margin="@dimen/margin_fit_10"
+                       android:clickable="false"
                        />
                    <TextView
                        android:layout_width="wrap_content"
@@ -55,29 +57,30 @@
                    android:layout_height="1dp"
                    android:layout_margin="@dimen/main_margin6"
                    android:background="@color/line_level_bg3"/>
-              <RadioGroup
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-              </RadioGroup>
+
+
           </LinearLayout>
           <!--营运任务-->
           <LinearLayout
               android:layout_width="0dp"
-              android:layout_height="wrap_content"
+              android:layout_height="300dp"
               android:layout_marginRight="@dimen/normal_margin10"
               android:background="@color/btn_app_theme5"
-              android:minHeight="300dp"
               android:layout_weight="1"
               android:orientation="vertical">
               <LinearLayout
+                  android:id="@+id/ll_work_mission"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:gravity="center_horizontal"
                   android:orientation="horizontal">
-                  <Button
+                  <RadioButton
+                      android:id="@+id/rb_work_mission"
                       style="@style/rb_bg_style"
                       android:layout_margin="@dimen/margin_fit_10"
+                      android:clickable="false"
                       />
+
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -85,35 +88,39 @@
                       android:textSize="@dimen/font_large"
                       android:textColor="@color/tv_font_blue_color"
                       android:text="营运任务"
-                      />
+                      android:id="@+id/textView9" />
               </LinearLayout>
               <View
                   android:layout_width="match_parent"
                   android:layout_height="1dp"
                   android:layout_margin="@dimen/main_margin6"
                   android:background="@color/line_level_bg3"/>
-              <RadioGroup
+              <android.support.v7.widget.RecyclerView
+                  android:id="@+id/rv_work_mission"
                   android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-              </RadioGroup>
+                  android:layout_height="match_parent">
+
+              </android.support.v7.widget.RecyclerView>
           </LinearLayout>
       <!--非营运任务-->
           <LinearLayout
               android:layout_width="0dp"
-              android:layout_height="wrap_content"
+              android:layout_height="300dp"
               android:layout_marginRight="@dimen/normal_margin10"
               android:background="@color/btn_app_theme5"
-              android:minHeight="300dp"
               android:layout_weight="1"
               android:orientation="vertical">
               <LinearLayout
+                  android:id="@+id/ll_no_work_mission"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:gravity="center_horizontal"
                   android:orientation="horizontal">
-                  <Button
+                  <RadioButton
+                      android:id="@+id/rb_no_work_mission"
                       style="@style/rb_bg_style"
                       android:layout_margin="@dimen/margin_fit_10"
+                      android:clickable="false"
                       />
 
                   <TextView
@@ -130,13 +137,15 @@
                   android:layout_height="1dp"
                   android:layout_margin="@dimen/main_margin6"
                   android:background="@color/line_level_bg3"/>
-              <RadioGroup
+              <android.support.v7.widget.RecyclerView
+                  android:id="@+id/rv_no_work_mission"
                   android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-              </RadioGroup>
+                  android:layout_height="match_parent">
+
+              </android.support.v7.widget.RecyclerView>
           </LinearLayout>
 
-        </LinearLayout>
+      </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

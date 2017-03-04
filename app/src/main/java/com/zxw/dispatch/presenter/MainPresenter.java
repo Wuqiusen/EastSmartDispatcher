@@ -2,11 +2,12 @@ package com.zxw.dispatch.presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
-import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
+import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.http.HttpMethods;
@@ -14,11 +15,14 @@ import com.zxw.data.source.DepartSource;
 import com.zxw.data.source.LineSource;
 import com.zxw.data.source.SendSource;
 import com.zxw.data.source.StopSource;
+import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.GoneAdapter;
 import com.zxw.dispatch.service.CarPlanService;
-import com.zxw.dispatch.adapter.DragListAdapter;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import rx.Subscriber;
@@ -40,9 +44,10 @@ public class MainPresenter extends BasePresenter<MainView> {
     private int lineId, stationId;
     private LineParams mLineParams;
     public final static int TYPE_SALE_AUTO = 1, TYPE_SALE_MANUAL = 2;
-    private List<DepartCar> mWaitVehicles;
+    private List<Line> mLineBeen;
     private boolean isAuto = false;
     private Intent receiverIntent = new Intent("com.zxw.dispatch.service.RECEIVER");
+    private List<Integer> sendNums = new ArrayList<>();
 
     public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
@@ -66,7 +71,9 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<Line> lineBeen) {
+                mLineBeen = lineBeen;
                 mvpView.loadLine(lineBeen);
+                timeToSend();
             }
         }, userId(), keyCode(), spotId, 1, 20);
     }
@@ -137,7 +144,6 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
-                mWaitVehicles = waitVehicles;
                 mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams);
                 mvpView.loadSendCarList(mDragListAdapter);
             }
@@ -145,7 +151,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void updateVehicle(int opId, int vehId, int sjId, String scId, String projectTime, int spaceMin, String inTime2) {
-        mDepartSource.updateVehicle(new Subscriber<BaseBean>() {
+        mDepartSource.updateVehicle(new Subscriber() {
             @Override
             public void onCompleted() {
 
@@ -158,15 +164,14 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
 
             @Override
-            public void onNext(BaseBean baseBean) {
-                mvpView.disPlay(baseBean.returnInfo);
+            public void onNext(Object o) {
                 refreshList();
             }
         }, userId(), keyCode(), opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
     }
 
     public void sendVehicle(int opId) {
-        mDepartSource.sendCar(new Subscriber<BaseBean>() {
+        mDepartSource.sendCar(new Subscriber() {
             @Override
             public void onCompleted() {
 
@@ -179,9 +184,9 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
 
             @Override
-            public void onNext(BaseBean baseBean) {
-                if(baseBean.returnCode == 500)
-                    mvpView.disPlay("发车成功");
+            public void onNext(Object baseBean) {
+               mvpView.disPlay("发车成功");
+                timeToSend();
                 refreshList();
             }
         }, userId(), keyCode(), opId);
@@ -211,7 +216,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         loadSendCarList();
         loadGoneCarList();
         loadStopCarList();
-
     }
 
     private void loadStopCarList() {
@@ -254,7 +258,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void manualAddStopCar(String carId, String driverId, String stewardId) {
-        mDepartSource.vehicleStopCtrl(new Subscriber<BaseBean>() {
+        mDepartSource.vehicleStopCtrl(new Subscriber() {
             @Override
             public void onCompleted() {
 
@@ -262,20 +266,18 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-
+                mvpView.disPlay(e.getMessage());
             }
 
             @Override
-            public void onNext(BaseBean baseBean) {
-                if(baseBean.returnCode == 505)
-                    mvpView.disPlay(baseBean.returnInfo);
+            public void onNext(Object baseBean) {
                 refreshList();
             }
         }, userId(), keyCode(), carId, driverId, mLineParams.getSaleType(),stewardId, String.valueOf(mCurrentLine.lineId));
     }
 
     public void vehicleToSchedule(StopHistory stopCar) {
-        mDepartSource.vehicleToSchedule(new Subscriber<BaseBean>() {
+        mDepartSource.vehicleToSchedule(new Subscriber() {
             @Override
             public void onCompleted() {
 
@@ -283,20 +285,18 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-
+                mvpView.disPlay(e.getMessage());
             }
 
             @Override
-            public void onNext(BaseBean baseBean) {
-                if(baseBean.returnCode == 505)
-                    mvpView.disPlay(baseBean.returnInfo);
+            public void onNext(Object o) {
                 refreshList();
             }
         }, userId(), keyCode(), String.valueOf(stopCar.id), mLineParams.getTimeType());
     }
 
     public void alertPeople(int id, int peopleId, int type) {
-        mDepartSource.changePersonInfo(new Subscriber<BaseBean>() {
+        mDepartSource.changePersonInfo(new Subscriber() {
             @Override
             public void onCompleted() {
 
@@ -304,13 +304,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-
+                mvpView.disPlay(e.getMessage());
             }
 
             @Override
-            public void onNext(BaseBean baseBean) {
-                if (baseBean.returnCode == 505)
-                    mvpView.disPlay(baseBean.returnInfo);
+            public void onNext(Object baseBean) {
                 refreshList();
             }
         }, userId(), keyCode(), id, peopleId, type);
@@ -337,5 +335,99 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public LineParams getLineParams() {
         return mLineParams;
+    }
+
+    public void getMissionList(final int objId){
+        try {
+            HttpMethods.getInstance().missionList(new Subscriber<List<MissionType>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(List<MissionType> missionTypes) {
+                    mvpView.showMissionTypeDialog(missionTypes, objId);
+
+
+                }
+            }, userId(), keyCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void changeMissionType(int objId, int type, String taskId){
+        mvpView.showLoading();
+        HttpMethods.getInstance().missionType(new Subscriber() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(Object o) {
+                mvpView.disPlay("修改成功");
+                refreshList();
+
+            }
+        }, userId(), keyCode(), objId, type, taskId);
+    }
+
+    private int checkLine;
+    public void timeToSend(){
+        checkLine = 0;
+        if (sendNums != null) sendNums.clear();
+        for (Line line: mLineBeen) {
+            sendNums.add(0);
+        }
+        checkIsTimeToSend(mLineBeen.get(0));
+    }
+
+    private void checkIsTimeToSend(Line line){
+        mDepartSource.departList(new Subscriber<List<DepartCar>>() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.hideLoading();
+                mvpView.disPlay(e.getMessage());
+                mvpView.finish();
+            }
+
+            @Override
+            public void onNext(List<DepartCar> waitVehicles) {
+
+                for (DepartCar departCar: waitVehicles){
+                    SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
+                    Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                    Log.e("time1", formatter.format(curDate) + "");
+                    if (Integer.valueOf(departCar.getVehTime()) - Integer.valueOf(formatter.format(curDate) + "") < 30){
+                        sendNums.set(checkLine, sendNums.get(checkLine)+ 1);
+                        Log.e("time2", departCar.getVehTime() + "");
+                    }
+                }
+                checkLine ++;
+                if (checkLine < mLineBeen.size()){
+                    checkIsTimeToSend(mLineBeen.get(checkLine));
+                }else {
+                    mvpView.refreshTimeToSendCarNum(sendNums);
+                }
+            }
+        }, userId(), keyCode(), line.lineId);
     }
 }

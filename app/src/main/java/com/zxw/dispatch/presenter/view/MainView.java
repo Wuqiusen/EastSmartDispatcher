@@ -1,6 +1,7 @@
 package com.zxw.dispatch.presenter.view;
 
 import com.zxw.data.bean.Line;
+import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.recycler.GoneAdapter;
@@ -21,6 +22,10 @@ public interface MainView extends BaseView {
     void loadGoneCarList(GoneAdapter sendHistories);
 
     void loadStopCarList(List<StopHistory> stopHistories);
+
+    void showMissionTypeDialog(List<MissionType> missionTypes, int objId);
+
+    void refreshTimeToSendCarNum(List<Integer> sendCarNum);
 
     void hideStewardName();
 

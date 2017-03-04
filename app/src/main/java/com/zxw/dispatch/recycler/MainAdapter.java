@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
     private final OnSelectLineListener listener;
     private List<Line> mData;
+    private List<Integer> sendCarNum;
     private Context mContext;
     private final LayoutInflater mLayoutInflater;
     private boolean isFirst = true;
@@ -57,12 +58,17 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
                 isFirst = false;
                 setClickView(position);
                 notifyDataSetChanged();
+
             }
         });
         if (isClick[position]){
             holder.mTip.setVisibility(View.VISIBLE);
         }else {
             holder.mTip.setVisibility(View.GONE);
+        }
+
+        if (sendCarNum != null && !sendCarNum.isEmpty()){
+            holder.tv_time_to_send_count.setText(sendCarNum.get(position) + "辆");
         }
     }
 
@@ -78,6 +84,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
         LinearLayout mContainer;
         @Bind(R.id.view_main_tip)
         View mTip;
+        @Bind(R.id.tv_time_to_send_count)
+        TextView tv_time_to_send_count;
 
         LineHolder(View view) {
             super(view);
@@ -97,5 +105,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
 
     public interface OnSelectLineListener{
         void onSelectLine(Line line);
+    }
+
+
+
+    public void setSendCarNum(List<Integer> sendCarNum){
+        this.sendCarNum = sendCarNum;
+        notifyDataSetChanged();
     }
 }

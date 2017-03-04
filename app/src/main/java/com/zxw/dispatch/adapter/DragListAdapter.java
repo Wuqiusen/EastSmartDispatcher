@@ -152,11 +152,12 @@ public class DragListAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_work_type);
         tv_is_double.setText(mDatas.get(position).getIsDouble() == 0 ?"单班":"双班");
         // 任务类型
-        tv_work_type.setText(mDatas.get(position).getType() == 1 ? "正线运营":"");
+        tv_work_type.setText(mDatas.get(position).getTypeName());
         tv_work_type.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openTaskTypeDialog();
+                presenter.getMissionList(mDatas.get(position).getId());
+//                openTaskTypeDialog();
             }
         });
 
