@@ -33,8 +33,17 @@ public class DepartCar implements Serializable {
     private int spaceTime;
     private int type;
     private int unRunTaskStatus;
+    private String taskId;
     private String vehTime;
     private String typeName;
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
 
     public String getTypeName() {
         return typeName;

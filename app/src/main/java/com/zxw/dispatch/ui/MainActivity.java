@@ -289,15 +289,16 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     /**
      * 任务类型对话框
      */
-    int type;
-    String taskId;
+    int mType;
+    String mTaskId;
     MissionAdapter workMission;
     MissionAdapter noWorkMission;
 
     @Override
-    public void showMissionTypeDialog(List<MissionType> missionTypes, final int objId) {
-
-        final Dialog mDialog = new Dialog(mContext, R.style.customDialog);
+    public void showMissionTypeDialog(List<MissionType> missionTypes, final int objId, int type, String taskId) {
+        mType = type;
+        mTaskId = taskId;
+       final Dialog  mDialog = new Dialog(mContext, R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext, R.layout.view_task_type_dialog, null);
@@ -317,14 +318,21 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         rv_no_work_mission.setLayoutManager(new LinearLayoutManager(this));
         rv_no_work_mission.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
+        if (type == 1){//正线运行
+            rb_line_work.setChecked(true);
+        }else if (type == 2){//营运任务
+            rb_work_mission.setChecked(true);
+        }else if (type == 3){//非营运任务
+            rb_no_work_mission.setChecked(true);
+        }
         ll_line_work.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rb_line_work.setChecked(true);
                 rb_work_mission.setChecked(false);
                 rb_no_work_mission.setChecked(false);
-                type = 1;
-                taskId = null;
+                mType = 1;
+                mTaskId = null;
                 workMission.choice(-1);
                 noWorkMission.choice(-1);
             }
@@ -349,28 +357,28 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             }
         });
 
-        workMission = new MissionAdapter(missionTypes.get(1).getTaskContent(), mContext,
+        workMission = new MissionAdapter(missionTypes.get(1).getTaskContent(), taskId,mContext,
                 new MissionAdapter.OnSelectMissionListener() {
                     @Override
                     public void onSelectMission(MissionType.TaskContentBean missionType) {
                         rb_line_work.setChecked(false);
                         rb_work_mission.setChecked(true);
                         rb_no_work_mission.setChecked(false);
-                        type = missionType.getType();
-                        taskId = missionType.getTaskId() + "";
+                        mType = missionType.getType();
+                        mTaskId = missionType.getTaskId() + "";
                         noWorkMission.choice(-1);
 
                     }
                 });
-        noWorkMission = new MissionAdapter(missionTypes.get(2).getTaskContent(), mContext,
+        noWorkMission = new MissionAdapter(missionTypes.get(2).getTaskContent(), taskId,mContext,
                 new MissionAdapter.OnSelectMissionListener() {
                     @Override
                     public void onSelectMission(MissionType.TaskContentBean missionType) {
                         rb_line_work.setChecked(false);
                         rb_work_mission.setChecked(false);
                         rb_no_work_mission.setChecked(true);
-                        type = missionType.getType();
-                        taskId = missionType.getTaskId() + "";
+                        mType = missionType.getType();
+                        mTaskId = missionType.getTaskId() + "";
                         workMission.choice(-1);
                     }
                 });
@@ -380,7 +388,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.changeMissionType(objId, type, taskId);
+                presenter.changeMissionType(objId, mType, mTaskId);
                 mDialog.dismiss();
             }
         });

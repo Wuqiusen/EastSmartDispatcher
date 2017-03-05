@@ -21,4 +21,5 @@ public class SendHistory {
     public String stewardName;
     public String remarks;
     public String vehTimeReal;
+    public String typeName;
 }

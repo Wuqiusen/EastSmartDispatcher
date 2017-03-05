@@ -19,6 +19,8 @@ import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.GoneAdapter;
 import com.zxw.dispatch.service.CarPlanService;
+import com.zxw.dispatch.utils.Base64;
+import com.zxw.dispatch.utils.DESPlus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -335,7 +337,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         return mLineParams;
     }
 
-    public void getMissionList(final int objId){
+    public void getMissionList(final int objId, final int type, final String taskId){
         try {
             HttpMethods.getInstance().missionList(new Subscriber<List<MissionType>>() {
                 @Override
@@ -350,7 +352,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                 @Override
                 public void onNext(List<MissionType> missionTypes) {
-                    mvpView.showMissionTypeDialog(missionTypes, objId);
+                    mvpView.showMissionTypeDialog(missionTypes, objId, type, taskId);
 
 
                 }
@@ -376,13 +378,16 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(Object o) {
-                mvpView.disPlay("修改成功");
                 refreshList();
 
             }
         }, userId(), keyCode(), objId, type, taskId);
     }
 
+    /**
+     * 检测计划发车时间在30分钟内的车辆数
+     * ------------------begin--------------
+     */
     private int checkLine;
     public void timeToSend(){
         checkLine = 0;
@@ -428,7 +433,15 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
         }, userId(), keyCode(), line.lineId);
     }
+    /**
+     * 检测计划发车时间在30分钟内的车辆数
+     * ------------------end----------------
+     */
 
+    /**
+     * 撤回待发车辆
+     * @param objId
+     */
     public void callBackScheduleCar(int objId){
         mvpView.showLoading();
         HttpMethods.getInstance().callBackScheduleCar(new Subscriber() {
@@ -451,6 +464,10 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(),keyCode(), objId);
     }
 
+    /**
+     * 撤回已发车辆
+     * @param objId
+     */
     public void callBackGoneCar(int objId){
         mvpView.showLoading();
         HttpMethods.getInstance().callBackGoneCar(new Subscriber() {
@@ -471,5 +488,41 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             }
         }, userId(),keyCode(), objId);
+    }
+
+    /**
+     * 修改已发车辆备注信息
+     * @param objId
+     * @param status
+     * @param remark
+     */
+    public void goneCarRemarks(int objId, int status, String remark){
+        mvpView.showLoading();
+        try {
+            String remarkStr = new DESPlus().encrypt(Base64.encode(remark.getBytes("utf-8")));
+            HttpMethods.getInstance().goneCarRemarks(new Subscriber() {
+                @Override
+                public void onCompleted() {
+                    mvpView.hideLoading();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    mvpView.disPlay(e.getMessage());
+
+                }
+
+                @Override
+                public void onNext(Object o) {
+                    loadGoneCarList();
+
+                }
+            }, userId(), keyCode(), objId, status, remarkStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 }

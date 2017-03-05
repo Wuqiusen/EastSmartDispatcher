@@ -73,7 +73,7 @@ public class DragListAdapter extends BaseAdapter {
         tv_driver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
+                AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble()); ///
                 alertNameDialog.showDriverDialog(mDatas.get(position).getId(), mDatas.get(position).getDriverName(),new AlertNameDialog.OnAlertDriverListener() {
                     @Override
                     public void onAlertDriverListener(int driverId) {
@@ -95,7 +95,7 @@ public class DragListAdapter extends BaseAdapter {
             tv_trainman.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
+                    AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble()); ///
                     alertNameDialog.showStewardDialog(mDatas.get(position).getId(), mDatas.get(position).getStewardName(),new AlertNameDialog.OnAlertStewardListener() {
                         @Override
                         public void onAlertStewardListener(int stewardId) {
@@ -142,6 +142,7 @@ public class DragListAdapter extends BaseAdapter {
 
         // 非营运任务
         TextView tv_no_operation_task = (TextView) view.findViewById(R.id.tv_no_operation_task);
+        tv_no_operation_task.setText(noOperationStatus(mDatas.get(position).getUnRunTaskStatus()));
 //      tv_no_operation_task.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -162,7 +163,10 @@ public class DragListAdapter extends BaseAdapter {
         tv_work_type.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getMissionList(mDatas.get(position).getId());
+                if (mDatas.get(position).getTaskId() != null)
+                presenter.getMissionList(mDatas.get(position).getId(), mDatas.get(position).getType(), mDatas.get(position).getTaskId());
+                else
+                    presenter.getMissionList(mDatas.get(position).getId(), mDatas.get(position).getType(),"");
 //                openTaskTypeDialog();
             }
         });
@@ -208,6 +212,15 @@ public class DragListAdapter extends BaseAdapter {
         });
 
         return view;
+    }
+
+    private String noOperationStatus(int status){
+        if (status == 1)
+            return "无";
+        else if (status == 2)
+            return "有";
+        else
+            return "完成";
     }
 
 

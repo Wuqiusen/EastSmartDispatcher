@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.zxw.data.bean.LineParams;
@@ -56,32 +58,32 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         holder.tvDriver.setText(history.driverName);
         if (history.stewardName != null && !TextUtils.isEmpty(history.stewardName))
             holder.tvTrainman.setText(history.stewardName);
+        else
+            holder.tvTrainman.setText("");
         holder.tvPlanTime.setText(DisplayTimeUtil.substring(history.vehTime));
         if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime))
         holder.tvArriveTime.setText(DisplayTimeUtil.substring(history.arriveTime));
+        else
+            holder.tvArriveTime.setText("");
 //        holder.tvStopTime.setText(String.valueOf(history.vehTime));
         holder.tvIntervalTime.setText(String.valueOf(history.spaceTime));
         holder.tvSendTime.setText(DisplayTimeUtil.substring(history.vehTimeReal));
 //        holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班"); ///
+        holder.tvStatus.setText(history.status == 1 ? "正常":"异常"); ///
 //        holder.tvStationStatus.setText(String.valueOf(history.vehTime));
-        holder.tvWorkStatus.setText(history.type == 1? "正线运营": "");
+        holder.tv_send_remark.setText(history.remarks);
+        holder.tvWorkStatus.setText(history.typeName);
+
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
             holder.tvTrainman.setVisibility(View.GONE);
         }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
             holder.tvTrainman.setVisibility(View.VISIBLE);
         }
-//        if (history.unRunTaskStatus == 1){
-//            holder.tvNoWorkStatus.setText("无");
-//        }else if (history.unRunTaskStatus == 2){
-//            holder.tvNoWorkStatus.setText("有");
-//        }else {
-//            holder.tvNoWorkStatus.setText("完成");
-//        }
         // 备注
         holder.tv_send_remark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openRemarkDialog();
+                openRemarkDialog(mData.get(position).id, mData.get(position).status, mData.get(position).remarks);
             }
         });
         // 查看
@@ -153,15 +155,31 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
     /**
      * 备注
      */
-    private void openRemarkDialog() {
+    private void openRemarkDialog(final int objId, final int status, String remark) {
         final Dialog rDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext,R.layout.view_start_car_remarks_dialog,null);
+        final RadioButton rbNormal = (RadioButton) view.findViewById(R.id.rb_normal);
+        final RadioButton rbAbnormal = (RadioButton) view.findViewById(R.id.rb_abnormal);
+        final EditText etRemarks = (EditText) view.findViewById(R.id.et_remarks);
+        if (remark != null && !TextUtils.isEmpty(remark)){
+            etRemarks.setText(remark);
+            etRemarks.setSelection(remark.length());
+        }
+        if (status == 1){
+            rbNormal.setChecked(true);
+        }else {
+            rbAbnormal.setChecked(true);
+        }
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int mStatus = 1;
+                if (rbAbnormal.isChecked()) mStatus = 2;
+                if (rbNormal.isChecked()) mStatus = 1;
+                presenter.goneCarRemarks(objId, mStatus, etRemarks.getText().toString());
                 rDialog.dismiss();
             }
         });
@@ -204,8 +222,8 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         TextView tvTrainman;
 //        @Bind(R.id.tv_schedule_status)
 //        TextView tvScheduleStatus;
-//        @Bind(R.id.tv_station_status)
-//        TextView tvStationStatus;
+        @Bind(R.id.tv_status)
+        TextView tvStatus;
         @Bind(R.id.tv_work_status)
         TextView tvWorkStatus;
 //        @Bind(R.id.tv_no_work_status)

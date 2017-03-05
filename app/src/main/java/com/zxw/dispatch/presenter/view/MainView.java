@@ -23,7 +23,7 @@ public interface MainView extends BaseView {
 
     void loadStopCarList(List<StopHistory> stopHistories);
 
-    void showMissionTypeDialog(List<MissionType> missionTypes, int objId);
+    void showMissionTypeDialog(List<MissionType> missionTypes, int objId, int type, String taskId);
 
     void refreshTimeToSendCarNum(List<Integer> sendCarNum);
 

@@ -2,6 +2,7 @@ package com.zxw.dispatch.recycler;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,14 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.MissionH
     private final LayoutInflater mLayoutInflater;
     private boolean isFirst = true;
     private boolean isClick[];
+    private int taskId;
 
-    public MissionAdapter(List<MissionType.TaskContentBean> mData, Context mContext, OnSelectMissionListener listener) {
+    public MissionAdapter(List<MissionType.TaskContentBean> mData, String taskId, Context mContext, OnSelectMissionListener listener) {
         this.mData = mData;
         this.mContext = mContext;
         this.listener = listener;
+        if (taskId != null && !TextUtils.isEmpty(taskId))
+        this.taskId = Integer.valueOf(taskId);
         mLayoutInflater = LayoutInflater.from(mContext);
         isClick = new boolean[mData.size()];
         for (int i = 0; i < isClick.length; i++){
@@ -58,7 +62,11 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.MissionH
                choice(position);
             }
         });
-        holder.rbMissionType.setChecked(isClick[position]);
+        if (taskId == mData.get(position).getTaskId()){
+            holder.rbMissionType.setChecked(true);
+        }else {
+            holder.rbMissionType.setChecked(isClick[position]);
+        }
         holder.tv_mission_type.setText(mData.get(position).getTaskName());
     }
 

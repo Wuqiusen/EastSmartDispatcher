@@ -28,7 +28,8 @@
             android:text="@string/hint_car_remarks_dialog"
             />
 
-        <com.zxw.dispatch.view.EmojiEditText
+        <EditText
+            android:id="@+id/et_remarks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/et_control_deck_dialog"
