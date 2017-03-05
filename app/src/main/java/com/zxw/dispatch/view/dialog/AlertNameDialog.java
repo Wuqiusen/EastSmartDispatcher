@@ -43,7 +43,6 @@ public class AlertNameDialog extends AlertDialog.Builder {
     private OnAlertStewardListener onAlertStewardListener;
     private AlertDialog dialog;
     private int mIsSingleClass;
-    private String mPeopleName = null;
 
     public AlertNameDialog(Context context,int isSingleClass) {
         super(context, R.style.alder_dialog);
@@ -106,7 +105,6 @@ public class AlertNameDialog extends AlertDialog.Builder {
 
     public void showDriverDialog(int objId, String driverName, OnAlertDriverListener listener) {
         currentType = TYPE_DRIVER;
-        mPeopleName = driverName;
         et_fuzzy_query.addQueryDriverEditTextListener();
         dialog_name.setText("驾驶员修改");
         person_name.setText("驾驶员:");
@@ -128,7 +126,6 @@ public class AlertNameDialog extends AlertDialog.Builder {
 
     public void showStewardDialog(int objId, String stewardName, OnAlertStewardListener listener) {
         currentType = TYPE_STEWARD;
-        mPeopleName = stewardName;
         et_fuzzy_query.addQueryTrainManEditTextListener();
         dialog_name.setText("乘务员修改");
         person_name.setText("乘务员:");
@@ -170,7 +167,7 @@ public class AlertNameDialog extends AlertDialog.Builder {
             @Override
             public void onNext(List<PersonInfo> personInfos) {
 
-                DialogDoublePeopleAdapter dialogDoublePeopleAdapter = new DialogDoublePeopleAdapter(personInfos,mPeopleName, mContext, new DialogDoublePeopleAdapter.OnSelectedDoublePeopleListener() {
+                DialogDoublePeopleAdapter dialogDoublePeopleAdapter = new DialogDoublePeopleAdapter(personInfos,mContext, new DialogDoublePeopleAdapter.OnSelectedDoublePeopleListener() {
                     @Override
                     public void onSelectedDoublePeopleListener(PersonInfo info) {
                         mPersonInfo = info;
