@@ -182,7 +182,7 @@ public class DragListAdapter extends BaseAdapter {
         tv_withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    openWithdrawCarDialog();
+                    openWithdrawCarDialog(mDatas.get(position).getId());
             }
         });
 
@@ -321,7 +321,7 @@ public class DragListAdapter extends BaseAdapter {
     /**
      * 撤回
      */
-    private void openWithdrawCarDialog() {
+    private void openWithdrawCarDialog(final int objId) {
         final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -331,6 +331,7 @@ public class DragListAdapter extends BaseAdapter {
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.callBackScheduleCar(objId);
                 mDialog.dismiss();
             }
         });

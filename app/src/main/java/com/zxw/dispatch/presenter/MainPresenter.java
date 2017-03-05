@@ -32,7 +32,6 @@ import rx.Subscriber;
  * email：cangjie2016@gmail.com
  */
 public class MainPresenter extends BasePresenter<MainView> {
-
     private LineSource mLineSource = new LineSource();
     private DepartSource mDepartSource = new DepartSource();
     private SendSource mSendSource = new SendSource();
@@ -73,7 +72,6 @@ public class MainPresenter extends BasePresenter<MainView> {
             public void onNext(List<Line> lineBeen) {
                 mLineBeen = lineBeen;
                 mvpView.loadLine(lineBeen);
-                timeToSend();
             }
         }, userId(), keyCode(), spotId, 1, 20);
     }
@@ -122,7 +120,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<SendHistory> sendHistories) {
-                mvpView.loadGoneCarList(new GoneAdapter(sendHistories, mContext, mLineParams));
+                mvpView.loadGoneCarList(new GoneAdapter(sendHistories, mContext, mLineParams, MainPresenter.this));
             }
         }, userId(), keyCode(), lineId);
 
@@ -429,5 +427,49 @@ public class MainPresenter extends BasePresenter<MainView> {
                 }
             }
         }, userId(), keyCode(), line.lineId);
+    }
+
+    public void callBackScheduleCar(int objId){
+        mvpView.showLoading();
+        HttpMethods.getInstance().callBackScheduleCar(new Subscriber() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+                refreshList();
+
+            }
+        }, userId(),keyCode(), objId);
+    }
+
+    public void callBackGoneCar(int objId){
+        mvpView.showLoading();
+        HttpMethods.getInstance().callBackGoneCar(new Subscriber() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+                refreshList();
+
+            }
+        }, userId(),keyCode(), objId);
     }
 }

@@ -224,7 +224,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                     obtain.what = SEND_CAR_COUNT;
                     handler.sendMessage(obtain);
                 }
-            },1000 * 30 , 1000 * 60);
+            },0 , 1000 * 60);
         }
     }
 

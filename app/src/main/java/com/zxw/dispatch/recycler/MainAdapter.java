@@ -111,6 +111,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
 
     public void setSendCarNum(List<Integer> sendCarNum){
         this.sendCarNum = sendCarNum;
+        isFirst = false;
         notifyDataSetChanged();
     }
 }

@@ -32,12 +32,14 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
     private List<SendHistory> mData;
     private Context mContext;
     private final LayoutInflater mLayoutInflater;
+    private MainPresenter presenter;
 
-    public GoneAdapter(List<SendHistory> mData, Context mContext, LineParams mLineParams) {
+    public GoneAdapter(List<SendHistory> mData, Context mContext, LineParams mLineParams, MainPresenter presenter) {
         this.mData = mData;
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
         this.mLineParams = mLineParams;
+        this.presenter = presenter;
     }
 
     @Override
@@ -100,7 +102,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         holder.tv_send_withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 openWithdrawCarDialog();
+                 openWithdrawCarDialog(mData.get(position).id);
             }
         });
     }
@@ -154,7 +156,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
     /**
      * 撤回
      */
-    private void openWithdrawCarDialog() {
+    private void openWithdrawCarDialog(final int objId) {
         final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -164,6 +166,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.callBackGoneCar(objId);
                 mDialog.dismiss();
             }
         });
