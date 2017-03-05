@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">运调调度员</string>
-
+    <string name="hint_car_remarks_dialog">请您备注该线路运营的具体情况(100个字符以内)</string>
 
 </resources>

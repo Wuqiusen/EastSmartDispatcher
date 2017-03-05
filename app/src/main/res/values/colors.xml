@@ -60,6 +60,7 @@
     <color name="btn_ok_noclicked">#FF7043</color>
     <color name="btn_ok_isclicked1">#5393ed</color>
     <color name="btn_ok_noclicked1">#0074c4</color>
+    <color name="btn_ok_normal">#6CB5E5</color>
     <color name="btn_is_enabled">#6a6a6a</color>
 
     <color name="colorPrimary">#3F51B5</color>
@@ -68,6 +69,7 @@
     <color name="white">#FFFFFF</color>
     <color name="title_gray">#E3E4E6</color>
     <color name="transparent">@android:color/transparent</color>
+    <color name="font_green">#2BAF2B</color>
     <color name="font_gray">#8E95A2</color>
     <color name="font_black">#6a6a6a</color>
     <color name="background_gray2">#e4e4e4</color>
@@ -82,6 +84,9 @@
     <color name="background_bg_red">#CA0020</color>
     <color name="background_bg_green">#349E63</color>
     <color name="background_bg_blue">#73B9EC</color>
+    <color name="background_bg_shallow_blue">#DEF0FA</color>
+
+
 
     <!--标题栏部分-->
     <color name="title_bar_bg_style1">#4E6682</color>
@@ -90,6 +95,7 @@
     <color name="line_level_bg1">#FB9E2B</color>
     <color name="line_level_bg2">#6DB5E5</color>
     <color name="line_level_bg3">#797979</color>
+    <color name="line_level_bg4">#C2C3C5</color>
 
     <!--字体-->
     <color name="font_white">#FFFFFF</color>

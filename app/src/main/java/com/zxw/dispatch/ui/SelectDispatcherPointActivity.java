@@ -16,6 +16,7 @@ import com.zxw.dispatch.ui.base.PresenterActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+
 public class SelectDispatcherPointActivity extends PresenterActivity<SelectDispatcherPointPresenter> implements SelectDispatcherPointView {
     @Bind(R.id.rv_dispatcher_point)
     RecyclerView mSpotRV;
@@ -36,12 +37,12 @@ public class SelectDispatcherPointActivity extends PresenterActivity<SelectDispa
     private void initView() {
         showColorTitle("请选择调度站");
         showHeadAreaBackground();
-        showLeftImageButton(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        showLeftImageButton(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     @Override

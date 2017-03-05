@@ -3,7 +3,7 @@
     android:id="@+id/ll_popwindow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/title_bar_bg_style1"
     android:gravity="right|center_horizontal"
     android:orientation="vertical">
 
@@ -11,7 +11,7 @@
         android:layout_width="20dp"
         android:layout_height="10dp"
         android:layout_marginRight="@dimen/normal_margin20"
-        android:background="@drawable/arrow_icon"
+        android:background="@mipmap/arrow_icon"
         android:visibility="visible"
         />
 

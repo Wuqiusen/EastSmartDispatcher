@@ -112,7 +112,7 @@ public class SpinnerView extends RelativeLayout {
 
 		if (mWindow == null) {
 			mListView = new ListView(getContext());
-			mListView.setBackgroundResource(R.drawable.listview_background);
+			mListView.setBackgroundResource(R.mipmap.listview_background);
 			mListView.setAdapter(mAdapter);// 设置适配器--->list数据源
 			mListView.setOnKeyListener(new OnKeyListener() {
 				@Override

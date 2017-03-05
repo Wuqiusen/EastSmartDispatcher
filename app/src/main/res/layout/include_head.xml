@@ -18,7 +18,7 @@
             android:minWidth="@dimen/head_height"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            android:drawableLeft="@drawable/fanhui"
+            android:drawableLeft="@mipmap/fanhui"
             android:text=""
             android:textSize="@dimen/font_medium"
             android:paddingLeft="16dp"
@@ -34,7 +34,7 @@
             android:minWidth="@dimen/head_height"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            android:src="@drawable/btn_head_back"
+            android:src="@mipmap/btn_head_back"
             android:visibility="gone" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:text="@string/app_name"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:textSize="46px"
+            android:textSize="@dimen/font_xhuge"
             android:textStyle="bold"
             android:textColor="@color/font_black" />
         <Button

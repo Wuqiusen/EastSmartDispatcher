@@ -9,6 +9,7 @@
 
 
     <!-- 按钮高度 -->
+    <dimen name="btn_height16">16dp</dimen>
     <dimen name="btn_height30">30dp</dimen>
     <dimen name="btn_height40">40dp</dimen>
     <dimen name="btn_height50">50dp</dimen>
@@ -68,6 +69,9 @@
     <dimen name="dialog_margin20">20dp</dimen>
     <dimen name="dialog_margin30">30dp</dimen>
     <dimen name="dialog_margin50">50dp</dimen>
+    <dimen name="dialog_margin54">54dp</dimen>
+    <dimen name="dialog_margin60">60dp</dimen>
+
     <!--高宽度-->
     <dimen name="dialog_height36">36dp</dimen>
     <dimen name="dialog_height40">40dp</dimen>
@@ -131,6 +135,7 @@
     <!--高宽度-->
     <dimen name="login_height40">40dp</dimen>
     <dimen name="login_height50">50dp</dimen>
+    <dimen name="login_height70">70dp</dimen>
     <dimen name="login_height150">150dp</dimen>
     <dimen name="login_height200">200dp</dimen>
     <dimen name="login_height300">300dp</dimen>
@@ -386,6 +391,7 @@
     <dimen name="font_large">18sp</dimen>
     <dimen name="font_xlarge">20sp</dimen>
     <dimen name="font_huge">22sp</dimen>
+    <dimen name="font_shuge">24sp</dimen>
     <dimen name="font_mhuge">26sp</dimen>
     <dimen name="font_xhuge">28sp</dimen>
     <dimen name="font_xxhuge">38sp</dimen>

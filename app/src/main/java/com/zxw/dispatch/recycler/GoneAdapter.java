@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 /**
  * author：CangJie on 2016/9/21 09:53
  * email：cangjie2016@gmail.com
+ *
  */
 public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
     private final LineParams mLineParams;
@@ -74,14 +75,65 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
 //        }else {
 //            holder.tvNoWorkStatus.setText("完成");
 //        }
+        // 正/异常
+        holder.tvOrNormalStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openOrNormalStatusDialog();
+            }
+        });
+        // 备注
+        holder.tv_send_remark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRemarkDialog();
+            }
+        });
+        // 查看
         holder.tvCheckSendCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                   openCarMsgDialog();  // 查看
+                   openCarMsgDialog();
+            }
+        });
+        // 撤回
+        holder.tv_send_withdraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 openWithdrawCarDialog();
             }
         });
     }
 
+    private void openOrNormalStatusDialog() {
+        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext,R.layout.view_normal_or_abnormal_dialog,null);
+        String[] arrays = mContext.getResources().getStringArray(R.array.or_normal_array);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.setContentView(view,params);
+        mDialog.setCancelable(true);
+        mDialog.show();
+    }
+
+
+    /**
+     * 查看
+     */
     private void openCarMsgDialog() {
         final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -97,6 +149,60 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         mDialog.setContentView(view,params);
         mDialog.setCancelable(true);
         mDialog.show();
+    }
+
+    /**
+     * 撤回
+     */
+    private void openWithdrawCarDialog() {
+        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext,R.layout.view_withdraw_dialog,null);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.setContentView(view,params);
+        mDialog.setCancelable(true);
+        mDialog.show();
+    }
+
+    /**
+     * 备注
+     */
+    private void openRemarkDialog() {
+        final Dialog rDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext,R.layout.view_start_car_remarks_dialog,null);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rDialog.dismiss();
+            }
+        });
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rDialog.dismiss();
+            }
+        });
+        rDialog.setContentView(view,params);
+        rDialog.setCancelable(true);
+        rDialog.show();
     }
 
 
@@ -134,6 +240,12 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
 //        TextView tvNoWorkStatus;
         @Bind(R.id.tv_check_send_car)
         TextView tvCheckSendCar;
+        @Bind(R.id.tv_send_remark)
+        TextView tv_send_remark;
+        @Bind(R.id.tv_send_withdraw)
+        TextView tv_send_withdraw;
+        @Bind(R.id.tv_send_or_normal)
+        TextView tvOrNormalStatus;
         LineHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

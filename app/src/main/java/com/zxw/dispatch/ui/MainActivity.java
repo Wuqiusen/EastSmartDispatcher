@@ -64,8 +64,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Bind(R.id.img_setting)
     ImageView imgSetting;
-    @Bind(R.id.img_login_out)
-    ImageView imgLoginOut;
     // 控制台
     @Bind(R.id.tv_controller)
     TextView tvController;
@@ -105,6 +103,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private TextView tv_steward_send;
     private TextView tv_steward_gone;
     private TextView tvAlreadyIssued;
+    private ImageView imgNarrow;
     private LinearLayout llAlreadyIssuedCar;
     private static final int REFRESH = 1;
     private static final int AUTO = 2;
@@ -173,10 +172,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         viewCover = (View) view.findViewById(R.id.view_cover);
         tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);
         tvManual = (TextView) view.findViewById(R.id.tv_manual);
+        imgNarrow = (ImageView) view.findViewById(R.id.img_narrow);
         tv_steward_send = (TextView) view.findViewById(R.id.tv_steward_send);
         tv_steward_gone = (TextView) view.findViewById(R.id.tv_steward_gone);
         tvAlreadyIssued = (TextView) view.findViewById(R.id.tv_already_issued_car);
-        llAlreadyIssuedCar = (LinearLayout) view.findViewById(R.id.ll_already_issued_car);
+        llAlreadyIssuedCar = (LinearLayout)view.findViewById(R.id.ll_already_issued_car);
+        imgNarrow.setOnClickListener(this);
         tvAutomatic.setOnClickListener(this);
         tvManual.setOnClickListener(this);
         tvController.setOnClickListener(this);
@@ -189,8 +190,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvSchedule.setOnClickListener(this);
         // 设置按钮
         imgSetting.setOnClickListener(this);
-
-        imgLoginOut.setOnClickListener(this);
 
         MyPagerAdapter mAdapter = new MyPagerAdapter(views, null);
         vpMain.setAdapter(mAdapter);
@@ -494,9 +493,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.img_setting:
                 showPopupWindow();
                 break;
-            case R.id.img_login_out:
-                isSureLoginOut();
-                break;
             case R.id.tv_automatic:
                 if ((System.currentTimeMillis() - clickTime) > 1000) {
                     if (!isAuto) {
@@ -525,15 +521,21 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                     }
                 }
                 break;
+            case R.id.img_narrow:
             case R.id.tv_already_issued_car:
-                if (isVisibleGoneCar) {
-                    isVisibleGoneCar = false;
-                    llAlreadyIssuedCar.setVisibility(View.VISIBLE);
-                } else {
-                    isVisibleGoneCar = true;
-                    llAlreadyIssuedCar.setVisibility(View.GONE);
-                }
+                checkIsVisibleGoneCar();
+                break;
 
+        }
+    }
+
+    private void checkIsVisibleGoneCar() {
+        if (isVisibleGoneCar){
+            isVisibleGoneCar = false;
+            llAlreadyIssuedCar.setVisibility(View.VISIBLE);
+        }else{
+            isVisibleGoneCar = true;
+            llAlreadyIssuedCar.setVisibility(View.GONE);
         }
     }
 
@@ -555,10 +557,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         list.add("退出");
         popupAdapter = new PopupAdapter(mContext, list, this);
         lv_popup.setAdapter(popupAdapter);
-        mPopupWindow = new PopupWindow(popView, 400, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mPopupWindow = new PopupWindow(popView, 360, LinearLayout.LayoutParams.WRAP_CONTENT); // 400
         mPopupWindow.setFocusable(true);
         mPopupWindow.setBackgroundDrawable(new PaintDrawable());
-        mPopupWindow.showAsDropDown(rlSetting, 300, 4);
+        mPopupWindow.showAsDropDown(rlSetting,300,20); // 4
     }
 
     @Override
@@ -642,6 +644,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                     obtain.what = HANDLE;
                     handler.sendMessage(obtain);
                 }
+
             } else {
                 Log.w("onReceive---", "刷新数据");
                 //刷新数据

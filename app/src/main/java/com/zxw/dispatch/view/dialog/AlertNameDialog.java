@@ -13,6 +13,7 @@ import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.recycler.DialogDoublePeopleAdapter;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
+import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.smart_edittext.SmartEditText;
@@ -27,9 +28,11 @@ import rx.Subscriber;
  */
 public class AlertNameDialog extends AlertDialog.Builder {
     private final Context mContext;
-    private TextView origin_name;
+    private TextView dialog_name;
+    private TextView person_name;
+    private TextView driver_name;
     private RecyclerView rv_name;
-    private Button btn_switch;
+    private TextView tv_switch;
     private SmartEditText et_fuzzy_query;
     private Button btn_confirm;
     private Button btn_cancel;
@@ -39,25 +42,31 @@ public class AlertNameDialog extends AlertDialog.Builder {
     private OnAlertDriverListener onAlertDriverListener;
     private OnAlertStewardListener onAlertStewardListener;
     private AlertDialog dialog;
+    private int mIsSingleClass;
 
-    public AlertNameDialog(Context context) {
+    public AlertNameDialog(Context context,int isSingleClass) {
         super(context, R.style.alder_dialog);
         this.mContext = context;
+        this.mIsSingleClass = isSingleClass;
         init(context);
     }
 
     private void init(Context context) {
         View container = View.inflate(context, R.layout.dialog_alert_name, null);
-        origin_name = (TextView) container.findViewById(R.id.origin_name);
+        dialog_name = (TextView) container.findViewById(R.id.dialog_name);
+        person_name = (TextView) container.findViewById(R.id.person_name);
+        driver_name = (TextView) container.findViewById(R.id.driver_name);
         rv_name = (RecyclerView) container.findViewById(R.id.rv_name);
-        btn_switch = (Button) container.findViewById(R.id.btn_switch);
+        tv_switch = (TextView) container.findViewById(R.id.tv_switch);
         et_fuzzy_query = (SmartEditText) container.findViewById(R.id.et_fuzzy_query);
         btn_confirm = (Button) container.findViewById(R.id.btn_confirm);
         btn_cancel = (Button) container.findViewById(R.id.btn_cancel);
-        rv_name.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+
+        rv_name.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         rv_name.addItemDecoration(new DividerItemDecoration(mContext, R.color.white,
                 DividerItemDecoration.HORIZONTAL_LIST));
-        btn_switch.setOnClickListener(new View.OnClickListener() {
+
+        tv_switch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (et_fuzzy_query.getVisibility() == View.VISIBLE) {
@@ -81,7 +90,6 @@ public class AlertNameDialog extends AlertDialog.Builder {
                     ToastHelper.showToast("请确定修改信息");
                     return;
                 }
-                // 如果模糊查询有值时,即采用模糊查询出来的结果
                 if (et_fuzzy_query.getPeopleInfo() != null)
                     mPersonInfo = et_fuzzy_query.getPeopleInfo();
                 if (currentType == TYPE_DRIVER) {
@@ -98,20 +106,39 @@ public class AlertNameDialog extends AlertDialog.Builder {
     public void showDriverDialog(int objId, String driverName, OnAlertDriverListener listener) {
         currentType = TYPE_DRIVER;
         et_fuzzy_query.addQueryDriverEditTextListener();
-        origin_name.setText(driverName);
+        dialog_name.setText("驾驶员修改");
+        person_name.setText("驾驶员:");
+        DebugLog.i(person_name+"");
         String userId = SpUtils.getCache(mContext, SpUtils.USER_ID);
         String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
+        if (mIsSingleClass == 0){
+            rv_name.setVisibility(View.GONE);
+            driver_name.setText(driverName);
+            driver_name.setVisibility(View.VISIBLE);
+        }else{
+            rv_name.setVisibility(View.VISIBLE);
+            driver_name.setVisibility(View.GONE);
+        }
         loadDoublePeople(userId, keyCode, objId);
         this.onAlertDriverListener = listener;
         dialog = show();
     }
 
-    public void showStewardDialog(int objId, String driverName, OnAlertStewardListener listener) {
+    public void showStewardDialog(int objId, String stewardName, OnAlertStewardListener listener) {
         currentType = TYPE_STEWARD;
         et_fuzzy_query.addQueryTrainManEditTextListener();
-        origin_name.setText(driverName);
+        dialog_name.setText("乘务员修改");
+        person_name.setText("乘务员:");
         String userId = SpUtils.getCache(mContext, SpUtils.USER_ID);
         String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
+        if (mIsSingleClass == 0){
+            rv_name.setVisibility(View.GONE);
+            driver_name.setText(stewardName);
+            driver_name.setVisibility(View.VISIBLE);
+        }else{
+            rv_name.setVisibility(View.VISIBLE);
+            driver_name.setVisibility(View.GONE);
+        }
         loadDoublePeople(userId, keyCode, objId);
         this.onAlertStewardListener = listener;
         dialog = show();
@@ -139,6 +166,7 @@ public class AlertNameDialog extends AlertDialog.Builder {
 
             @Override
             public void onNext(List<PersonInfo> personInfos) {
+
                 DialogDoublePeopleAdapter dialogDoublePeopleAdapter = new DialogDoublePeopleAdapter(personInfos, mContext, new DialogDoublePeopleAdapter.OnSelectedDoublePeopleListener() {
                     @Override
                     public void onSelectedDoublePeopleListener(PersonInfo info) {

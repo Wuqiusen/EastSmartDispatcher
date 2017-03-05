@@ -3,46 +3,44 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     >
-    <!--查看车辆详情dialog-->
     <LinearLayout
-        android:layout_width="600dp"
+        android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:background="@drawable/ll_car_dialog"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:orientation="vertical">
-
-        <Button
-            style="@style/font_dialog_title_style"
+        <TextView
+            style="@style/title_font_dialog_style"
             android:text="查看车辆详情"
             />
+        <View style="@style/line_title_bottom_dialog"
+            />
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin20"
+            android:layout_marginLeft="@dimen/normal_margin20"
+            android:layout_marginRight="@dimen/normal_margin20"
             android:background="@color/line_dark">
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="车牌号:"
-                    android:id="@+id/textView7" />
-
+                    />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="粤BN7980"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="所属线路:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="M446"
                     />
             </TableRow>
@@ -50,24 +48,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="到站时刻:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="7:00"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="right"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="计划时刻:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="7:00"
                     />
             </TableRow>
@@ -75,23 +68,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="停场时间:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="30min"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="发车间隔:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="15min"
                     />
             </TableRow>
@@ -99,23 +88,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="实际发车时刻:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="7:00"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="单/双班:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="单班"
                     />
             </TableRow>
@@ -123,23 +108,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="驾驶员:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="张三"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="乘务员:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="莉莉"
                     />
             </TableRow>
@@ -147,23 +128,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="应跑单次:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="6"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="实跑单次:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="6"
                     />
             </TableRow>
@@ -171,23 +148,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="本/对站:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="本站"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="归属站:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="812汤坑主站"
                     />
             </TableRow>
@@ -195,23 +168,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="任务类型:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="正线运营"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="非营运任务:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="二保"
                     />
             </TableRow>
@@ -219,37 +188,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="正/异常:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text="正常"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:paddingRight="@dimen/normal_margin10"
+                    style="@style/font_title_car_detail_dialog_style"
                     android:text="备注:"
                     />
                 <TextView
-                    style="@style/font_car_detail_dialog_style"
-                    android:gravity="center"
+                    style="@style/font_content_car_detail_dialog_style"
                     android:text=""
                     />
             </TableRow>
-             <View
-                 android:layout_width="match_parent"
-                 android:layout_height="0.5dp"
-                 android:background="@color/btn_is_enabled"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/btn_is_enabled"
                 />
         </TableLayout>
-          <Button
-                android:id="@+id/btn_close"
-                style="@style/btn_dialog_style"
-                android:text="关闭"
-                />
+        <Button
+            android:id="@+id/btn_close"
+            style="@style/bluebtn_dialog_style"
+            android:layout_gravity="right|center_vertical"
+            android:text="关闭"
+            />
     </LinearLayout>
 
 

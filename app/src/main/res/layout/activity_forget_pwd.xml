@@ -37,7 +37,7 @@
                 android:layout_height="@dimen/bluebtn_height"
                 android:layout_marginLeft="16dp"
                 wqs:hint="请输入工号"
-                wqs:inputType="pwd"
+                wqs:inputType="number"
                 />
 
         </LinearLayout>

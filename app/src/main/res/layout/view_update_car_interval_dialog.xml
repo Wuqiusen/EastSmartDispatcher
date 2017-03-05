@@ -8,54 +8,55 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ll_car_dialog"
         android:orientation="vertical">
-        <Button
-            style="@style/font_dialog_title_style"
+        <TextView
+            style="@style/title_font_dialog_style"
             android:text="修改车辆间隔"
             />
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_margin="@dimen/dialog_margin30"
-           android:minHeight="50dp"
-           android:gravity="center"
-           android:orientation="horizontal">
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="发车间隔："
-               android:textSize="@dimen/font_mhuge"
-               android:textColor="@color/font_black"
-               />
-           <EditText
-               android:layout_width="200dp"
-               android:layout_height="50dp"
-               style="@style/et_control_deck_dialog"
-               android:ellipsize="end"
-               android:maxLines="1"
-               android:maxLength="4"
-               android:hint="15"/>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="min"
-               android:textSize="@dimen/font_mhuge"
-               android:textColor="@color/font_black"
-               />
-       </LinearLayout>
+        <View style="@style/line_title_bottom_dialog"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dialog_margin30"
+            android:minHeight="50dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/font_dialog_deputy_style"
+                android:text="发车间隔："
+                />
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="48dp"
+                style="@style/et_control_deck_dialog"
+                android:inputType="number"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxLength="4"
+                android:hint="15"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/font_dialog_deputy_style"
+                android:text="min"
+                />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="right|center_vertical"
             android:orientation="horizontal">
             <Button
                 android:id="@+id/btn_confirm"
-                style="@style/btn_dialog_style"
-                android:text="确认"
+                style="@style/bluebtn_dialog_style"
+                android:text="确定"
                 />
             <Button
                 android:id="@+id/btn_cancel"
-                style="@style/btn_dialog_style"
+                style="@style/whitebtn_dialog_style"
                 android:text="取消"
                 />
         </LinearLayout>

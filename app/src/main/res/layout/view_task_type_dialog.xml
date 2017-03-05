@@ -10,11 +10,13 @@
         android:layout_marginLeft="@dimen/normal_margin20"
         android:layout_marginRight="@dimen/normal_margin20"
         android:orientation="vertical">
-        <Button
-            style="@style/font_dialog_title_style"
+        <TextView
+            style="@style/title_font_dialog_style"
             android:text="任务类型"
             />
-      <LinearLayout
+        <View style="@style/line_title_bottom_dialog"
+            />
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -46,9 +48,7 @@
                    <TextView
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:layout_gravity="center"
-                       android:textSize="@dimen/font_large"
-                       android:textColor="@color/tv_font_blue_color"
+                       style="@style/font_rb_cb_style"
                        android:text="正线运营"
                        />
                </LinearLayout>
@@ -84,9 +84,7 @@
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:layout_gravity="center"
-                      android:textSize="@dimen/font_large"
-                      android:textColor="@color/tv_font_blue_color"
+                      style="@style/font_rb_cb_style"
                       android:text="营运任务"
                       android:id="@+id/textView9" />
               </LinearLayout>
@@ -126,9 +124,7 @@
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:layout_gravity="center"
-                      android:textSize="@dimen/font_large"
-                      android:textColor="@color/tv_font_blue_color"
+                      style="@style/font_rb_cb_style"
                       android:text="非营运任务"
                       android:id="@+id/textView8" />
               </LinearLayout>
@@ -150,16 +146,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="right|center_vertical"
             android:orientation="horizontal">
             <Button
                 android:id="@+id/btn_confirm"
-                style="@style/btn_dialog_style"
+                style="@style/bluebtn_dialog_style"
                 android:text="确定"
                 />
             <Button
                 android:id="@+id/btn_cancel"
-                style="@style/btn_dialog_style"
+                style="@style/whitebtn_dialog_style"
                 android:text="取消"
                 />
         </LinearLayout>

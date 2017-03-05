@@ -16,7 +16,7 @@
         android:id="@+id/img_dialog_station"
         android:layout_width="wrap_content"
         android:layout_height="250dp"
-        android:src="@drawable/img_ebus_load"
+        android:src="@mipmap/img_ebus_load"
         android:layout_gravity="center"
         android:padding="5dp"
         android:visibility="gone"/>

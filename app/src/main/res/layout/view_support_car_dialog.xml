@@ -7,12 +7,14 @@
         android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:background="@drawable/ll_car_dialog"
-
         android:orientation="vertical">
-        <Button
-            style="@style/font_dialog_title_style"
+        <TextView
+            style="@style/title_font_dialog_style"
             android:text="支援"
             />
+        <View style="@style/line_title_bottom_dialog"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,9 +25,9 @@
                 android:layout_weight="1.6"
                 android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
-                android:text="支援线路："
-                android:textSize="@dimen/font_mhuge"
-                android:textColor="@color/font_black"/>
+                style="@style/font_dialog_deputy_style"
+                android:text="支援线路: "
+                />
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="3"
@@ -38,7 +40,7 @@
                     android:maxLines="1"
                     android:maxLength="20"
                     android:hint="模糊查询"
-                     />
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -55,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="right"
-                android:text="支援时间："
-                android:textSize="@dimen/font_mhuge"
-                android:textColor="@color/font_black"/>
+                style="@style/font_dialog_deputy_style"
+                android:text="支援时间: "
+                />
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="3"
@@ -70,13 +72,13 @@
                     android:maxLines="1"
                     android:maxLength="8"
                     style="@style/et_control_deck_dialog"
-                    android:drawableRight="@drawable/img_calendar"
+                    android:drawableRight="@mipmap/img_calendar"
                     android:hint="模糊查询"
 
                     />
                 <View
                     android:layout_width="20dp"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:layout_gravity="center"
                     android:background="@color/font_black"/>
                 <EditText
@@ -86,7 +88,7 @@
                     android:maxLines="1"
                     android:maxLength="8"
                     style="@style/et_control_deck_dialog"
-                    android:drawableRight="@drawable/img_calendar"
+                    android:drawableRight="@mipmap/img_calendar"
                     android:hint="模糊查询"
                     />
             </LinearLayout>
@@ -95,16 +97,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="right|center_vertical"
             android:orientation="horizontal">
             <Button
                 android:id="@+id/btn_confirm"
-                style="@style/btn_dialog_style"
+                style="@style/bluebtn_dialog_style"
                 android:text="确定"
                 />
             <Button
                 android:id="@+id/btn_cancel"
-                style="@style/btn_dialog_style"
+                style="@style/whitebtn_dialog_style"
                 android:text="取消"
                 />
         </LinearLayout>

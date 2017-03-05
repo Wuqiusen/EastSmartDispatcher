@@ -18,7 +18,7 @@
         android:maxLines="1"
         tools:text="上塘地铁站"
         android:text=""
-        android:textSize="@dimen/font_mhuge"
+        android:textSize="@dimen/font_huge"
         android:textStyle="bold"
         android:textColor="@color/title_bar_bg_style1"/>
 </LinearLayout>

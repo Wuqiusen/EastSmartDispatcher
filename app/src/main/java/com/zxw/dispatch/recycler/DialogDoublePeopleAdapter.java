@@ -30,7 +30,7 @@ public class DialogDoublePeopleAdapter extends RecyclerView.Adapter<DialogDouble
 
     public DialogDoublePeopleAdapter(List<PersonInfo> mData, Context mContext, OnSelectedDoublePeopleListener listener) {
         this.mData = mData;
-        this.mContext = mContext;;
+        this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
         this.mListener = listener;
     }

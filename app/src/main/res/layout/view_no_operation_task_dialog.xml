@@ -9,10 +9,13 @@
         android:background="@drawable/ll_car_dialog"
         android:paddingBottom="@dimen/normal_margin20"
         android:orientation="vertical">
-        <Button
-            style="@style/font_dialog_title_style"
+        <TextView
+            style="@style/title_font_dialog_style"
             android:text="非营运任务"
             />
+        <View style="@style/line_title_bottom_dialog"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,8 +27,8 @@
                 android:layout_weight="1.4"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                style="@style/font_no_operation_dialog_style"
-                android:text="执行时间："
+                style="@style/font_dialog_deputy_style"
+                android:text="执行时间: "
                 />
             <LinearLayout
                 android:layout_width="0dp"
@@ -36,34 +39,34 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    style="@style/font_no_operation_dialog_style"
+                    style="@style/font_dialog_deputy_style"
                     android:text="2017"
-                    android:id="@+id/textView" />
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    style="@style/font_no_operation_dialog_style"
+                    style="@style/font_dialog_deputy_style"
                     android:text="年"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    style="@style/font_no_operation_dialog_style"
+                    style="@style/font_dialog_deputy_style"
                     android:text="02"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    style="@style/font_no_operation_dialog_style"
+                    style="@style/font_dialog_deputy_style"
                     android:text="月"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    style="@style/font_no_operation_dialog_style"
+                    style="@style/font_dialog_deputy_style"
                     android:text="23"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    style="@style/font_no_operation_dialog_style"
+                    style="@style/font_dialog_deputy_style"
                     android:text="日"/>
             </LinearLayout>
         </LinearLayout>
@@ -78,15 +81,15 @@
                 android:layout_weight="1.4"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                style="@style/font_no_operation_dialog_style"
-                android:text="执行内容："
+                style="@style/font_dialog_deputy_style"
+                android:text="执行内容: "
                 />
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                style="@style/font_no_operation_dialog_style"
+                style="@style/font_dialog_deputy_style"
                 android:text="二保" />
         </LinearLayout>
         <LinearLayout
@@ -99,20 +102,21 @@
                 android:layout_weight="1.4"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                style="@style/font_no_operation_dialog_style"
-                android:text="执行情况："
+                style="@style/font_dialog_deputy_style"
+                android:text="执行情况: "
                 />
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                style="@style/font_no_operation_dialog_style"
+                style="@style/font_dialog_deputy_style"
                 android:text="未完成" />
         </LinearLayout>
         <Button
             android:id="@+id/btn_close"
-            style="@style/btn_dialog_style"
+            style="@style/bluebtn_dialog_style"
+            android:layout_gravity="right|center_vertical"
             android:text="关闭"
             />
     </LinearLayout>

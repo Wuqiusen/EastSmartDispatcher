@@ -88,7 +88,8 @@ import com.zxw.dispatch.utils.DebugLog;
             if (dragger != null && x < dragger.getRight()) { //如果想点击item的任意位置都能进行拖拽，把x > dragger.getLeft()限定去掉就行
                 upScrollBounce = getHeight() / 3;// 取得向上滚动的边际，大概为该控件的1/3
                 downScrollBounce = getHeight() * 2 / 3;// 取得向下滚动的边际，大概为该控件的2/3
-                itemView.setBackgroundColor(Color.parseColor("#a35151"));
+                itemView.setBackgroundColor(Color.parseColor("#4E6682"));
+
                 itemView.setDrawingCacheEnabled(true);// 开启cache.
                 Bitmap bm = Bitmap.createBitmap(itemView.getDrawingCache());// 根据cache创建一个新的bitmap对象,就是你拖着狂奔的对象
                 startDrag(bm, y);// 初始化影像

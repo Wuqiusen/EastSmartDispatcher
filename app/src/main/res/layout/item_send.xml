@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
-    android:minHeight="50dp"
+    android:minHeight="60dp"
     android:gravity="center"
     android:orientation="horizontal">
     <!--序号-->
@@ -15,28 +15,30 @@
         android:layout_weight="2"
         android:layout_height="wrap_content"
         tools:text="1"
-       />
+        />
 
     <!--车号-->
     <TextView
         android:id="@+id/tv_car_code"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="4"
+        android:layout_weight="4.6"
         android:layout_height="wrap_content"
+        android:minHeight="30dp"
         android:background="@drawable/ll_stop_car_red_btn_bg"
         android:textColor="@color/font_white"
         tools:text="粤B03444"
-       />
+        />
 
     <!--到站时刻-->
     <TextView
         android:id="@+id/tv_arrive_time"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="4"
+        android:layout_weight="3.7"
         android:layout_height="wrap_content"
         tools:text="18:00"
+        android:text="18:00"
         />
 
     <!--计划时刻-->
@@ -44,7 +46,7 @@
         android:id="@+id/tv_plan_time"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="4"
+        android:layout_weight="4.2"
         android:layout_height="wrap_content"
         tools:text="16:00"
         />
@@ -54,9 +56,10 @@
         android:id="@+id/tv_send_time"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="5"
+        android:layout_weight="4.4"
         android:layout_height="wrap_content"
         tools:text="20:00"
+        android:text="20:00"
         />
 
     <!--发车间隔-->
@@ -64,7 +67,7 @@
         android:id="@+id/tv_interval_time"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="4"
+        android:layout_weight="4.1"
         android:layout_height="wrap_content"
         tools:text="25min"
         />
@@ -74,7 +77,7 @@
         android:id="@+id/tv_driver"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="3.2"
+        android:layout_weight="3.1"
         android:layout_height="wrap_content"
         tools:text="张三"
         />
@@ -101,27 +104,31 @@
 
     <!--正/异常-->
     <TextView
+        android:id="@+id/tv_send_or_normal"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="3.5"
+        android:layout_weight="3.1"
         android:layout_height="wrap_content"
         tools:text="正常"
+        android:text="正常"
         />
 
     <!--备注-->
     <TextView
+        android:id="@+id/tv_send_remark"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="3.5"
+        android:layout_weight="4.6"
         android:layout_height="wrap_content"
         tools:text="驾驶员中途"
+        android:text="驾驶员中途"
         />
 
     <!--操作-->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3.5"
+        android:layout_weight="2.7"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/tv_check_send_car"
@@ -130,28 +137,29 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:textColor="@color/tv_font_blue_color"
+            android:textColor="@color/scroll_bar_bg"
             android:text="查看"
 
             />
         <TextView
+            android:id="@+id/tv_send_withdraw"
             style="@style/font_item_xml_style"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:textColor="@color/tv_font_blue_color"
+            android:textColor="@color/scroll_bar_bg"
             android:text="撤回"
-            android:visibility="gone"/>
+            />
 
     </LinearLayout>
 
     <!--指令反馈-->
     <ImageView
         android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_weight="2.2"
         android:layout_height="wrap_content"
-        android:src="@drawable/feedback_icon"
+        android:src="@mipmap/feedback_icon"
         />
     <!---->
     <!--停场时间-->

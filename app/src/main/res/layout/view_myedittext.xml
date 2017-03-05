@@ -19,7 +19,7 @@
             android:id="@+id/img_my"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/item_delete_icon"
+            android:src="@mipmap/item_delete_icon"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin_fit"

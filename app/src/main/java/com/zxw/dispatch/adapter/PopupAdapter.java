@@ -68,13 +68,13 @@ public class PopupAdapter extends BaseAdapter{
     private void setImageStyle(ViewHolder holder,final int position) {
         switch (position){
             case 0:
-                holder.img_identify.setBackground(mContext.getResources().getDrawable(R.drawable.update_information_icon));
+                holder.img_identify.setBackground(mContext.getResources().getDrawable(R.mipmap.update_information_icon));
                 break;
             case 1:
-                holder.img_identify.setBackground(mContext.getResources().getDrawable(R.drawable.update_password_icon));
+                holder.img_identify.setBackground(mContext.getResources().getDrawable(R.mipmap.update_password_icon));
                 break;
             case 2:
-                holder.img_identify.setBackground(mContext.getResources().getDrawable(R.drawable.login_out_icon));
+                holder.img_identify.setBackground(mContext.getResources().getDrawable(R.mipmap.login_out_icon));
                 break;
         }
     }

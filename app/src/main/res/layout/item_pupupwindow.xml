@@ -20,8 +20,8 @@
         android:gravity="center_vertical"
         android:layout_marginLeft="@dimen/acli_margin6"
         android:layout_marginRight="@dimen/normal_margin10"
-        android:text="退出"
-        android:textSize="@dimen/font_large"
+        android:text=""
+        android:textSize="@dimen/font_medium"
         android:textColor="@color/white"
         />
 </LinearLayout>

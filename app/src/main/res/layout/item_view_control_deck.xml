@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="30dp"
-            android:src="@drawable/feedback_icon"/>
+            android:src="@mipmap/feedback_icon"/>
 
     </LinearLayout>
 </RelativeLayout>

@@ -1,24 +1,23 @@
 <resources>
 
-    <style name="main_tab_bottom">
-        <item name="android:textSize">@dimen/font_small</item>
-        <item name="android:textColor">@color/main_tab_font</item>
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:background">@drawable/rb_main_tab_background</item>
-        <item name="android:paddingBottom">@dimen/margin_tiny</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:button">@null</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:layout_weight">1.0</item>
-        <item name="android:layout_marginTop">2dp</item>
-        <item name="android:paddingTop">4dp</item>
+    <style name="et_login_style">
+        <item name="android:minHeight">@dimen/login_height70</item>
+        <item name="android:background">@drawable/whitebtn_dialog_deep_style</item>
+        <item name="android:drawablePadding">@dimen/margin_fit_6</item>
+        <item name="android:layout_marginTop">@dimen/normal_margin10</item>
+        <item name="android:layout_marginBottom">@dimen/normal_margin10</item>
+        <item name="android:paddingLeft">@dimen/normal_margin10</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">40</item>
+        <item name="android:text">@null</item>
+        <item name="android:textSize">@dimen/font_xlarge</item>
+        <item name="android:textColor">@color/font_black</item>
     </style>
 
     <style name="scroll_bar_select_style">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">4dp</item>
+        <item name="android:layout_height">6dp</item>
         <item name="android:background">@color/scroll_bar_bg</item>
         <item name="android:layout_alignParentBottom">true</item>
     </style>
@@ -52,13 +51,13 @@
     <style name="titleBar_white_font_style">
         <item name="android:text">@null</item>
         <item name="android:textColor">@color/font_white</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
     <style name="main_tab_font_style" parent="titleBar_white_font_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/font_mhuge</item>
+        <item name="android:textSize">@dimen/font_xlarge</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
@@ -81,15 +80,15 @@
         <item name="android:minHeight">26dp</item>
         <item name="android:gravity">center</item>
         <item name="android:text">@null</item>
-        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">@color/font_blue</item>
         <item name="android:maxLines">1</item>
         <item name="android:minWidth">6dp</item>
         <item name="android:ellipsize">end</item>
     </style>
 
-  <!--Dialog 弹出框-->
-    <!--TitleText-->
+  <!--Dialog布局-->
+    <!--TitleText被取代-->
     <style name="font_dialog_title_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -100,6 +99,32 @@
         <item name="android:textSize">@dimen/font_huge</item>
         <item name="android:textColor">@color/white</item>
     </style>
+    <!--DialogTitle-->
+    <style name="title_font_dialog_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:minHeight">@dimen/dialog_height50</item>
+        <item name="android:paddingTop">@dimen/normal_margin10</item>
+        <item name="android:paddingLeft">@dimen/normal_margin20</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textColor">@color/font_black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!--DialogTitleLine-->
+    <style name="line_title_bottom_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">@dimen/normal_margin20</item>
+        <item name="android:layout_marginRight">@dimen/dialog_margin30</item>
+        <item name="android:background">@color/line_level_bg4</item>
+    </style>
+
+    <!--DeputyText-->
+    <style name="font_dialog_deputy_style">
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/font_black</item>
+    </style>
     <!--EditText-->
     <style name="et_control_deck_dialog">
         <item name="android:layout_marginRight">@dimen/normal_margin10</item>
@@ -107,23 +132,27 @@
         <item name="android:background">@drawable/et_background2</item>
         <item name="android:paddingLeft">@dimen/main_margin3</item>
         <item name="android:paddingRight">@dimen/main_margin3</item>
-        <item name="android:textSize">@dimen/font_huge</item>
+        <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textColor">@color/font_black</item>
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
     </style>
-    <!--Button-->
-    <style name="btn_dialog_style">
+    <!--BlueButton-->
+    <style name="bluebtn_dialog_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:minWidth">150dp</item>
-        <item name="android:minHeight">40dp</item>
-        <item name="android:background">@drawable/btn_dialog_light_style</item>
+        <item name="android:minWidth">100dp</item>
+        <item name="android:minHeight">34dp</item>
+        <item name="android:background">@drawable/bluebtn_dialog_style</item>
         <item name="android:layout_marginTop">@dimen/normal_margin20</item>
-        <item name="android:layout_marginLeft">@dimen/normal_margin10</item>
-        <item name="android:layout_marginRight">@dimen/normal_margin10</item>
+        <item name="android:layout_marginRight">@dimen/normal_margin20</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:textColor">@color/font_black</item>
+        <item name="android:textColor">@color/font_white</item>
         <item name="android:textSize">@dimen/font_small</item>
+    </style>
+    <!--WhiteButton-->
+    <style name="whitebtn_dialog_style" parent="bluebtn_dialog_style">
+    <item name="android:background">@drawable/whitebtn_dialog_style</item>
+    <item name="android:textColor">@color/font_black</item>
     </style>
     <!--Dialog去除黑边框-->
     <style name="customDialog" parent="@android:style/Theme.Dialog">
@@ -134,21 +163,6 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
-
-    <!--"查看"字体-->
-    <style name="font_car_detail_dialog_style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/white</item>
-        <item name="android:layout_margin">0.5dp</item>
-        <item name="android:gravity">right</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:minWidth">6dp</item>
-        <item name="android:textSize">@dimen/font_huge</item>
-        <item name="android:textColor">@color/font_black</item>
-    </style>
     <!--RadioButton-->
     <style name="rb_bg_style">
         <item name="android:layout_width">@dimen/rb_width14</item>
@@ -157,6 +171,55 @@
         <item name="android:text">@null</item>
         <item name="android:background">@drawable/radio_bg_style</item>
     </style>
+    <!--CheckBox-->
+    <style name="cb_bg_style">
+        <item name="android:layout_width">@dimen/cb_width20</item>
+        <item name="android:layout_height">@dimen/cb_height20</item>
+        <item name="android:layout_margin">@dimen/cb_margin10</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/checkbox_remark_style</item>
+    </style>
+    <style name="cb_bg_black_style" parent="cb_bg_style">
+        <item name="android:background">@drawable/checkbox_remark_black_style</item>
+    </style>
+    <!--Font_RadioButton/CheckBox-->
+    <style name="font_rb_cb_style">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">10</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/title_bar_bg_style1</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!--Spinner-->
+    <style name="sp_style">
+        <item name="android:paddingLeft">@dimen/list_margin2</item>
+        <item name="android:paddingRight">@dimen/list_margin12</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+        <item name="android:background">@drawable/et_background2</item>
+    </style>
+
+    <!--Font_CheckCarDetailDialog-->
+    <style name="font_title_car_detail_dialog_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/dialog_height40</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_margin">0.5dp</item>
+        <item name="android:paddingRight">@dimen/normal_margin10</item>
+        <item name="android:gravity">center|right</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textColor">@color/font_black</item>
+    </style>
+    <style name="font_content_car_detail_dialog_style" parent="font_title_car_detail_dialog_style">
+        <item name="android:gravity">center</item>
+        <item name="android:text">@null</item>
+    </style>
+
 
 <!--排班计划-->
     <!--标题类字体-->
@@ -190,22 +253,12 @@
         <item name="android:layout_marginBottom">@dimen/normal_margin10</item>
     </style>
 
-
     <!--非营运任务Dialog-->
     <style name="font_no_operation_dialog_style">
         <item name="android:textColor">@color/font_black</item>
         <item name="android:textSize">@dimen/font_huge</item>
     </style>
 
-
-    <!--RadioButton-->
-    <!--<style name="rb_bg_style">-->
-        <!--<item name="android:ellipsize">end</item>-->
-        <!--<item name="android:maxLines">1</item>-->
-        <!--<item name="android:minWidth">6dp</item>-->
-        <!--<item name="android:textSize">@dimen/font_huge</item>-->
-        <!--<item name="android:textColor">@color/font_black</item>-->
-    <!--</style>-->
     <!--RadioButton横线-->
     <style name="rb_horizontal_line_style">
         <item name="android:layout_width">match_parent</item>
@@ -286,8 +339,8 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowTitleStyle">@style/Base.DialogWindowTitle.AppCompat</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
-        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+        <!--<item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>-->
+        <!--<item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>-->
     </style>
 
     <!--主界面顶部按钮样式-->
@@ -295,7 +348,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/font_xlarge</item>
+        <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textColor">@color/font_blue</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_weight">0.2</item>

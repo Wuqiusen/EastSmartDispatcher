@@ -3,8 +3,8 @@
     android:id="@+id/ll_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:minHeight="50dp"
-    android:minWidth="80dp"
+    android:minHeight="60dp"
+    android:minWidth="90dp"
     android:layout_margin="6dp"
     android:background="@drawable/ll_stop_car_red_btn_bg"
     android:orientation="vertical">
