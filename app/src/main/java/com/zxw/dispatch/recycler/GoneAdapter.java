@@ -77,13 +77,6 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
 //        }else {
 //            holder.tvNoWorkStatus.setText("完成");
 //        }
-        // 正/异常
-        holder.tvOrNormalStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openOrNormalStatusDialog();
-            }
-        });
         // 备注
         holder.tv_send_remark.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,12 +85,12 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
             }
         });
         // 查看
-        holder.tvCheckSendCar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                   openCarMsgDialog();
-            }
-        });
+//      holder.tvCheckSendCar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                   openCarMsgDialog();
+//            }
+//      });
         // 撤回
         holder.tv_send_withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,30 +100,6 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         });
     }
 
-    private void openOrNormalStatusDialog() {
-        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_normal_or_abnormal_dialog,null);
-        String[] arrays = mContext.getResources().getStringArray(R.array.or_normal_array);
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
-        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.dismiss();
-            }
-        });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.dismiss();
-            }
-        });
-        mDialog.setContentView(view,params);
-        mDialog.setCancelable(true);
-        mDialog.show();
-    }
 
 
     /**
@@ -247,8 +216,6 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         TextView tv_send_remark;
         @Bind(R.id.tv_send_withdraw)
         TextView tv_send_withdraw;
-        @Bind(R.id.tv_send_or_normal)
-        TextView tvOrNormalStatus;
         LineHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

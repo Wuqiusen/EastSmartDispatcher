@@ -5,6 +5,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.zxw.data.bean.LineParams;
 import com.zxw.dispatch.R;
@@ -15,6 +17,7 @@ import com.zxw.dispatch.view.smart_edittext.SmartEditText;
 /**
  * author：CangJie on 2017/3/2 17:45
  * email：cangjie2016@gmail.com
+ *
  */
 public class ManualAddStopCarDialog extends AlertDialog.Builder {
     private final Context mContext;
@@ -23,6 +26,7 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
     private SmartEditText et_car_code;
     private SmartEditText et_driver;
     private SmartEditText et_steward;
+    private LinearLayout ll_steward;
     private AlertDialog dialog;
 
     public ManualAddStopCarDialog(Context context, LineParams lineParams, OnManualAddStopCarListener listener) {
@@ -39,6 +43,7 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
         et_car_code = (SmartEditText) container.findViewById(R.id.et_car_code);
         et_driver = (SmartEditText) container.findViewById(R.id.et_driver);
         et_steward = (SmartEditText) container.findViewById(R.id.et_steward);
+        ll_steward = (LinearLayout) container.findViewById(R.id.ll_steward);
 
         initSmartEditText();
 
@@ -47,9 +52,11 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
 
         // 是否需要显示乘务员输入框
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
-            et_steward.setVisibility(View.GONE);
+            ll_steward.setVisibility(View.GONE);
+
         }else{
-            et_steward.setVisibility(View.VISIBLE);
+            ll_steward.setVisibility(View.VISIBLE);
+
         }
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override

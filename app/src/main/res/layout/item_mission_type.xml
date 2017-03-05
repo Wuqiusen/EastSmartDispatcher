@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/normal_margin10"
     android:orientation="horizontal"
-    android:gravity="center">
+    >
     <RadioButton
         android:id="@+id/rb_mission_type"
         style="@style/rb_bg_style"
@@ -18,8 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="@dimen/font_large"
-        android:textColor="@color/tv_font_blue_color"
+        android:textSize="@dimen/font_small"
+        android:textColor="@color/font_black"
         tools:text="正线运营"
         />
 </LinearLayout>

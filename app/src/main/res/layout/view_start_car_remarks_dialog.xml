@@ -17,7 +17,7 @@
         <View style="@style/line_title_bottom_dialog"
             />
 
-        <include layout="@layout/item_checkbox"/>
+        <include layout="@layout/item_radio_group"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
