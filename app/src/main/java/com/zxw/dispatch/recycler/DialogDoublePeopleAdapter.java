@@ -49,7 +49,7 @@ public class DialogDoublePeopleAdapter extends RecyclerView.Adapter<DialogDouble
             holder.tv_people_name.setTextColor(Color.WHITE);
         }else{
             holder.tv_people_name.setBackgroundColor(Color.WHITE);
-            holder.tv_people_name.setTextColor(Color.BLACK);
+            holder.tv_people_name.setTextColor(Color.GRAY);
         }
         holder.tv_people_name.setOnClickListener(new View.OnClickListener() {
             @Override
