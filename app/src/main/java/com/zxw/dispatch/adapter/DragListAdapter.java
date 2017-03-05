@@ -73,11 +73,11 @@ public class DragListAdapter extends BaseAdapter {
         tv_driver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble()); ///
+                AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
                 alertNameDialog.showDriverDialog(mDatas.get(position).getId(), mDatas.get(position).getDriverName(),new AlertNameDialog.OnAlertDriverListener() {
                     @Override
                     public void onAlertDriverListener(int driverId) {
-                        // "确定"监听
+
                         presenter.alertPeople(mDatas.get(position).getId(), driverId, AlertNameDialog.TYPE_DRIVER);
                     }
                 });
@@ -95,7 +95,7 @@ public class DragListAdapter extends BaseAdapter {
             tv_trainman.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble()); ///
+                    AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
                     alertNameDialog.showStewardDialog(mDatas.get(position).getId(), mDatas.get(position).getStewardName(),new AlertNameDialog.OnAlertStewardListener() {
                         @Override
                         public void onAlertStewardListener(int stewardId) {
@@ -142,12 +142,12 @@ public class DragListAdapter extends BaseAdapter {
 
         // 非营运任务
         TextView tv_no_operation_task = (TextView) view.findViewById(R.id.tv_no_operation_task);
-        tv_no_operation_task.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openNoOperationTaskDialog();
-            }
-        });
+//      tv_no_operation_task.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openNoOperationTaskDialog();
+//            }
+//      });
 
         // 发车
         TextView tv_send_car = (TextView) view

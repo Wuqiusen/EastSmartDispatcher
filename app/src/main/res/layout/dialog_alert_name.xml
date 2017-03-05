@@ -53,8 +53,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:layout_height="wrap_content"
-                android:minHeight="50dp"
-                android:background="@drawable/btn_dialog_bg_style"
+                android:minHeight="40dp"
+                android:background="@drawable/et_blue_background"
                 android:padding="@dimen/normal_margin10"
                 android:gravity="center"
                 android:ellipsize="end"
@@ -62,9 +62,9 @@
                 android:maxLength="10"
                 tools:text="梁海庆"
                 android:text=""
-                android:textColor="@color/font_black"
+                android:textColor="@color/font_white"
                 android:textSize="@dimen/font_medium"
-                android:visibility="gone"
+                android:visibility="visible"
                 />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_name"

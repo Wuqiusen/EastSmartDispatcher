@@ -119,7 +119,15 @@
         <item name="android:layout_marginRight">@dimen/dialog_margin30</item>
         <item name="android:background">@color/line_level_bg4</item>
     </style>
-
+    <!--DialogLinearLayout-->
+    <style name="ll_hand_station_dialog_style">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:layout_marginTop">@dimen/dialog_margin10</item>
+        <item name="android:layout_marginLeft">@dimen/dialog_margin50</item>
+        <item name="android:layout_marginRight">@dimen/dialog_margin50</item>
+        <item name="android:layout_marginBottom">@dimen/dialog_margin10</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
     <!--DeputyText-->
     <style name="font_dialog_deputy_style">
         <item name="android:textSize">@dimen/font_medium</item>
@@ -191,7 +199,6 @@
         <item name="android:textColor">@color/title_bar_bg_style1</item>
         <item name="android:layout_gravity">center</item>
     </style>
-
     <!--Spinner-->
     <style name="sp_style">
         <item name="android:paddingLeft">@dimen/list_margin2</item>
@@ -199,7 +206,6 @@
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
         <item name="android:background">@drawable/et_background2</item>
     </style>
-
     <!--Font_CheckCarDetailDialog-->
     <style name="font_title_car_detail_dialog_style">
         <item name="android:layout_width">0dp</item>

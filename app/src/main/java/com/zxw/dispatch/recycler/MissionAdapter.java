@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 /**
  * author：CangJie on 2016/9/21 09:53
  * email：cangjie2016@gmail.com
+ *
  */
 public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.MissionHolder> {
     private final OnSelectMissionListener listener;
