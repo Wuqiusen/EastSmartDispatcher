@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.SelectDispatcherPointPresenter;
@@ -37,12 +36,6 @@ public class SelectDispatcherPointActivity extends PresenterActivity<SelectDispa
     private void initView() {
         showColorTitle("请选择调度站");
         showHeadAreaBackground();
-//        showLeftImageButton(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
     }
 
     @Override

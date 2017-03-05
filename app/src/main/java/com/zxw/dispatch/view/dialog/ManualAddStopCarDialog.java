@@ -55,9 +55,17 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
             @Override
             public void onClick(View v) {
                 if (dialog != null && dialog.isShowing()){
+                    if(et_car_code.getVehicleInfo() == null){
+                        ToastHelper.showToast("请输入车牌号");
+                        return;
+                    }
                     String carId = String.valueOf(et_car_code.getVehicleInfo().getVehicleId());
                     if (TextUtils.isEmpty(carId)){
                         ToastHelper.showToast("请输入车牌号");
+                        return;
+                    }
+                    if(et_driver.getPeopleInfo() == null){
+                        ToastHelper.showToast("请输入司机姓名");
                         return;
                     }
                     String driverId = String.valueOf(et_driver.getPeopleInfo().personId);
@@ -65,10 +73,18 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
                         ToastHelper.showToast("请输入司机姓名");
                         return;
                     }
-                    String stewardId = String.valueOf(et_steward.getPeopleInfo().personId);
-                    if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL && TextUtils.isEmpty(stewardId)){
-                        ToastHelper.showToast("请输入乘务员姓名");
-                        return;
+                    String stewardId = null;
+                    if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
+                        if(et_steward.getPeopleInfo() == null){
+                            ToastHelper.showToast("请输入乘务员姓名");
+                            return;
+                        }
+                        stewardId = String.valueOf(et_steward.getPeopleInfo().personId);
+                        // 若当前线路为无人售票线路, 则不需要有乘务员信息
+                        if(TextUtils.isEmpty(stewardId)){
+                            ToastHelper.showToast("请输入乘务员姓名");
+                            return;
+                        }
                     }
                     mListener.manualAddStopCar(carId, driverId, stewardId);
                     dialog.dismiss();
