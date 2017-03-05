@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -416,8 +415,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void showVehicleToScheduleDialog(final StopHistory stopCar) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.alder_dialog);
         View container = View.inflate(mContext, R.layout.dialog_stop_car, null);
+        TextView tv_carCode = (TextView) container.findViewById(R.id.tv_carCode);
+        tv_carCode.setText("请确认是否将"+stopCar.code+"添加到待发车辆列表中?");
         Button btn_confirm = (Button) container.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) container.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {

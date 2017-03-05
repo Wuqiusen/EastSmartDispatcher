@@ -46,24 +46,16 @@
                 android:ellipsize="end"
                 android:maxLength="10"
                 android:text="乘务员:"
-
                 />
             <TextView
                 android:id="@+id/driver_name"
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:layout_height="wrap_content"
-                android:minHeight="40dp"
+                style="@style/font_driver_or_steward_dialog_style"
                 android:background="@drawable/et_blue_background"
-                android:padding="@dimen/normal_margin10"
-                android:gravity="center"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:maxLength="10"
                 tools:text="梁海庆"
-                android:text=""
                 android:textColor="@color/font_white"
-                android:textSize="@dimen/font_medium"
                 android:visibility="visible"
                 />
             <android.support.v7.widget.RecyclerView

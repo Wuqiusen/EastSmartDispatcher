@@ -25,11 +25,13 @@ public class DialogDoublePeopleAdapter extends RecyclerView.Adapter<DialogDouble
     private final LayoutInflater mLayoutInflater;
     private final OnSelectedDoublePeopleListener mListener;
     private List<PersonInfo> mData;
+    private String peopleName;
     private final Context mContext;
     private int currentSelectedPosition = -1;
 
-    public DialogDoublePeopleAdapter(List<PersonInfo> mData, Context mContext, OnSelectedDoublePeopleListener listener) {
+    public DialogDoublePeopleAdapter(List<PersonInfo> mData,String peopleName, Context mContext, OnSelectedDoublePeopleListener listener) {
         this.mData = mData;
+        this.peopleName = peopleName;
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
         this.mListener = listener;
@@ -44,10 +46,15 @@ public class DialogDoublePeopleAdapter extends RecyclerView.Adapter<DialogDouble
     @Override
     public void onBindViewHolder(SpotHolder holder, final int position) {
         holder.tv_people_name.setText(mData.get(position).personName);
+        if (peopleName.equals(mData.get(position).personName)){
+            holder.tv_people_name.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_red));
+        }
         if (currentSelectedPosition == position){
-            holder.tv_people_name.setBackgroundColor(Color.RED);
+            holder.tv_people_name.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_red));
+            holder.tv_people_name.setTextColor(Color.WHITE);
         }else{
             holder.tv_people_name.setBackgroundColor(Color.WHITE);
+            holder.tv_people_name.setTextColor(Color.BLACK);
         }
         holder.tv_people_name.setOnClickListener(new View.OnClickListener() {
             @Override
