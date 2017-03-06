@@ -19,6 +19,7 @@ import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.TimePlanPickerDialog;
+import com.zxw.dispatch.view.UpdateIntervalPickerDialog;
 import com.zxw.dispatch.view.dialog.AlertNameDialog;
 
 import java.util.Calendar;
@@ -119,7 +120,7 @@ public class DragListAdapter extends BaseAdapter {
                     @Override
                     public void onTimePicker(String sHour, String sMinute) {
                              ToastHelper.showToast(sHour+":"+sMinute,mContext);
-                            presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
+                             presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
                     }
                 }).show();
             }
@@ -131,14 +132,20 @@ public class DragListAdapter extends BaseAdapter {
         tv_interval_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                     openCarIntervalDialog(position,mDatas.get(position).getSpaceTime());
+                final int mCurrentMinute = mDatas.get(position).getSpaceTime();
+                new UpdateIntervalPickerDialog(mContext, mCurrentMinute, new UpdateIntervalPickerDialog.OnTimePickerListener() {
+                    @Override
+                    public void onTimePicker(String sMinute) {
+                          presenter.sendVehicle(mDatas.get(position).getId());
+                          tv_interval_time.setText(Integer.parseInt(sMinute));
+                    }
+                }).show();
             }
         });
         // 到站时刻
         TextView tv_system_enter_time = (TextView) view
                 .findViewById(R.id.tv_system_enter_time);
-        tv_system_enter_time.setText("13:00");
-//        tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getArriveTime()));////z
+        tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getArriveTime()));
 
 
         // 非营运任务
@@ -222,38 +229,6 @@ public class DragListAdapter extends BaseAdapter {
             return "有";
         else
             return "完成";
-    }
-
-
-
-    /**
-     * 发车间隔
-     */
-    private void openCarIntervalDialog(final int position,final int spaceTime) {
-        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_update_car_interval_dialog,null);
-        EditText et_spaceTime = (EditText) view.findViewById(R.id.et_space_time);
-        et_spaceTime.setText(spaceTime +"");
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
-        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.sendVehicle(mDatas.get(position).getId());
-                mDialog.dismiss();
-            }
-        });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.dismiss();
-            }
-        });
-        mDialog.setContentView(view,params);
-        mDialog.setCancelable(true);
-        mDialog.show();
     }
 
     /**

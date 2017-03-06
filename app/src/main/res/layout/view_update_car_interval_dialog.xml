@@ -1,8 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    >
+    android:gravity="center_horizontal">
 
     <LinearLayout
         android:layout_width="600dp"
@@ -25,23 +24,32 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="100dp"
                 style="@style/font_dialog_deputy_style"
+
                 android:text="发车间隔："
                 />
-            <EditText
-                android:id="@+id/et_space_time"
-                android:layout_width="200dp"
-                android:layout_height="48dp"
-                style="@style/et_control_deck_dialog"
-                android:inputType="number"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:maxLength="4"
-                android:hint="15"/>
+            <!--<EditText-->
+                <!--android:id="@+id/et_space_time"-->
+                <!--android:layout_width="200dp"-->
+                <!--android:layout_height="48dp"-->
+                <!--style="@style/et_control_deck_dialog"-->
+                <!--android:inputType="number"-->
+                <!--android:ellipsize="end"-->
+                <!--android:maxLines="1"-->
+                <!--android:maxLength="4"-->
+                <!--android:hint="15"/>-->
+            <NumberPicker
+                android:id="@+id/np_space_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/font_dialog_deputy_style"
+                android:layout_marginLeft="@dimen/dialog_margin10"
+                android:minWidth="100dp"
                 android:text="min"
                 />
         </LinearLayout>
