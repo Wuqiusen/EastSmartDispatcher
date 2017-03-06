@@ -30,7 +30,7 @@ public class TimePlanPickerDialog extends AlertDialog {
 
 
     public TimePlanPickerDialog(Context context,String vehTime,OnTimePickerListener mListener) {
-        super(context);
+        super(context,R.style.alder_dialog);
         this.mContext = context;
         this.mListener = mListener;
         this.mVehTime = vehTime;

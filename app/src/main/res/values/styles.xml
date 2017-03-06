@@ -6,7 +6,7 @@
     </style>
 
     <style name="et_login_style">
-        <item name="android:minHeight">@dimen/login_height60</item>
+        <item name="android:minHeight">@dimen/login_height55</item>
         <item name="android:background">@drawable/whitebtn_dialog_deep_style</item>
         <item name="android:drawablePadding">@dimen/margin_fit_6</item>
         <item name="android:layout_marginTop">@dimen/normal_margin10</item>

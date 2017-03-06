@@ -41,7 +41,8 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
     }
 
     private void initView() {
-        showTitle("用户登录");
+        //showTitle("用户登录");
+        isShowTitleLinearLayout(View.GONE);
         tv_forgetPwd.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     }
 

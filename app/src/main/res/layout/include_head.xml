@@ -10,6 +10,7 @@
     android:orientation="vertical"
     android:background="@color/white">
     <RelativeLayout
+        android:id="@+id/rl_base_head_title"
         android:layout_width="match_parent"
         android:layout_height="66dp">
         <Button

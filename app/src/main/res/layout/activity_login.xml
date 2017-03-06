@@ -52,10 +52,10 @@
         android:id="@+id/btn_login"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/login_height60"
+        android:minHeight="@dimen/login_height55"
         android:background="@drawable/btn_login_style"
         android:text="登录"
-        android:textSize="@dimen/font_shuge"
+        android:textSize="@dimen/font_xlarge"
         android:textColor="@color/font_white"/>
 
     <TextView

@@ -34,6 +34,7 @@ public abstract class BaseHeadActivity extends BaseActivity {
     Button btn_headRightButton;
     Button btn_backButton;
     TextView btn_headTitle;
+    RelativeLayout rl_base_head_title;
     RelativeLayout mLoading;
     LinearLayout rel_base_headArea;
 
@@ -107,6 +108,9 @@ public abstract class BaseHeadActivity extends BaseActivity {
         btn_backButton.setVisibility(View.VISIBLE);
     }
 
+    public void isShowTitleLinearLayout(final int isVisible){
+        rl_base_head_title.setVisibility(isVisible);
+    }
     public void showTitle(String title) {
         btn_headTitle.setText(title);
     }
@@ -181,6 +185,7 @@ public abstract class BaseHeadActivity extends BaseActivity {
         ibtn_headRightImageButton = (ImageButton) findViewById(R.id.btn_base_head_right_imgbutton);
         btn_backButton = (Button) findViewById(R.id.btn_base_head_back);
         btn_headTitle = (TextView) findViewById(R.id.tv_base_head_title);
+        rl_base_head_title = (RelativeLayout) findViewById(R.id.rl_base_head_title);
         btn_headRightButton = (Button) findViewById(R.id.btn_base_head_right_button);
         mLoading = (RelativeLayout) findViewById(R.id.rel_base_loading);
         rel_base_headArea = (LinearLayout) findViewById(R.id.rel_base_headArea);
