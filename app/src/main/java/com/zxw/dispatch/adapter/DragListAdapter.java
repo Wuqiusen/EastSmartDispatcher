@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -130,7 +131,7 @@ public class DragListAdapter extends BaseAdapter {
         tv_interval_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                     openCarIntervalDialog(position);
+                     openCarIntervalDialog(position,mDatas.get(position).getSpaceTime());
             }
         });
         // 到站时刻
@@ -228,11 +229,13 @@ public class DragListAdapter extends BaseAdapter {
     /**
      * 发车间隔
      */
-    private void openCarIntervalDialog(final int position) {
+    private void openCarIntervalDialog(final int position,final int spaceTime) {
         final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext,R.layout.view_update_car_interval_dialog,null);
+        EditText et_spaceTime = (EditText) view.findViewById(R.id.et_space_time);
+        et_spaceTime.setText(spaceTime +"");
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
@@ -339,6 +342,8 @@ public class DragListAdapter extends BaseAdapter {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext,R.layout.view_withdraw_dialog,null);
+        TextView tv_prompt = (TextView) view.findViewById(R.id.tv_prompt);
+        tv_prompt.setText("您确定把车辆撤回到停场车辆列表？");
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {

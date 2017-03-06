@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
-    android:minHeight="60dp"
+    android:minHeight="50dp"
     android:gravity="center"
     android:orientation="horizontal">
     <LinearLayout
         android:id="@+id/ll_drag_handle"
         android:layout_width="0dp"
-        android:layout_weight="8.4"
+        android:layout_weight="8.8"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <!--序号-->
@@ -49,7 +49,7 @@
         android:id="@+id/tv_plan_time"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="4"
+        android:layout_weight="4.2"
         android:layout_height="wrap_content"
         tools:text="7:00"
         />
@@ -66,7 +66,7 @@
         android:id="@+id/tv_interval_time"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="3.3"
+        android:layout_weight="3.8"
         android:layout_height="wrap_content"
         tools:text="15"
         />
@@ -96,7 +96,7 @@
         android:layout_weight="3"
         android:layout_height="wrap_content"
         tools:text="李华"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
     <!--应跑单次-->
     <TextView
         style="@style/font_item_xml_style"
@@ -109,7 +109,7 @@
     <TextView
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="3.6"
+        android:layout_weight="4.2"
         android:layout_height="wrap_content"
         tools:text="6"
         />
@@ -117,7 +117,7 @@
     <TextView
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="3.6"
+        android:layout_weight="3.8"
         android:layout_height="wrap_content"
         tools:text="西乡客运站"
         />
@@ -126,7 +126,7 @@
         android:id="@+id/tv_work_type"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="4"
+        android:layout_weight="4.4"
         android:layout_height="wrap_content"
         tools:text="正在运营"
         />
@@ -136,7 +136,7 @@
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="4.6"
+        android:layout_weight="3.6"
         tools:text="有"
         />
     <!--操作-->
@@ -151,7 +151,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="@color/tv_font_blue_color"
+            android:textColor="@color/scroll_bar_bg"
             android:clickable="true"
             android:text="发车"
             />
@@ -161,7 +161,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="@color/tv_font_blue_color"
+            android:textColor="@color/scroll_bar_bg"
             android:clickable="true"
             android:text="撤回"
             />

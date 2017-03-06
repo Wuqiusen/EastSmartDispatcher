@@ -567,10 +567,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         list.add("退出");
         popupAdapter = new PopupAdapter(mContext, list, this);
         lv_popup.setAdapter(popupAdapter);
-        mPopupWindow = new PopupWindow(popView, 360, LinearLayout.LayoutParams.WRAP_CONTENT); // 400
+        mPopupWindow = new PopupWindow(popView, 360, LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
         mPopupWindow.setBackgroundDrawable(new PaintDrawable());
-        mPopupWindow.showAsDropDown(rlSetting,300,20); // 4
+        mPopupWindow.showAsDropDown(rlSetting,300,12);
     }
 
     @Override

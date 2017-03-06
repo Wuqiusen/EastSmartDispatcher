@@ -9,6 +9,7 @@
 
 
     <!-- 按钮高度 -->
+    <dimen name="btn_height12">12dp</dimen>
     <dimen name="btn_height16">16dp</dimen>
     <dimen name="btn_height30">30dp</dimen>
     <dimen name="btn_height40">40dp</dimen>
@@ -135,6 +136,7 @@
     <!--高宽度-->
     <dimen name="login_height40">40dp</dimen>
     <dimen name="login_height50">50dp</dimen>
+    <dimen name="login_height60">60dp</dimen>
     <dimen name="login_height70">70dp</dimen>
     <dimen name="login_height150">150dp</dimen>
     <dimen name="login_height200">200dp</dimen>

@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_bg_shallow_blue"
-        android:minHeight="50dp"
+        android:minHeight="40dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <TextView
@@ -51,14 +51,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.9"
         android:orientation="vertical">
         <!--已发车辆-->
         <LinearLayout
             android:id="@+id/ll_already_issued_car"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.5"
             android:layout_marginLeft="@dimen/margin_tiny"
             android:layout_marginRight="@dimen/margin_tiny"
             android:orientation="vertical"
@@ -84,7 +84,7 @@
                     <TextView
                         style="@style/main_activity_top_button"
                         android:text="车号"
-                        android:layout_weight="6"/>
+                        android:layout_weight="7"/>
 
                     <TextView
                         style="@style/main_activity_top_button"
@@ -168,9 +168,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.4"
-            android:layout_marginLeft="@dimen/margin_tiny"
-            android:layout_marginRight="@dimen/margin_tiny"
+            android:layout_weight="1.3"
             android:orientation="vertical"
             android:visibility="visible"
             >
@@ -178,7 +176,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="50dp"
+                android:minHeight="40dp"
                 android:background="@color/background_bg_shallow_blue"
                 android:orientation="horizontal">
 
@@ -244,7 +242,7 @@
                 <TextView
                     style="@style/main_activity_top_button"
                     android:text="车号"
-                    android:layout_weight="10"/>
+                    android:layout_weight="15"/>
 
                 <TextView
                     style="@style/main_activity_top_button"
@@ -321,11 +319,15 @@
                 android:id="@+id/view_line"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
+                android:layout_marginLeft="@dimen/margin_tiny"
+                android:layout_marginRight="@dimen/margin_tiny"
                 android:background="@color/line_level_bg" />
             <!--待发车辆列表-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/margin_tiny"
+                android:layout_marginRight="@dimen/margin_tiny"
                 android:layout_weight="1">
                 <com.zxw.dispatch.view.DragListView
                     android:id="@+id/lv_send_car"
@@ -363,7 +365,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="50dp"
+            android:minHeight="40dp"
             android:background="@color/background_bg_shallow_blue"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -387,20 +389,22 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/normal_margin10"
-                android:layout_weight="0.2"
+                android:layout_weight="0.24"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
                 <!--单班主站-->
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/btn_height16"
+                    android:layout_height="@dimen/btn_height12"
                     android:background="@drawable/ll_stop_car_red_btn_bg"
-                    android:minWidth="30dp" />
+                    android:minWidth="25dp" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingLeft="@dimen/margin_tiny"
+                    android:paddingRight="@dimen/margin_tiny"
+                    android:textSize="@dimen/font_tiny"
                     android:textColor="@color/font_blue"
                     android:text="本站"
                    />
@@ -408,14 +412,15 @@
                 <!--单班副站-->
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/btn_height16"
+                    android:layout_height="@dimen/btn_height12"
                     android:background="@drawable/ll_stop_car_green_btn_bg"
-                    android:minWidth="30dp" />
+                    android:minWidth="25dp" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingLeft="@dimen/margin_tiny"
+                    android:textSize="@dimen/font_tiny"
                     android:textColor="@color/font_blue"
                     android:text="对站"
                      />
@@ -430,9 +435,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_stop_car"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_height="60dp"
+            android:layout_marginTop="@dimen/margin_fit_6"
             android:layout_marginLeft="@dimen/margin_tiny"
             android:layout_marginRight="@dimen/margin_tiny" />
     </LinearLayout>

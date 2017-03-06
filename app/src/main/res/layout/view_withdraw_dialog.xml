@@ -16,12 +16,17 @@
         <View style="@style/line_title_bottom_dialog"
             />
         <TextView
+            android:id="@+id/tv_prompt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dialog_margin30"
+            android:layout_marginTop="@dimen/dialog_margin30"
+            android:layout_marginBottom="@dimen/dialog_margin30"
+            android:layout_marginRight="@dimen/dialog_margin30"
+            android:layout_marginLeft="@dimen/dialog_margin54"
             style="@style/font_dialog_deputy_style"
+            android:textSize="@dimen/font_large"
             android:gravity="left|center"
-            android:text="您确定把车辆撤回到停车场站？"
+            android:text=""
             />
 
         <LinearLayout

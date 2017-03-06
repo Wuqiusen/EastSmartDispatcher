@@ -8,7 +8,7 @@
   <!--头部-->
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
+        android:layout_height="50dp"
         android:background="@color/title_bar_bg_style1"
         android:orientation="horizontal">
        <!--标题栏: 左边部分-->
@@ -19,13 +19,16 @@
            android:layout_marginLeft="@dimen/normal_margin10"
            android:layout_gravity="center_vertical"
            >
-
+           <ImageView
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:paddingRight="@dimen/dialog_margin10"
+               android:src="@mipmap/my_icon"/>
            <TextView
                android:id="@+id/tv_user_name"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:drawableLeft="@mipmap/my_icon"
-               android:gravity="center_vertical"
+               android:layout_gravity="center_vertical"
                android:drawablePadding="@dimen/normal_margin10"
                tools:text="李兰"
                style="@style/titleBar_white_font_style"
@@ -34,6 +37,7 @@
                android:id="@+id/tv_system_date"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
                android:paddingLeft="@dimen/normal_margin10"
                tools:text="2017-2-15"
                style="@style/titleBar_white_font_style"
@@ -171,7 +175,7 @@
         <!--左边部分-->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.6"
             android:layout_height="match_parent"
             android:background="@color/title_bar_bg_style1"
             android:orientation="vertical"

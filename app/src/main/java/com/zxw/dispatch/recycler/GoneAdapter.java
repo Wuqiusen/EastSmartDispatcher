@@ -132,6 +132,8 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext,R.layout.view_withdraw_dialog,null);
+        TextView tv_prompt = (TextView) view.findViewById(R.id.tv_prompt);
+        tv_prompt.setText("您确定把车辆撤回到待发车辆列表？");
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {

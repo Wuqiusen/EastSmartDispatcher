@@ -76,7 +76,7 @@ public class MyDialog extends AlertDialog {
     }
 
     public MyDialog(Activity activity, String title, String mesg, String type) {
-        super(activity);
+        super(activity,R.style.alder_dialog);
         backactivity = activity;
         mtitle = title;
         mmesg = mesg;

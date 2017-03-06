@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
-    android:minHeight="60dp"
+    android:minHeight="46dp"
     android:gravity="center"
     android:orientation="horizontal">
     <!--序号-->
@@ -38,6 +38,7 @@
         android:layout_weight="3.7"
         android:layout_height="wrap_content"
         tools:text="18:00"
+        android:text="19:00"
         />
 
     <!--计划时刻-->
@@ -58,6 +59,7 @@
         android:layout_weight="4.4"
         android:layout_height="wrap_content"
         tools:text="20:00"
+        android:text="19:00"
         />
 
     <!--发车间隔-->
@@ -65,7 +67,7 @@
         android:id="@+id/tv_interval_time"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="4.1"
+        android:layout_weight="4.6"
         android:layout_height="wrap_content"
         tools:text="25min"
         />
@@ -88,7 +90,7 @@
         android:layout_weight="3"
         android:layout_height="wrap_content"
         tools:text="李华"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <!--任务类型-->
     <TextView

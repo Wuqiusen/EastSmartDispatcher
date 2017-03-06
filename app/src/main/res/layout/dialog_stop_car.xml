@@ -10,13 +10,22 @@
         android:orientation="vertical">
         <!--请确认是否将粤B12312添加到待发车辆列表中?-->
         <TextView
-            android:id="@+id/tv_carCode"
             style="@style/title_font_dialog_style"
             android:minHeight="@dimen/dialog_height50"
-            android:text=""
+            android:text="提示"
+            android:textStyle="bold"
             />
         <View style="@style/line_title_bottom_dialog"/>
 
+        <!--请确认是否将粤B12312添加到待发车辆列表中?-->
+        <TextView
+            android:id="@+id/tv_carCode"
+            style="@style/title_font_dialog_style"
+            android:minHeight="@dimen/dialog_height50"
+            android:layout_marginLeft="@dimen/dialog_height36"
+            android:textStyle="normal"
+            android:text=""
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
