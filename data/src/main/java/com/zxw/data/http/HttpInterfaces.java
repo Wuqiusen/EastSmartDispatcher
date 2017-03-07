@@ -514,6 +514,15 @@ public class HttpInterfaces {
                                          @Field("remarks") String remarks); //DES PLUS转码
 
 
+        // 24 已发车列表填写备注
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/adjust/space/time")
+        Observable<BaseBean> updateSpaceTime(@Field("userId") String userId,
+                                            @Field("keyCode") String keyCode,
+                                            @Field("objId") int objId,
+                                            @Field("spaceTime") String spaceTime);
+
+
     }
 
     public interface UpLoadLog {

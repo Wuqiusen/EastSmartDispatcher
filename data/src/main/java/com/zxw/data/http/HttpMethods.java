@@ -305,4 +305,11 @@ public class HttpMethods {
         toSubscribe(map, subscriber);
     }
 
+    public void updateSpaceTime(Subscriber subscriber, String userId, String keyCode,
+                                int objId, String spaceTime){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.updateSpaceTime(userId, keyCode, objId, spaceTime).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+    }
+
 }

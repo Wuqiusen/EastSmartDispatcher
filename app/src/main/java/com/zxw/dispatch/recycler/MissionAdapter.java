@@ -62,7 +62,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.MissionH
                choice(position);
             }
         });
-        if (taskId == mData.get(position).getTaskId()){
+        if (isFirst && taskId == mData.get(position).getTaskId()){
             holder.rbMissionType.setChecked(true);
         }else {
             holder.rbMissionType.setChecked(isClick[position]);
@@ -77,6 +77,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.MissionH
                 isClick[i] = true;
             }
         }
+        isFirst = false;
         notifyDataSetChanged();
 
     }

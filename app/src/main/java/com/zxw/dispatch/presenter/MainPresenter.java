@@ -146,6 +146,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             public void onNext(List<DepartCar> waitVehicles) {
                 mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams);
                 mvpView.loadSendCarList(mDragListAdapter);
+                timeToSend();
             }
         }, userId(), keyCode(), lineId);
     }
@@ -314,6 +315,11 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), id, peopleId, type);
     }
 
+    /**
+     * 修改计划发车时间
+     * @param id
+     * @param vehTime
+     */
     public void alertVehTime(int id, String vehTime) {
         HttpMethods.getInstance().alertVehTime(new Subscriber() {
             @Override
@@ -328,6 +334,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(Object o) {
+                loadSendCarList();
 
             }
         }, userId(), keyCode(), id, vehTime);
@@ -419,7 +426,11 @@ public class MainPresenter extends BasePresenter<MainView> {
                     SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
                     Date curDate = new Date(System.currentTimeMillis());//获取当前时间
                     Log.e("time1", formatter.format(curDate) + "");
-                    if (Integer.valueOf(departCar.getVehTime()) - Integer.valueOf(formatter.format(curDate) + "") < 30){
+                    int space = (Integer.valueOf(departCar.getVehTime().substring(0, 2))
+                            -Integer.valueOf((formatter.format(curDate) + "").substring(0, 2))) * 60
+                            +Integer.valueOf(departCar.getVehTime().substring(2, 4))
+                            -Integer.valueOf((formatter.format(curDate) + "").substring(2, 4));
+                    if (space <= 30){
                         sendNums.set(checkLine, sendNums.get(checkLine)+ 1);
                         Log.e("time2", departCar.getVehTime() + "");
                     }
@@ -521,8 +532,27 @@ public class MainPresenter extends BasePresenter<MainView> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void updateSpaceTime(int objId, String  spaceTime){
+        mvpView.showLoading();
+        HttpMethods.getInstance().updateSpaceTime(new Subscriber() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
 
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+                loadSendCarList();
+            }
+        }, userId(), keyCode(), objId, spaceTime);
     }
 }

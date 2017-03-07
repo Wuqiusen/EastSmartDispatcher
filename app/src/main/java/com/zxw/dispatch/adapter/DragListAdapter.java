@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -136,8 +135,8 @@ public class DragListAdapter extends BaseAdapter {
                 new UpdateIntervalPickerDialog(mContext, mCurrentMinute, new UpdateIntervalPickerDialog.OnTimePickerListener() {
                     @Override
                     public void onTimePicker(String sMinute) {
-                          presenter.sendVehicle(mDatas.get(position).getId());
-                          tv_interval_time.setText(Integer.parseInt(sMinute));
+                        presenter.updateSpaceTime(mDatas.get(position).getId(), sMinute);
+                          tv_interval_time.setText(sMinute);
                     }
                 }).show();
             }
