@@ -96,9 +96,9 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         // 撤回
         // 如果已有实际发车时间, 则因此撤回按钮
         if(TextUtils.isEmpty(mData.get(position).vehTimeReal)){
-            holder.tv_send_withdraw.setVisibility(View.GONE);
-        }else{
             holder.tv_send_withdraw.setVisibility(View.VISIBLE);
+        }else{
+            holder.tv_send_withdraw.setVisibility(View.GONE);
         }
         holder.tv_send_withdraw.setOnClickListener(new View.OnClickListener() {
             @Override

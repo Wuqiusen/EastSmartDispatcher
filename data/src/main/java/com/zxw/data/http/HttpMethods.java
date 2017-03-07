@@ -33,9 +33,8 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-//    public static final String BASE_URL = "http://120.24.252.195:8080/yd_app/";
-    public static final String BASE_URL = "http://192.168.0.166:8080/yd_control_app/";
-//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+//    public static final String BASE_URL = "http://192.168.0.166:8080/yd_control_app/";
+    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
@@ -70,7 +69,7 @@ public class HttpMethods {
     // 版本更新
     public void checkVersion(Subscriber<VersionBean> subscriber,String keyCode) {
         HttpInterfaces.UpdateVersion updateVersion = retrofit.create(HttpInterfaces.UpdateVersion.class);
-        Observable<VersionBean> observable = updateVersion.checkVersion(BASE_URL + "phone/control/manage/app/new/version", keyCode)
+        Observable<VersionBean> observable = updateVersion.checkVersion("http://120.77.48.103:8080/yd_control_app/phone/control/manage/app/new/version", keyCode)
                 .map(new HttpResultFunc<VersionBean>());
         toSubscribe(observable, subscriber);
     }

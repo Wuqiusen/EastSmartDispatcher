@@ -35,7 +35,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:hint="请输入车牌号"
                 android:visibility="visible"/>
         </LinearLayout>
         <LinearLayout
@@ -56,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:minHeight="50dp"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:hint="请输入司机姓名"
                 android:visibility="visible"/>
         </LinearLayout>
 
@@ -80,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="50dp"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:hint="请输入乘务员姓名"
+                android:hint="请输入乘务员姓名或工号"
                 android:visibility="visible"/>
         </LinearLayout>
 

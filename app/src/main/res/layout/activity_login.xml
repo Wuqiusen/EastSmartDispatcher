@@ -14,8 +14,7 @@
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/phone_user_icon"
-        android:hint="用户名"
-        android:text="000000"
+        android:hint="请输入工号"
         />
     <!--密码:123456-->
     <EditText
@@ -24,8 +23,8 @@
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/password_user_icon"
-        android:hint="输入密码"
-        android:text="123456"
+        android:hint="请输入密码"
+        android:inputType="textPassword"
         />
      <RelativeLayout
          android:layout_width="500dp"

@@ -98,16 +98,19 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     public void addQueryDriverEditTextListener() {
         initInputType(DRIVER);
         initEditTextListener();
+        mEditText.setHint("请输入司机姓名或工号");
     }
 
     public void addQueryCarCodeEditTextListener() {
         initInputType(CAR_CODE);
         initEditTextListener();
+        mEditText.setHint("请输入车牌号");
     }
 
     public void addQueryTrainManEditTextListener() {
         initInputType(TRAINMAN);
         initEditTextListener();
+        mEditText.setHint("请输入乘务员姓名或工号");
     }
 
     private void initEditTextListener() {
