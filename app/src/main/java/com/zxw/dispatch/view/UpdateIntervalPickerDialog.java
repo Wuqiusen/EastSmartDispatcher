@@ -64,10 +64,7 @@ public class UpdateIntervalPickerDialog  extends AlertDialog {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(sMinute)) {
-                    sMinute = String.valueOf(Integer.parseInt(sMinute));
-                }
-                if (sMinute.trim().length() == 1) {
-                    sMinute = "0" + sMinute;
+                    sMinute = String.valueOf(mCurMinute);
                 }
                 mListener.onTimePicker(sMinute);
                 dismiss();
