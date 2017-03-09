@@ -1,5 +1,6 @@
 package com.zxw.dispatch.recycler;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.SpotBean;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.ui.MainActivity;
+import com.zxw.dispatch.ui.SelectDispatcherPointActivity;
 
 import java.util.List;
 
@@ -26,10 +28,12 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
     private final LayoutInflater mLayoutInflater;
     private List<SpotBean> mData;
     private final Context mContext;
+    private Activity mActivity;
 
-    public SpotAdapter(List<SpotBean> mData, Context mContext) {
+    public SpotAdapter(List<SpotBean> mData, Activity activity) {
         this.mData = mData;
-        this.mContext = mContext;;
+        this.mActivity = activity;
+        this.mContext =  mActivity;
         mLayoutInflater = LayoutInflater.from(mContext);
     }
 
@@ -48,6 +52,8 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 Intent intent = new Intent(mContext, MainActivity.class);
                 intent.putExtra("spotId", mData.get(position).getSpotId());
                 mContext.startActivity(intent);
+                mActivity.finish();
+
             }
         });
     }
@@ -66,4 +72,6 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             ButterKnife.bind(this, itemView);
         }
     }
+
+
 }
