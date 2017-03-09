@@ -471,12 +471,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         switch (tabPosition) {
             case 0:
                 lineControl.setVisibility(View.VISIBLE);
-                lineControl.setBackgroundColor(mContext.getResources().getColor(R.color.scroll_bar_bg));
+                lineControl.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
                 lineSchedule.setVisibility(View.INVISIBLE);
                 break;
             case 1:
                 lineSchedule.setVisibility(View.VISIBLE);
-                lineSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.scroll_bar_bg));
+                lineSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
                 lineControl.setVisibility(View.INVISIBLE);
                 break;
             case 2:
@@ -620,6 +620,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         outDialog.ButtonQuery(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showPopupWindow();
                 outDialog.dismiss();
                 doLoginOut();
             }
@@ -635,6 +636,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void doLoginOut() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         SpUtils.logOut(mContext);
+
         startActivity(intent);
         finish();
     }

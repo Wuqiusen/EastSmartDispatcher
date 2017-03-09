@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.zxw.data.bean.SpotBean;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.ui.MainActivity;
-import com.zxw.dispatch.ui.SelectDispatcherPointActivity;
 
 import java.util.List;
 

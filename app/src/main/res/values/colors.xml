@@ -1,106 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="main_tab_font_select">#388bff</color>
-    <color name="main_tab_font_normal">#7c8da7</color>
-    <!-- 应用主题颜色-->
-    <color name="btn_app_theme1">#29b216</color>
-    <color name="btn_app_theme2">#ffb0c32d</color>
-    <color name="btn_app_theme3">#0074c4</color>
-    <color name="btn_app_theme4">#5393ed</color>
-    <color name="btn_app_theme5">#F2F2F2</color>
-    <color name="btn_app_theme6">#E9EBED</color>
-
-
-    <!--主题颜色-->
-    <color name="tv_gray_color">#999</color>
-    <color name="tv_font_color">#333</color>
-    <color name="tv_font_gray_color">#7f8080</color>
-    <color name="tv_font_blue_color">#5393ed</color>
-    <color name="round_green">#2BAF2B</color>
-    <color name="img_red">#ED1C24</color>
-    <color name="tv_red">#FF5722</color>
-
-    <color name="head">#fd5722</color>
-    <color name="dark_gray_color">#f0f0f2</color>
-    <color name="line_min_gray">#E5E5E5</color>
-    <color name="line_max_gray">#E5E7EE</color>
-    <color name="gray_min_color">#D9D9D9</color>
-    <color name="gray_color">#8E929C</color>
-    <color name="background_gray">#efefef</color>
-    <color name="login_bg_color">#FFFFFF</color>
-    <color name="edt_login_color">#CCCCCC</color>
-    <color name="edt_text_color">#8E929C</color>
-    <color name="btnlogin_isclick_color">#FF7F27</color>
-    <color name="btnlogin_isnotclick_color">#FFA726</color>
-    <color name="btnlogin_bg_gray">#ffb2b2b2</color>
-    <color name="btn_ok_gray">#BBBBBB</color>
-    <color name="myEt_divider_color">#eaeaea</color>
-
+    <!-- 应用主题颜色 -->
     <color name="black">#000000</color>
-    <color name="main_tab_bg">#000000</color>
-    <color name="main_tab_color">#999999</color>
-    <color name="main_tab_true">#FD5722</color>
-    <color name="main_tab_button_selete">#3a3a3a</color>
-    <color name="main_tab_button_normal">#FFFFFF</color>
-    <color name="gray_background">#f4f5f5</color>
-
-    <color name="line_color">#f0f1f1</color>
-    <color name="line_gray">#BBBBBB</color>
-    <color name="line_dark">#888888</color>
-
-    <color name="radioBtn_noclicked">#DEDEDE</color>
-    <color name="btn_update_noclicked">#2BAF2B</color>
-    <color name="btn_update_clicked">#00BA00</color>
-    <color name="btn_noclicked">#FFA726</color>
-    <color name="btn_clicked">#FF7F27</color>
-    <color name="btn_casualty_clicked">#FF5722</color>
-    <color name="btn_casualty_noclicked">#FF7043</color>
-    <color name="btn_ok_isclicked">#FF5722</color>
-    <color name="btn_ok_noclicked">#FF7043</color>
-    <color name="btn_ok_isclicked1">#5393ed</color>
-    <color name="btn_ok_noclicked1">#0074c4</color>
-    <color name="btn_ok_normal">#6CB5E5</color>
-    <color name="btn_is_enabled">#6a6a6a</color>
-
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
-    <color name="title_gray">#E3E4E6</color>
     <color name="transparent">@android:color/transparent</color>
-    <color name="font_green">#2BAF2B</color>
-    <color name="font_gray">#8E95A2</color>
-    <color name="font_black">#6a6a6a</color>
+    <color name="background_gray">#efefef</color>
     <color name="background_gray2">#e4e4e4</color>
-
-    <color name="dividing_line_gray">#e0e0e0</color>
-
-<!--新增-->
-    <!--应用主题背景-->
-    <color name="background_bg_gray">#F0F5F9</color>
-    <color name="background_bg_gray1">#F0F6FA</color>
-    <color name="background_bg_gray2">#eef3f9</color>
+    <color name="background_gray3">#F0F5F9</color>
+    <color name="background_gray4">#8E929C</color>
+    <color name="background_gray5">#DEF0FA</color>
     <color name="background_bg_red">#CA0020</color>
     <color name="background_bg_green">#349E63</color>
     <color name="background_bg_blue">#73B9EC</color>
-    <color name="background_bg_shallow_blue">#DEF0FA</color>
+    <color name="background_deep_blue">#4E6682</color>
 
+    <!-- 按钮-->
+    <color name="btn_app_theme1">#29b216</color>
+    <color name="btn_app_theme2">#ffb0c32d</color>
+    <color name="btn_app_theme4">#5393ed</color>
+    <color name="btn_app_theme5">#F2F2F2</color>
+    <color name="btn_app_theme6">#E9EBED</color>
+    <color name="btn_app_theme7">#0074c4</color>
+    <color name="btn_app_theme8">#6CB5E5</color>
+    <color name="btn_app_theme9">#6a6a6a</color>
 
+    <!-- 单选框 -->
+    <color name="radio_is_clicked">#6a6a6a</color>
 
-    <!--标题栏部分-->
-    <color name="title_bar_bg_style1">#4E6682</color>
-    <color name="scroll_bar_bg">#73B9EC</color>
-    <color name="line_level_bg">#6e839d</color>
-    <color name="line_level_bg1">#FB9E2B</color>
-    <color name="line_level_bg2">#6DB5E5</color>
-    <color name="line_level_bg3">#797979</color>
-    <color name="line_level_bg4">#C2C3C5</color>
+    <!-- 滚动条 -->
+    <color name="progressbar_bg_blue">#388bff</color>
 
-    <!--字体-->
+    <!-- 字体 -->
     <color name="font_white">#FFFFFF</color>
+    <color name="font_green">#2BAF2B</color>
+    <color name="font_red">#ED1C24</color>
+    <color name="font_gray">#8E95A2</color>
+    <color name="font_black">#6a6a6a</color>
     <color name="font_blue">#8394A9</color>
-    <color name="font_navy_blue">#72869F</color>
+    <color name="font_blue2">#73B9EC</color>
+    <color name="font_blue3">#72869F</color>
 
+
+    <!-- 线条样式 -->
+    <color name="line_white">#f0f1f1</color>
+    <color name="line_gray">#BBBBBB</color>
+    <color name="line_gray2">#C2C3C5</color>
+    <color name="line_gray3">#eaeaea</color>
+    <color name="line_dark">#888888</color>
+    <color name="line_dark2">#797979</color>
+    <color name="line_blue">#6e839d</color>
+    <color name="line_blue2">#6DB5E5</color>
+    <color name="line_orange">#FB9E2B</color>
 
 </resources>

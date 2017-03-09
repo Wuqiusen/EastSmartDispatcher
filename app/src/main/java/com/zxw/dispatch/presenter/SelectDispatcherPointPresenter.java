@@ -1,7 +1,6 @@
 package com.zxw.dispatch.presenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import com.zxw.data.bean.SpotBean;
@@ -9,7 +8,6 @@ import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.presenter.view.SelectDispatcherPointView;
 import com.zxw.dispatch.recycler.SpotAdapter;
 import com.zxw.dispatch.ui.LoginActivity;
-import com.zxw.dispatch.ui.SelectDispatcherPointActivity;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 

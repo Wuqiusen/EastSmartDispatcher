@@ -2,26 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
-
-    <!--<TextView-->
-        <!--android:id="@+id/tv_already_issued_car"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:minHeight="50dp"-->
-        <!--android:drawableLeft="@mipmap/start_car_icon"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:paddingLeft="4dp"-->
-        <!--android:drawablePadding="2dp"-->
-        <!--android:text="已发车辆"-->
-        <!--android:textColor="@color/font_navy_blue"-->
-        <!--android:textSize="@dimen/font_large"-->
-        <!--android:textStyle="bold" />-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_bg_shallow_blue"
+        android:background="@color/background_gray5"
         android:minHeight="40dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -34,7 +19,7 @@
             android:layout_marginLeft="@dimen/margin_fit_6"
             android:paddingLeft="@dimen/margin_tiny"
             android:text="已发车辆"
-            android:textColor="@color/font_navy_blue"
+            android:textColor="@color/font_blue3"
             android:textSize="@dimen/font_large"
             android:textStyle="bold"
             />
@@ -149,7 +134,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/line_level_bg" />
+                    android:background="@color/line_blue" />
                 <!--已发车辆列表-->
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_gone_car"
@@ -163,7 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_gravity="bottom"
-            android:background="@color/line_level_bg1" />
+            android:background="@color/line_orange" />
         <!--待发车辆-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -177,7 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="40dp"
-                android:background="@color/background_bg_shallow_blue"
+                android:background="@color/background_gray5"
                 android:orientation="horizontal">
 
                 <TextView
@@ -191,7 +176,7 @@
                     android:drawablePadding="2dp"
                     android:text="待发车辆"
 
-                    android:textColor="@color/font_navy_blue"
+                    android:textColor="@color/font_blue3"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
 
@@ -321,7 +306,7 @@
                 android:layout_height="2dp"
                 android:layout_marginLeft="@dimen/margin_tiny"
                 android:layout_marginRight="@dimen/margin_tiny"
-                android:background="@color/line_level_bg" />
+                android:background="@color/line_blue" />
             <!--待发车辆列表-->
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -354,7 +339,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_gravity="bottom"
-        android:background="@color/line_level_bg2"
+        android:background="@color/line_blue2"
         />
     <!--停场车辆-->
     <LinearLayout
@@ -366,7 +351,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="40dp"
-            android:background="@color/background_bg_shallow_blue"
+            android:background="@color/background_gray5"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
@@ -380,7 +365,7 @@
                 android:paddingLeft="@dimen/margin_tiny"
 
                 android:text="停场车辆"
-                android:textColor="@color/font_navy_blue"
+                android:textColor="@color/font_blue3"
                 android:textSize="@dimen/font_large"
                 android:textStyle="bold"
                 />
@@ -429,7 +414,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@color/gray_color"
+            android:background="@color/background_gray4"
             android:visibility="gone"/>
         <!--停场车辆列表-->
         <android.support.v7.widget.RecyclerView

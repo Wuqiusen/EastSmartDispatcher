@@ -1,8 +1,8 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-          <item name="colorPrimary">@color/title_bar_bg_style1</item>
-          <item name="colorPrimaryDark">@color/title_bar_bg_style1</item>
+          <item name="colorPrimary">@color/background_deep_blue</item>
+          <item name="colorPrimaryDark">@color/background_deep_blue</item>
     </style>
 
     <style name="et_login_style">
@@ -23,7 +23,7 @@
     <style name="scroll_bar_select_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">4dp</item>
-        <item name="android:background">@color/scroll_bar_bg</item>
+        <item name="android:background">@color/background_bg_blue</item>
         <item name="android:layout_alignParentBottom">true</item>
     </style>
 
@@ -47,8 +47,8 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:paddingRight">@dimen/margin_tiny</item>
         <item name="android:paddingLeft">@dimen/margin_tiny</item>
-        <item name="android:layout_marginRight">@dimen/btn_margin</item>
-        <item name="android:layout_marginLeft">@dimen/btn_margin</item>
+        <item name="android:layout_marginRight">@dimen/btn_margin30</item>
+        <item name="android:layout_marginLeft">@dimen/btn_margin30</item>
     </style>
 
 <!--操控台-->
@@ -98,7 +98,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">@dimen/btn_height50</item>
-        <item name="android:background">@color/title_bar_bg_style1</item>
+        <item name="android:background">@color/background_deep_blue</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
         <item name="android:textSize">@dimen/font_huge</item>
@@ -122,7 +122,7 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_marginLeft">@dimen/normal_margin20</item>
         <item name="android:layout_marginRight">@dimen/dialog_margin30</item>
-        <item name="android:background">@color/line_level_bg4</item>
+        <item name="android:background">@color/line_gray2</item>
     </style>
     <!--DialogLinearLayout-->
     <style name="ll_hand_station_dialog_style">
@@ -201,16 +201,10 @@
         <item name="android:maxLines">1</item>
         <item name="android:maxLength">10</item>
         <item name="android:textSize">@dimen/font_medium</item>
-        <item name="android:textColor">@color/title_bar_bg_style1</item>
+        <item name="android:textColor">@color/background_deep_blue</item>
         <item name="android:layout_gravity">center</item>
     </style>
     <!--Spinner-->
-    <style name="sp_style">
-        <item name="android:paddingLeft">@dimen/list_margin2</item>
-        <item name="android:paddingRight">@dimen/list_margin12</item>
-        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
-        <item name="android:background">@drawable/et_background2</item>
-    </style>
     <!--Font_CheckCarDetailDialog-->
     <style name="font_title_car_detail_dialog_style">
         <item name="android:layout_width">0dp</item>
@@ -305,32 +299,6 @@
         　　<item name="android:maxHeight">76dip</item>
     </style>
 
-    <style name="xxl_list_normal_text">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">60dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">38px</item>
-    </style>
-    <style name="xxl_list_bold_text" parent="xxl_list_normal_text">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">44px</item>
-    </style>
-
-
-    <style name="xl_list_normal_text">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">60dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">34px</item>
-    </style>
-
-    <style name="xl_list_bold_text" parent="xl_list_normal_text">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">38px</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
 
     <style name="l_list_normal_text">
         <item name="android:layout_width">0dp</item>
@@ -390,7 +358,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:drawablePadding">2dp</item>
         <item name="android:textSize">@dimen/font_tiny</item>
-        <item name="android:textColor">@color/font_navy_blue</item>
+        <item name="android:textColor">@color/font_blue3</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentLeft">true</item>

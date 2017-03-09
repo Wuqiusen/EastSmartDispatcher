@@ -57,7 +57,7 @@
                    android:layout_width="match_parent"
                    android:layout_height="1dp"
                    android:layout_margin="@dimen/main_margin6"
-                   android:background="@color/line_level_bg3"/>
+                   android:background="@color/line_dark2"/>
 
 
           </LinearLayout>
@@ -93,7 +93,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="1dp"
                   android:layout_margin="@dimen/main_margin6"
-                  android:background="@color/line_level_bg3"/>
+                  android:background="@color/line_dark2"/>
               <android.support.v7.widget.RecyclerView
                   android:id="@+id/rv_work_mission"
                   android:layout_width="match_parent"
@@ -133,7 +133,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="1dp"
                   android:layout_margin="@dimen/main_margin6"
-                  android:background="@color/line_level_bg3"/>
+                  android:background="@color/line_dark2"/>
               <android.support.v7.widget.RecyclerView
                   android:id="@+id/rv_no_work_mission"
                   android:layout_width="match_parent"

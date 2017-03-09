@@ -3,7 +3,7 @@
     <!-- 连框颜色值 -->
     <item>
         <shape>
-            <solid android:color="@color/line_level_bg" />
+            <solid android:color="@color/line_blue" />
             <corners
                 android:bottomLeftRadius="@dimen/radian_tiny"
                 android:topLeftRadius="@dimen/radian_tiny"/>

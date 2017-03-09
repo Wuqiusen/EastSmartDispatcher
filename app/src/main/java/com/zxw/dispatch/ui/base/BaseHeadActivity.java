@@ -82,7 +82,7 @@ public abstract class BaseHeadActivity extends BaseActivity {
 
     public void showHeadAreaBackground(){
         rel_base_headArea.setVisibility(View.VISIBLE);
-        rel_base_headArea.setBackgroundColor(mContext.getResources().getColor(R.color.title_bar_bg_style1));
+        rel_base_headArea.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
     }
 
     public void showLoading() {

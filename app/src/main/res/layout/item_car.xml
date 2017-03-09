@@ -151,7 +151,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="@color/scroll_bar_bg"
+            android:textColor="@color/font_blue2"
             android:clickable="true"
             android:text="发车"
             />
@@ -161,7 +161,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="@color/scroll_bar_bg"
+            android:textColor="@color/font_blue2"
             android:clickable="true"
             android:text="撤回"
             />
