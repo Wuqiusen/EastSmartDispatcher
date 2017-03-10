@@ -48,6 +48,7 @@ import com.zxw.dispatch.view.CustomViewPager;
 import com.zxw.dispatch.view.DragListView;
 import com.zxw.dispatch.view.MyDialog;
 import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
+import com.zxw.dispatch.view.dialog.VehicleToScheduleDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -423,29 +424,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void showVehicleToScheduleDialog(final StopHistory stopCar) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.alder_dialog);
-        View container = View.inflate(mContext, R.layout.dialog_stop_car, null);
-        TextView tv_carCode = (TextView) container.findViewById(R.id.tv_carCode);
-        tv_carCode.setText("请确认是否将"+stopCar.code+"添加到待发车辆列表中?");
-        Button btn_confirm = (Button) container.findViewById(R.id.btn_confirm);
-        Button btn_cancel = (Button) container.findViewById(R.id.btn_cancel);
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mStopCarDialog != null && mStopCarDialog.isShowing()) {
+         new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
+                @Override
+                public void onClick() {
                     presenter.vehicleToSchedule(stopCar);
-                    mStopCarDialog.dismiss();
                 }
-            }
-        });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mStopCarDialog != null && mStopCarDialog.isShowing())
-                    mStopCarDialog.dismiss();
-            }
-        });
-        mStopCarDialog = builder.setView(container).show();
+          });
     }
 
     private void showManualAddStopCarDialog() {
@@ -562,9 +546,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         List<String> list = new ArrayList<>();
         View popView = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_popupwindow, null);
         lv_popup = (ListView) popView.findViewById(R.id.lv_popup);
-        list.add("修改资料");
-        list.add("密码修改");
-        list.add("退出");
+        list.add(getResources().getString(R.string.datum_update));
+        list.add(getResources().getString(R.string.password_update));
+        list.add(getResources().getString(R.string.login_out));
         popupAdapter = new PopupAdapter(mContext, list, this);
         lv_popup.setAdapter(popupAdapter);
         mPopupWindow = new PopupWindow(popView, 360, LinearLayout.LayoutParams.WRAP_CONTENT);
