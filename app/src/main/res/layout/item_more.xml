@@ -54,6 +54,6 @@
     <TextView
         android:id="@+id/tv_operator"
         android:text = "操作"
-        android:textColor="@color/img_red"
+        android:textColor="@color/font_red"
         style="@style/l_list_normal_text"/>
 </LinearLayout>

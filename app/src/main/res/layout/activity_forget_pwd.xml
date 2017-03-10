@@ -17,8 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/btn_margin"
-            android:layout_marginRight="@dimen/btn_margin"
+            android:layout_marginLeft="@dimen/btn_margin30"
+            android:layout_marginRight="@dimen/btn_margin30"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             >
@@ -34,7 +34,7 @@
             <com.zxw.dispatch.view.MyEditText
                 android:id="@+id/tv_user_code"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/bluebtn_height"
+                android:layout_height="@dimen/et_height50"
                 android:layout_marginLeft="16dp"
                 wqs:hint="请输入工号"
                 wqs:inputType="number"
@@ -44,8 +44,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/btn_margin"
-            android:layout_marginRight="@dimen/btn_margin"
+            android:layout_marginLeft="@dimen/btn_margin30"
+            android:layout_marginRight="@dimen/btn_margin30"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingTop="@dimen/margin_fit"
@@ -62,7 +62,7 @@
             <com.zxw.dispatch.view.MyEditText
                 android:id="@+id/et_user_pwd_new"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/bluebtn_height"
+                android:layout_height="@dimen/et_height50"
                 wqs:hint="请输入新的密码"
                 wqs:inputType="pwd"
                 />
@@ -71,8 +71,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/btn_margin"
-            android:layout_marginRight="@dimen/btn_margin"
+            android:layout_marginLeft="@dimen/btn_margin30"
+            android:layout_marginRight="@dimen/btn_margin30"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingTop="@dimen/margin_fit"
@@ -89,7 +89,7 @@
             <com.zxw.dispatch.view.MyEditText
                 android:id="@+id/tv_user_pwd_twice"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/bluebtn_height"
+                android:layout_height="@dimen/et_height50"
                 wqs:hint="请再次输入"
                 wqs:inputType="pwd"
                 />
@@ -98,8 +98,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/btn_margin"
-            android:layout_marginRight="@dimen/btn_margin"
+            android:layout_marginLeft="@dimen/btn_margin30"
+            android:layout_marginRight="@dimen/btn_margin30"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/margin_fit"
@@ -117,7 +117,7 @@
             <com.zxw.dispatch.view.MyEditText
                 android:id="@+id/et_smscode"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/bluebtn_height"
+                android:layout_height="@dimen/et_height50"
                 android:layout_weight="1"
                 wqs:hint="验证码"
                 wqs:inputType="num"
@@ -141,7 +141,7 @@
                 android:id="@+id/btn_change_pwd_send"
                 style="@style/blueBtn_style"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/bluebtn_height"
+                android:layout_height="@dimen/btn_height50"
                 android:layout_marginTop="@dimen/margin_large"
                 android:layout_marginBottom="@dimen/margin_fit"
                 android:text="提交"

@@ -207,7 +207,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.2dp"
-                android:background="@color/btn_is_enabled"
+                android:background="@color/btn_app_theme9"
                 />
         </TableLayout>
         <Button

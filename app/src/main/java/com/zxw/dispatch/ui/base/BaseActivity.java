@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.view.View;
 
 import com.zxw.dispatch.utils.ClickUtil;
 import com.zxw.dispatch.utils.ToastHelper;

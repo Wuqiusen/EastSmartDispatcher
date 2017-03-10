@@ -90,7 +90,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
                 return true;
             }
         });
-        popupWindow = new PopupWindow(popItem, 400, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow = new PopupWindow(popItem, 560, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
     }

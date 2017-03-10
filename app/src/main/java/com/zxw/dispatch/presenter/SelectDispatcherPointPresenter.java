@@ -1,7 +1,6 @@
 package com.zxw.dispatch.presenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import com.zxw.data.bean.SpotBean;
@@ -17,11 +16,10 @@ import java.util.List;
 import rx.Subscriber;
 
 public class SelectDispatcherPointPresenter extends BasePresenter<SelectDispatcherPointView> {
-    private final Context mContext;
-
-    public SelectDispatcherPointPresenter(SelectDispatcherPointView mvpView, Context mContext) {
+    private Activity mActivity;
+    public SelectDispatcherPointPresenter(SelectDispatcherPointView mvpView, Activity mActivity) {
         super(mvpView);
-        this.mContext = mContext;
+        this.mActivity = mActivity;
     }
 
     public void loadDispatcherPoint() {
@@ -35,16 +33,16 @@ public class SelectDispatcherPointPresenter extends BasePresenter<SelectDispatch
             public void onError(Throwable e) {
                 DebugLog.w(e.getMessage());
                 if (e.getMessage().equals("重复登录")){
-                    SpUtils.logOut(mContext);
-                    Intent intent = new Intent(mContext, LoginActivity.class);
-                    mContext.startActivity(intent);
-                    ((Activity)mContext).finish();
+                    SpUtils.logOut(mActivity);
+                    Intent intent = new Intent(mActivity, LoginActivity.class);
+                    mActivity.startActivity(intent);
+                    mActivity.finish();
                 }
             }
 
             @Override
             public void onNext(List<SpotBean> spotBeen) {
-                SpotAdapter spotAdapter = new SpotAdapter(spotBeen, mContext);
+                SpotAdapter spotAdapter = new SpotAdapter(spotBeen, mActivity);
                 mvpView.showSpotList(spotAdapter);
             }
         }, userId(), keyCode());

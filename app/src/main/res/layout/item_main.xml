@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:minHeight="130dp"
-        android:background="@color/title_bar_bg_style1"
+        android:background="@color/background_deep_blue"
         android:gravity="center"
         android:orientation="vertical">
         <TextView
@@ -37,5 +37,5 @@
         android:id="@+id/view_main_tip"
         android:layout_width="4dp"
         android:layout_height="match_parent"
-        android:background="@color/scroll_bar_bg"/>
+        android:background="@color/background_bg_blue"/>
 </LinearLayout>

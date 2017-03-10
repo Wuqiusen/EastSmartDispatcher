@@ -20,5 +20,5 @@
         android:text=""
         android:textSize="@dimen/font_huge"
         android:textStyle="bold"
-        android:textColor="@color/title_bar_bg_style1"/>
+        android:textColor="@color/background_deep_blue"/>
 </LinearLayout>

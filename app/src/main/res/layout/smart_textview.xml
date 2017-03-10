@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
-        android:textSize="26dp"
-        android:text="11"/>
+        android:text=""
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_medium"/>
 </LinearLayout>

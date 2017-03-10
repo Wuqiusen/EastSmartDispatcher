@@ -3,9 +3,11 @@ package com.zxw.dispatch.view;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
+
 import com.zxw.dispatch.R;
 
 
@@ -17,13 +19,10 @@ import com.zxw.dispatch.R;
 public class TimePlanPickerDialog extends AlertDialog {
 
     private Context mContext;
-    private AlertDialog sDialog;
     private NumberPicker np_hour,np_minute;
     private Button btn_confirm,btn_cancel;
     private String sHour = null;
     private String sMinute = null;
-    private int currentHour;
-    private int currentMinute;
     private OnTimePickerListener mListener;
     private String mVehTime;
 
@@ -34,8 +33,8 @@ public class TimePlanPickerDialog extends AlertDialog {
         this.mContext = context;
         this.mListener = mListener;
         this.mVehTime = vehTime;
-        currentHour = Integer.parseInt(mVehTime.substring(0,2));
-        currentMinute =  Integer.parseInt(mVehTime.substring(2,4));
+        sHour = mVehTime.substring(0,2);
+        sMinute =mVehTime.substring(2,4);
     }
 
 
@@ -49,17 +48,11 @@ public class TimePlanPickerDialog extends AlertDialog {
         np_hour.setMinValue(1);
         np_hour.setMaxValue(24);
 
-        np_hour.setValue(currentHour);
+        np_hour.setValue(Integer.parseInt(sHour));
         np_hour.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 sHour = String.valueOf(newVal);
-                if (sHour == null) {
-                    sHour = String.valueOf(Integer.parseInt(mVehTime.substring(0,2)));
-                }
-                if (sHour.trim().length() == 1) {
-                    sHour = "0"+ sHour;
-                }
             }
         });
 
@@ -68,15 +61,11 @@ public class TimePlanPickerDialog extends AlertDialog {
         np_minute.setMinValue(0);
         np_minute.setMaxValue(59);
 
-        np_minute.setValue(currentMinute);
+        np_minute.setValue(Integer.parseInt(sMinute));
         np_minute.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 sMinute = String.valueOf(newVal);
-                if (sMinute.trim().length() == 1) {
-                    sMinute = "0"+ sMinute;
-                }
-
             }
         });
 
@@ -91,20 +80,23 @@ public class TimePlanPickerDialog extends AlertDialog {
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sHour == null) {
+                if (TextUtils.isEmpty(sHour)) {
                     sHour = String.valueOf(Integer.parseInt(mVehTime.substring(0,2)));
                 }
-                if (sMinute == null) {
+                if (sHour.trim().length() == 1) {
+                    sHour = "0"+ sHour;
+                }
+                if (TextUtils.isEmpty(sMinute)) {
                     sMinute = String.valueOf(Integer.parseInt(mVehTime.substring(2,4)));
+                }
+                if (sMinute.trim().length() == 1) {
+                    sMinute = "0"+ sMinute;
                 }
                 mListener.onTimePicker(sHour,sMinute);
                 dismiss();
             }
         });
     }
-
-
-
 
     public interface OnTimePickerListener{
         void onTimePicker(String sHour,String sMinute);

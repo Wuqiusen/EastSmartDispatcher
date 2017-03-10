@@ -35,7 +35,7 @@
         android:id="@+id/line_img"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/tv_font_blue_color"
+        android:background="@color/btn_app_theme4"
         android:layout_below="@+id/title_img"/>
     <TextView
         android:id="@+id/mesage_img"

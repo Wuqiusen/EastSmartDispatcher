@@ -4,7 +4,7 @@
     <corners android:radius="@dimen/radian_my_edit" />
     <solid android:color="@color/white"/>
     <stroke
-        android:color="@color/myEt_divider_color"
+        android:color="@color/line_gray3"
         android:width="0.5dp"/>
 
 </shape>
