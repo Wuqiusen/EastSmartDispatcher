@@ -28,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="40dp"
+        android:layout_marginTop="@dimen/main_margin6"
         android:layout_marginLeft="@dimen/normal_margin20"
         android:gravity="center_vertical"
         android:background="@color/transparent"
@@ -39,6 +40,9 @@
             style="@style/btn_send_car_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:minWidth="60dp"
+            android:gravity="center"
             android:background="@drawable/tv_manual_normal_style"
             android:text="手动发车"
             />
@@ -48,7 +52,10 @@
             style="@style/btn_send_car_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/blackbtn_startcar_style"
+            android:minHeight="30dp"
+            android:minWidth="60dp"
+            android:gravity="center"
+            android:background="@drawable/tv_manual_unnormal_style"
             android:text="自动发车"
             />
     </LinearLayout>

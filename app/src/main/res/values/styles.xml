@@ -257,6 +257,7 @@
         <item name="android:maxLength">10</item>
         <item name="android:text">@null</item>
         <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/font_black</item>
     </style>
 
 <!--排班计划-->

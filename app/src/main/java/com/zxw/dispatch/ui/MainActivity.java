@@ -127,8 +127,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private MsgReceiver msgReceiver;
     private List<View> views = new ArrayList<View>();
     private boolean isHaveSendCar = false;
-    private boolean isShow = false;
-    private boolean isClickWaitCar = false;
+    private boolean isShow = true;
+    private boolean isClickWaitCar = true;
     private boolean isPopbg = true;
     private TextView tv_steward_send;
     private TextView tv_steward_gone;
@@ -216,7 +216,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     private View initControlDeckView(){
-        View view = View.inflate(mContext, R.layout.tab_view_control_deck_new, null);
+        View view = View.inflate(mContext, R.layout.tab_view_control_deck, null);
         fl_vertical = (FrameLayout) view.findViewById(R.id.fl_vertical);
         fl_horizontal = (FrameLayout) view.findViewById(R.id.fl_horizontal);
         initMenuView(view);
@@ -290,8 +290,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
         MyPagerAdapter eAdapter = new MyPagerAdapter(eViews,null);
         vpEMain.setAdapter(eAdapter);
-        vpEMain.setCurrentItem(0);
-        setScrollBarBackground(0);
+        vpEMain.setCurrentItem(1);
+        setScrollBarBackground(1);
         vpEMain.setPagingEnabled(false);
         eGoneRV.setLayoutManager(new LinearLayoutManager(this));
         eGoneRV.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
@@ -614,7 +614,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
                 tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                llMenuWaitDepart.setVisibility(View.VISIBLE);
+                if (isPopbg) {
+                    llMenuWaitDepart.setVisibility(View.GONE);
+                }else{
+                    llMenuWaitDepart.setVisibility(View.VISIBLE);
+                }
                 break;
             case 2:
                 tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
@@ -716,14 +720,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             fl_vertical.setVisibility(View.VISIBLE);
             isPopbg = isShow;
             isShow = false;
-//          presenter.refreshList();
         }else{
             initMenu(isShow);
             fl_vertical.setVisibility(View.GONE);
             fl_horizontal.setVisibility(View.VISIBLE);
             isPopbg = isShow;
             isShow = true;
-//          presenter.refreshList();
         }
     }
 
@@ -737,11 +739,13 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             rlMenuBackground.setBackgroundColor(mContext.getResources().getColor(R.color.background_gray5));
             rlMenuBackground.setEnabled(true);
         }else{
+
             if (isClickWaitCar) {
                 llMenuWaitDepart.setVisibility(View.VISIBLE);
             }else{
                 llMenuWaitDepart.setVisibility(View.GONE);
             }
+
             tvMenuDepart.setVisibility(View.GONE);
             tvMenuWaitCar.setVisibility(View.VISIBLE);
             tvMenuGoneCar.setVisibility(View.VISIBLE);
