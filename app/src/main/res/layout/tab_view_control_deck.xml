@@ -2,36 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background_gray5"
-        android:minHeight="40dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tv_already_issued_car"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/start_car_icon"
-            android:layout_marginLeft="@dimen/margin_fit_6"
-            android:paddingLeft="@dimen/margin_tiny"
-            android:text="已发车辆"
-            android:textColor="@color/font_blue3"
-            android:textSize="@dimen/font_large"
-            android:textStyle="bold"
-            />
-        <ImageView
-            android:id="@+id/img_narrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/normal_margin20"
-            android:src="@mipmap/narrow_icon"
-            />
-    </LinearLayout>
+    android:orientation="vertical"
+    >
+    <!--暂时注释-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/background_gray5"-->
+        <!--android:minHeight="40dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal">-->
+        <!--<TextView-->
+            <!--android:id="@+id/tv_already_issued_car"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:drawableLeft="@mipmap/start_car_icon"-->
+            <!--android:layout_marginLeft="@dimen/margin_fit_6"-->
+            <!--android:paddingLeft="@dimen/margin_tiny"-->
+            <!--android:text="已发车辆"-->
+            <!--android:textColor="@color/font_blue3"-->
+            <!--android:textSize="@dimen/font_large"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
+        <!--<ImageView-->
+            <!--android:id="@+id/img_narrow"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="@dimen/normal_margin20"-->
+            <!--android:src="@mipmap/narrow_icon"-->
+            <!--/>-->
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,7 +89,6 @@
                         android:layout_weight="3"/>
 
                     <TextView
-                        android:id="@+id/textView3"
                         style="@style/main_activity_top_button"
                         android:text="发车间隔"
                         android:layout_weight="4"/>
@@ -189,23 +190,21 @@
                     <!--手动发车-->
                     <TextView
                         android:id="@+id/tv_manual"
+                        style="@style/btn_send_car_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
                         android:background="@drawable/tv_manual_normal_style"
                         android:text="手动发车"
-                        android:textColor="@color/font_black"
-                        android:textSize="@dimen/font_tiny" />
+                        />
                     <!--自动发车-->
                     <TextView
                         android:id="@+id/tv_automatic"
+                        style="@style/btn_send_car_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
                         android:background="@drawable/blackbtn_startcar_style"
                         android:text="自动发车"
-                        android:textColor="@color/font_black"
-                        android:textSize="@dimen/font_tiny" />
+                        />
 
                 </LinearLayout>
             </LinearLayout>
@@ -323,6 +322,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                   />
+                <!--新增的界面缺省-->
                 <View
                     android:id="@+id/view_cover"
                     android:layout_width="match_parent"

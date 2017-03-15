@@ -56,6 +56,7 @@
             >
             <!--操控台-->
             <RelativeLayout
+                android:id="@+id/rl_controller"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
@@ -66,16 +67,16 @@
                     style="@style/main_tab_font_style"
                     android:text="操控台"
                     />
-
-                <View
-                    android:id="@+id/line_control"
-                    style="@style/scroll_bar_select_style"
-                    android:layout_alignParentBottom="true"
-                     />
+                <!--<View-->
+                    <!--android:id="@+id/line_control"-->
+                    <!--style="@style/scroll_bar_select_style"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--/>-->
             </RelativeLayout>
 
             <!--线路运行图-->
             <RelativeLayout
+                android:id="@+id/rl_schedule"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
@@ -85,13 +86,13 @@
                   android:id="@+id/tv_line_map"
                   style="@style/main_tab_font_style"
                   android:enabled="false"
-                  android:textColor="@color/font_gray"
+                    android:textColor="@color/font_gray"
                   android:text="线路运行图"
                 />
-                <View
-                    android:id="@+id/line_schedule"
-                    style="@style/scroll_bar_select_style"
-                    android:visibility="gone"/>
+                <!--<View-->
+                    <!--android:id="@+id/line_schedule"-->
+                    <!--style="@style/scroll_bar_select_style"-->
+                    <!--android:visibility="gone"/>-->
             </RelativeLayout>
 
             <!--排班计划-->
@@ -108,8 +109,8 @@
                   android:textColor="@color/font_gray"
                   android:text="排班计划"
                 />
-                <View style="@style/scroll_bar_select_style"
-                      android:visibility="gone"/>
+                <!--<View style="@style/scroll_bar_select_style"-->
+                      <!--android:visibility="gone"/>-->
             </RelativeLayout>
 
             <!--非营运任务-->
@@ -126,8 +127,8 @@
                   android:textColor="@color/font_gray"
                   android:text="非营运任务"
                 />
-                <View style="@style/scroll_bar_select_style"
-                      android:visibility="gone"/>
+                <!--<View style="@style/scroll_bar_select_style"-->
+                      <!--android:visibility="gone"/>-->
             </RelativeLayout>
 
             <!--作业计划-->

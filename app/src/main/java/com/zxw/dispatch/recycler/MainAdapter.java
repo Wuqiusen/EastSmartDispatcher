@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 /**
  * author：CangJie on 2016/9/21 09:53
  * email：cangjie2016@gmail.com
+ *
  */
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
     private final OnSelectLineListener listener;
@@ -62,13 +64,17 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
             }
         });
         if (isClick[position]){
-            holder.mTip.setVisibility(View.VISIBLE);
+//            holder.mTip.setVisibility(View.VISIBLE);
+              holder.mContainer.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
+
         }else {
-            holder.mTip.setVisibility(View.GONE);
+//            holder.mTip.setVisibility(View.GONE);
+            holder.mContainer.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+
         }
 
-        if (sendCarNum != null && !sendCarNum.isEmpty()){
-            holder.tv_time_to_send_count.setText(sendCarNum.get(position) + "辆");
+        if (sendCarNum != null && !sendCarNum.isEmpty()) {
+          holder.tv_time_to_send_count.setText(sendCarNum.get(position) + "辆");
         }
     }
 
@@ -82,8 +88,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
         TextView mLineNumber;
         @Bind(R.id.container)
         LinearLayout mContainer;
-        @Bind(R.id.view_main_tip)
-        View mTip;
+//      @Bind(R.id.view_main_tip)
+//      View mTip;
         @Bind(R.id.tv_time_to_send_count)
         TextView tv_time_to_send_count;
 
