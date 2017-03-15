@@ -74,7 +74,7 @@ public class DragListAdapter extends BaseAdapter {
         tv_driver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble()); ///
+                AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
                 alertNameDialog.showDriverDialog(mDatas.get(position).getId(), mDatas.get(position).getDriverName(),new AlertNameDialog.OnAlertDriverListener() {
                     @Override
                     public void onAlertDriverListener(int driverId) {
@@ -96,7 +96,7 @@ public class DragListAdapter extends BaseAdapter {
             tv_trainman.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble()); ///
+                    AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
                     alertNameDialog.showStewardDialog(mDatas.get(position).getId(), mDatas.get(position).getStewardName(),new AlertNameDialog.OnAlertStewardListener() {
                         @Override
                         public void onAlertStewardListener(int stewardId) {
@@ -136,7 +136,7 @@ public class DragListAdapter extends BaseAdapter {
                     @Override
                     public void onTimePicker(String sMinute) {
                         presenter.updateSpaceTime(mDatas.get(position).getId(), sMinute);
-                          tv_interval_time.setText(sMinute);
+                        tv_interval_time.setText(sMinute);
                     }
                 }).show();
             }
@@ -174,7 +174,7 @@ public class DragListAdapter extends BaseAdapter {
                 presenter.getMissionList(mDatas.get(position).getId(), mDatas.get(position).getType(), mDatas.get(position).getTaskId());
                 else
                     presenter.getMissionList(mDatas.get(position).getId(), mDatas.get(position).getType(),"");
-//                openTaskTypeDialog();
+//                  openTaskTypeDialog();
             }
         });
 

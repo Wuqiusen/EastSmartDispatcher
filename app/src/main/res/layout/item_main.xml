@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    android:background="@color/background_deep_blue"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -11,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:minHeight="130dp"
-        android:background="@color/background_deep_blue"
         android:gravity="center"
         android:orientation="vertical">
         <TextView
@@ -33,9 +33,9 @@
             android:text=""/>
             </LinearLayout>
 
-    <View
-        android:id="@+id/view_main_tip"
-        android:layout_width="4dp"
-        android:layout_height="match_parent"
-        android:background="@color/background_bg_blue"/>
+    <!--<View-->
+        <!--android:id="@+id/view_main_tip"-->
+        <!--android:layout_width="4dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/background_bg_blue"/>-->
 </LinearLayout>
