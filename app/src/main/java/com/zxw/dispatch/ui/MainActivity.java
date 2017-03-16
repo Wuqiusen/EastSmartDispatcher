@@ -66,7 +66,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
         PopupAdapter.OnPopupWindowListener, View.OnClickListener {
 
-    /*menu_layout*/
     TextView tvMenuDepart;
     RelativeLayout rlMenuBackground;
     LinearLayout llMenuWaitDepart;
