@@ -66,6 +66,11 @@ public class DragListAdapter extends BaseAdapter {
         TextView tv_car_code = (TextView) view
                 .findViewById(R.id.tv_car_code);
         tv_car_code.setText(mDatas.get(position).getCode());
+        if (mDatas.get(position).getTaskEditBelongId() == mDatas.get(position).getTaskEditRunId()){
+            tv_car_code.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
+        }else {
+            tv_car_code.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
+        }
 
         // 驾驶员
         TextView tv_driver = (TextView) view

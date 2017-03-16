@@ -333,7 +333,8 @@ public class HttpInterfaces {
         @FormUrlEncoded
         @POST("phone/control/manage/task/type/content/list")
         Observable<BaseBean<List<MissionType>>> missionList(@Field("userId") String userId,
-                                                            @Field("keyCode") String keyCode);
+                                                            @Field("keyCode") String keyCode,
+                                                            @Field("taskLineId") String taskLineId);
 
 
     }

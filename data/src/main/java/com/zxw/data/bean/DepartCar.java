@@ -36,6 +36,8 @@ public class DepartCar implements Serializable {
     private String taskId;
     private String vehTime;
     private String typeName;
+    private int taskEditBelongId;
+    private int taskEditRunId;
 
     public String getTaskId() {
         return taskId;
@@ -139,5 +141,21 @@ public class DepartCar implements Serializable {
 
     public void setVehTime(String vehTime) {
         this.vehTime = vehTime;
+    }
+
+    public int getTaskEditBelongId() {
+        return taskEditBelongId;
+    }
+
+    public void setTaskEditBelongId(int taskEditBelongId) {
+        this.taskEditBelongId = taskEditBelongId;
+    }
+
+    public int getTaskEditRunId() {
+        return taskEditRunId;
+    }
+
+    public void setTaskEditRunId(int taskEditRunId) {
+        this.taskEditRunId = taskEditRunId;
     }
 }

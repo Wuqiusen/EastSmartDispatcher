@@ -51,7 +51,6 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 Intent intent = new Intent(mContext, MainActivity.class);
                 intent.putExtra("spotId", mData.get(position).getSpotId());
                 mContext.startActivity(intent);
-                mActivity.finish();
 
             }
         });
