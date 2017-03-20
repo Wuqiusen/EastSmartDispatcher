@@ -76,7 +76,7 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
         if (!TextUtils.isEmpty(SpUtils.getCache(mContext,"password"))){
             befPassword = SpUtils.getCache(mContext,"password");
             et_password.setText(befPassword);
-            disPlay(befUserName+":"+befPassword);
+            DebugLog.i(befUserName+":"+befPassword);
             return true;
         }
         return false;
