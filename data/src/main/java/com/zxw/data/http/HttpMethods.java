@@ -34,7 +34,8 @@ import rx.schedulers.Schedulers;
  */
 public class HttpMethods {
 //    public static final String BASE_URL = "http://192.168.0.166:8080/yd_control_app/";
-    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+    public static final String BASE_URL = "http://192.168.0.101:8082/yd_control_app/";
+//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
@@ -258,9 +259,9 @@ public class HttpMethods {
                 .map(new HttpResultFunc<List<PersonInfo>>());
         toSubscribe(map, subscriber);
     }
-    public void missionList(Subscriber<List<MissionType>> subscriber, String userId, String keyCode){
+    public void missionList(Subscriber<List<MissionType>> subscriber, String userId, String keyCode,String taskLineId){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<List<MissionType>> map = browse.missionList(userId, keyCode)
+        Observable<List<MissionType>> map = browse.missionList(userId, keyCode, taskLineId)
                 .map(new HttpResultFunc<List<MissionType>>());
         toSubscribe(map, subscriber);
     }

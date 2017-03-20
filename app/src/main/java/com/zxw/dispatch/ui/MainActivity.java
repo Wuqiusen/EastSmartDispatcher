@@ -456,7 +456,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 rb_no_work_mission.setChecked(false);
                 mType = 1;
                 mTaskId = null;
+                if (workMission != null)
                 workMission.choice(-1);
+                if (noWorkMission != null)
                 noWorkMission.choice(-1);
             }
         });
@@ -466,6 +468,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 rb_line_work.setChecked(false);
                 rb_work_mission.setChecked(true);
                 rb_no_work_mission.setChecked(false);
+                if (noWorkMission != null)
                 noWorkMission.choice(-1);
             }
         });
@@ -476,38 +479,45 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 rb_line_work.setChecked(false);
                 rb_work_mission.setChecked(false);
                 rb_no_work_mission.setChecked(true);
+                if (workMission != null)
                 workMission.choice(-1);
             }
         });
 
-        workMission = new MissionAdapter(missionTypes.get(1).getTaskContent(), taskId,mContext,
-                new MissionAdapter.OnSelectMissionListener() {
-                    @Override
-                    public void onSelectMission(MissionType.TaskContentBean missionType) {
-                        rb_line_work.setChecked(false);
-                        rb_work_mission.setChecked(true);
-                        rb_no_work_mission.setChecked(false);
-                        mType = missionType.getType();
-                        mTaskId = missionType.getTaskId() + "";
-                        noWorkMission.choice(-1);
+        if (isHaveContent(missionTypes.get(1).getTaskContent())){
+            workMission = new MissionAdapter(missionTypes.get(1).getTaskContent(), taskId,mContext,
+                    new MissionAdapter.OnSelectMissionListener() {
+                        @Override
+                        public void onSelectMission(MissionType.TaskContentBean missionType) {
+                            rb_line_work.setChecked(false);
+                            rb_work_mission.setChecked(true);
+                            rb_no_work_mission.setChecked(false);
+                            mType = missionType.getType();
+                            mTaskId = missionType.getTaskId() + "";
+                            if (noWorkMission != null)
+                            noWorkMission.choice(-1);
 
-                    }
-                });
-        noWorkMission = new MissionAdapter(missionTypes.get(2).getTaskContent(), taskId,mContext,
-                new MissionAdapter.OnSelectMissionListener() {
-                    @Override
-                    public void onSelectMission(MissionType.TaskContentBean missionType) {
-                        rb_line_work.setChecked(false);
-                        rb_work_mission.setChecked(false);
-                        rb_no_work_mission.setChecked(true);
-                        mType = missionType.getType();
-                        mTaskId = missionType.getTaskId() + "";
-                        workMission.choice(-1);
-                    }
-                });
+                        }
+                    });
+            rv_work_mission.setAdapter(workMission);
+        }
+        if (isHaveContent(missionTypes.get(2).getTaskContent())){
+            noWorkMission = new MissionAdapter(missionTypes.get(2).getTaskContent(), taskId,mContext,
+                    new MissionAdapter.OnSelectMissionListener() {
+                        @Override
+                        public void onSelectMission(MissionType.TaskContentBean missionType) {
+                            rb_line_work.setChecked(false);
+                            rb_work_mission.setChecked(false);
+                            rb_no_work_mission.setChecked(true);
+                            mType = missionType.getType();
+                            mTaskId = missionType.getTaskId() + "";
+                            if (workMission != null)
+                            workMission.choice(-1);
+                        }
+                    });
+            rv_no_work_mission.setAdapter(noWorkMission);
+        }
 
-        rv_work_mission.setAdapter(workMission);
-        rv_no_work_mission.setAdapter(noWorkMission);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -524,6 +534,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mDialog.setContentView(view, params);
         mDialog.setCancelable(true);
         mDialog.show();
+
+    }
+
+    private boolean isHaveContent(List<MissionType.TaskContentBean> list){
+        return list != null && !list.isEmpty();
 
     }
 

@@ -2,6 +2,8 @@
 <ListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lv_smart"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:divider="@color/background_gray4"
+    android:dividerHeight="1dp">
 
 </ListView>

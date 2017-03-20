@@ -49,6 +49,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private boolean isAuto = false;
     private Intent receiverIntent = new Intent("com.zxw.dispatch.service.RECEIVER");
     private List<Integer> sendNums = new ArrayList<>();
+    private SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
 
     public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
@@ -115,9 +116,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-                mvpView.hideLoading();
                 mvpView.disPlay(e.getMessage());
-                mvpView.finish();
             }
 
             @Override
@@ -137,9 +136,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-                mvpView.hideLoading();
                 mvpView.disPlay(e.getMessage());
-                mvpView.finish();
             }
 
             @Override
@@ -187,7 +184,6 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onNext(Object baseBean) {
                mvpView.disPlay("发车成功");
-                timeToSend();
                 refreshList();
             }
         }, userId(), keyCode(), opId);
@@ -363,7 +359,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
 
                 }
-            }, userId(), keyCode());
+            }, userId(), keyCode(), lineId + "");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -414,33 +410,38 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-                mvpView.hideLoading();
                 mvpView.disPlay(e.getMessage());
-                mvpView.finish();
             }
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
+                try{
 
-                for (DepartCar departCar: waitVehicles){
-                    SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
-                    Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-                    Log.e("time1", formatter.format(curDate) + "");
-                    int space = (Integer.valueOf(departCar.getVehTime().substring(0, 2))
-                            -Integer.valueOf((formatter.format(curDate) + "").substring(0, 2))) * 60
-                            +Integer.valueOf(departCar.getVehTime().substring(2, 4))
-                            -Integer.valueOf((formatter.format(curDate) + "").substring(2, 4));
-                    if (space <= 30){
-                        sendNums.set(checkLine, sendNums.get(checkLine)+ 1);
-                        Log.e("time2", departCar.getVehTime() + "");
+                    for (DepartCar departCar: waitVehicles){
+
+                        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                        Log.e("time1", formatter.format(curDate) + "");
+                        int space = (Integer.valueOf(departCar.getVehTime().substring(0, 2))
+                                -Integer.valueOf((formatter.format(curDate) + "").substring(0, 2))) * 60
+                                +Integer.valueOf(departCar.getVehTime().substring(2, 4))
+                                -Integer.valueOf((formatter.format(curDate) + "").substring(2, 4));
+                        if (space <= 30){
+                            Log.e("sendMum","===========");
+                            sendNums.set(checkLine, sendNums.get(checkLine)+ 1);
+                            Log.e("time2", departCar.getVehTime() + "");
+                        }
                     }
+                    checkLine ++;
+                    if (checkLine < mLineBeen.size()){
+                        Log.e("checkLine","++++++++++++");
+                        checkIsTimeToSend(mLineBeen.get(checkLine));
+                    }else {
+                        mvpView.refreshTimeToSendCarNum(sendNums);
+                    }
+                }catch (Exception e){
+                    Log.e("timeToSend", e.getMessage());
                 }
-                checkLine ++;
-                if (checkLine < mLineBeen.size()){
-                    checkIsTimeToSend(mLineBeen.get(checkLine));
-                }else {
-                    mvpView.refreshTimeToSendCarNum(sendNums);
-                }
+
             }
         }, userId(), keyCode(), line.lineId);
     }

@@ -1,33 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_tv"
+    xmlns:toos="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="horizontal">
+    android:background="@color/white">
     <TextView
         android:id="@+id/tv"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:paddingLeft="8dp"
         android:text=""
-        android:gravity="left"
         android:textColor="@color/font_black"
-        android:textSize="@dimen/font_medium"
-        />
-
-    <TextView
-        android:id="@+id/tv_code"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:text=""
-        android:gravity="right"
-        android:textColor="@color/font_black"
-        android:textSize="@dimen/font_medium"
-        android:visibility="gone"
-        />
-
+        android:textSize="@dimen/font_large"
+        android:gravity="center_vertical"
+        android:background="@color/background_gray2"
+        toos:text="张三"/>
 </LinearLayout>

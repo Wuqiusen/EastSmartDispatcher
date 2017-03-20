@@ -50,7 +50,7 @@ public class CarPlanService extends Service {
     private Intent updateIntent = new Intent("com.zxw.dispatch.MSG_RECEIVER");
     private Intent rIntent;
 
-    private final static int CANCLE_AUTO = 11;
+    private final static int CANCEL_AUTO = 11;
     private final static int IS_AUTO = 12;
 
     Handler handler =  new Handler(Looper.getMainLooper()) {
@@ -59,7 +59,7 @@ public class CarPlanService extends Service {
             super.handleMessage(msg);
             try {
                 switch (msg.what) {
-                    case CANCLE_AUTO:
+                    case CANCEL_AUTO:
                         Log.w("service---", "关闭自动发车");
                         if (rIntent != null)
                         removeAutoData(rIntent.getIntExtra("lineId", 0));
@@ -220,7 +220,7 @@ public class CarPlanService extends Service {
 
             } else {
                 //取消自动发车
-                obtain.what = CANCLE_AUTO;
+                obtain.what = CANCEL_AUTO;
                 handler.sendMessage(obtain);
 
             }
@@ -282,9 +282,9 @@ public class CarPlanService extends Service {
     public void onDestroy() {
         unregisterReceiver(carPlanReceiver);
         carPlanReceiver = null;
+        clearData();
         super.onDestroy();
         Log.e("onDestroy---", "service销毁");
-        clearData();
         rIntent = null;
     }
 
