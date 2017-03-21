@@ -98,7 +98,6 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
                     return;
                 }
                disPlay("用户登录");
-               DebugLog.i("登录userName/password:"+userName+"/"+password);
                presenter.verifyAccount(userName, password);
               break;
             case R.id.cb_remember_pwd:
@@ -154,7 +153,7 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
             public void afterTextChanged(Editable s) {
                 if (s.length() >0 && !s.equals(befUserName)){
                     SpUtils.setCache(mContext,"username",s.toString().trim());
-                    disPlay("username:"+s.toString().trim());
+                    DebugLog.i("username:"+s.toString().trim());
                 }
             }
         });
@@ -173,7 +172,7 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
             public void afterTextChanged(Editable s) {
                 if (s.length() >0 && !s.equals(befPassword)){
                     SpUtils.setCache(mContext,"password",s.toString().trim());
-                    disPlay("password:"+s.toString().trim());
+                    DebugLog.i("password:"+s.toString().trim());
 
                 }
             }
