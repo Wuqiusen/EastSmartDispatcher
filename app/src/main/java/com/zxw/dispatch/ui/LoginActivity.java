@@ -97,16 +97,13 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
                     disPlay("请输入密码");
                     return;
                 }
-               disPlay("用户登录");
                presenter.verifyAccount(userName, password);
               break;
             case R.id.cb_remember_pwd:
                 if (!initUserEditText() && cb_rememberPwd.isChecked()) {
-                    disPlay("记住密码");
                     SpUtils.setCache(mContext,"username",userName);
                     SpUtils.setCache(mContext,"password",password);
                 }else{
-                    disPlay("取消记住密码");
                     SpUtils.setCache(mContext,"username",null);
                     SpUtils.setCache(mContext,"password",null);
                 }
