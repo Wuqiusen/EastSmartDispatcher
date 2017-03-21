@@ -14,7 +14,5 @@
         android:background="@drawable/btn_dialog_bg_style"
         style="@style/font_driver_or_steward_dialog_style"
         tools:text="梁海庆"
-        android:textColor="@color/font_black"
         />
-
 </LinearLayout>

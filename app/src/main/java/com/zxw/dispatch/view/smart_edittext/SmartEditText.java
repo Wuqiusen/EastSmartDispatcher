@@ -90,7 +90,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
                 return true;
             }
         });
-        popupWindow = new PopupWindow(popItem, 560, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow = new PopupWindow(popItem, 570, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
     }
@@ -211,7 +211,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         }
 
     }
-
+    // 驾驶员或乘务员/模糊框列表
     private void displayPerson(List<PersonInfo> persons) {
         DebugLog.w(persons.size() + "size");
         if (persons.size() == 0)

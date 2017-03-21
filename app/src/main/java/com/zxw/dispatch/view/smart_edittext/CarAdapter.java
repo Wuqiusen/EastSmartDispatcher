@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.FuzzyVehicleBean;
@@ -48,13 +49,17 @@ public class CarAdapter extends BaseAdapter{
         if(convertView == null){
             convertView = View.inflate(mContext, R.layout.smart_textview, null);
             holder = new ViewHolder();
+            holder.ll_tv = (LinearLayout) convertView.findViewById(R.id.ll_tv);
             holder.tv = (TextView) convertView.findViewById(R.id.tv);
+            holder.tv_code = (TextView) convertView.findViewById(R.id.tv_code);
+            holder.tv_code.setVisibility(View.GONE);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
         holder.tv.setText(mData.get(position).getCode());
-        holder.tv.setOnClickListener(new View.OnClickListener() {
+
+        holder.ll_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onSelectItemListener(mData.get(position));
@@ -68,6 +73,8 @@ public class CarAdapter extends BaseAdapter{
     }
 
     public class ViewHolder{
+        LinearLayout ll_tv;
         TextView tv;
+        TextView tv_code;
     }
 }

@@ -25,6 +25,7 @@ import rx.Subscriber;
 /**
  * author：CangJie on 2017/2/23 10:29
  * email：cangjie2016@gmail.com
+ *
  */
 public class AlertNameDialog extends AlertDialog.Builder {
     private final Context mContext;
@@ -105,6 +106,7 @@ public class AlertNameDialog extends AlertDialog.Builder {
 
     public void showDriverDialog(int objId, String driverName, OnAlertDriverListener listener) {
         currentType = TYPE_DRIVER;
+        /*驾驶员/模糊查询框*/
         et_fuzzy_query.addQueryDriverEditTextListener();
         dialog_name.setText("驾驶员修改");
         person_name.setText("驾驶员:");
@@ -126,6 +128,7 @@ public class AlertNameDialog extends AlertDialog.Builder {
 
     public void showStewardDialog(int objId, String stewardName, OnAlertStewardListener listener) {
         currentType = TYPE_STEWARD;
+        /*乘务员/模糊查询框*/
         et_fuzzy_query.addQueryTrainManEditTextListener();
         dialog_name.setText("乘务员修改");
         person_name.setText("乘务员:");

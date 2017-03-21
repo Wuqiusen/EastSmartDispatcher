@@ -33,6 +33,7 @@
          android:layout_margin="@dimen/normal_margin10"
          android:orientation="horizontal">
          <CheckBox
+             android:id="@+id/cb_remember_pwd"
              style="@style/cb_bg_style"
              android:layout_toLeftOf="@+id/tv_remember_pwd"
              />

@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 /**
  * author：CangJie on 2017/2/21 14:56
  * email：cangjie2016@gmail.com
+ *
  */
 public class DialogDoublePeopleAdapter extends RecyclerView.Adapter<DialogDoublePeopleAdapter.SpotHolder> {
 
