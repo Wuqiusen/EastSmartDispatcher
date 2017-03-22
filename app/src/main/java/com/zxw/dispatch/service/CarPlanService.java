@@ -139,7 +139,7 @@ public class CarPlanService extends Service {
                 }
 
             }
-        }, code, keyCode, lineId);
+        }, SpUtils.getCache(mContext, SpUtils.USER_ID), SpUtils.getCache(mContext, SpUtils.KEYCODE), lineId);
     }
 
     /**

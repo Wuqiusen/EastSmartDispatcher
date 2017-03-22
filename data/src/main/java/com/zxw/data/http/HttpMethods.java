@@ -10,6 +10,7 @@ import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.MoreHistory;
+import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.bean.SendHistory;
@@ -34,8 +35,8 @@ import rx.schedulers.Schedulers;
  */
 public class HttpMethods {
 //    public static final String BASE_URL = "http://192.168.0.166:8080/yd_control_app/";
-    public static final String BASE_URL = "http://192.168.0.101:8082/yd_control_app/";
-//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+//    public static final String BASE_URL = "http://192.168.1.133:8082/yd_control_app/";
+    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
@@ -309,6 +310,26 @@ public class HttpMethods {
                                 int objId, String spaceTime){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable map = operator.updateSpaceTime(userId, keyCode, objId, spaceTime).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+    }
+//获取非任务类型
+    public void nonMissionList(Subscriber<List<NonMissionType>> subscriber, String userId, String keyCode, String vehicleId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<NonMissionType>> map = browse.nonMissionList(userId, keyCode,vehicleId).map(new HttpResultFunc<List<NonMissionType>>());
+        toSubscribe(map, subscriber);
+    }
+
+    //获取全公司拆分后线路
+    public void getAllLine(Subscriber<List<Line>> subscriber, String userId, String keyCode, String taskLineId, String content){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<Line>> map = browse.getAllLine(userId, keyCode,taskLineId, content).map(new HttpResultFunc<List<Line>>());
+        toSubscribe(map, subscriber);
+    }
+
+    //支援
+    public void lineSupport(Subscriber subscriber, String userId, String keyCode, int objId, int lineId){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable<List<Line>> map = operator.lineSupport(userId, keyCode,objId, lineId).map(new HttpResultFunc());
         toSubscribe(map, subscriber);
     }
 

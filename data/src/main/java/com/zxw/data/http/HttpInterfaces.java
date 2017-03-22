@@ -10,6 +10,7 @@ import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.MoreHistory;
+import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.bean.SendHistory;
@@ -336,6 +337,29 @@ public class HttpInterfaces {
                                                             @Field("keyCode") String keyCode,
                                                             @Field("taskLineId") String taskLineId);
 
+        /**
+         * 获取非营运任务
+         * @param userId
+         * @param keyCode
+         * @param vehicleId
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/non/operate/list")
+        Observable<BaseBean<List<NonMissionType>>> nonMissionList(@Field("userId") String userId,
+                                                               @Field("keyCode") String keyCode,
+                                                               @Field("vehicleId") String vehicleId);
+
+        /**
+         * 获取全公司拆分后线路
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/all/list")
+        Observable<BaseBean<List<Line>>> getAllLine(@Field("userId") String userId,
+                                                               @Field("keyCode") String keyCode,
+                                                               @Field("taskLineId") String taskLineId,
+                                                               @Field("content") String content);
+
 
     }
 
@@ -522,6 +546,14 @@ public class HttpInterfaces {
                                             @Field("keyCode") String keyCode,
                                             @Field("objId") int objId,
                                             @Field("spaceTime") String spaceTime);
+
+        //支援其他线
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/support")
+        Observable<BaseBean> lineSupport(@Field("userId") String userId,
+                                             @Field("keyCode") String keyCode,
+                                             @Field("objId") int objId,
+                                             @Field("lineId") int lineId);
 
 
     }

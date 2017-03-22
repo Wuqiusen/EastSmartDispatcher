@@ -8,6 +8,7 @@ import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
+import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.http.HttpMethods;
@@ -18,6 +19,7 @@ import com.zxw.data.source.StopSource;
 import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.GoneAdapter;
+import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.service.CarPlanService;
 import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.DESPlus;
@@ -43,6 +45,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private Context mContext;
     private Intent serviceIntent;
     private int lineId, stationId;
+    private String lineName;
     private LineParams mLineParams;
     public final static int TYPE_SALE_AUTO = 1, TYPE_SALE_MANUAL = 2;
     private List<Line> mLineBeen;
@@ -102,6 +105,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 }
                 mCurrentLine = line;
                 lineId = mCurrentLine.lineId;
+                lineName = mCurrentLine.lineCode;
                 refreshList();
             }
         }, userId(), keyCode(),line.lineId);
@@ -141,7 +145,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
-                mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams);
+                mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
                 mvpView.loadSendCarList(mDragListAdapter);
                 timeToSend();
             }
@@ -355,7 +359,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                 @Override
                 public void onNext(List<MissionType> missionTypes) {
-                    mvpView.showMissionTypeDialog(missionTypes, objId, type, taskId);
+                    mvpView.showMissionTypeDialog(missionTypes, objId, type, taskId, lineName);
 
 
                 }
@@ -555,5 +559,57 @@ public class MainPresenter extends BasePresenter<MainView> {
                 loadSendCarList();
             }
         }, userId(), keyCode(), objId, spaceTime);
+    }
+
+    public void nonMissionType(String vehicleId){
+        mvpView.showLoading();
+        HttpMethods.getInstance().nonMissionList(new Subscriber<List<NonMissionType>>() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+
+            }
+
+            @Override
+            public void onNext(List<NonMissionType> nonMissionTypes) {
+                if (nonMissionTypes != null && !nonMissionTypes.isEmpty()){
+                    NonMissionTypeAdapter nonMissionTypeAdapter = new NonMissionTypeAdapter(nonMissionTypes, mContext);
+                    mvpView.nonMissionTypeDialog(nonMissionTypeAdapter);
+                }else {
+                    mvpView.disPlay("无非运营任务");
+                }
+
+            }
+        }, userId(), keyCode(), vehicleId);
+    }
+
+    public void lineSupport(int objId, int supportLineId){
+        mvpView.showLoading();
+        HttpMethods.getInstance().lineSupport(new Subscriber() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+                mvpView.disPlay("操作成功");
+                loadSendCarList();
+                loadGoneCarList();
+
+            }
+        }, userId(), keyCode(), objId, supportLineId);
     }
 }
