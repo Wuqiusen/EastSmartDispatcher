@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.zxw.data.bean.FuzzyVehicleBean;
+import com.zxw.data.bean.Line;
 import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.MyApplication;
@@ -35,21 +36,25 @@ import rx.functions.Action1;
  * author：CangJie on 2016/10/14 15:10
  * email：cangjie2016@gmail.com
  */
-public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectItemListener, PersonAdapter.OnSelectItemListener {
+public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectItemListener, PersonAdapter.OnSelectItemListener,
+LineAdapter.OnSelectItemListener{
     private int inputType = -1;
     public static final int CAR_CODE = 0;
     public static final int DRIVER = 1;
     public static final int TRAINMAN = 2;
+    public static final int LINE = 3;
     private OnLoadValueListener listener;
     private Context mContext;
 
     private FuzzyVehicleBean mSelectVehicle;
     private PersonInfo mSelectPerson;
+    private Line mLine;
     private ListView popItem;
     private PopupWindow popupWindow;
     private EditText mEditText;
     private CarAdapter mCarAdapter;
     private PersonAdapter mPersonAdapter;
+    private LineAdapter lineAdapter;
 
     private boolean isQuery = true;
 
@@ -85,7 +90,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
                     String newString = mEditText.getText().toString().trim() + substring;
                     mEditText.setText(newString);
                     mEditText.setSelection(newString.length());
-                    delayQuery(newString);
+                    delayQuery(newString, null);
                 }
                 return true;
             }
@@ -95,25 +100,31 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
     }
 
+    public void addQueryLineEditTextListener(String lineId) {
+        initInputType(LINE);
+        initEditTextListener(lineId);
+        mEditText.setHint("请输入线路号");
+    }
+
     public void addQueryDriverEditTextListener() {
         initInputType(DRIVER);
-        initEditTextListener();
+        initEditTextListener(null);
         mEditText.setHint("请输入司机姓名或工号");
     }
 
     public void addQueryCarCodeEditTextListener() {
         initInputType(CAR_CODE);
-        initEditTextListener();
+        initEditTextListener(null);
         mEditText.setHint("请输入车牌号");
     }
 
     public void addQueryTrainManEditTextListener() {
         initInputType(TRAINMAN);
-        initEditTextListener();
+        initEditTextListener(null);
         mEditText.setHint("请输入乘务员姓名或工号");
     }
 
-    private void initEditTextListener() {
+    private void initEditTextListener(final String lineId) {
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(final CharSequence s, int start, int before, int count) {
@@ -121,7 +132,7 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
                 DebugLog.w("start : " + start +", before : "+ before +", count " + count);
                 if (count != 0){
                     if (isQuery)
-                        delayQuery(s.toString().trim());
+                        delayQuery(s.toString().trim(), lineId);
                 }
             }
 
@@ -137,7 +148,8 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         });
     }
 
-    private void delayQuery(final String s) {
+
+    private void delayQuery(final String s, final String lineId) {
         if (TextUtils.isEmpty(s))
             return;
         rx.Observable.timer(600, TimeUnit.MILLISECONDS)
@@ -151,6 +163,10 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
                             case DRIVER:
                             case TRAINMAN:
                                 queryPerson(s);
+                                break;
+                            case LINE:
+                                if (lineId != null)
+                                queryLine(s, lineId);
                                 break;
                         }
                     }
@@ -211,6 +227,34 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
         }
 
     }
+
+    private void queryLine(String str, final String lineId) {
+        try {
+            String encrypt = new DESPlus().encrypt(Base64.encode(str.getBytes("utf-8")));
+            HttpMethods.getInstance().getAllLine(new Subscriber<List<Line>>() {
+                                                           @Override
+                                                           public void onCompleted() {
+
+                                                           }
+
+                                                           @Override
+                                                           public void onError(Throwable e) {
+
+                                                           }
+
+                                                           @Override
+                                                           public void onNext(List<Line> persons) {
+                                                               displayLine(persons);
+                                                           }
+                                                       },SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID),
+                    SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE),lineId,
+                    encrypt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     // 驾驶员或乘务员/模糊框列表
     private void displayPerson(List<PersonInfo> persons) {
         DebugLog.w(persons.size() + "size");
@@ -218,6 +262,15 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
             return;
         mPersonAdapter = new PersonAdapter(persons, SmartEditText.this, mContext);
         popItem.setAdapter(mPersonAdapter);
+        popupWindow.showAsDropDown(SmartEditText.this);
+    }
+
+    private void displayLine(List<Line> lines) {
+        DebugLog.w(lines.size() + "size");
+        if (lines.size() == 0)
+            return;
+        lineAdapter = new LineAdapter(lines, SmartEditText.this, mContext);
+        popItem.setAdapter(lineAdapter);
         popupWindow.showAsDropDown(SmartEditText.this);
     }
 
@@ -238,6 +291,9 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
     }
     public PersonInfo getPeopleInfo(){
         return mSelectPerson;
+    }
+    public Line getLineInfo(){
+        return mLine;
     }
 
     public void setOnLoadValueListener(OnLoadValueListener listener) {
@@ -269,6 +325,16 @@ public class SmartEditText extends FrameLayout implements CarAdapter.OnSelectIte
 
     public int getInfoId() {
         return -1;
+    }
+
+    @Override
+    public void onSelectItemListener(Line line) {
+        stopNextEditTextWatcherEvent();
+        DebugLog.w(line.lineCode);
+        mLine = line;
+        mEditText.setText(line.lineCode);
+        mEditText.setSelection(mEditText.length());
+        popupWindow.dismiss();
     }
 
     public interface OnLoadValueListener {

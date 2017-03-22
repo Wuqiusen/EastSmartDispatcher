@@ -55,6 +55,11 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         SendHistory history = mData.get(position);
         holder.tvCarSequence.setText(String.valueOf(position + 1));
         holder.tvCarCode.setText(history.code);
+        if (history.taskEditBelongId == history.taskEditRunId){
+            holder.tvCarCode.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
+        }else {
+            holder.tvCarCode.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
+        }
         holder.tvDriver.setText(history.driverName);
         if (history.stewardName != null && !TextUtils.isEmpty(history.stewardName))
             holder.tvTrainman.setText(history.stewardName);

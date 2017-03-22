@@ -22,4 +22,6 @@ public class SendHistory {
     public String remarks;
     public String vehTimeReal;
     public String typeName;
+    public int taskEditBelongId;
+    public int taskEditRunId;
 }

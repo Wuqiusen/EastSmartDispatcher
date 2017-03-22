@@ -20,6 +20,7 @@ import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.TimePlanPickerDialog;
 import com.zxw.dispatch.view.UpdateIntervalPickerDialog;
 import com.zxw.dispatch.view.dialog.AlertNameDialog;
+import com.zxw.dispatch.view.smart_edittext.SmartEditText;
 
 import java.util.Calendar;
 import java.util.List;
@@ -40,12 +41,15 @@ public class DragListAdapter extends BaseAdapter {
     private int mHour,mMinute;
     private String sHour = null;
     private String sMinute = null;
+    private SmartEditText seLine;
+    private int mLineId;
 
-    public DragListAdapter(Context context, MainPresenter presenter, List<DepartCar> waitVehicles, LineParams mLineParams) {
+    public DragListAdapter(Context context, MainPresenter presenter, List<DepartCar> waitVehicles, LineParams mLineParams, int lineId) {
         this.mContext = context;
         this.mDatas = waitVehicles;
         this.presenter = presenter;
         this.mLineParams = mLineParams;
+        this.mLineId = lineId;
 
     }
 
@@ -155,12 +159,12 @@ public class DragListAdapter extends BaseAdapter {
         // 非营运任务
         TextView tv_no_operation_task = (TextView) view.findViewById(R.id.tv_no_operation_task);
         tv_no_operation_task.setText(noOperationStatus(mDatas.get(position).getUnRunTaskStatus()));
-//      tv_no_operation_task.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openNoOperationTaskDialog();
-//            }
-//      });
+      tv_no_operation_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.nonMissionType(mDatas.get(position).getVehicleId());
+            }
+      });
 
         // 发车
         TextView tv_send_car = (TextView) view
@@ -202,6 +206,15 @@ public class DragListAdapter extends BaseAdapter {
             }
         });
 
+        // 支援
+        TextView tv_support = (TextView) view.findViewById(R.id.tv_support);
+        tv_support.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                queryLine(position);
+            }
+        });
+
 
 //        TextView tv_enter_time = (TextView) view
 //                .findViewById(R.lineId.tv_enter_time);
@@ -230,58 +243,39 @@ public class DragListAdapter extends BaseAdapter {
         if (status == 1)
             return "无";
         else if (status == 2)
-            return "有";
+            return "已完成";
         else
-            return "完成";
+            return "未完成";
     }
 
-    /**
-     * 任务类型
-     */
-    private void openTaskTypeDialog() {
-        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+
+    private void queryLine(final int poistion){
+        final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_task_type_dialog,null);
+        View view = View.inflate(mContext,R.layout.dialog_query_line,null);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        seLine = (SmartEditText) view.findViewById(R.id.se_line);
+        seLine.addQueryLineEditTextListener(mLineId + "");
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDialog.dismiss();
+                presenter.lineSupport(mDatas.get(poistion).getId(), seLine.getLineInfo().lineId);
+                sDialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDialog.dismiss();
+                sDialog.dismiss();
             }
         });
-        mDialog.setContentView(view,params);
-        mDialog.setCancelable(true);
-        mDialog.show();
+        sDialog.setContentView(view,params);
+        sDialog.setCancelable(true);
+        sDialog.show();
     }
 
-    /**
-     * 非营运任务
-     */
-    private void openNoOperationTaskDialog() {
-        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_no_operation_task_dialog,null);
-        Button btn_close = (Button) view.findViewById(R.id.btn_close);
-        btn_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.dismiss();
-            }
-        });
-        mDialog.setContentView(view,params);
-        mDialog.setCancelable(true);
-        mDialog.show();
-
-    }
 
     /**
      * 发车

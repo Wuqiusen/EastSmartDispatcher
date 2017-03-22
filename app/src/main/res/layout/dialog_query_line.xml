@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ll_car_dialog"
+        android:orientation="vertical">
+        <TextView
+            style="@style/title_font_dialog_style"
+            android:text="支援"
+            />
+        <View style="@style/line_title_bottom_dialog"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/dialog_margin30"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="支援线路:"/>
+
+            <com.zxw.dispatch.view.smart_edittext.SmartEditText
+                android:id="@+id/se_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_fit"
+                >
+
+            </com.zxw.dispatch.view.smart_edittext.SmartEditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_confirm"
+                style="@style/bluebtn_dialog_style"
+                android:text="确定"
+                />
+            <Button
+                android:id="@+id/btn_cancel"
+                style="@style/whitebtn_dialog_style"
+                android:text="取消"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

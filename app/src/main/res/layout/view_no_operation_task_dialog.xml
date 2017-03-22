@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:gravity="center_horizontal">
+
 
     <LinearLayout
         android:layout_width="600dp"
@@ -9,110 +11,156 @@
         android:background="@drawable/ll_car_dialog"
         android:paddingBottom="@dimen/normal_margin20"
         android:orientation="vertical">
+
+
         <TextView
+            android:id="@+id/textView2"
             style="@style/title_font_dialog_style"
-            android:text="非营运任务"
-            />
+            android:text="非营运任务" />
+
         <View style="@style/line_title_bottom_dialog"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/normal_margin20"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1.4"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                style="@style/font_dialog_deputy_style"
-                android:text="执行时间: "
-                />
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    style="@style/font_dialog_deputy_style"
-                    android:text="2017"
-                    />
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="@dimen/normal_margin20"
+            android:layout_marginLeft="@dimen/normal_margin20"
+            >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    style="@style/font_dialog_deputy_style"
-                    android:text="年"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    style="@style/font_dialog_deputy_style"
-                    android:text="02"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    style="@style/font_dialog_deputy_style"
-                    android:text="月"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    style="@style/font_dialog_deputy_style"
-                    android:text="23"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    style="@style/font_dialog_deputy_style"
-                    android:text="日"/>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="执行时间" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="执行内容"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="执行情况"/>
         </LinearLayout>
-        <LinearLayout
+        <View style="@style/line_title_bottom_dialog"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_non_mission_status"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/normal_margin10"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1.4"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                style="@style/font_dialog_deputy_style"
-                android:text="执行内容: "
-                />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                style="@style/font_dialog_deputy_style"
-                android:text="二保" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/normal_margin10"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1.4"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                style="@style/font_dialog_deputy_style"
-                android:text="执行情况: "
-                />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                style="@style/font_dialog_deputy_style"
-                android:text="未完成" />
-        </LinearLayout>
+            android:layout_height="100dp"
+            android:layout_marginRight="@dimen/normal_margin20"
+            android:layout_marginLeft="@dimen/normal_margin20"
+            >
+
+        </android.support.v7.widget.RecyclerView>
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/normal_margin20"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal">-->
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="1.4"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="right"-->
+                <!--style="@style/font_dialog_deputy_style"-->
+                <!--android:text="执行时间: "-->
+                <!--/>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="2"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="left"-->
+                <!--android:orientation="horizontal">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--style="@style/font_dialog_deputy_style"-->
+                    <!--android:text="2017"-->
+                    <!--/>-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--style="@style/font_dialog_deputy_style"-->
+                    <!--android:text="年"/>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--style="@style/font_dialog_deputy_style"-->
+                    <!--android:text="02"/>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--style="@style/font_dialog_deputy_style"-->
+                    <!--android:text="月"/>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--style="@style/font_dialog_deputy_style"-->
+                    <!--android:text="23"/>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--style="@style/font_dialog_deputy_style"-->
+                    <!--android:text="日"/>-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/normal_margin10"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal">-->
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="1.4"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="right"-->
+                <!--style="@style/font_dialog_deputy_style"-->
+                <!--android:text="执行内容: "-->
+                <!--/>-->
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="2"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="left"-->
+                <!--style="@style/font_dialog_deputy_style"-->
+                <!--android:text="二保" />-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/normal_margin10"-->
+            <!--android:orientation="horizontal">-->
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="1.4"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="right"-->
+                <!--style="@style/font_dialog_deputy_style"-->
+                <!--android:text="执行情况: "-->
+                <!--/>-->
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="2"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="left"-->
+                <!--style="@style/font_dialog_deputy_style"-->
+                <!--android:text="未完成" />-->
+        <!--</LinearLayout>-->
         <Button
             android:id="@+id/btn_close"
             style="@style/bluebtn_dialog_style"
