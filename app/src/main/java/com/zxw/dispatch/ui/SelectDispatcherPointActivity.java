@@ -11,6 +11,7 @@ import com.zxw.dispatch.presenter.view.SelectDispatcherPointView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.recycler.SpotAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
+import com.zxw.dispatch.utils.SpUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,6 +23,13 @@ public class SelectDispatcherPointActivity extends PresenterActivity<SelectDispa
     @Override
     protected SelectDispatcherPointPresenter createPresenter() {
         return new SelectDispatcherPointPresenter(this, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!SpUtils.isLogin())
+            finish();
     }
 
     @Override

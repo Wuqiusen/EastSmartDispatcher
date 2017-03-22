@@ -2,9 +2,12 @@ package com.zxw.dispatch.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.zxw.dispatch.MyApplication.mContext;
 
 /**
  * author：CangJie on 2016/9/28 14:11
@@ -60,5 +63,18 @@ public class SpUtils {
         list.add(sp.getString("errorLogName", ""));
 
         return list;
+    }
+
+    public static boolean isLogin() {
+        if(sp == null){
+            initSp(mContext,CACHE_FILE_NAME);
+        }
+        String userId = sp.getString(USER_ID, "");
+        String keycode = sp.getString(KEYCODE, "");
+        String name = sp.getString(NAME, "");
+
+        if (TextUtils.isEmpty(userId) || TextUtils.isEmpty(keycode) || TextUtils.isEmpty(name))
+            return false;
+        return true;
     }
 }

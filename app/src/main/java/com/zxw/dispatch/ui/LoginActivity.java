@@ -119,6 +119,23 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
         }
     }
 
+    private boolean initUserEditText() {
+        userName = et_username.getText().toString().trim();
+        password = et_password.getText().toString().trim();
+        if(TextUtils.isEmpty(userName)){
+            disPlay("请输入用户名");
+            cb_rememberPwd.setChecked(false);
+            return true;
+        }
+        if(TextUtils.isEmpty(password)){
+            disPlay("请输入密码");
+            cb_rememberPwd.setChecked(false);
+            return true;
+        }
+        return false;
+    }
+
+
     private void initEvent() {
         et_username.addTextChangedListener(new TextWatcher() {
             @Override
