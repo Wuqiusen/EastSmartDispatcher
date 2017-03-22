@@ -205,6 +205,6 @@ public abstract class BaseHeadActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == WEATHER_RESULT && resultCode == RESULT_OK){
             tv_weather.setText(data.getStringExtra("weather"));
-        }
+    }
     }
 }
