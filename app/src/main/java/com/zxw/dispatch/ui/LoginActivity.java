@@ -91,9 +91,11 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
                 password = et_password.getText().toString().trim();
                 if(TextUtils.isEmpty(userName)){
                     disPlay("请输入用户名");
+                    cb_rememberPwd.setChecked(false);
                     return;
                 }
                 if(TextUtils.isEmpty(password)){
+                    cb_rememberPwd.setChecked(false);
                     disPlay("请输入密码");
                     return;
                 }
@@ -116,23 +118,6 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
 
         }
     }
-
-    private boolean initUserEditText() {
-        userName = et_username.getText().toString().trim();
-        password = et_password.getText().toString().trim();
-        if(TextUtils.isEmpty(userName)){
-            disPlay("请输入用户名");
-            cb_rememberPwd.setChecked(false);
-            return true;
-        }
-        if(TextUtils.isEmpty(password)){
-            disPlay("请输入密码");
-            cb_rememberPwd.setChecked(false);
-            return true;
-        }
-        return false;
-    }
-
 
     private void initEvent() {
         et_username.addTextChangedListener(new TextWatcher() {
@@ -177,8 +162,19 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
 
     }
 
+    private void saveLoginUserMsg() {
+        if (cb_rememberPwd.isChecked()) {
+            SpUtils.setCache(mContext,"username",userName);
+            SpUtils.setCache(mContext,"password",password);
+        }else{
+            SpUtils.setCache(mContext,"username",null);
+            SpUtils.setCache(mContext,"password",null);
+        }
+    }
+
     @Override
     public void loginSuccess() {
+        saveLoginUserMsg();
         startActivity(new Intent(this, SelectDispatcherPointActivity.class));
         finish();
     }
