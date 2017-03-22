@@ -5,6 +5,7 @@ import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.recycler.GoneAdapter;
+import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 
 import java.util.List;
 
@@ -23,9 +24,11 @@ public interface MainView extends BaseView {
 
     void loadStopCarList(List<StopHistory> stopHistories);
 
-    void showMissionTypeDialog(List<MissionType> missionTypes, int objId, int type, String taskId);
+    void showMissionTypeDialog(List<MissionType> missionTypes, int objId, int type, String taskId, String lineName);
 
     void refreshTimeToSendCarNum(List<Integer> sendCarNum);
+
+    void nonMissionTypeDialog(NonMissionTypeAdapter adapter);
 
     void hideStewardName();
 

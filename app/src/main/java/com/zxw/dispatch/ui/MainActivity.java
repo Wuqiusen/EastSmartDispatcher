@@ -43,6 +43,7 @@ import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.recycler.GoneAdapter;
 import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.MissionAdapter;
+import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.recycler.StopAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
 import com.zxw.dispatch.utils.SpUtils;
@@ -418,7 +419,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     MissionAdapter noWorkMission;
 
     @Override
-    public void showMissionTypeDialog(List<MissionType> missionTypes, final int objId, int type, String taskId) {
+    public void showMissionTypeDialog(List<MissionType> missionTypes, final int objId, int type, String taskId, String lineName) {
         mType = type;
         mTaskId = taskId;
         final Dialog  mDialog = new Dialog(mContext, R.style.customDialog);
@@ -430,6 +431,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         LinearLayout ll_line_work = (LinearLayout) view.findViewById(R.id.ll_line_work);
         LinearLayout ll_work_mission = (LinearLayout) view.findViewById(R.id.ll_work_mission);
         LinearLayout ll_no_work_mission = (LinearLayout) view.findViewById(R.id.ll_no_work_mission);
+        TextView tv_line_name = (TextView) view.findViewById(R.id.tv_line_name);
         final RadioButton rb_line_work = (RadioButton) view.findViewById(R.id.rb_line_work);
         final RadioButton rb_work_mission = (RadioButton) view.findViewById(R.id.rb_work_mission);
         final RadioButton rb_no_work_mission = (RadioButton) view.findViewById(R.id.rb_no_work_mission);
@@ -441,6 +443,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         rv_no_work_mission.setLayoutManager(new LinearLayoutManager(this));
         rv_no_work_mission.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
+        tv_line_name.setText(lineName);
         if (type == 1){//正线运行
             rb_line_work.setChecked(true);
         }else if (type == 2){//营运任务
@@ -546,6 +549,30 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void refreshTimeToSendCarNum(List<Integer> sendCarNum) {
         mLineAdapter.setSendCarNum(sendCarNum);
 
+    }
+
+    @Override
+    public void nonMissionTypeDialog(NonMissionTypeAdapter adapter) {
+         //非营运任务
+            final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            View view = View.inflate(mContext,R.layout.view_no_operation_task_dialog,null);
+            Button btn_close = (Button) view.findViewById(R.id.btn_close);
+            RecyclerView rvMission = (RecyclerView) view.findViewById(R.id.rv_non_mission_status);
+            rvMission.setLayoutManager(new LinearLayoutManager(this));
+            rvMission.addItemDecoration(new DividerItemDecoration(this,
+                    DividerItemDecoration.VERTICAL_LIST));
+            rvMission.setAdapter(adapter);
+            btn_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                }
+            });
+            mDialog.setContentView(view,params);
+            mDialog.setCancelable(true);
+            mDialog.show();
     }
 
     @Override
