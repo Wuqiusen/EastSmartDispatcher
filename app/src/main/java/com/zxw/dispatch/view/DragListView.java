@@ -3,6 +3,9 @@ package com.zxw.dispatch.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.utils.DebugLog;
@@ -43,8 +47,31 @@ import com.zxw.dispatch.utils.DebugLog;
 
     private boolean isLock;// 是否上锁.
     private boolean isDrag;// 是否正在拖动.
+    private long mDragTime;// 开始拖拽的时间
+
+    private final static int RESPONSE_TIME = 800;
 
     private MyDragListener mMyDragListener;
+    private int x;
+    private int y;
+    private ViewGroup itemView;
+
+    private Handler delayHandler = new Handler(){
+
+        private Vibrator vibrator;
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(isDrag){
+                if(vibrator == null) {
+                    vibrator = (Vibrator) MyApplication.mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                }
+                vibrator.vibrate(500);
+            }
+        }
+    };
+    private boolean isDraw;
 
     /**
      * @param isLock 拖拽功能的开关，true为关闭
@@ -62,7 +89,7 @@ import com.zxw.dispatch.utils.DebugLog;
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        DebugLog.w("list onInterceptTouchEvent");
+        DebugLog.w("list onInterceptTouchEvent" + Thread.currentThread());
         // 按下
         if (ev.getAction() == MotionEvent.ACTION_DOWN && !isLock) {
             int x = (int) ev.getX();// 获取相对与ListView的x坐标
@@ -83,20 +110,30 @@ import com.zxw.dispatch.utils.DebugLog;
 
             // 获取可拖拽的图标
             View dragger = itemView.findViewById(R.id.ll_drag_handle);
-            DebugLog.w(dragger.getLeft()+","+ dragger.getRight() + "=" + x);
+            View tv_car_sequence = itemView.findViewById(R.id.tv_car_sequence);
+
             //点击的x坐标大于移动按钮的x坐标，就当成是按到了iv_move触发了移动
             if (dragger != null && x < dragger.getRight()) { //如果想点击item的任意位置都能进行拖拽，把x > dragger.getLeft()限定去掉就行
-                upScrollBounce = getHeight() / 3;// 取得向上滚动的边际，大概为该控件的1/3
-                downScrollBounce = getHeight() * 2 / 3;// 取得向下滚动的边际，大概为该控件的2/3
-                itemView.setBackgroundColor(Color.parseColor("#4E6682"));
-
-                itemView.setDrawingCacheEnabled(true);// 开启cache.
-                Bitmap bm = Bitmap.createBitmap(itemView.getDrawingCache());// 根据cache创建一个新的bitmap对象,就是你拖着狂奔的对象
-                startDrag(bm, y);// 初始化影像
+                this.x = tv_car_sequence.getWidth() - 7;
+                this.y = y;
+                this.itemView = itemView;
+                delayHandler.sendEmptyMessageDelayed(0, RESPONSE_TIME);
+                mDragTime = System.currentTimeMillis();
+                isDrag = true;
                 return true;
             }
         }
         return super.onInterceptTouchEvent(ev);
+    }
+
+    private void prepareDrawBitmap(int x, int y, ViewGroup itemView) {
+        upScrollBounce = getHeight() / 3;// 取得向上滚动的边际，大概为该控件的1/3
+        downScrollBounce = getHeight() * 2 / 3;// 取得向下滚动的边际，大概为该控件的2/3
+        itemView.setBackgroundColor(Color.parseColor("#4E6682"));
+
+        itemView.setDrawingCacheEnabled(true);// 开启cache.
+        Bitmap bm = Bitmap.createBitmap(itemView.getDrawingCache());// 根据cache创建一个新的bitmap对象,就是你拖着狂奔的对象
+        startDrag(bm, x, y);// 初始化影像
     }
 
     /**
@@ -104,22 +141,28 @@ import com.zxw.dispatch.utils.DebugLog;
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        DebugLog.w("list onTouchEvent x:" + ev.getX());
         // item的view不为空，且获取的dragPosition有效
-        if (dragImageView != null && dragEndPosition != INVALID_POSITION
+        if (isDrag && dragEndPosition != INVALID_POSITION
                 && !isLock) {
-
             int action = ev.getAction();
             switch (action) {
                 case MotionEvent.ACTION_UP:
                     int upY = (int) ev.getY();
                     stopDrag(upY);
                     onDrop(upY);
+                    isDrag = false;
+                    isDraw = false;
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    int moveY = (int) ev.getY();
-                    onDrag(moveY);
-
+                    long currentTime = System.currentTimeMillis();
+                    if (currentTime - mDragTime >= 1200){
+                        if(!isDraw){
+                            prepareDrawBitmap(x, y, itemView);
+                            isDraw = true;
+                        }
+                        int moveY = (int) ev.getY();
+                        onDrag(moveY);
+                    }
                     break;
                 case MotionEvent.ACTION_DOWN:
                     break;
@@ -134,17 +177,17 @@ import com.zxw.dispatch.utils.DebugLog;
 
     /**
      * 准备拖动，初始化拖动项的图像
-     *
-     * @param bm
+     *  @param bm
+     * @param x
      * @param y
      */
-    private void startDrag(Bitmap bm, int y) {
+    private void startDrag(Bitmap bm, int x, int y) {
         /***
          * 初始化window.
          */
         windowParams = new WindowManager.LayoutParams();
         windowParams.gravity = Gravity.TOP;
-        windowParams.x = 0;
+        windowParams.x = x;
         windowParams.y = y - dragPoint + dragYOffset;
         windowParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
