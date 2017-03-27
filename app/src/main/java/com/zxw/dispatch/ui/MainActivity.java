@@ -422,6 +422,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void showMissionTypeDialog(List<MissionType> missionTypes, final int objId, int type, String taskId, String lineName) {
         mType = type;
         mTaskId = taskId;
+
         final Dialog  mDialog = new Dialog(mContext, R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -444,6 +445,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         rv_no_work_mission.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
         tv_line_name.setText(lineName);
+
         if (type == 1){//正线运行
             rb_line_work.setChecked(true);
         }else if (type == 2){//营运任务
@@ -553,7 +555,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void nonMissionTypeDialog(NonMissionTypeAdapter adapter) {
-         //非营运任务
+            //非营运任务
             final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
