@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
  <!--已发车辆-->
  <LinearLayout
      android:layout_width="match_parent"
@@ -22,7 +23,7 @@
      <TextView
          style="@style/main_activity_top_button"
          android:text="车号"
-         android:layout_weight="7"/>
+         android:layout_weight="8"/>
 
      <TextView
          style="@style/main_activity_top_button"
@@ -37,6 +38,11 @@
      <TextView
          style="@style/main_activity_top_button"
          android:text="实际发车时刻"
+         android:layout_weight="3"/>
+     <!--新增:停场时间-->
+     <TextView
+         style="@style/main_activity_top_button"
+         android:text="停场时间"
          android:layout_weight="3"/>
 
      <TextView
@@ -58,7 +64,7 @@
 
      <TextView
          style="@style/main_activity_top_button"
-         android:text="任务类型"
+         android:text="指令内容"
          android:layout_weight="4"/>
 
      <TextView

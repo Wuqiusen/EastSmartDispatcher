@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
     <!--待发车辆-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,22 +24,23 @@
         <TextView
             style="@style/main_activity_top_button"
             android:text="车号"
-            android:layout_weight="15"/>
+            android:layout_weight="8"/>
 
         <TextView
             style="@style/main_activity_top_button"
             android:text="到站时刻"
-            android:layout_weight="4.8"/>
+            android:layout_weight="4"/>
 
         <TextView
             style="@style/main_activity_top_button"
             android:text="计划时刻"
             android:layout_weight="3"/>
 
-        <TextView
-            style="@style/main_activity_top_button"
-            android:text="停场时间"
-            android:layout_weight="3"/>
+        <!--删除:停场时间-->
+        <!--<TextView-->
+            <!--style="@style/main_activity_top_button"-->
+            <!--android:text="停场时间"-->
+            <!--android:layout_weight="3"/>-->
 
         <TextView
             style="@style/main_activity_top_button"
@@ -77,17 +79,17 @@
         <TextView
             style="@style/main_activity_top_button"
             android:text="归属站"
-            android:layout_weight="4"/>
+            android:layout_weight="5"/>
 
         <TextView
             style="@style/main_activity_top_button"
-            android:text="任务类型"
+            android:text="指令内容"
             android:layout_weight="4"/>
 
         <TextView
             style="@style/main_activity_top_button"
             android:text="非运营任务"
-            android:layout_weight="4"/>
+            android:layout_weight="3"/>
 
 
         <TextView
@@ -103,7 +105,6 @@
         android:layout_marginRight="@dimen/normal_margin10"
         android:background="@color/line_blue"
         />
-
     <!--待发车辆列表-->
     <RelativeLayout
         android:layout_width="match_parent"
