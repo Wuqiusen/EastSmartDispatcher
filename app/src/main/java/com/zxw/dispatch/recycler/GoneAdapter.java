@@ -14,11 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
+import com.zxw.dispatch.utils.ToastHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,13 +75,19 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
 //      holder.tvStopTime.setText(String.valueOf(history.vehTime));
         holder.tvIntervalTime.setText(String.valueOf(history.spaceTime));
         holder.tvPlanTime.setText(DisplayTimeUtil.substring(history.vehTime));
-
-        if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime))// 到站时刻
+        // 到站时刻
+        if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime))
         holder.tvArriveTime.setText(DisplayTimeUtil.substring(history.arriveTime));
         else
             holder.tvArriveTime.setText("");
-        holder.tvSendTime.setText(DisplayTimeUtil.substring(history.vehTimeReal));// 实际发车时刻
-        holder.tv_stop_car_minute.setText(getStopCarMinute(holder,history));// 停场时间
+        // 实际发车时刻
+        if (history.vehTimeReal != null && !TextUtils.isEmpty(history.vehTimeReal))
+            holder.tvSendTime.setText(DisplayTimeUtil.substring(history.vehTimeReal));
+        else
+            holder.tvSendTime.setText("");
+        // 停场时间
+        holder.tv_stop_car_minute.setText(setStopCarMinute(history));
+
 
 //      holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
 //      holder.tvStationStatus.setText(String.valueOf(history.vehTime));
@@ -120,37 +128,26 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         });
 
 
-
-
-
     }
 
-    private String getStopCarMinute(LineHolder holder,SendHistory history) {
-        String planTime = holder.tvArriveTime.getText().toString().trim();
-        String sendTime = holder.tvSendTime.getText().toString().trim();
-        if (!TextUtils.isEmpty(planTime) && !TextUtils.isEmpty(sendTime)){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String str = sdf.format(new java.util.Date());
-            Date arriveDate = null;
-            Date sendDate = null;
-            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-            try {
-                arriveDate = sdf1.parse(str+" "
-                        + history.arriveTime.substring(0,2)+":"
-                        + history.arriveTime.substring(2,4));
-                sendDate = sdf1.parse(str+" "
-                        + history.vehTimeReal.substring(0,2)+":"
-                        + history.vehTimeReal.substring(2,4));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            long l = sendDate.getTime()-arriveDate.getTime();
-            long min = (long) (l / 1000 / 60 );
-            if (min >= 0) {
-                return String.valueOf(min);
-            }else{
-                return "";
-            }
+    private String setStopCarMinute(SendHistory history){
+        Long arriveMinute;
+        Long sendMinute = null;
+        if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime)){
+            arriveMinute = Long.valueOf(history.arriveTime.substring(0,2)) * 60
+                    + Long.valueOf(history.arriveTime.substring(2,4));
+        }else{
+            return "";
+        }
+        if (history.vehTimeReal != null && !TextUtils.isEmpty(history.vehTimeReal)){
+            sendMinute = Long.valueOf(history.vehTimeReal.substring(0,2)) * 60
+                    + Long.valueOf(history.vehTimeReal.substring(2,4));
+        }else{
+            return "";
+        }
+        Long min = (Long)sendMinute - arriveMinute;
+        if (min >= 0) {
+            return String.valueOf(min)+"";
         }else{
             return "";
         }
