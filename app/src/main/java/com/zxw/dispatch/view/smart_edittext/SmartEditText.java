@@ -79,7 +79,6 @@ LineAdapter.OnSelectItemListener{
         popItem.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                popupWindow.dismiss();
                 String keyCodeToString = KeyEvent.keyCodeToString(keyCode);
                 String substring = keyCodeToString.substring(keyCodeToString.length() - 1);
                 if (substring.equals("1") || substring.equals("2") ||
@@ -92,18 +91,21 @@ LineAdapter.OnSelectItemListener{
                     mEditText.setSelection(newString.length());
                     delayQuery(newString, null);
                 }
+                popupWindow.dismiss();
                 return true;
             }
         });
         popupWindow = new PopupWindow(popItem, 570, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NOT_NEEDED);
     }
 
     public void addQueryLineEditTextListener(String lineId) {
         initInputType(LINE);
         initEditTextListener(lineId);
         mEditText.setHint("请输入线路号");
+        mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
     }
 
     public void addQueryDriverEditTextListener() {
@@ -116,6 +118,7 @@ LineAdapter.OnSelectItemListener{
         initInputType(CAR_CODE);
         initEditTextListener(null);
         mEditText.setHint("请输入车牌号");
+        mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
     }
 
     public void addQueryTrainManEditTextListener() {

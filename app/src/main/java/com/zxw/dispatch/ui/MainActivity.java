@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,7 +41,6 @@ import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.recycler.GoneAdapter;
 import com.zxw.dispatch.recycler.MainAdapter;
-import com.zxw.dispatch.recycler.MissionAdapter;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.recycler.StopAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
@@ -52,6 +50,8 @@ import com.zxw.dispatch.view.CustomViewPager;
 import com.zxw.dispatch.view.DragListView;
 import com.zxw.dispatch.view.MyDialog;
 import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
+import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
+import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.VehicleToScheduleDialog;
 
 import java.text.SimpleDateFormat;
@@ -410,138 +410,16 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         });
     }
 
-    /**
-     * 任务类型对话框
-     */
-    int mType;
-    String mTaskId;
-    MissionAdapter workMission;
-    MissionAdapter noWorkMission;
 
     @Override
     public void showMissionTypeDialog(List<MissionType> missionTypes, final int objId, int type, String taskId, String lineName) {
-        mType = type;
-        mTaskId = taskId;
-        final Dialog  mDialog = new Dialog(mContext, R.style.customDialog);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext, R.layout.view_task_type_dialog, null);
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
-        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
-        LinearLayout ll_line_work = (LinearLayout) view.findViewById(R.id.ll_line_work);
-        LinearLayout ll_work_mission = (LinearLayout) view.findViewById(R.id.ll_work_mission);
-        LinearLayout ll_no_work_mission = (LinearLayout) view.findViewById(R.id.ll_no_work_mission);
-        TextView tv_line_name = (TextView) view.findViewById(R.id.tv_line_name);
-        final RadioButton rb_line_work = (RadioButton) view.findViewById(R.id.rb_line_work);
-        final RadioButton rb_work_mission = (RadioButton) view.findViewById(R.id.rb_work_mission);
-        final RadioButton rb_no_work_mission = (RadioButton) view.findViewById(R.id.rb_no_work_mission);
-        RecyclerView rv_work_mission = (RecyclerView) view.findViewById(R.id.rv_work_mission);
-        RecyclerView rv_no_work_mission = (RecyclerView) view.findViewById(R.id.rv_no_work_mission);
-        rv_work_mission.setLayoutManager(new LinearLayoutManager(this));
-        rv_work_mission.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL_LIST));
-        rv_no_work_mission.setLayoutManager(new LinearLayoutManager(this));
-        rv_no_work_mission.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL_LIST));
-        tv_line_name.setText(lineName);
-        if (type == 1){//正线运行
-            rb_line_work.setChecked(true);
-        }else if (type == 2){//营运任务
-            rb_work_mission.setChecked(true);
-        }else if (type == 3){//非营运任务
-            rb_no_work_mission.setChecked(true);
-        }
-        ll_line_work.setOnClickListener(new View.OnClickListener() {
+        new MissionTypeWaitCarDialog(mContext, missionTypes, objId, type, taskId,
+                lineName, new MissionTypeWaitCarDialog.OnChangeMissionTypeListener() {
             @Override
-            public void onClick(View v) {
-                rb_line_work.setChecked(true);
-                rb_work_mission.setChecked(false);
-                rb_no_work_mission.setChecked(false);
-                mType = 1;
-                mTaskId = null;
-                if (workMission != null)
-                workMission.choice(-1);
-                if (noWorkMission != null)
-                noWorkMission.choice(-1);
+            public void changeMissionType(final int objId, int type, String taskId) {
+                presenter.changeMissionType(objId, type, taskId);
             }
         });
-        ll_work_mission.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rb_line_work.setChecked(false);
-                rb_work_mission.setChecked(true);
-                rb_no_work_mission.setChecked(false);
-                if (noWorkMission != null)
-                noWorkMission.choice(-1);
-            }
-        });
-
-        ll_no_work_mission.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rb_line_work.setChecked(false);
-                rb_work_mission.setChecked(false);
-                rb_no_work_mission.setChecked(true);
-                if (workMission != null)
-                workMission.choice(-1);
-            }
-        });
-
-        if (isHaveContent(missionTypes.get(1).getTaskContent())){
-            workMission = new MissionAdapter(missionTypes.get(1).getTaskContent(), taskId,mContext,
-                    new MissionAdapter.OnSelectMissionListener() {
-                        @Override
-                        public void onSelectMission(MissionType.TaskContentBean missionType) {
-                            rb_line_work.setChecked(false);
-                            rb_work_mission.setChecked(true);
-                            rb_no_work_mission.setChecked(false);
-                            mType = missionType.getType();
-                            mTaskId = missionType.getTaskId() + "";
-                            if (noWorkMission != null)
-                            noWorkMission.choice(-1);
-
-                        }
-                    });
-            rv_work_mission.setAdapter(workMission);
-        }
-        if (isHaveContent(missionTypes.get(2).getTaskContent())){
-            noWorkMission = new MissionAdapter(missionTypes.get(2).getTaskContent(), taskId,mContext,
-                    new MissionAdapter.OnSelectMissionListener() {
-                        @Override
-                        public void onSelectMission(MissionType.TaskContentBean missionType) {
-                            rb_line_work.setChecked(false);
-                            rb_work_mission.setChecked(false);
-                            rb_no_work_mission.setChecked(true);
-                            mType = missionType.getType();
-                            mTaskId = missionType.getTaskId() + "";
-                            if (workMission != null)
-                            workMission.choice(-1);
-                        }
-                    });
-            rv_no_work_mission.setAdapter(noWorkMission);
-        }
-
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.changeMissionType(objId, mType, mTaskId);
-                mDialog.dismiss();
-            }
-        });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.dismiss();
-            }
-        });
-        mDialog.setContentView(view, params);
-        mDialog.setCancelable(true);
-        mDialog.show();
-
-    }
-
-    private boolean isHaveContent(List<MissionType.TaskContentBean> list){
-        return list != null && !list.isEmpty();
 
     }
 
@@ -553,26 +431,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void nonMissionTypeDialog(NonMissionTypeAdapter adapter) {
-         //非营运任务
-            final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            View view = View.inflate(mContext,R.layout.view_no_operation_task_dialog,null);
-            Button btn_close = (Button) view.findViewById(R.id.btn_close);
-            RecyclerView rvMission = (RecyclerView) view.findViewById(R.id.rv_non_mission_status);
-            rvMission.setLayoutManager(new LinearLayoutManager(this));
-            rvMission.addItemDecoration(new DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL_LIST));
-            rvMission.setAdapter(adapter);
-            btn_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mDialog.dismiss();
-                }
-            });
-            mDialog.setContentView(view,params);
-            mDialog.setCancelable(true);
-            mDialog.show();
+            new NoMissionTypeWaitCarDialog(mContext,adapter);
     }
 
     @Override

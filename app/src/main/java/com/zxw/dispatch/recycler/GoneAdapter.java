@@ -2,6 +2,7 @@ package com.zxw.dispatch.recycler;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,12 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
+import com.zxw.dispatch.utils.ToastHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -51,7 +57,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
     }
 
     @Override
-    public void onBindViewHolder(LineHolder holder, final int position) {
+    public void onBindViewHolder(final LineHolder holder, final int position) {
         SendHistory history = mData.get(position);
         holder.tvCarSequence.setText(String.valueOf(position + 1));
         holder.tvCarCode.setText(history.code);
@@ -65,20 +71,29 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
             holder.tvTrainman.setText(history.stewardName);
         else
             holder.tvTrainman.setText("");
+
+//      holder.tvStopTime.setText(String.valueOf(history.vehTime));
+        holder.tvIntervalTime.setText(String.valueOf(history.spaceTime));
         holder.tvPlanTime.setText(DisplayTimeUtil.substring(history.vehTime));
+        // 到站时刻
         if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime))
         holder.tvArriveTime.setText(DisplayTimeUtil.substring(history.arriveTime));
         else
             holder.tvArriveTime.setText("");
-//        holder.tvStopTime.setText(String.valueOf(history.vehTime));
-        holder.tvIntervalTime.setText(String.valueOf(history.spaceTime));
-        holder.tvSendTime.setText(DisplayTimeUtil.substring(history.vehTimeReal));
-//        holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班"); ///
-        holder.tvStatus.setText(history.status == 1 ? "正常":"异常"); ///
-//        holder.tvStationStatus.setText(String.valueOf(history.vehTime));
+        // 实际发车时刻
+        if (history.vehTimeReal != null && !TextUtils.isEmpty(history.vehTimeReal))
+            holder.tvSendTime.setText(DisplayTimeUtil.substring(history.vehTimeReal));
+        else
+            holder.tvSendTime.setText("");
+        // 停场时间
+        holder.tv_stop_car_minute.setText(setStopCarMinute(history));
+
+
+//      holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
+//      holder.tvStationStatus.setText(String.valueOf(history.vehTime));
+        holder.tvStatus.setText(history.status == 1 ? "正常":"异常");
         holder.tv_send_remark.setText(history.remarks);
         holder.tvWorkStatus.setText(history.typeName);
-
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
             holder.tvTrainman.setVisibility(View.GONE);
         }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
@@ -111,8 +126,33 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
                  openWithdrawCarDialog(mData.get(position).id);
             }
         });
+
+
     }
 
+    private String setStopCarMinute(SendHistory history){
+        Long arriveMinute;
+        Long sendMinute = null;
+        if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime)){
+            arriveMinute = Long.valueOf(history.arriveTime.substring(0,2)) * 60
+                    + Long.valueOf(history.arriveTime.substring(2,4));
+        }else{
+            return "";
+        }
+        if (history.vehTimeReal != null && !TextUtils.isEmpty(history.vehTimeReal)){
+            sendMinute = Long.valueOf(history.vehTimeReal.substring(0,2)) * 60
+                    + Long.valueOf(history.vehTimeReal.substring(2,4));
+        }else{
+            return "";
+        }
+        Long min = (Long)sendMinute - arriveMinute;
+        if (min >= 0) {
+            return String.valueOf(min)+"";
+        }else{
+            return "";
+        }
+
+    }
 
 
     /**
@@ -247,6 +287,8 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         TextView tv_send_remark;
         @Bind(R.id.tv_send_withdraw)
         TextView tv_send_withdraw;
+        @Bind(R.id.tv_stop_car_minute)
+        TextView tv_stop_car_minute;
         LineHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
