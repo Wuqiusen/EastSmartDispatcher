@@ -612,4 +612,31 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
         }, userId(), keyCode(), objId, supportLineId);
     }
+
+    public void confirmInform(String vehicleId, String content, String typeId){
+        mvpView.showLoading();
+        try{
+            String remarkStr = new DESPlus().encrypt(Base64.encode(content.getBytes("utf-8")));
+            HttpMethods.getInstance().confrimInform(new Subscriber() {
+                @Override
+                public void onCompleted() {
+                    mvpView.hideLoading();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    mvpView.disPlay(e.getMessage());
+                }
+
+                @Override
+                public void onNext(Object o) {
+                    mvpView.disPlay("操作成功");
+                }
+            }, userId(), keyCode(), vehicleId, remarkStr, typeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }

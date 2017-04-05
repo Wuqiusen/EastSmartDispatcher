@@ -8,14 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.zxw.data.bean.DepartCar;
+import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.LineParams;
+import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
+import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.TimePlanPickerDialog;
 import com.zxw.dispatch.view.UpdateIntervalPickerDialog;
@@ -24,6 +30,8 @@ import com.zxw.dispatch.view.smart_edittext.SmartEditText;
 
 import java.util.Calendar;
 import java.util.List;
+
+import rx.Subscriber;
 
 /**
  * author：CangJie on 2016/9/21 11:12
@@ -43,6 +51,17 @@ public class DragListAdapter extends BaseAdapter {
     private String sMinute = null;
     private SmartEditText seLine;
     private int mLineId;
+    private Dialog informDialog;
+    private EditText etInformContent;
+    private InformDataAdapter informDataAdapter;
+    private String informContent;
+    private String typeId;
+    private String vehicleId;
+    private Spinner sp_inform;
+    private Button btn_confirm;
+    private Button btn_cancel;
+    private View viewDialog;
+    private LinearLayout.LayoutParams params;
 
     public DragListAdapter(Context context, MainPresenter presenter, List<DepartCar> waitVehicles, LineParams mLineParams, int lineId) {
         this.mContext = context;
@@ -215,6 +234,15 @@ public class DragListAdapter extends BaseAdapter {
             }
         });
 
+        // 通知
+        TextView tv_inform = (TextView) view.findViewById(R.id.tv_inform);
+        tv_inform.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openInformDialog(mDatas.get(position).getId() + "");
+            }
+        });
+
 
 //        TextView tv_enter_time = (TextView) view
 //                .findViewById(R.lineId.tv_enter_time);
@@ -274,6 +302,67 @@ public class DragListAdapter extends BaseAdapter {
         sDialog.setContentView(view,params);
         sDialog.setCancelable(true);
         sDialog.show();
+    }
+
+    /**
+     * 通知
+     */
+    private void openInformDialog(final String objId){
+        HttpMethods.getInstance().getInformData(new Subscriber<List<InformDataBean>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(List<InformDataBean> informDataBeen) {
+                if (informDialog == null){
+                    informDialog = new Dialog(mContext,R.style.customDialog);
+                    params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                    viewDialog = View.inflate(mContext,R.layout.dialog_inform,null);
+                    sp_inform = (Spinner) viewDialog.findViewById(R.id.sp_inform);
+                    etInformContent = (EditText) viewDialog.findViewById(R.id.et_remarks);
+                    btn_confirm = (Button) viewDialog.findViewById(R.id.btn_confirm);
+                    btn_cancel = (Button) viewDialog.findViewById(R.id.btn_cancel);
+                }
+                informDataAdapter = new InformDataAdapter(mContext, informDataBeen, objId);
+                sp_inform.setAdapter(informDataAdapter);
+                informDataAdapter.setOnItemClick(new InformDataAdapter.SetOnItemClick() {
+                    @Override
+                    public void itemClick(String content, String typeId, String vehicleId) {
+                        etInformContent.setText(content);
+                        etInformContent.setSelection(content.length());
+                        DragListAdapter.this.typeId = typeId;
+                        DragListAdapter.this.vehicleId = vehicleId;
+                    }
+                });
+
+                btn_confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        presenter.confirmInform(vehicleId, etInformContent.getText().toString(), typeId);
+                        informDialog.dismiss();
+                    }
+                });
+                btn_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        informDialog.dismiss();
+                    }
+                });
+                informDialog.setContentView(viewDialog,params);
+                informDialog.setCancelable(true);
+                informDialog.show();
+
+            }
+        }, SpUtils.getCache(mContext, SpUtils.USER_ID), SpUtils.getCache(mContext, SpUtils.KEYCODE));
+
     }
 
 

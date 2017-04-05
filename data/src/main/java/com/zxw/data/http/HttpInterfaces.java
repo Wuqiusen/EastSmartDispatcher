@@ -5,6 +5,8 @@ import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.FuzzyVehicleBean;
+import com.zxw.data.bean.InformContentBean;
+import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
@@ -13,6 +15,8 @@ import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
+import com.zxw.data.bean.ScheduleBean;
+import com.zxw.data.bean.ScheduleHistoryBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
@@ -356,9 +360,48 @@ public class HttpInterfaces {
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/all/list")
         Observable<BaseBean<List<Line>>> getAllLine(@Field("userId") String userId,
-                                                               @Field("keyCode") String keyCode,
-                                                               @Field("taskLineId") String taskLineId,
-                                                               @Field("content") String content);
+                                                    @Field("keyCode") String keyCode,
+                                                    @Field("taskLineId") String taskLineId,
+                                                    @Field("content") String content);
+
+        /**
+         * 28.	获取通知模板下拉列表
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/notice/list")
+        Observable<BaseBean<List<InformDataBean>>> getInformData(@Field("userId") String userId,
+                                                                    @Field("keyCode") String keyCode);
+
+        /**
+         * 29.	获取通知内容
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/notice/info")
+        Observable<BaseBean<InformContentBean>> getInformContent(@Field("userId") String userId,
+                                                                 @Field("keyCode") String keyCode,
+                                                                 @Field("objId") String objId,
+                                                                 @Field("typeId") String typeId);
+
+        /**
+         * 31.	根据线路id获取待发车计划列表(新)
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/list1")
+        Observable<BaseBean<List<ScheduleBean>>> getScheduleList(@Field("userId") String userId,
+                                                                 @Field("keyCode") String keyCode,
+                                                                 @Field("lineId") String objId,
+                                                                 @Field("typeId") String typeId);
+
+        /**
+         * 32.	根据线路id获取已发车记录列表(新)
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/history/list1")
+        Observable<BaseBean<List<ScheduleHistoryBean>>> getScheduleHistorList(@Field("userId") String userId,
+                                                                              @Field("keyCode") String keyCode,
+                                                                              @Field("lineId") String objId,
+                                                                              @Field("typeId") String typeId);
+
 
 
     }
@@ -554,6 +597,58 @@ public class HttpInterfaces {
                                              @Field("keyCode") String keyCode,
                                              @Field("objId") int objId,
                                              @Field("lineId") int lineId);
+
+        //通知确认
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/notice/press/push")
+        Observable<BaseBean> confirmInform(@Field("userId") String userId,
+                                         @Field("keyCode") String keyCode,
+                                         @Field("vehicleId") String vehicleId,
+                                         @Field("noticeInfo") String noticeInfo,
+                                         @Field("noticeType") String noticeType);
+
+        /**
+         * 33.	停场车辆拉进待发车计划操作列表(新)
+         * 营运类型；1正线营运,2营运,3非营运,4支援,必填
+         正线营运任务；营运类型为1、4时必填,2、3时为空
+         营运任务；营运类型为2、3时必填，1、4时为空
+         计划开始时间；营运类型为2、3时必填
+         计划结束时间; 营运类型为2、3时必填
+         单次;营运类型为2、3时必填
+         空驶里程;营运类型为2、3时必填
+         作业计划方式,必填,格式：1时段、2时刻
+
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/vehicle/stop/to/schedule1")
+        Observable<BaseBean> stopToSchedule(@Field("userId") String userId,
+                                           @Field("keyCode") String keyCode,
+                                           @Field("objId") String objId,
+                                           @Field("type") String type,
+                                           @Field("taskId") String taskId,
+                                           @Field("taskType") String taskType,
+                                           @Field("beginTime") String beginTime,
+                                           @Field("endTime") String endTime,
+                                           @Field("runNum") String runNum,
+                                           @Field("runEmpMileage") String runEmpMileage,
+                                           @Field("workScheduleType") String workScheduleType);
+
+        /**
+         * 任务补录(新)
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/makeup")
+        Observable<BaseBean> lineMakeup(@Field("userId") String userId,
+                                            @Field("keyCode") String keyCode,
+                                            @Field("taskLineId") String taskLineId,
+                                            @Field("vehicleId") String vehicleId,
+                                            @Field("driverId") String driverId,
+                                            @Field("type") String type,
+                                            @Field("taskType") String taskType,
+                                            @Field("runNum") String runNum,
+                                            @Field("runEmpMileage") String runEmpMileage,
+                                            @Field("beginTime") String beginTime,
+                                            @Field("endTime") String endTime);
 
 
     }
