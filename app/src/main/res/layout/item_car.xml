@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_tiny"
+    android:layout_marginRight="@dimen/margin_tiny"
     android:background="@color/transparent"
     android:minHeight="50dp"
     android:gravity="center"
@@ -42,7 +44,7 @@
         android:id="@+id/tv_system_enter_time"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="3.8"
+        android:layout_weight="4"
         android:layout_height="wrap_content"
         tools:text="7:00"
         />
@@ -51,7 +53,7 @@
         android:id="@+id/tv_plan_time"
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
-        android:layout_weight="4.2"
+        android:layout_weight="4"
         android:layout_height="wrap_content"
         tools:text="7:00"
         />
@@ -138,13 +140,13 @@
         style="@style/font_item_xml_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3.6"
+        android:layout_weight="4"
         tools:text="有"
         />
     <!--操作-->
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="4.2"
+        android:layout_weight="6"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
@@ -176,6 +178,16 @@
             android:textColor="@color/font_blue2"
             android:clickable="true"
             android:text="支援"
+            />
+        <TextView
+            android:id="@+id/tv_inform"
+            style="@style/font_item_xml_style"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/font_blue2"
+            android:clickable="true"
+            android:text="通知"
             />
     </LinearLayout>
 
