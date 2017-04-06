@@ -44,6 +44,7 @@ import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.recycler.StopAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
+import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
@@ -552,7 +553,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 showPopupWindow();
                 break;
             case R.id.rl_menu_background:
+                DebugLog.e("111click menu-------");
             case R.id.img_menu_on_off:
+                DebugLog.e("2222click menu-------");
                 changeControlDeckView();
                 break;
             case R.id.tv_menu_gone_car:
@@ -614,31 +617,26 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void changeControlDeckView() {
+        initMenu(isShow);
         if (isShow){
-            initMenu(isShow);
-            fl_horizontal.setVisibility(View.GONE);
-            fl_vertical.setVisibility(View.VISIBLE);
-            isPopbg = isShow;
-            isShow = false;
-        }else{
-            initMenu(isShow);
+            DebugLog.e("click menu-------");
+
             fl_vertical.setVisibility(View.GONE);
             fl_horizontal.setVisibility(View.VISIBLE);
+            isShow = false;
             isPopbg = isShow;
+        }else{
+//            initMenu(isShow);
+            DebugLog.e("close menu-------");
+            fl_horizontal.setVisibility(View.GONE);
+            fl_vertical.setVisibility(View.VISIBLE);
             isShow = true;
+            isPopbg = isShow;
         }
     }
 
     private void initMenu(boolean isShow) {
         if (isShow){
-            llMenuWaitDepart.setVisibility(View.GONE);
-            tvMenuWaitCar.setVisibility(View.GONE);
-            tvMenuGoneCar.setVisibility(View.GONE);
-            tvMenuStopCar.setVisibility(View.GONE);
-            tvMenuDepart.setVisibility(View.VISIBLE);
-            rlMenuBackground.setBackgroundColor(mContext.getResources().getColor(R.color.background_gray5));
-            rlMenuBackground.setEnabled(true);
-        }else{
 
             if (isClickWaitCar) {
                 llMenuWaitDepart.setVisibility(View.VISIBLE);
@@ -652,6 +650,15 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             tvMenuStopCar.setVisibility(View.VISIBLE);
             rlMenuBackground.setBackgroundColor(mContext.getResources().getColor(R.color.white));
             rlMenuBackground.setEnabled(false);
+        }else{
+            llMenuWaitDepart.setVisibility(View.GONE);
+            tvMenuWaitCar.setVisibility(View.GONE);
+            tvMenuGoneCar.setVisibility(View.GONE);
+            tvMenuStopCar.setVisibility(View.GONE);
+            tvMenuDepart.setVisibility(View.VISIBLE);
+            rlMenuBackground.setBackgroundColor(mContext.getResources().getColor(R.color.background_gray5));
+            rlMenuBackground.setEnabled(true);
+
         }
     }
 
