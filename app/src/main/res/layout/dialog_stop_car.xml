@@ -10,22 +10,60 @@
         android:orientation="vertical">
         <!--请确认是否将粤B12312添加到待发车辆列表中?-->
         <TextView
-            style="@style/title_font_dialog_style"
-            android:minHeight="@dimen/dialog_height50"
-            android:text="提示"
-            android:textStyle="bold"
-            />
-        <View style="@style/line_title_bottom_dialog"/>
-
-        <!--请确认是否将粤B12312添加到待发车辆列表中?-->
-        <TextView
             android:id="@+id/tv_carCode"
             style="@style/title_font_dialog_style"
-            android:minHeight="@dimen/dialog_height50"
             android:layout_marginLeft="@dimen/dialog_height36"
-            android:textStyle="normal"
-            android:text=""
+            android:minHeight="@dimen/dialog_height50"
+            android:text="车辆任务"
+            android:textStyle="bold"
             />
+
+        <View style="@style/line_title_bottom_dialog"/>
+
+        <RadioGroup
+            android:id="@+id/rg_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/rb_normal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="线路运营"/>
+            <RadioButton
+                android:id="@+id/rb_operator_empty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="营运空驶"/>
+            <RadioButton
+                android:id="@+id/rb_operator_not_empty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="非营运空驶"/>
+            <RadioButton
+                android:id="@+id/rb_help"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="支援"/>
+        </RadioGroup>
+
+        <View style="@style/line_title_bottom_dialog"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <include layout="@layout/dialog_stop_car_item1"/>
+            <include layout="@layout/dialog_stop_car_item2"
+                android:id="@+id/item2"/>
+            <include layout="@layout/dialog_stop_car_item2"
+                android:id="@+id/item3"/>
+            <include layout="@layout/dialog_stop_car_item4"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +73,13 @@
             <Button
                 android:id="@+id/btn_confirm"
                 style="@style/bluebtn_dialog_style"
-                android:text="确定"
+                android:text="发班"
+                />
+
+            <Button
+                android:id="@+id/btn_off_duty"
+                style="@style/bluebtn_dialog_style"
+                android:text="收班"
                 />
             <Button
                 android:id="@+id/btn_cancel"

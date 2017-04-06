@@ -15,8 +15,6 @@ import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
-import com.zxw.data.bean.ScheduleBean;
-import com.zxw.data.bean.ScheduleHistoryBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
@@ -387,20 +385,20 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/schedule/list1")
-        Observable<BaseBean<List<ScheduleBean>>> getScheduleList(@Field("userId") String userId,
+        Observable<BaseBean<List<DepartCar>>> getScheduleList(@Field("userId") String userId,
                                                                  @Field("keyCode") String keyCode,
-                                                                 @Field("lineId") String objId,
-                                                                 @Field("typeId") String typeId);
+                                                                 @Field("lineId") int objId,
+                                                                 @Field("typeId") int typeId);
 
         /**
          * 32.	根据线路id获取已发车记录列表(新)
          */
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/schedule/history/list1")
-        Observable<BaseBean<List<ScheduleHistoryBean>>> getScheduleHistorList(@Field("userId") String userId,
+        Observable<BaseBean<List<SendHistory>>> getScheduleHistorList(@Field("userId") String userId,
                                                                               @Field("keyCode") String keyCode,
-                                                                              @Field("lineId") String objId,
-                                                                              @Field("typeId") String typeId);
+                                                                              @Field("lineId") int lineId,
+                                                                              @Field("typeId") int typeId);
 
 
 
@@ -624,14 +622,14 @@ public class HttpInterfaces {
         Observable<BaseBean> stopToSchedule(@Field("userId") String userId,
                                            @Field("keyCode") String keyCode,
                                            @Field("objId") String objId,
-                                           @Field("type") String type,
+                                           @Field("type") int type,
                                            @Field("taskId") String taskId,
                                            @Field("taskType") String taskType,
                                            @Field("beginTime") String beginTime,
                                            @Field("endTime") String endTime,
                                            @Field("runNum") String runNum,
                                            @Field("runEmpMileage") String runEmpMileage,
-                                           @Field("workScheduleType") String workScheduleType);
+                                           @Field("workScheduleType") int workScheduleType);
 
         /**
          * 任务补录(新)
