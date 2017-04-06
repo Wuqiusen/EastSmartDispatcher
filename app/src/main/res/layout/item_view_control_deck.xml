@@ -282,7 +282,6 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/view_line"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginLeft="@dimen/margin_tiny"

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="40dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+    <TextView
+        android:id="@+id/tv_stab1"
+        style="@style/font_menu3"
+        android:background="@drawable/btn_login_style"
+        android:text="线路营运"
+        android:visibility="visible"
+        />
+    <TextView
+        android:id="@+id/tv_stab2"
+        style="@style/font_menu3"
+        android:background="@drawable/whitebtn_dialog_deep_style"
+        android:textSize="@dimen/font_medium"
+        android:textColor="@color/font_black"
+        android:text="营运空驶"
+        android:visibility="visible"
+        />
+    <TextView
+        android:id="@+id/tv_stab3"
+        style="@style/font_menu3"
+        android:background="@drawable/whitebtn_dialog_deep_style"
+        android:textSize="@dimen/font_medium"
+        android:textColor="@color/font_black"
+        android:text="非营运空驶"
+        android:visibility="visible"
+        />
+</LinearLayout>

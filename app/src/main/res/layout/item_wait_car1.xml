@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+    <!--待发车辆列表-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <com.zxw.dispatch.view.DragListView
+            android:id="@+id/lv_send_car"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/normal_margin10"
+            android:layout_marginRight="@dimen/normal_margin10"
+            android:descendantFocusability="blocksDescendants"
+           />
+
+        <View
+          android:id="@+id/view_cover"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="#55e1dada"
+          android:clickable="true"
+          android:visibility="gone"
+        />
+    </RelativeLayout>
+
+</LinearLayout>

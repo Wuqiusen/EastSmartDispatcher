@@ -22,7 +22,6 @@ import java.util.List;
  * author MXQ
  * create at 2017/3/23 09:39
  * email: 1299242483@qq.com
- * 描述:代替任务类型{未测试}
  */
 public class MissionTypeWaitCarDialog extends AlertDialog.Builder{
 
