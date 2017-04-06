@@ -5,6 +5,8 @@ import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.FuzzyVehicleBean;
+import com.zxw.data.bean.InformContentBean;
+import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
@@ -13,6 +15,8 @@ import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
+import com.zxw.data.bean.ScheduleBean;
+import com.zxw.data.bean.ScheduleHistoryBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
@@ -332,5 +336,52 @@ public class HttpMethods {
         Observable<List<Line>> map = operator.lineSupport(userId, keyCode,objId, lineId).map(new HttpResultFunc());
         toSubscribe(map, subscriber);
     }
+
+    public void getInformData(Subscriber<List<InformDataBean>> subscriber, String userId, String keyCode){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<InformDataBean>> map = browse.getInformData(userId, keyCode).map(new HttpResultFunc<List<InformDataBean>>());
+        toSubscribe(map, subscriber);
+    }
+
+    public void getInformContent(Subscriber<InformContentBean> subscriber,String userId, String keyCode, String objId, String typeId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<InformContentBean> map = browse.getInformContent(userId, keyCode, objId, typeId).map(new HttpResultFunc<InformContentBean>());
+        toSubscribe(map, subscriber);
+    }
+
+    public void confrimInform(Subscriber subscriber, String userId, String keyCode, String vehicleId, String noticeInfo, String noticeType){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.confirmInform(userId, keyCode, vehicleId, noticeInfo, noticeType).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+    }
+
+    public void getScheduleList(Subscriber<List<ScheduleBean>> subscriber, String userId, String keyCode, String lineId, String typeId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<ScheduleBean>> map = browse.getScheduleList(userId, keyCode, lineId, typeId).map(new HttpResultFunc<List<ScheduleBean>>());
+        toSubscribe(map, subscriber);
+    }
+
+    public void getScheduleHistoryList(Subscriber<List<ScheduleHistoryBean>> subscriber, String userId, String keyCode, String lineId, String typeId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<ScheduleHistoryBean>> map = browse.getScheduleHistorList(userId, keyCode, lineId, typeId).map(new HttpResultFunc<List<ScheduleHistoryBean>>());
+        toSubscribe(map, subscriber);
+    }
+    public void stopToSchedule(Subscriber subscriber, String userId, String keyCode, String objId, String type, String taskId, String taskType,
+                               String beginTime, String endTime,  String runNum, String runEmpMileage,  String workScheduleType){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.stopToSchedule(userId, keyCode, objId, type, taskId, taskType,
+                beginTime, endTime, runNum, runEmpMileage, workScheduleType).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+
+    }
+
+    public void lineMakeup(Subscriber subscriber, String userId, String keyCode, String taskLineId, String vehicleId, String driverId,
+                           String type, String taskType, String runNum,  String runEmpMileage, String beginTime, String endTime){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.lineMakeup(userId, keyCode, taskLineId, vehicleId, driverId, type, taskType,
+                runNum, runEmpMileage, beginTime, endTime).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+    }
+
 
 }

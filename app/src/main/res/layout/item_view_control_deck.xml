@@ -36,12 +36,12 @@
 
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:layout_weight="2"
+                        android:layout_weight="1.8"
                         android:text="序号" />
 
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:layout_weight="8"
+                        android:layout_weight="4.8"
                         android:text="车号"
                         android:id="@+id/textView4" />
 
@@ -57,22 +57,22 @@
 
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:layout_weight="3"
+                        android:layout_weight="4.6"
                         android:text="实际发车时刻" />
                     <!--新增:停场时间-->
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:layout_weight="3"
+                        android:layout_weight="4"
                         android:text="停场时间" />
 
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:layout_weight="4"
+                        android:layout_weight="4.6"
                         android:text="发车间隔" />
 
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:layout_weight="3"
+                        android:layout_weight="3.1"
                         android:text="驾驶员" />
 
                     <TextView
@@ -89,23 +89,23 @@
 
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:layout_weight="3"
+                        android:layout_weight="3.1"
                         android:text="正/异常" />
 
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:layout_weight="6"
+                        android:layout_weight="3.8"
                         android:text="备注" />
 
                     <TextView
                         style="@style/main_activity_top_button"
-                        android:layout_weight="3"
+                        android:layout_weight="3.5"
                         android:text="操作" />
 
                     <TextView
                         android:id="@+id/textView"
                         style="@style/main_activity_top_button"
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:text="指令反馈" />
                 </LinearLayout>
                 <!--分割线-->
@@ -113,6 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="@color/line_blue" />
+                <!--<include layout="@layout/item_send"/>-->
                 <!--已发车辆列表-->
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_gone_car"
@@ -199,12 +200,12 @@
 
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="2.8"
+                    android:layout_weight="2"
                     android:text="序号" />
 
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="8"
+                    android:layout_weight="5"
                     android:text="车号" />
 
                 <TextView
@@ -214,7 +215,7 @@
 
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="3"
+                    android:layout_weight="4"
                     android:text="计划时刻" />
                 <!--停场时间-->
                 <!--<TextView-->
@@ -224,17 +225,17 @@
 
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="3"
+                    android:layout_weight="3.8"
                     android:text="发车间隔" />
 
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="3"
+                    android:layout_weight="3.6"
                     android:text="单/双班" />
 
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="3"
+                    android:layout_weight="3.2"
                     android:text="驾驶员" />
 
                 <TextView
@@ -247,29 +248,29 @@
                 <!--应跑单次-->
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="3"
+                    android:layout_weight="4"
                     android:text="应跑单次" />
 
                 <!--实跑单次-->
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="3"
+                    android:layout_weight="4.2"
                     android:text="实跑单次" />
 
                 <!--归属站-->
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="5"
+                    android:layout_weight="3.6"
                     android:text="归属站" />
 
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="4"
+                    android:layout_weight="4.7"
                     android:text="指令内容" />
 
                 <TextView
                     style="@style/main_activity_top_button"
-                    android:layout_weight="3"
+                    android:layout_weight="4"
                     android:text="非运营任务" />
 
 
