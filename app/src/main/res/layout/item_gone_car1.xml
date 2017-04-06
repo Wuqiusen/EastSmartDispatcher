@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+    <!--已发车辆列表-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_gone_car"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/normal_margin10"
+        android:layout_marginRight="@dimen/normal_margin10"
+        />
+</LinearLayout>

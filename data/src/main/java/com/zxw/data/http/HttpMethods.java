@@ -15,8 +15,6 @@ import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
-import com.zxw.data.bean.ScheduleBean;
-import com.zxw.data.bean.ScheduleHistoryBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
@@ -38,9 +36,9 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-//    public static final String BASE_URL = "http://192.168.0.166:8080/yd_control_app/";
+    public static final String BASE_URL = "http://192.168.0.51:8081/yd_control_app/";
 //    public static final String BASE_URL = "http://192.168.1.133:8082/yd_control_app/";
-    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
@@ -355,19 +353,19 @@ public class HttpMethods {
         toSubscribe(map, subscriber);
     }
 
-    public void getScheduleList(Subscriber<List<ScheduleBean>> subscriber, String userId, String keyCode, String lineId, String typeId){
+    public void getScheduleList(Subscriber<List<DepartCar>> subscriber, String userId, String keyCode, int lineId, int typeId){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<List<ScheduleBean>> map = browse.getScheduleList(userId, keyCode, lineId, typeId).map(new HttpResultFunc<List<ScheduleBean>>());
+        Observable<List<DepartCar>> map = browse.getScheduleList(userId, keyCode, lineId, typeId).map(new HttpResultFunc<List<DepartCar>>());
         toSubscribe(map, subscriber);
     }
 
-    public void getScheduleHistoryList(Subscriber<List<ScheduleHistoryBean>> subscriber, String userId, String keyCode, String lineId, String typeId){
+    public void getScheduleHistoryList(Subscriber<List<SendHistory>> subscriber, String userId, String keyCode, int lineId, int typeId){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<List<ScheduleHistoryBean>> map = browse.getScheduleHistorList(userId, keyCode, lineId, typeId).map(new HttpResultFunc<List<ScheduleHistoryBean>>());
+        Observable<List<SendHistory>> map = browse.getScheduleHistorList(userId, keyCode, lineId, typeId).map(new HttpResultFunc<List<SendHistory>>());
         toSubscribe(map, subscriber);
     }
-    public void stopToSchedule(Subscriber subscriber, String userId, String keyCode, String objId, String type, String taskId, String taskType,
-                               String beginTime, String endTime,  String runNum, String runEmpMileage,  String workScheduleType){
+    public void stopToSchedule(Subscriber subscriber, String userId, String keyCode, String objId, int type, String taskId, String taskType,
+                               String beginTime, String endTime,  String runNum, String runEmpMileage,  int workScheduleType){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable map = operator.stopToSchedule(userId, keyCode, objId, type, taskId, taskType,
                 beginTime, endTime, runNum, runEmpMileage, workScheduleType).map(new HttpResultFunc());

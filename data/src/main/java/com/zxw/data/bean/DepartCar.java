@@ -40,6 +40,65 @@ public class DepartCar implements Serializable {
     private int taskEditBelongId;
     private int taskEditRunId;
 
+    private String taskEndTime;
+    private String taskName;
+    private int runNum;
+    private int runNumReal;
+    private int runEmpMileage;
+    private int isNotice;  //1 未通知 2 已通知
+
+    public int getIsNotice() {
+        return isNotice;
+    }
+
+    public void setIsNotice(int isNotice) {
+        this.isNotice = isNotice;
+    }
+
+    public void setVehicleId(String vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public String getTaskEndTime() {
+        return taskEndTime;
+    }
+
+    public void setTaskEndTime(String taskEndTime) {
+        this.taskEndTime = taskEndTime;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public int getRunNum() {
+        return runNum;
+    }
+
+    public void setRunNum(int runNum) {
+        this.runNum = runNum;
+    }
+
+    public int getRunNumReal() {
+        return runNumReal;
+    }
+
+    public void setRunNumReal(int runNumReal) {
+        this.runNumReal = runNumReal;
+    }
+
+    public int getRunEmpMileage() {
+        return runEmpMileage;
+    }
+
+    public void setRunEmpMileage(int runEmpMileage) {
+        this.runEmpMileage = runEmpMileage;
+    }
+
     public String getTaskId() {
         return taskId;
     }

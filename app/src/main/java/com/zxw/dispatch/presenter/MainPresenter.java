@@ -14,7 +14,6 @@ import com.zxw.data.bean.StopHistory;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.data.source.DepartSource;
 import com.zxw.data.source.LineSource;
-import com.zxw.data.source.SendSource;
 import com.zxw.data.source.StopSource;
 import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.presenter.view.MainView;
@@ -38,7 +37,6 @@ import rx.Subscriber;
 public class MainPresenter extends BasePresenter<MainView> {
     private LineSource mLineSource = new LineSource();
     private DepartSource mDepartSource = new DepartSource();
-    private SendSource mSendSource = new SendSource();
     private StopSource mStopSource = new StopSource();
     private Line mCurrentLine;
     private DragListAdapter mDragListAdapter;
@@ -112,7 +110,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     private void loadGoneCarList() {
-        mSendSource.loadSend(new Subscriber<List<SendHistory>>() {
+        mDepartSource.goneListByLine(new Subscriber<List<SendHistory>>() {
             @Override
             public void onCompleted() {
                 mvpView.hideLoading();
@@ -132,7 +130,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     private void loadSendCarList(){
-        mDepartSource.departList(new Subscriber<List<DepartCar>>() {
+        mDepartSource.departListByLine(new Subscriber<List<DepartCar>>() {
             @Override
             public void onCompleted() {
                 mvpView.hideLoading();
@@ -277,8 +275,9 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), carId, driverId, mLineParams.getSaleType(),stewardId, String.valueOf(mCurrentLine.lineId));
     }
 
-    public void vehicleToSchedule(StopHistory stopCar) {
-        mDepartSource.vehicleToSchedule(new Subscriber() {
+    public void stopCarMission(StopHistory stopCar, int type, String taskId, String taskType,
+                               String beginTime, String endTime,  String runNum, String runEmpMileage) {
+        mDepartSource.stopToSchedule(new Subscriber() {
             @Override
             public void onCompleted() {
 
@@ -293,7 +292,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             public void onNext(Object o) {
                 refreshList();
             }
-        }, userId(), keyCode(), String.valueOf(stopCar.id), mLineParams.getTimeType());
+        }, userId(), keyCode(), String.valueOf(stopCar.id), type, taskId, taskType, beginTime, endTime, runNum, runEmpMileage, mLineParams.getTimeType());
     }
 
     public void alertPeople(int id, int peopleId, int type) {
@@ -406,7 +405,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     private void checkIsTimeToSend(Line line){
-        mDepartSource.departList(new Subscriber<List<DepartCar>>() {
+        mDepartSource.departListByLine(new Subscriber<List<DepartCar>>() {
             @Override
             public void onCompleted() {
                 mvpView.hideLoading();
@@ -631,12 +630,14 @@ public class MainPresenter extends BasePresenter<MainView> {
                 @Override
                 public void onNext(Object o) {
                     mvpView.disPlay("操作成功");
+                    refreshList();
                 }
             }, userId(), keyCode(), vehicleId, remarkStr, typeId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+    }
+    public int getLineId(){
+        return lineId;
     }
 }

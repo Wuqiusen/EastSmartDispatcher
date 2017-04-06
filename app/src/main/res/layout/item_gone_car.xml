@@ -97,6 +97,7 @@
         android:layout_marginRight="@dimen/normal_margin10"
        android:background="@color/line_blue"
     />
+
     <!--已发车辆列表-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_menu_gone_car"

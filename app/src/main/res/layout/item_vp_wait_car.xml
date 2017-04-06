@@ -2,27 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    >
-    <!--待发车辆-->
-    <LinearLayout
+    android:layout_marginLeft="@dimen/margin_tiny"
+    android:layout_marginRight="@dimen/margin_tiny"
+    android:background="@color/transparent"
+    android:orientation="vertical" >
+     <!--WaitCar_Tab-->
+     <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:minHeight="40dp"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal">-->
+            <!--<TextView-->
+                <!--android:id="@+id/tv_wtab1"-->
+                <!--style="@style/font_menu"-->
+                <!--android:textSize="@dimen/font_medium"-->
+                <!--android:visibility="visible"-->
+                <!--android:text="Tab1"-->
+                <!--/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/tv_wtab2"-->
+                <!--style="@style/font_menu"-->
+                <!--android:textSize="@dimen/font_medium"-->
+                <!--android:visibility="visible"-->
+                <!--android:text="Tab2"-->
+                <!--/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/tv_wtab3"-->
+                <!--style="@style/font_menu"-->
+                <!--android:textSize="@dimen/font_medium"-->
+                <!--android:visibility="visible"-->
+                <!--android:text="Tab3"-->
+                <!--/>-->
+     <!--</LinearLayout>-->
+     <!--WaitCat_Title-->
+     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        android:layout_marginLeft="@dimen/normal_margin10"
-        android:layout_marginRight="@dimen/normal_margin10"
-        android:minHeight="40dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:minHeight="40dp">
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="2"
+            android:layout_weight="2.8"
             android:text="序号" />
 
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="5"
+            android:layout_weight="8"
             android:text="车号" />
 
         <TextView
@@ -32,7 +58,7 @@
 
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:text="计划时刻" />
         <!--停场时间-->
         <!--<TextView-->
@@ -42,53 +68,52 @@
 
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="3.8"
+            android:layout_weight="3"
             android:text="发车间隔" />
 
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="3.6"
+            android:layout_weight="3"
             android:text="单/双班" />
 
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="3.2"
+            android:layout_weight="3"
             android:text="驾驶员" />
 
         <TextView
-            android:id="@+id/tv_menu_steward_send"
+            android:id="@+id/tv_steward_send"
             style="@style/main_activity_top_button"
             android:layout_weight="3"
             android:text="乘务员"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <!--应跑单次-->
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:text="应跑单次" />
 
         <!--实跑单次-->
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="4.2"
+            android:layout_weight="3"
             android:text="实跑单次" />
-
 
         <!--归属站-->
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="3.6"
+            android:layout_weight="5"
             android:text="归属站" />
 
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="4.7"
+            android:layout_weight="4"
             android:text="指令内容" />
 
         <TextView
             style="@style/main_activity_top_button"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:text="非运营任务" />
 
 
@@ -98,37 +123,16 @@
             android:text="操作" />
 
     </LinearLayout>
-    <!--分割线-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginLeft="@dimen/normal_margin10"
-        android:layout_marginRight="@dimen/normal_margin10"
-        android:background="@color/line_blue"
-        />
-    <!--待发车辆列表-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <com.zxw.dispatch.view.DragListView
-           android:id="@+id/rv_menu_wait_car"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/normal_margin10"
-            android:layout_marginRight="@dimen/normal_margin10"
-           android:descendantFocusability="blocksDescendants"
-        />
+      <!--分割线-->
+      <View
+         android:layout_width="match_parent"
+         android:layout_height="2dp"
+         android:background="@color/line_blue" />
 
-        <View
-            android:id="@+id/view_menu_cover"
+        <com.zxw.dispatch.view.CustomViewPager
+            android:id="@+id/vp_wait_car"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#55e1dada"
-            android:clickable="true"
-            android:visibility="gone"
-            />
-    </RelativeLayout>
-
+        />
 
 </LinearLayout>
