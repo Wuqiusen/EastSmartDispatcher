@@ -94,15 +94,15 @@
             </LinearLayout>
 
                 <!--待发车辆-ViewPager-->
-                <include
-                    android:id="@+id/ll_wait_car"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="@dimen/margin_tiny"
-                    android:layout_marginRight="@dimen/margin_tiny"
-                    android:layout_weight="1"
-                    layout="@layout/item_vp_wait_car"
-                    />
+            <include
+                android:id="@+id/ll_wait_car"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/margin_tiny"
+                android:layout_marginRight="@dimen/margin_tiny"
+                android:layout_weight="1"
+                layout="@layout/item_vp_wait_car"
+                />
         </LinearLayout>
     </LinearLayout>
     <!--分割线-->
