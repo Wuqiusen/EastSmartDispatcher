@@ -59,13 +59,13 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.tv_wtab1:
+            case R.id.tv_hor_wtab1:
                 mListener.onTabIsClick(0);
                 break;
-            case R.id.tv_wtab2:
+            case R.id.tv_hor_wtab2:
                 mListener.onTabIsClick(1);
                 break;
-            case R.id.tv_wtab3:
+            case R.id.tv_hor_wtab3:
                 mListener.onTabIsClick(2);
                 break;
         }
@@ -110,19 +110,28 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
     public void setWaitCarTabScrollBar(int pos){
         switch (pos){
             case 0:
-                tv_wtab1.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tv_wtab2.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tv_wtab3.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.white));
+                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
-                tv_wtab2.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tv_wtab1.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tv_wtab3.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.white));
+                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 2:
-                tv_wtab3.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tv_wtab1.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tv_wtab2.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.white));
+                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
 
         }

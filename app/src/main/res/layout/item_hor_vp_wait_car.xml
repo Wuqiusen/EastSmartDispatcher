@@ -15,17 +15,19 @@
         android:orientation="horizontal">
         <TextView
             android:id="@+id/tv_hor_wtab1"
-            style="@style/font_menu"
-            android:textSize="@dimen/font_medium"
+            style="@style/font_menu3"
+            android:background="@drawable/btn_login_style"
+            android:text="线路营运"
             android:visibility="visible"
-            android:text="Tab1"
             />
         <TextView
             android:id="@+id/tv_hor_wtab2"
-            style="@style/font_menu"
+            style="@style/font_menu3"
+            android:background="@drawable/whitebtn_dialog_deep_style"
             android:textSize="@dimen/font_medium"
+            android:textColor="@color/font_black"
+            android:text="营运空驶"
             android:visibility="visible"
-            android:text="Tab2"
             />
         <TextView
             android:id="@+id/tv_hor_wtab3"

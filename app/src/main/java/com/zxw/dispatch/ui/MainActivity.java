@@ -673,19 +673,28 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void setVerWaitCarTabScrollBar(int pos){
         switch (pos){
             case 0:
-                tv_wtab1.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tv_wtab2.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tv_wtab3.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.white));
+                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
-                tv_wtab2.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tv_wtab1.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tv_wtab3.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.white));
+                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 2:
-                tv_wtab3.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tv_wtab1.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tv_wtab2.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.white));
+                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
 
         }
