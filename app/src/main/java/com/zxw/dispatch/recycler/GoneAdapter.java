@@ -147,7 +147,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         }
         Long min = (Long)sendMinute - arriveMinute;
         if (min >= 0) {
-            return String.valueOf(min)+"";
+            return String.valueOf(min);
         }else{
             return "";
         }

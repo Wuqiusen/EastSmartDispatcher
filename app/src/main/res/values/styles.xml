@@ -97,6 +97,22 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <!--menu_font-->
+    <style name="font_menu2" parent="font_menu">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--menu_font-->
+    <style name="font_menu3" parent="font_menu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">6dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
     <!--item_car或item_send字体-->
     <style name="font_item_xml_style">
         <item name="android:minHeight">26dp</item>
