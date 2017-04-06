@@ -1,7 +1,6 @@
 package com.zxw.dispatch.ui;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +19,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -202,7 +200,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         initView();
         initTabEvent();
         int spotId = getIntent().getIntExtra("spotId", -1);
-        presenter.loadLineList(spotId);
+        presenter.loadLineList(1);
+//        presenter.loadLineList(spotId);
     }
 
 
@@ -507,6 +506,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             @Override
             public void onClickManualButtonListener() {
                 showManualAddStopCarDialog();
+//                showVehicleToScheduleDialog(null);
             }
 
             @Override
@@ -561,10 +561,30 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void showVehicleToScheduleDialog(final StopHistory stopCar) {
         new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
             @Override
-            public void onClick() {
-                presenter.vehicleToSchedule(stopCar);
+            public void onClickNormalMission(int type, int taskId) {
+                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null);
             }
-        });
+
+            @Override
+            public void onClickOperatorEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage) {
+                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage);
+            }
+
+            @Override
+            public void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage) {
+                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage);
+            }
+
+            @Override
+            public void onClickHelpMission(int type, int taskId) {
+                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null);
+            }
+
+            @Override
+            public void onOffDuty() {
+
+            }
+        }, presenter.getLineId());
     }
 
     private void showManualAddStopCarDialog() {

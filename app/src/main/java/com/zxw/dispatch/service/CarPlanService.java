@@ -112,7 +112,7 @@ public class CarPlanService extends Service {
      * @param lineId
      */
     public void loadCarDataTimer(final int lineId) {
-        mSource.departList(new Subscriber<List<DepartCar>>() {
+        mSource.departListByLine(new Subscriber<List<DepartCar>>() {
             @Override
             public void onCompleted() {
             }

@@ -338,6 +338,7 @@ LineAdapter.OnSelectItemListener{
         mEditText.setText(line.lineCode);
         mEditText.setSelection(mEditText.length());
         popupWindow.dismiss();
+        listener.onLoadValue();
     }
 
     public interface OnLoadValueListener {
@@ -373,5 +374,10 @@ LineAdapter.OnSelectItemListener{
     }
     public void clear(){
         mEditText.setText("");
+    }
+
+    @Override
+    public void setOnFocusChangeListener(OnFocusChangeListener l) {
+        super.setOnFocusChangeListener(l);
     }
 }

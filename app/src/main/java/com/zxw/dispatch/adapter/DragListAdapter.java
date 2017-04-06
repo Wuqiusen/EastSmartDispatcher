@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -236,6 +235,13 @@ public class DragListAdapter extends BaseAdapter {
 
         // 通知
         TextView tv_inform = (TextView) view.findViewById(R.id.tv_inform);
+        if (mDatas.get(position).getIsNotice() == 1){
+            tv_inform.setEnabled(true);
+            tv_inform.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
+        }else if(mDatas.get(position).getIsNotice() == 2){
+            tv_inform.setEnabled(false);
+            tv_inform.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        }
         tv_inform.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
