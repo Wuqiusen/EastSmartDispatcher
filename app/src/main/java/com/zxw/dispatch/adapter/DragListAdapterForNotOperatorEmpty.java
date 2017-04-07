@@ -23,7 +23,6 @@ import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.TimePlanPickerDialog;
-import com.zxw.dispatch.view.UpdateIntervalPickerDialog;
 import com.zxw.dispatch.view.dialog.AlertNameDialog;
 import com.zxw.dispatch.view.smart_edittext.SmartEditText;
 
@@ -36,12 +35,12 @@ import rx.Subscriber;
  * author：CangJie on 2016/9/21 11:12
  * email：cangjie2016@gmail.com
  */
-public class DragListAdapter extends BaseAdapter {
+public class DragListAdapterForNotOperatorEmpty extends BaseAdapter {
     private List<DepartCar> mDatas;
 
     private Context mContext;
     private  TextView tv_interval_time;
-    private  TextView  tv_plan_time;
+    private  TextView tv_plan_start_time, tv_plan_end_time, tv_station_name, tv_count, tv_empty_km;
     private MainPresenter presenter;
     private LineParams mLineParams;
     private Calendar mDate;
@@ -62,7 +61,7 @@ public class DragListAdapter extends BaseAdapter {
     private View viewDialog;
     private LinearLayout.LayoutParams params;
 
-    public DragListAdapter(Context context, MainPresenter presenter, List<DepartCar> waitVehicles, LineParams mLineParams, int lineId) {
+    public DragListAdapterForNotOperatorEmpty(Context context, MainPresenter presenter, List<DepartCar> waitVehicles, LineParams mLineParams, int lineId) {
         this.mContext = context;
         this.mDatas = waitVehicles;
         this.presenter = presenter;
@@ -78,7 +77,7 @@ public class DragListAdapter extends BaseAdapter {
          * 具体原因不明，不过这样经过测试，目前没有发现错乱。虽说效率不高，但是做拖拽LisView足够了。
          */
         view = LayoutInflater.from(mContext).inflate(
-                R.layout.item_wait_car_line_operate, null);
+                R.layout.item_wait_car_operate_empty_driving, null);
 
         TextView tv_car_sequence = (TextView) view
                 .findViewById(R.id.tv_car_sequence);
@@ -134,69 +133,60 @@ public class DragListAdapter extends BaseAdapter {
             });
         }
 
-        // 计划时刻
-        tv_plan_time = (TextView) view
-                .findViewById(R.id.tv_plan_time);
-        tv_plan_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getVehTime()));
-        tv_plan_time.setOnClickListener(new View.OnClickListener() {
+        // 计划发车时刻
+        tv_plan_start_time = (TextView) view
+                .findViewById(R.id.tv_plan_start_time);
+        tv_plan_start_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getVehTime()));
+        tv_plan_start_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new TimePlanPickerDialog(mContext,mDatas.get(position).getVehTime(),new TimePlanPickerDialog.OnTimePickerListener() {
                     @Override
                     public void onTimePicker(String sHour, String sMinute) {
-                             ToastHelper.showToast(sHour+":"+sMinute,mContext);
-                             presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
+                        ToastHelper.showToast(sHour+":"+sMinute,mContext);
+                        presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
                     }
                 }).show();
             }
         });
-        // 发车间隔
-        tv_interval_time = (TextView) view
-                .findViewById(R.id.tv_interval_time);
-        tv_interval_time.setText(String.valueOf(mDatas.get(position).getSpaceTime()));
-        tv_interval_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final int mCurrentMinute = mDatas.get(position).getSpaceTime();
-                new UpdateIntervalPickerDialog(mContext, mCurrentMinute, new UpdateIntervalPickerDialog.OnTimePickerListener() {
-                    @Override
-                    public void onTimePicker(String sMinute) {
-                        presenter.updateSpaceTime(mDatas.get(position).getId(), sMinute);
-                        tv_interval_time.setText(sMinute);
-                    }
-                }).show();
-            }
-        });
+
+        // 计划结束时刻
+        tv_plan_end_time = (TextView) view
+                .findViewById(R.id.tv_plan_end_time);
+        tv_plan_end_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getTaskEndTime()));
+
+        // 电子围栏名称
+        tv_station_name = (TextView) view
+                .findViewById(R.id.tv_station_name);
+        tv_station_name.setText(mDatas.get(position).getElectronRailName());
+        // 折算单次
+        tv_count = (TextView) view
+                .findViewById(R.id.tv_count);
+        tv_count.setText(String.valueOf(mDatas.get(position).getRunNum()));
+        // 空驶里程
+        tv_empty_km = (TextView) view
+                .findViewById(R.id.tv_empty_km);
+        tv_empty_km.setText(String.valueOf(mDatas.get(position).getRunEmpMileage()));
+
+
         // 到站时刻
         TextView tv_system_enter_time = (TextView) view
                 .findViewById(R.id.tv_system_enter_time);
         tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getArriveTime()));
 
+
+        // 任务名称
+        TextView tv_no_operation_task = (TextView) view.findViewById(R.id.tv_no_operation_task);
+        tv_no_operation_task.setText(mDatas.get(position).getTypeName());
+
         // 发车
         TextView tv_send_car = (TextView) view
                 .findViewById(R.id.tv_send_car);
-        TextView tv_is_double = (TextView) view
-                .findViewById(R.id.tv_is_double);
-        TextView tv_work_type = (TextView) view
-                .findViewById(R.id.tv_work_type);
-        tv_is_double.setText(mDatas.get(position).getIsDouble() == 0 ?"单班":"双班");
-        // 任务类型
-        tv_work_type.setText(mDatas.get(position).getTypeName());
-        tv_work_type.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDatas.get(position).getTaskId() != null)
-                presenter.getMissionList(mDatas.get(position).getId(), mDatas.get(position).getType(), mDatas.get(position).getTaskId());
-                else
-                    presenter.getMissionList(mDatas.get(position).getId(), mDatas.get(position).getType(),"");
-//                  openTaskTypeDialog();
-            }
-        });
 
         tv_send_car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(tv_plan_time.getText().toString())){
+                if (TextUtils.isEmpty(tv_plan_start_time.getText().toString())){
                     ToastHelper.showToast("请先填写发车时间");
                     return;
                 }
@@ -208,7 +198,7 @@ public class DragListAdapter extends BaseAdapter {
         tv_withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    openWithdrawCarDialog(mDatas.get(position).getId());
+                openWithdrawCarDialog(mDatas.get(position).getId());
             }
         });
 
@@ -227,17 +217,6 @@ public class DragListAdapter extends BaseAdapter {
                 openInformDialog(mDatas.get(position).getId() + "");
             }
         });
-        //首发电子围栏场站
-        TextView tv_station_name = (TextView) view.findViewById(R.id.tv_station_name);
-        tv_station_name.setText(mDatas.get(position).getElectronRailName());
-        //首发电子围栏场站
-        TextView tv_should_run_count = (TextView) view.findViewById(R.id.tv_should_run_count);
-        tv_should_run_count.setText(String.valueOf(mDatas.get(position).getRunNum()));
-        //首发电子围栏场站
-        TextView tv_real_run_count = (TextView) view.findViewById(R.id.tv_real_run_count);
-        tv_real_run_count.setText(String.valueOf(mDatas.get(position).getRunNumReal()));
-
-
         return view;
     }
 
@@ -312,8 +291,8 @@ public class DragListAdapter extends BaseAdapter {
                     public void itemClick(String content, String typeId, String vehicleId) {
                         etInformContent.setText(content);
                         etInformContent.setSelection(content.length());
-                        DragListAdapter.this.typeId = typeId;
-                        DragListAdapter.this.vehicleId = vehicleId;
+                        DragListAdapterForNotOperatorEmpty.this.typeId = typeId;
+                        DragListAdapterForNotOperatorEmpty.this.vehicleId = vehicleId;
                     }
                 });
 

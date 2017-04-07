@@ -11,14 +11,12 @@
         android:layout_weight="0.9"
         android:orientation="vertical">
         <!--已发车辆-ViewPager-->
-        <include
-            android:id="@+id/ll_start_car"
+        <com.zxw.dispatch.view.CustomViewPager
+            android:id="@+id/vp_start_car"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.7"
-            layout="@layout/item_vp_start_car"
             />
-
         <!--分割线-->
         <View
             android:layout_width="match_parent"

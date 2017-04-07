@@ -4,7 +4,11 @@ import com.zxw.data.bean.Line;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.adapter.DragListAdapter;
-import com.zxw.dispatch.recycler.GoneAdapter;
+import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
+import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
+import com.zxw.dispatch.recycler.GoneAdapterForNormal;
+import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
+import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 
 import java.util.List;
@@ -20,7 +24,7 @@ public interface MainView extends BaseView {
 
     void loadSendCarList(DragListAdapter mDragListAdapter);
 
-    void loadGoneCarList(GoneAdapter sendHistories);
+    void loadGoneCarByNormal(GoneAdapterForNormal sendHistories);
 
     void loadStopCarList(List<StopHistory> stopHistories);
 
@@ -33,4 +37,12 @@ public interface MainView extends BaseView {
     void hideStewardName();
 
     void showStewardName();
+
+    void loadGoneCarByOperatorEmpty(GoneAdapterForOperatorEmpty goneAdapter);
+
+    void loadGoneCarByNotOperatorEmpty(GoneAdapterForNotOperatorEmpty goneAdapter);
+
+    void loadSendCarForOperatorEmpty(DragListAdapterForOperatorEmpty mDragListAdapter);
+
+    void loadSendCarForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty mDragListAdapter);
 }

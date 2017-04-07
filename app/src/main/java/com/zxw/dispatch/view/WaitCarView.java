@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.DragListAdapter;
+import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
+import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 
 import java.util.ArrayList;
@@ -27,11 +29,11 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
     private TextView tv_wtab2;
     private TextView tv_wtab3;
     private OnWaitCarTabListener mListener;
-    private TextView tv_steward_send;
     private CustomViewPager vp_wait_car;
     private View eViewCover;
-    private DragListView eSendRV;
+    private DragListView eSendRV1, eSendRV2, eSendRV3;
     private List<View> waitViews = new ArrayList<>();
+    private TextView eSendRV1_tv_steward_show, eSendRV2_tv_steward_show, eSendRV3_tv_steward_show;
 
 
     public WaitCarView(Context context,int resId,OnWaitCarTabListener listener) {
@@ -46,7 +48,6 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
         tv_wtab1.setOnClickListener(this);
         tv_wtab2.setOnClickListener(this);
         tv_wtab3.setOnClickListener(this);
-        tv_steward_send = (TextView) findViewById(R.id.tv_steward_send);
         vp_wait_car = (CustomViewPager) findViewById(R.id.vp_wait_car);
 
         MyPagerAdapter wAdapter = new MyPagerAdapter(inflateWaitViews(),null);
@@ -75,13 +76,21 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
 
     private List<View> inflateWaitViews(){
         View view_wtab = View.inflate(mContext, R.layout.item_wait_car1,null);
+        eSendRV1_tv_steward_show = (TextView) view_wtab.findViewById(R.id.tv_steward_show);
         eViewCover = (View) view_wtab.findViewById(R.id.view_cover);
-        eSendRV = (DragListView) view_wtab.findViewById(R.id.lv_send_car);
-        View view4 = View.inflate(mContext,R.layout.view_test2,null);
-        View view5 = View.inflate(mContext,R.layout.view_test3,null);
+        eSendRV1 = (DragListView) view_wtab.findViewById(R.id.lv_send_car);
+
+        View view_wtab2 = View.inflate(mContext, R.layout.item_wait_car2,null);
+        eSendRV2_tv_steward_show = (TextView) view_wtab2.findViewById(R.id.tv_steward_show);
+        eSendRV2 = (DragListView) view_wtab2.findViewById(R.id.lv_send_car);
+
+        View view_wtab3 = View.inflate(mContext, R.layout.item_wait_car2,null);
+        eSendRV3_tv_steward_show = (TextView) view_wtab3.findViewById(R.id.tv_steward_show);
+        eSendRV3 = (DragListView) view_wtab3.findViewById(R.id.lv_send_car);
+
         waitViews.add(view_wtab);
-        waitViews.add(view4);
-        waitViews.add(view5);
+        waitViews.add(view_wtab2);
+        waitViews.add(view_wtab3);
         return waitViews;
     }
 
@@ -89,16 +98,24 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
         vp_wait_car.setCurrentItem(i);
     }
 
-    public void setAdapter(DragListAdapter adapter){
-       eSendRV.setAdapter(adapter);
+    public void setAdapterForNormal(DragListAdapter adapter){
+       eSendRV1.setAdapter(adapter);
+    }
+    public void setAdapterForOperatorEmpty(DragListAdapterForOperatorEmpty adapter){
+       eSendRV2.setAdapter(adapter);
+    }
+    public void setAdapterForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty adapter){
+       eSendRV3.setAdapter(adapter);
     }
 
     public void setMyDragListener(DragListView.MyDragListener listener){
-        eSendRV.setMyDragListener(listener);
+        eSendRV1.setMyDragListener(listener);
     }
 
     public void setStewardSendVisibility(int isVisible) {
-        tv_steward_send.setVisibility(isVisible);
+        eSendRV1_tv_steward_show.setVisibility(isVisible);
+        eSendRV2_tv_steward_show.setVisibility(isVisible);
+        eSendRV3_tv_steward_show.setVisibility(isVisible);
     }
 
     public void setViewCoverVisibility(int isVisible) {

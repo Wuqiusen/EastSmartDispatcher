@@ -16,8 +16,12 @@ import com.zxw.data.source.DepartSource;
 import com.zxw.data.source.LineSource;
 import com.zxw.data.source.StopSource;
 import com.zxw.dispatch.adapter.DragListAdapter;
+import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
+import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.presenter.view.MainView;
-import com.zxw.dispatch.recycler.GoneAdapter;
+import com.zxw.dispatch.recycler.GoneAdapterForNormal;
+import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
+import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.service.CarPlanService;
 import com.zxw.dispatch.utils.Base64;
@@ -39,7 +43,6 @@ public class MainPresenter extends BasePresenter<MainView> {
     private DepartSource mDepartSource = new DepartSource();
     private StopSource mStopSource = new StopSource();
     private Line mCurrentLine;
-    private DragListAdapter mDragListAdapter;
     private Context mContext;
     private Intent serviceIntent;
     private int lineId, stationId;
@@ -110,6 +113,12 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     private void loadGoneCarList() {
+        loadGoneCarByNormal();
+        loadGoneCarByOperatorEmpty();
+        loadGoneCarByNotOperatorEmpty();
+    }
+
+    private void loadGoneCarByNormal() {
         mDepartSource.goneListByLine(new Subscriber<List<SendHistory>>() {
             @Override
             public void onCompleted() {
@@ -123,13 +132,54 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<SendHistory> sendHistories) {
-                mvpView.loadGoneCarList(new GoneAdapter(sendHistories, mContext, mLineParams, MainPresenter.this));
+                mvpView.loadGoneCarByNormal(new GoneAdapterForNormal(sendHistories, mContext, mLineParams, MainPresenter.this));
             }
         }, userId(), keyCode(), lineId);
+    }
+    private void loadGoneCarByOperatorEmpty() {
+        mDepartSource.goneListByOperation(new Subscriber<List<SendHistory>>() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(List<SendHistory> sendHistories) {
+                mvpView.loadGoneCarByOperatorEmpty(new GoneAdapterForOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+            }
+        }, userId(), keyCode(), lineId);
+    }
+    private void loadGoneCarByNotOperatorEmpty() {
+        mDepartSource.goneListByOther(new Subscriber<List<SendHistory>>() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(List<SendHistory> sendHistories) {
+                mvpView.loadGoneCarByNotOperatorEmpty(new GoneAdapterForNotOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+            }
+        }, userId(), keyCode(), lineId);
     }
 
     private void loadSendCarList(){
+        loadSendCarForNormal();
+        loadSendCarForOperatorEmpty();
+        loadSendCarForNotOperatorEmpty();
+    }
+
+    private void loadSendCarForNormal() {
         mDepartSource.departListByLine(new Subscriber<List<DepartCar>>() {
             @Override
             public void onCompleted() {
@@ -143,9 +193,47 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
-                mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+                DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
                 mvpView.loadSendCarList(mDragListAdapter);
                 timeToSend();
+            }
+        }, userId(), keyCode(), lineId);
+    }
+    private void loadSendCarForOperatorEmpty() {
+        mDepartSource.departListByOperation(new Subscriber<List<DepartCar>>() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(List<DepartCar> waitVehicles) {
+                DragListAdapterForOperatorEmpty mDragListAdapter = new DragListAdapterForOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+                mvpView.loadSendCarForOperatorEmpty(mDragListAdapter);
+            }
+        }, userId(), keyCode(), lineId);
+    }
+    private void loadSendCarForNotOperatorEmpty() {
+        mDepartSource.departListByOther(new Subscriber<List<DepartCar>>() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(List<DepartCar> waitVehicles) {
+                DragListAdapterForNotOperatorEmpty mDragListAdapter = new DragListAdapterForNotOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+                mvpView.loadSendCarForNotOperatorEmpty(mDragListAdapter);
             }
         }, userId(), keyCode(), lineId);
     }

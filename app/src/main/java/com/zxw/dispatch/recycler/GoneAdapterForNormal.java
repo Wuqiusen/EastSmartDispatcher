@@ -2,7 +2,6 @@ package com.zxw.dispatch.recycler;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,17 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
-import com.zxw.dispatch.utils.ToastHelper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -35,14 +29,14 @@ import butterknife.ButterKnife;
  * email：cangjie2016@gmail.com
  *
  */
-public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
+public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNormal.LineHolder> {
     private final LineParams mLineParams;
     private List<SendHistory> mData;
     private Context mContext;
     private final LayoutInflater mLayoutInflater;
     private MainPresenter presenter;
 
-    public GoneAdapter(List<SendHistory> mData, Context mContext, LineParams mLineParams, MainPresenter presenter) {
+    public GoneAdapterForNormal(List<SendHistory> mData, Context mContext, LineParams mLineParams, MainPresenter presenter) {
         this.mData = mData;
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
@@ -52,7 +46,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
 
     @Override
     public LineHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflate = mLayoutInflater.inflate(R.layout.item_send, parent, false);
+        View inflate = mLayoutInflater.inflate(R.layout.item_start_car_line_operate, parent, false);
         return new LineHolder(inflate);
     }
 

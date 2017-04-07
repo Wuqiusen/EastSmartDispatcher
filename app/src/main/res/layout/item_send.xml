@@ -169,47 +169,4 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/feedback_icon"
         />
-    <!---->
-    <!--停场时间-->
-    <!--<TextView-->
-        <!--android:id="@+id/tv_stop_time"-->
-        <!--style="@style/content_car_font_main_style"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:ellipsize="end"-->
-        <!--android:maxLines="1"-->
-        <!--android:minWidth="6dp"-->
-        <!--tools:text="15min"-->
-        <!--android:layout_weight="4"/>-->
-    <!--单/双班-->
-    <!--<TextView-->
-        <!--android:id="@+id/tv_schedule_status"-->
-        <!--style="@style/content_car_font_main_style"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:ellipsize="end"-->
-        <!--android:maxLines="1"-->
-        <!--android:minWidth="6dp"-->
-        <!--tools:text="单班"-->
-        <!--android:layout_weight="3.5"/>-->
-    <!--主/副站-->
-    <!--<TextView-->
-        <!--android:id="@+id/tv_station_status"-->
-        <!--style="@style/content_car_font_main_style"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:ellipsize="end"-->
-        <!--android:maxLines="1"-->
-        <!--android:minWidth="10dp"-->
-        <!--tools:text="主站"-->
-        <!--android:layout_weight="3.5"/>-->
-    <!--非营运任务-->
-    <!--<TextView-->
-        <!--android:id="@+id/tv_no_work_status"-->
-        <!--style="@style/content_car_font_main_style"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:ellipsize="end"-->
-        <!--android:maxLines="1"-->
-        <!--android:minWidth="6dp"-->
-        <!--tools:text="小修"-->
-        <!--android:layout_weight="5"/>-->
-
-
 </LinearLayout>
