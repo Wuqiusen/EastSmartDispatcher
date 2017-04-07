@@ -375,10 +375,10 @@
 
     <!--主界面顶部按钮样式-->
     <style name="main_activity_top_button">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textColor">@color/font_blue</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_weight">0.2</item>
