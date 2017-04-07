@@ -31,10 +31,12 @@
             />
         <TextView
             android:id="@+id/tv_hor_wtab3"
-            style="@style/font_menu"
+            style="@style/font_menu3"
+            android:background="@drawable/whitebtn_dialog_deep_style"
             android:textSize="@dimen/font_medium"
+            android:textColor="@color/font_black"
+            android:text="非营运空驶"
             android:visibility="visible"
-            android:text="Tab3"
             />
     </LinearLayout>
     <!--WaitCat_Title-->
