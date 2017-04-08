@@ -15,6 +15,7 @@
         android:background="@color/transparent"
         android:visibility="visible"
         >
+
         <include layout="@layout/item_view_control_deck1"/>
     </FrameLayout>
     <!--横向的操控台界面-->

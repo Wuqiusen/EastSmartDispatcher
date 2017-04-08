@@ -26,7 +26,9 @@ public interface MainView extends BaseView {
 
     void loadGoneCarByNormal(GoneAdapterForNormal sendHistories);
 
-    void loadStopCarList(List<StopHistory> stopHistories);
+    void loadStopStayCarList(List<StopHistory> stopHistories);
+
+    void loadStopEndCarList(List<StopHistory> stopHistories);
 
     void showMissionTypeDialog(List<MissionType> missionTypes, int objId, int type, String taskId, String lineName);
 
@@ -45,4 +47,5 @@ public interface MainView extends BaseView {
     void loadSendCarForOperatorEmpty(DragListAdapterForOperatorEmpty mDragListAdapter);
 
     void loadSendCarForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty mDragListAdapter);
+
 }

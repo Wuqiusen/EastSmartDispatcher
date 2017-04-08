@@ -306,7 +306,31 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     private void loadStopCarList() {
-        mStopSource.loadStop(new Subscriber<List<StopHistory>>() {
+        loadStopCarByStay();
+        loadStopCarByEnd();
+    }
+
+    private void loadStopCarByEnd() {
+        mStopSource.loadStopByEnd(new Subscriber<List<StopHistory>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(List<StopHistory> stopHistories) {
+                mvpView.loadStopEndCarList(stopHistories);
+            }
+        }, userId(), keyCode(), lineId);
+    }
+
+    private void loadStopCarByStay() {
+        mStopSource.loadStopByStay(new Subscriber<List<StopHistory>>() {
             @Override
             public void onCompleted() {
 
@@ -320,7 +344,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onNext(List<StopHistory> stopHistories) {
                 stopHistories.add(new StopHistory());
-                mvpView.loadStopCarList(stopHistories);
+                mvpView.loadStopStayCarList(stopHistories);
             }
         }, userId(), keyCode(), lineId);
     }
@@ -727,5 +751,49 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
     public int getLineId(){
         return lineId;
+    }
+
+    public void stopCarEndToStay(int id) {
+        mvpView.showLoading();
+        mStopSource.stopCarEndToStay(new Subscriber(){
+                                         @Override
+                                         public void onCompleted() {
+                                             mvpView.hideLoading();
+                                         }
+
+                                         @Override
+                                         public void onError(Throwable e) {
+                                             mvpView.disPlay(e.getMessage());
+                                         }
+
+                                         @Override
+                                         public void onNext(Object o) {
+                                             mvpView.disPlay("操作成功");
+                                             refreshList();
+                                         }
+                                     },
+        userId(), keyCode(), id);
+    }
+
+    public void stopCarStayToEnd(int id){
+        mvpView.showLoading();
+        mStopSource.stopCarStayToEnd(new Subscriber(){
+                                         @Override
+                                         public void onCompleted() {
+                                             mvpView.hideLoading();
+                                         }
+
+                                         @Override
+                                         public void onError(Throwable e) {
+                                             mvpView.disPlay(e.getMessage());
+                                         }
+
+                                         @Override
+                                         public void onNext(Object o) {
+                                             mvpView.disPlay("操作成功");
+                                             refreshList();
+                                         }
+                                     },
+                userId(), keyCode(), id);
     }
 }

@@ -220,9 +220,15 @@ public class HttpMethods {
         Observable map = browse.sendCar(userId, keyCode, objId).map(new HttpResultFunc());
         toSubscribe(map, subscriber);
     }
-    public void getStopVehicle(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
+    public void getStopVehicleByStay(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<List<StopHistory>> map = browse.getStopVehcile(userId, keyCode, lineId)
+        Observable<List<StopHistory>> map = browse.getStopVehicleByStay(userId, keyCode, lineId)
+                .map(new HttpResultFunc<List<StopHistory>>());
+        toSubscribe(map, subscriber);
+    }
+    public void getStopVehicleByEnd(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<StopHistory>> map = browse.getStopVehicleByEnd(userId, keyCode, lineId)
                 .map(new HttpResultFunc<List<StopHistory>>());
         toSubscribe(map, subscriber);
     }
@@ -378,6 +384,16 @@ public class HttpMethods {
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable map = operator.lineMakeup(userId, keyCode, taskLineId, vehicleId, driverId, type, taskType,
                 runNum, runEmpMileage, beginTime, endTime).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+    }
+    public void stopCarEndToStay(Subscriber subscriber, String userId, String keyCode, int id){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.stopCarEndToStay(userId, keyCode, id);
+        toSubscribe(map, subscriber);
+    }
+    public void stopCarStayToEnd(Subscriber subscriber, String userId, String keyCode, int id){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.stopCarStayToEnd(userId, keyCode, id);
         toSubscribe(map, subscriber);
     }
 

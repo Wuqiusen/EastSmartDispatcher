@@ -20,18 +20,18 @@ import butterknife.ButterKnife;
  * author：CangJie on 2016/9/21 09:53
  * email：cangjie2016@gmail.com
  */
-public class StopAdapter extends RecyclerView.Adapter<StopAdapter.LineHolder> {
+public class StopStayAdapter extends RecyclerView.Adapter<StopStayAdapter.LineHolder> {
     private OnClickStopCarListListener listener = null;
     private List<StopHistory> mData;
     private Context mContext;
     private final LayoutInflater mLayoutInflater;
 
-    public StopAdapter(List<StopHistory> mData, Context mContext) {
+    public StopStayAdapter(List<StopHistory> mData, Context mContext) {
         this.mData = mData;
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
     }
-    public StopAdapter(List<StopHistory> mData, Context mContext, OnClickStopCarListListener listener) {
+    public StopStayAdapter(List<StopHistory> mData, Context mContext, OnClickStopCarListListener listener) {
         this.mData = mData;
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
