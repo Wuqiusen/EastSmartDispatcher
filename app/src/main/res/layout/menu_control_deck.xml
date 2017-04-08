@@ -54,7 +54,7 @@
         android:text="停场车辆"
         />
 
-    <!--待发车辆：手动/自动发车-->
+    <!--待发车辆：手动/自动发车-原显示visible-->
     <LinearLayout
         android:id="@+id/ll_menu_wait_depart"
         android:layout_width="wrap_content"
@@ -93,6 +93,24 @@
             />
     </LinearLayout>
 
+    <!--补录按钮-->
+    <TextView
+        android:id="@+id/tv_add_recording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/normal_margin20"
+        android:drawableLeft="@mipmap/img_add_green"
+        android:background="@drawable/whitebtn_dialog_style"
+        android:padding="@dimen/margin_tiny"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/img_menu_on_off"
+        android:gravity="center"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_medium"
+        android:text="补录"
+        android:visibility="gone"
+        />
+
     <ImageView
         android:id="@+id/img_menu_on_off"
         android:layout_width="wrap_content"
@@ -102,4 +120,6 @@
         android:layout_marginRight="@dimen/normal_margin20"
         android:src="@mipmap/narrow_icon"
         />
+
+
 </RelativeLayout>

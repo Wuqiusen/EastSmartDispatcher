@@ -104,7 +104,6 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.white));
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
-
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
@@ -113,7 +112,6 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.white));
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
-
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
@@ -122,7 +120,6 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.white));
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
-
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));

@@ -33,4 +33,7 @@ public interface MainView extends BaseView {
     void hideStewardName();
 
     void showStewardName();
+
+    void onGetAddRecordingTaskNameList(List<MissionType> missionTypes);
+
 }
