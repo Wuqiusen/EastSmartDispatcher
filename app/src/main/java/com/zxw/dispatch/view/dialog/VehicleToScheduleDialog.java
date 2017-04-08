@@ -77,7 +77,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder{
         this.mStopCar = stopCar;
         this.mListener = listener;
         this.lineId = lineId;
-        loadMissionTypeByRemote();
+        loadMissionTypeByRemote();////////
 //        init();
     }
 

@@ -40,6 +40,9 @@ public interface MainView extends BaseView {
 
     void showStewardName();
 
+    void onGetAddRecordingTaskNameList(List<MissionType> missionTypes);
+
+
     void loadGoneCarByOperatorEmpty(GoneAdapterForOperatorEmpty goneAdapter);
 
     void loadGoneCarByNotOperatorEmpty(GoneAdapterForNotOperatorEmpty goneAdapter);

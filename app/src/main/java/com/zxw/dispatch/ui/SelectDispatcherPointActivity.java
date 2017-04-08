@@ -51,6 +51,8 @@ public class SelectDispatcherPointActivity extends PresenterActivity<SelectDispa
 //      mSpotRV.setLayoutManager(new LinearLayoutManager(this));
         GridLayoutManager layoutManager = new GridLayoutManager(this,3);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+
         mSpotRV.setLayoutManager(layoutManager);
         mSpotRV.setAdapter(spotAdapter);
         mSpotRV.addItemDecoration(new DividerItemDecoration(this,R.color.white,

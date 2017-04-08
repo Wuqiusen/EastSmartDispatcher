@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
     <!--menu_layout-->
     <include layout="@layout/menu_control_deck"/>
     <!--纵向的操控台界面-->
