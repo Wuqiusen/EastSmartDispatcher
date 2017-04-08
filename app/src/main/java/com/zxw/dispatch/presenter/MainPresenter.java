@@ -109,6 +109,49 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(),line.lineId);
     }
 
+
+    public void onAddRecordingCarTaskNameList(final int lineId){
+        HttpMethods.getInstance().missionList(new Subscriber<List<MissionType>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(List<MissionType> missionTypes) {
+                mvpView.onGetAddRecordingTaskNameList(missionTypes);
+            }
+        },userId(),keyCode(),lineId +"");
+
+    }
+
+    public void addRecordingCarTask(String vehicleId, String driverId, String type, String taskId, String runNum,
+                                    String runEmpMileage, String beginTime, String endTime){
+     HttpMethods.getInstance().lineMakeup(new Subscriber() {
+         @Override
+         public void onCompleted() {
+
+         }
+
+         @Override
+         public void onError(Throwable e) {
+              mvpView.disPlay(e.getMessage());
+         }
+
+         @Override
+         public void onNext(Object o) {
+             mvpView.disPlay("补录车辆任务成功");
+         }
+     },userId(),keyCode(),lineId+"",vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
+
+
+    }
+
     private void loadGoneCarList() {
         mDepartSource.goneListByLine(new Subscriber<List<SendHistory>>() {
             @Override
@@ -342,6 +385,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     public LineParams getLineParams() {
         return mLineParams;
     }
+
 
     public void getMissionList(final int objId, final int type, final String taskId){
         try {

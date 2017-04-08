@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,6 +42,7 @@ import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.recycler.StopAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
+import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
@@ -50,6 +50,8 @@ import com.zxw.dispatch.view.DragListView;
 import com.zxw.dispatch.view.MyDialog;
 import com.zxw.dispatch.view.StartCarView;
 import com.zxw.dispatch.view.WaitCarView;
+import com.zxw.dispatch.view.dialog.AddRecordingCarTaskDialog;
+import com.zxw.dispatch.view.dialog.AddRecordingLineOpreateDialog;
 import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
@@ -73,6 +75,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     TextView tvMenuDepart;
     RelativeLayout rlMenuBackground;
     LinearLayout llMenuWaitDepart;
+    TextView tvAddRecroding; // 补录
     TextView tvMenuAutomatic;
     TextView tvMenuManual;
     TextView tvMenuWaitCar;
@@ -156,6 +159,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private boolean isAuto = false;
     private Timer mTimer = null;
     private long clickTime = 0;
+    private List<MissionType> mMissionTypes = new ArrayList<>();
+    private boolean isGetMissionTypes = false;
 
     Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -250,6 +255,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvMenuDepart = (TextView) view.findViewById(R.id.tv_menu_depart_car);
         rlMenuBackground = (RelativeLayout) view.findViewById(R.id.rl_menu_background);
         llMenuWaitDepart = (LinearLayout) view.findViewById(R.id.ll_menu_wait_depart);
+        tvAddRecroding = (TextView) view.findViewById(R.id.tv_add_recording);
         tvMenuAutomatic = (TextView) view.findViewById(R.id.tv_menu_automatic);
         tvMenuManual = (TextView) view.findViewById(R.id.tv_menu_manual);
         tvMenuWaitCar = (TextView) view.findViewById(R.id.tv_menu_wait_car);
@@ -258,6 +264,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
         tvMenuStopCar = (TextView) view.findViewById(R.id.tv_menu_stop_car);
         imgOnOff = (ImageView) view.findViewById(R.id.img_menu_on_off);
+        tvAddRecroding.setOnClickListener(this);
         tvMenuWaitCar.setOnClickListener(this);
         tvMenuGoneCar.setOnClickListener(this);
         tvMenuStopCar.setOnClickListener(this);
@@ -332,6 +339,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         vp_start_car.setAdapter(sAdapter);
         vp_start_car.setCurrentItem(0);
         setVerStartCarTabScrollBar(0);
+        selectAddRecording(true);
         vp_start_car.setPagingEnabled(false);
     }
 
@@ -354,6 +362,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 new WaitCarView.OnWaitCarTabListener() {
                     @Override
                     public void onTabIsClick(int pos) {
+                        selectAddRecording(false);
                         setVerWaitCarViewStyle(pos);
                         setHorWaitCarViewStyle(pos);
                     }
@@ -366,8 +375,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 new StartCarView.OnStartCarTabListener() {
                   @Override
                    public void onTabIsClick(int pos) {
+                        selectAddRecording(true);
                         setVerStartCarViewStyle(pos);
                         setHorStartCarViewStyle(pos);
+
                  }
         });
         return mHorStartCarView;
@@ -550,6 +561,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         isShowStewardName(View.VISIBLE);
     }
 
+    @Override
+    public void onGetAddRecordingTaskNameList(List<MissionType> missionTypes) {
+        this.mMissionTypes = missionTypes;
+        ToastHelper.showToast("mMissionTypes不为空");
+        DebugLog.i("mMissionTypes:"+missionTypes);
+    }
+
+
     private void isShowStewardName(int isVisible) {
         tv_steward_send.setVisibility(isVisible);
         tv_steward_gone.setVisibility(isVisible);
@@ -604,6 +623,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         intent.putExtra("lineKey", line.lineId);
         sendBroadcast(intent);
         presenter.onSelectLine(line);
+        int lineId = line.lineId;
+        presenter.onAddRecordingCarTaskNameList(line.lineId);
     }
 
     private void setTabBackground(int tabPosition) {
@@ -635,7 +656,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
                 tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                llMenuWaitDepart.setVisibility(View.GONE);
+                selectAddRecording(true);
                 break;
             case 1:
                 tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
@@ -643,8 +664,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 if (isPopbg) {
                     llMenuWaitDepart.setVisibility(View.GONE);
+                    selectAddRecording(true);
                 }else{
                     llMenuWaitDepart.setVisibility(View.VISIBLE);
+                    selectAddRecording(false);
                 }
                 break;
             case 2:
@@ -652,6 +675,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 llMenuWaitDepart.setVisibility(View.GONE);
+                selectAddRecording(false);
                 break;
         }
     }
@@ -662,7 +686,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.white));
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
-
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
@@ -671,7 +694,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.white));
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
-
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
@@ -680,7 +702,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.white));
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
-
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
@@ -752,6 +773,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 vp_horizontal.setCurrentItem(0);
                 setScrollBarBackground(0);
                 isClickWaitCar = false;
+                llMenuWaitDepart.setVisibility(View.GONE);
                 break;
             case R.id.tv_menu_wait_car:
                 vp_horizontal.setCurrentItem(1);
@@ -767,14 +789,17 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.tv_stab1:
                 setVerStartCarViewStyle(0);
                 setHorStartCarViewStyle(0);
+                selectAddRecording(true);
                 break;
             case R.id.tv_stab2:
                 setVerStartCarViewStyle(1);
                 setHorStartCarViewStyle(1);
+                selectAddRecording(true);
                 break;
             case R.id.tv_stab3:
                 setVerStartCarViewStyle(2);
                 setHorStartCarViewStyle(2);
+                selectAddRecording(true);
                 break;
             // 待发车辆(水平方向)
             case R.id.tv_wtab1:
@@ -789,7 +814,17 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 setVerWaitCarViewStyle(2);
                 setHorWaitCarViewStyle(2);
                 break;
-
+            case R.id.tv_add_recording:
+                    new AddRecordingCarTaskDialog(mContext,mMissionTypes,
+                            new AddRecordingCarTaskDialog.OnAddRecordingCarTaskListener() {
+                               @Override
+                               public void OnAddRecordingCarTask(String type, String taskId, String vehicleId, String driverId,
+                                                          String beginTime, String endTime, String runNum, String runEmpMileage) {
+                           //       presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
+                                   DebugLog.w(type);
+                               }
+                    });
+                break;
             // 自动发车
             case R.id.tv_automatic:
             case R.id.tv_menu_automatic:
@@ -826,6 +861,15 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
         }
     }
+
+
+    private void selectAddRecording(boolean isSelect){
+        if (isSelect){
+            tvAddRecroding.setVisibility(View.VISIBLE);
+        }else{
+            tvAddRecroding.setVisibility(View.GONE);
+        }
+    }
     
     private void setVerStartCarViewStyle(int i){
         vp_start_car.setCurrentItem(i);
@@ -858,12 +902,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             initMenu(isShow);
             fl_horizontal.setVisibility(View.GONE);
             fl_vertical.setVisibility(View.VISIBLE);
+            selectAddRecording(true);
             isPopbg = isShow;
             isShow = false;
         }else{
             initMenu(isShow);
             fl_vertical.setVisibility(View.GONE);
             fl_horizontal.setVisibility(View.VISIBLE);
+            selectAddRecording(false);
             isPopbg = isShow;
             isShow = true;
         }
