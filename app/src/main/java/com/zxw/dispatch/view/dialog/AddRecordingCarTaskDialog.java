@@ -42,7 +42,8 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     private Button btn_save;
     private Button btn_cancel;
     private AlertDialog dialog;
-    private String currentType = "1";
+    private String currentType = OPERATOR_EMPTY;
+    private final static String OPERATOR_EMPTY = "2", NOT_OPERATOR_EMPTY = "3";
     private int taskId = -1;
     private MySpinnerAdapter notOperatorEmptyAdapter, operatorEmptyAdapter;
     private List<MissionType> mMissionTypes = new ArrayList<>();
@@ -85,7 +86,9 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
         rb_no_operator_empty = (RadioButton) view.findViewById(R.id.rb_no_operator_empty);
         tv_no_operator_empty = (TextView) view.findViewById(R.id.tv_no_operator_empty);
         smartEt_vehicleId = (SmartEditText) view.findViewById(R.id.smartEt_vehicleId);
+        smartEt_vehicleId.addQueryCarCodeEditTextListener();
         smartEt_driverId = (SmartEditText) view.findViewById(R.id.smartEt_driverId);
+        smartEt_driverId.addQueryDriverEditTextListener();
         et_beginTime = (EditText) view.findViewById(R.id.et_beginTime);
         et_endTime = (EditText) view.findViewById(R.id.et_endTime);
         et_runNum = (EditText) view.findViewById(R.id.et_runNum);
@@ -102,7 +105,7 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
 
         setEmptyRbChecked();
         dialog = setView(view).show();
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
     }
 
     @Override
@@ -126,14 +129,14 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     }
 
     private void setEmptyRbChecked() {
-        currentType = "1";
+        currentType = OPERATOR_EMPTY;
         rb_operator_empty.setChecked(true);
         rb_no_operator_empty.setChecked(false);
         sp_task_name.setAdapter(operatorEmptyAdapter);
     }
 
     private void setNoEmptyRbChecked() {
-        currentType = "2";
+        currentType = NOT_OPERATOR_EMPTY;
         rb_operator_empty.setChecked(false);
         rb_no_operator_empty.setChecked(true);
         sp_task_name.setAdapter(notOperatorEmptyAdapter);
@@ -177,22 +180,32 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
                 return;
             if (emptyTaskContent != null && emptyTaskContent.size() > 0){
                 int selectedItemPosition = sp_task_name.getSelectedItemPosition();
-                if (currentType.equals("1")){
+                if (currentType.equals(OPERATOR_EMPTY)){
                     taskId = emptyTaskContent.get(selectedItemPosition).getTaskId();
-                }else if(currentType.equals("2")){
+                }else if(currentType.equals(NOT_OPERATOR_EMPTY)){
                     taskId = noEmptyTaskContent.get(selectedItemPosition).getTaskId();
                 }
             }else {
                 return;//
             }
-            String vehicleId = smartEt_vehicleId.getText().toString().trim();
-            if (TextUtils.isEmpty(vehicleId)){
+            if (smartEt_vehicleId.getVehicleInfo() == null){
                  ToastHelper.showToast("请输入车牌号");
                  return;
             }
-            String driverId = smartEt_driverId.getText().toString().trim();
+            String carId = String.valueOf(smartEt_vehicleId.getVehicleInfo().getVehicleId());
+            if (TextUtils.isEmpty(carId)){
+                ToastHelper.showToast("请输入车牌号");
+                return;
+            }
+
+
+            if (smartEt_driverId.getPeopleInfo() == null){
+                ToastHelper.showToast("请输入驾驶员");
+                return;
+            }
+            String driverId = String.valueOf(smartEt_driverId.getPeopleInfo().personId);
             if (TextUtils.isEmpty(driverId)){
-                ToastHelper.showToast("请输入驾驶员ID");
+                ToastHelper.showToast("请输入驾驶员");
                 return;
             }
             String beginTime = et_beginTime.getText().toString().trim();
@@ -215,7 +228,7 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
                 ToastHelper.showToast("请输入空驶里程(km)");
                 return;
             }
-            mListener.OnAddRecordingCarTask(currentType, String.valueOf(taskId), vehicleId, driverId,
+            mListener.OnAddRecordingCarTask(currentType, String.valueOf(taskId), carId, driverId,
                      beginTime, endTime, runNum, runEmpMileage);
             dialog.dismiss();
         }

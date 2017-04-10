@@ -47,7 +47,6 @@ import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
-import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
@@ -57,7 +56,6 @@ import com.zxw.dispatch.view.StartCarView;
 import com.zxw.dispatch.view.StopCarView;
 import com.zxw.dispatch.view.WaitCarView;
 import com.zxw.dispatch.view.dialog.AddRecordingCarTaskDialog;
-import com.zxw.dispatch.view.dialog.AddRecordingLineOpreateDialog;
 import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
@@ -666,8 +664,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Override
     public void onGetAddRecordingTaskNameList(List<MissionType> missionTypes) {
         this.mMissionTypes = missionTypes;
-        ToastHelper.showToast("mMissionTypes不为空");
-        DebugLog.i("mMissionTypes:"+missionTypes);
     }
 
 
@@ -975,8 +971,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                                @Override
                                public void OnAddRecordingCarTask(String type, String taskId, String vehicleId, String driverId,
                                                           String beginTime, String endTime, String runNum, String runEmpMileage) {
-                           //       presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
-                                   DebugLog.w(type);
+                                  presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
                                }
                     });
                 break;

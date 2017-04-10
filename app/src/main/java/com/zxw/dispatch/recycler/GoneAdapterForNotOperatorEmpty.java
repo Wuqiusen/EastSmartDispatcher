@@ -72,6 +72,7 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
 
 //      holder.tvStopTime.setText(String.valueOf(history.vehTime));
         holder.tvPlanTime.setText(DisplayTimeUtil.substring(history.vehTime));
+        holder.tv_end_time.setText(DisplayTimeUtil.substring(history.taskEndTime));
         // 到站时刻
         if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime))
             holder.tvArriveTime.setText(DisplayTimeUtil.substring(history.arriveTime));
@@ -285,6 +286,8 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
         TextView tv_count;
         @Bind(R.id.tv_empty_km)
         TextView tv_empty_km;
+        @Bind(R.id.tv_end_time)
+        TextView tv_end_time;
         LineHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

@@ -149,6 +149,7 @@ public class MainPresenter extends BasePresenter<MainView> {
          @Override
          public void onNext(Object o) {
              mvpView.disPlay("补录车辆任务成功");
+             refreshList();
          }
      },userId(),keyCode(),lineId+"",vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
 

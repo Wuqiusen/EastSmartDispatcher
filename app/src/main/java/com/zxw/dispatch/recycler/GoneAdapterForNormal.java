@@ -85,7 +85,11 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
 
 //      holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
 //      holder.tvStationStatus.setText(String.valueOf(history.vehTime));
-        holder.tvStatus.setText(history.status == 1 ? "正常":"异常");
+        try{
+            holder.tvStatus.setText(history.status == 1 ? "正常":"异常");
+        }catch (Exception e){
+            holder.tvStatus.setText("");
+        }
         holder.tv_send_remark.setText(history.remarks);
         holder.tvWorkStatus.setText(history.typeName);
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
