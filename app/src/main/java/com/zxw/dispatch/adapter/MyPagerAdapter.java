@@ -33,6 +33,9 @@ public class MyPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         if(container != null && mViews != null) {
+            ViewGroup parent = (ViewGroup) (mViews.get(position).getParent());
+            if(parent != null)
+                parent.removeAllViews();
             container.addView(mViews.get(position));
         }
         return mViews.get(position);

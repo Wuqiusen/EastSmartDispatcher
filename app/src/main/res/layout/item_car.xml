@@ -22,8 +22,8 @@
             android:id="@+id/tv_car_sequence"
             style="@style/font_item_xml_style"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
             tools:text="123"
             />
         <!--车号-->
@@ -168,16 +168,6 @@
             android:textColor="@color/font_blue2"
             android:clickable="true"
             android:text="撤回"
-            />
-        <TextView
-            android:id="@+id/tv_support"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@color/font_blue2"
-            android:clickable="true"
-            android:text="支援"
             />
         <TextView
             android:id="@+id/tv_inform"

@@ -68,7 +68,6 @@ public class DragListAdapter extends BaseAdapter {
         this.presenter = presenter;
         this.mLineParams = mLineParams;
         this.mLineId = lineId;
-
     }
 
     @Override
@@ -79,7 +78,7 @@ public class DragListAdapter extends BaseAdapter {
          * 具体原因不明，不过这样经过测试，目前没有发现错乱。虽说效率不高，但是做拖拽LisView足够了。
          */
         view = LayoutInflater.from(mContext).inflate(
-                R.layout.item_car, null);
+                R.layout.item_wait_car_line_operate, null);
 
         TextView tv_car_sequence = (TextView) view
                 .findViewById(R.id.tv_car_sequence);
@@ -173,17 +172,6 @@ public class DragListAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_system_enter_time);
         tv_system_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).getArriveTime()));
 
-
-        // 非营运任务
-        TextView tv_no_operation_task = (TextView) view.findViewById(R.id.tv_no_operation_task);
-        tv_no_operation_task.setText(noOperationStatus(mDatas.get(position).getUnRunTaskStatus()));
-      tv_no_operation_task.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.nonMissionType(mDatas.get(position).getVehicleId());
-            }
-      });
-
         // 发车
         TextView tv_send_car = (TextView) view
                 .findViewById(R.id.tv_send_car);
@@ -224,15 +212,6 @@ public class DragListAdapter extends BaseAdapter {
             }
         });
 
-        // 支援
-        TextView tv_support = (TextView) view.findViewById(R.id.tv_support);
-        tv_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                queryLine(position);
-            }
-        });
-
         // 通知
         TextView tv_inform = (TextView) view.findViewById(R.id.tv_inform);
         if (mDatas.get(position).getIsNotice() == 1){
@@ -248,27 +227,16 @@ public class DragListAdapter extends BaseAdapter {
                 openInformDialog(mDatas.get(position).getId() + "");
             }
         });
+        //首发电子围栏场站
+        TextView tv_station_name = (TextView) view.findViewById(R.id.tv_station_name);
+        tv_station_name.setText(mDatas.get(position).getElectronRailName());
+        //首发电子围栏场站
+        TextView tv_should_run_count = (TextView) view.findViewById(R.id.tv_should_run_count);
+        tv_should_run_count.setText(String.valueOf(mDatas.get(position).getRunNum()));
+        //首发电子围栏场站
+        TextView tv_real_run_count = (TextView) view.findViewById(R.id.tv_real_run_count);
+        tv_real_run_count.setText(String.valueOf(mDatas.get(position).getRunNumReal()));
 
-
-//        TextView tv_enter_time = (TextView) view
-//                .findViewById(R.lineId.tv_enter_time);
-//        tv_enter_time.setText(DisplayTimeUtil.substring(mDatas.get(position).inTime2));
-
-//        TextView tv_state = (TextView) view
-//                .findViewById(R.lineId.tv_state);
-//        tv_state.setText(mDatas.get(position).isScan == 1 ? "已读" : "未读");
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                new SendCarDialog(mContext).change(mDatas, position, new SendCarDialog.OnDialogChangeConfirmListener() {
-//                    @Override
-//                    public void onDialogChangeConfirm(int opId, int vehId, int sjId, String scId, String projectTime, int spaceMin, String inTime2) {
-//                        presenter.updateVehicle(opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
-//                    }
-//                }).dialogShow();
-            }
-        });
 
         return view;
     }

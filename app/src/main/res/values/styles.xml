@@ -113,6 +113,64 @@
     </style>
 
 
+    <style name="line_dialog_style">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/background_gray7</item>
+        <item name="android:layout_marginLeft">@dimen/normal_margin10</item>
+        <item name="android:layout_marginRight">@dimen/normal_margin10</item>
+    </style>
+
+    <style name="line_horizontal_dialog_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/line_gray</item>
+    </style>
+
+    <style name="font_dialog_add_recording">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1.8</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textColor">@color/font_black</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="font_dialog_add_recording1" parent="font_dialog_add_recording">
+        <item name="android:layout_weight">1.6</item>
+    </style>
+
+    <style name="ll_dialog_add_recording">
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:minHeight">40dp</item>
+    </style>
+
+    <style name="et_dialog_add_recording">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1.4</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">10</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+        <item name="android:paddingLeft">@dimen/margin_fit_6</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginTop">@dimen/margin_fit_6</item>
+        <item name="android:layout_marginBottom">@dimen/margin_fit_6</item>
+        <item name="android:layout_marginRight">@dimen/normal_margin10</item>
+    </style>
+
+    <!--自定义下拉列表-->
+    <style name="sp_style">
+        <item name="android:paddingLeft">@dimen/margin_tiny</item>
+        <item name="android:paddingRight">@dimen/margin_fit</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+        <item name="android:background">@drawable/et_add_recoding</item>
+    </style>
+
     <!--item_car或item_send字体-->
     <style name="font_item_xml_style">
         <item name="android:minHeight">26dp</item>
@@ -124,6 +182,7 @@
         <item name="android:minWidth">6dp</item>
         <item name="android:ellipsize">end</item>
     </style>
+
 
   <!--Dialog布局-->
     <!--TitleText被取代-->
@@ -374,7 +433,7 @@
 
     <!--主界面顶部按钮样式-->
     <style name="main_activity_top_button">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/font_medium</item>

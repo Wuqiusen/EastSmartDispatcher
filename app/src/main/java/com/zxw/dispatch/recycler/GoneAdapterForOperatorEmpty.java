@@ -2,7 +2,6 @@ package com.zxw.dispatch.recycler;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,17 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
-import com.zxw.dispatch.utils.ToastHelper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -35,14 +29,14 @@ import butterknife.ButterKnife;
  * email：cangjie2016@gmail.com
  *
  */
-public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
+public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapterForOperatorEmpty.LineHolder> {
     private final LineParams mLineParams;
     private List<SendHistory> mData;
     private Context mContext;
     private final LayoutInflater mLayoutInflater;
     private MainPresenter presenter;
 
-    public GoneAdapter(List<SendHistory> mData, Context mContext, LineParams mLineParams, MainPresenter presenter) {
+    public GoneAdapterForOperatorEmpty(List<SendHistory> mData, Context mContext, LineParams mLineParams, MainPresenter presenter) {
         this.mData = mData;
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
@@ -52,7 +46,7 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
 
     @Override
     public LineHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflate = mLayoutInflater.inflate(R.layout.item_send, parent, false);
+        View inflate = mLayoutInflater.inflate(R.layout.item_start_car_operate_empty_driving, parent, false);
         return new LineHolder(inflate);
     }
 
@@ -61,6 +55,10 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         SendHistory history = mData.get(position);
         holder.tvCarSequence.setText(String.valueOf(position + 1));
         holder.tvCarCode.setText(history.code);
+        holder.tv_mission_name.setText(history.typeName);
+        holder.tv_station_name.setText(history.electronRailName);
+        holder.tv_count.setText(String.valueOf(history.runNum));
+        holder.tv_empty_km.setText(history.runEmpMileage);
         if (history.taskEditBelongId == history.taskEditRunId){
             holder.tvCarCode.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
         }else {
@@ -73,7 +71,6 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
             holder.tvTrainman.setText("");
 
 //      holder.tvStopTime.setText(String.valueOf(history.vehTime));
-        holder.tvIntervalTime.setText(String.valueOf(history.spaceTime));
         holder.tvPlanTime.setText(DisplayTimeUtil.substring(history.vehTime));
         // 到站时刻
         if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime))
@@ -85,15 +82,16 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
             holder.tvSendTime.setText(DisplayTimeUtil.substring(history.vehTimeReal));
         else
             holder.tvSendTime.setText("");
-        // 停场时间
-        holder.tv_stop_car_minute.setText(setStopCarMinute(history));
+        // 计划结束时间
+        if (history.taskEndTime != null && !TextUtils.isEmpty(history.taskEndTime))
+            holder.tv_end_time.setText(DisplayTimeUtil.substring(history.taskEndTime));
+        else
+            holder.tv_end_time.setText("");
 
 
 //      holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
 //      holder.tvStationStatus.setText(String.valueOf(history.vehTime));
-        holder.tvStatus.setText(history.status == 1 ? "正常":"异常");
         holder.tv_send_remark.setText(history.remarks);
-        holder.tvWorkStatus.setText(history.typeName);
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
             holder.tvTrainman.setVisibility(View.GONE);
         }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
@@ -265,8 +263,6 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         TextView tvArriveTime;
 //        @Bind(R.id.tv_stop_time)
 //        TextView tvStopTime;
-        @Bind(R.id.tv_interval_time)
-        TextView tvIntervalTime;
         @Bind(R.id.tv_send_time)
         TextView tvSendTime;
         @Bind(R.id.tv_driver)
@@ -277,8 +273,6 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
 //        TextView tvScheduleStatus;
         @Bind(R.id.tv_status)
         TextView tvStatus;
-        @Bind(R.id.tv_work_status)
-        TextView tvWorkStatus;
 //        @Bind(R.id.tv_no_work_status)
 //        TextView tvNoWorkStatus;
         @Bind(R.id.tv_check_send_car)
@@ -287,8 +281,16 @@ public class GoneAdapter extends RecyclerView.Adapter<GoneAdapter.LineHolder> {
         TextView tv_send_remark;
         @Bind(R.id.tv_send_withdraw)
         TextView tv_send_withdraw;
-        @Bind(R.id.tv_stop_car_minute)
-        TextView tv_stop_car_minute;
+        @Bind(R.id.tv_mission_name)
+        TextView tv_mission_name;
+        @Bind(R.id.tv_station_name)
+        TextView tv_station_name;
+        @Bind(R.id.tv_count)
+        TextView tv_count;
+        @Bind(R.id.tv_empty_km)
+        TextView tv_empty_km;
+        @Bind(R.id.tv_end_time)
+        TextView tv_end_time;
         LineHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

@@ -28,11 +28,11 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
     private TextView tv_stab1;
     private TextView tv_stab2;
     private TextView tv_stab3;
-    private TextView tv_steward_gone;
     private CustomViewPager vp_start_car;
-    private RecyclerView eGoneRV;
+    private RecyclerView eGoneRV1, eGoneRV2, eGoneRV3;
     private List<View> startViews = new ArrayList<View>();
     private OnStartCarTabListener mListener;
+    private TextView eGoneRV1_tv_steward_show, eGoneRV2_tv_steward_show, eGoneRV3_tv_steward_show;
 
     public StartCarView(Context context,int resId,OnStartCarTabListener listener) {
         super(context);
@@ -46,7 +46,6 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
         tv_stab1.setOnClickListener(this);
         tv_stab2.setOnClickListener(this);
         tv_stab3.setOnClickListener(this);
-        tv_steward_gone = (TextView) findViewById(R.id.tv_steward_gone);
         vp_start_car = (CustomViewPager) findViewById(R.id.vp_start_car);
         MyPagerAdapter sAdapter = new MyPagerAdapter(inflateStartViews(),null);
         vp_start_car.setAdapter(sAdapter);
@@ -56,26 +55,45 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
     }
     private List<View> inflateStartViews(){
         View view_stab1 = View.inflate(mContext,R.layout.item_gone_car1,null);
-        eGoneRV = (RecyclerView) view_stab1.findViewById(R.id.rv_gone_car);
-        eGoneRV.setLayoutManager(new LinearLayoutManager(mContext));
-        eGoneRV.addItemDecoration(new DividerItemDecoration(mContext,
+        eGoneRV1_tv_steward_show = (TextView) view_stab1.findViewById(R.id.tv_steward_show);
+        eGoneRV1 = (RecyclerView) view_stab1.findViewById(R.id.rv_gone_car);
+        eGoneRV1.setLayoutManager(new LinearLayoutManager(mContext));
+        eGoneRV1.addItemDecoration(new DividerItemDecoration(mContext,
                 DividerItemDecoration.VERTICAL_LIST));
-        View view_stab2 = View.inflate(mContext,R.layout.view_test2,null);
-        View view_stab3 = View.inflate(mContext,R.layout.view_test3,null);
+
+        View view_stab2 = View.inflate(mContext,R.layout.item_gone_car2,null);
+        eGoneRV2_tv_steward_show = (TextView) view_stab2.findViewById(R.id.tv_steward_show);
+        eGoneRV2 = (RecyclerView) view_stab2.findViewById(R.id.rv_gone_car);
+        eGoneRV2.setLayoutManager(new LinearLayoutManager(mContext));
+        eGoneRV2.addItemDecoration(new DividerItemDecoration(mContext,
+                DividerItemDecoration.VERTICAL_LIST));
+
+        View view_stab3 = View.inflate(mContext,R.layout.item_gone_car2,null);
+        eGoneRV3_tv_steward_show = (TextView) view_stab3.findViewById(R.id.tv_steward_show);
+        eGoneRV3 = (RecyclerView) view_stab3.findViewById(R.id.rv_gone_car);
+        eGoneRV3.setLayoutManager(new LinearLayoutManager(mContext));
+        eGoneRV3.addItemDecoration(new DividerItemDecoration(mContext,
+                DividerItemDecoration.VERTICAL_LIST));
         startViews.add(view_stab1);
         startViews.add(view_stab2);
         startViews.add(view_stab3);
         return startViews;
     }
 
-
-
-    public void setEGoneRVAdapter(RecyclerView.Adapter adapter){
-        eGoneRV.setAdapter(adapter);
+    public void setEGoneRVAdapterForNormal(RecyclerView.Adapter adapter){
+        eGoneRV1.setAdapter(adapter);
+    }
+    public void setEGoneRVAdapterForOperatorEmpty(RecyclerView.Adapter adapter){
+        eGoneRV2.setAdapter(adapter);
+    }
+    public void setEGoneRVAdapterForNotOperatorEmpty(RecyclerView.Adapter adapter){
+        eGoneRV3.setAdapter(adapter);
     }
 
     public void setStewardGoneVisibility(int isVisible) {
-        tv_steward_gone.setVisibility(isVisible);
+        eGoneRV1_tv_steward_show.setVisibility(isVisible);
+        eGoneRV2_tv_steward_show.setVisibility(isVisible);
+        eGoneRV3_tv_steward_show.setVisibility(isVisible);
     }
 
     @Override
@@ -104,7 +122,6 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.white));
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
-
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
@@ -113,7 +130,6 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.white));
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
-
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
@@ -122,7 +138,6 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.white));
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
-
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
