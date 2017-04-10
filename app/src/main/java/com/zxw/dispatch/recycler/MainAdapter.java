@@ -2,6 +2,7 @@ package com.zxw.dispatch.recycler;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
+import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.R;
 
 import java.util.List;
@@ -25,7 +27,7 @@ import butterknife.ButterKnife;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
     private final OnSelectLineListener listener;
     private List<Line> mData;
-    private List<Integer> sendCarNum;
+    private List<VehicleNumberBean> sendCarNum;
     private Context mContext;
     private final LayoutInflater mLayoutInflater;
     private boolean isFirst = true;
@@ -74,7 +76,18 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
         }
 
         if (sendCarNum != null && !sendCarNum.isEmpty()) {
-          holder.tv_time_to_send_count.setText(sendCarNum.get(position) + "辆");
+           for (VehicleNumberBean bean: sendCarNum){
+               if (TextUtils.equals(bean.lineId, mData.get(position).lineId + "")){
+                   holder.tv_time_to_send_count.setVisibility(View.VISIBLE);
+                   if (bean.vehNumber != null)
+                   holder.tv_time_to_send_count.setText(bean.vehNumber + "辆");
+                   else
+                       holder.tv_time_to_send_count.setText(0 + "辆");
+               }else {
+                   holder.tv_time_to_send_count.setVisibility(View.INVISIBLE);
+               }
+           }
+
         }
     }
 
@@ -115,7 +128,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
 
 
 
-    public void setSendCarNum(List<Integer> sendCarNum){
+    public void setSendCarNum(List<VehicleNumberBean> sendCarNum){
         this.sendCarNum = sendCarNum;
         isFirst = false;
         notifyDataSetChanged();
