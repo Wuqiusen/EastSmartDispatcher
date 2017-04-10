@@ -19,6 +19,7 @@ import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
 import com.zxw.data.bean.StopHistory;
+import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.bean.VersionBean;
 import com.zxw.data.bean.WaitVehicle;
 
@@ -36,9 +37,10 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-    public static final String BASE_URL = "http://192.168.0.50:8081/yd_control_app/";
+//    public static final String BASE_URL = "http://192.168.0.50:8081/yd_control_app/";
 //    public static final String BASE_URL = "http://192.168.1.133:8082/yd_control_app/";
 //    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+    public static final String BASE_URL = "http://150970t1u9.51mypc.cn:52222/yd_control_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
@@ -394,6 +396,12 @@ public class HttpMethods {
     public void stopCarStayToEnd(Subscriber subscriber, String userId, String keyCode, int id){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable map = operator.stopCarStayToEnd(userId, keyCode, id);
+        toSubscribe(map, subscriber);
+    }
+
+    public void getVehicleNumber(Subscriber<List<VehicleNumberBean>> subscriber, String userId, String keyCode, int spotId){
+        HttpInterfaces.Browse browse  = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<VehicleNumberBean>> map = browse.getVehicleNumber(userId, keyCode, spotId + "").map(new HttpResultFunc<List<VehicleNumberBean>>());
         toSubscribe(map, subscriber);
     }
 

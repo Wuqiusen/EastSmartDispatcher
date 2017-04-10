@@ -11,6 +11,7 @@ import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
+import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.data.source.DepartSource;
 import com.zxw.data.source.LineSource;
@@ -26,11 +27,14 @@ import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.service.CarPlanService;
 import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.DESPlus;
+import com.zxw.dispatch.utils.DebugLog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import rx.Subscriber;
 
@@ -54,6 +58,9 @@ public class MainPresenter extends BasePresenter<MainView> {
     private Intent receiverIntent = new Intent("com.zxw.dispatch.service.RECEIVER");
     private List<Integer> sendNums = new ArrayList<>();
     private SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
+    private Timer timer = null;
+    private TimerTask timerTask;
+    private int spotId;
 
     public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
@@ -61,6 +68,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void loadLineList(int spotId){
+        this.spotId = spotId;
         mvpView.showLoading();
         mLineSource.loadLine(new Subscriber<List<Line>>() {
             @Override
@@ -218,6 +226,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     private void loadSendCarList(){
+        checkVehicleCount(spotId);
         loadSendCarForNormal();
         loadSendCarForOperatorEmpty();
         loadSendCarForNotOperatorEmpty();
@@ -239,7 +248,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             public void onNext(List<DepartCar> waitVehicles) {
                 DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
                 mvpView.loadSendCarList(mDragListAdapter);
-                timeToSend();
+
             }
         }, userId(), keyCode(), lineId);
     }
@@ -551,59 +560,49 @@ public class MainPresenter extends BasePresenter<MainView> {
      * 检测计划发车时间在30分钟内的车辆数
      * ------------------begin--------------
      */
-    private int checkLine;
-    public void timeToSend(){
-        checkLine = 0;
-        if (sendNums != null) sendNums.clear();
-        for (Line line: mLineBeen) {
-            sendNums.add(0);
+    public void checkStopCar(final int spotId){
+        if (timer == null){
+            timer = new Timer();
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    DebugLog.w("--------检测进出站情况");
+//                    checkIsTimeToSend(spotId);
+                    loadStopCarList();
+                }
+            };
+            timer.schedule(timerTask, 0, 1000 * 60);
         }
-        checkIsTimeToSend(mLineBeen.get(0));
+
     }
 
-    private void checkIsTimeToSend(Line line){
-        mDepartSource.departListByLine(new Subscriber<List<DepartCar>>() {
+    public void closeTimer(){
+        if (timer != null){
+            timerTask.cancel();
+            timer.cancel();
+            timer = null;
+            timerTask = null;
+        }
+    }
+
+    public void checkVehicleCount(int spotId){
+        HttpMethods.getInstance().getVehicleNumber(new Subscriber<List<VehicleNumberBean>>() {
             @Override
             public void onCompleted() {
-                mvpView.hideLoading();
+
             }
 
             @Override
             public void onError(Throwable e) {
-                mvpView.disPlay(e.getMessage());
+
             }
 
             @Override
-            public void onNext(List<DepartCar> waitVehicles) {
-                try{
-
-                    for (DepartCar departCar: waitVehicles){
-
-                        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-                        Log.e("time1", formatter.format(curDate) + "");
-                        int space = (Integer.valueOf(departCar.getVehTime().substring(0, 2))
-                                -Integer.valueOf((formatter.format(curDate) + "").substring(0, 2))) * 60
-                                +Integer.valueOf(departCar.getVehTime().substring(2, 4))
-                                -Integer.valueOf((formatter.format(curDate) + "").substring(2, 4));
-                        if (space <= 30){
-                            Log.e("sendMum","===========");
-                            sendNums.set(checkLine, sendNums.get(checkLine)+ 1);
-                            Log.e("time2", departCar.getVehTime() + "");
-                        }
-                    }
-                    checkLine ++;
-                    if (checkLine < mLineBeen.size()){
-                        Log.e("checkLine","++++++++++++");
-                        checkIsTimeToSend(mLineBeen.get(checkLine));
-                    }else {
-                        mvpView.refreshTimeToSendCarNum(sendNums);
-                    }
-                }catch (Exception e){
-                    Log.e("timeToSend", e.getMessage());
-                }
+            public void onNext(List<VehicleNumberBean> vehicleNumberBeen) {
+                mvpView.refreshTimeToSendCarNum(vehicleNumberBeen);
 
             }
-        }, userId(), keyCode(), line.lineId);
+        }, userId(), keyCode(), spotId);
     }
     /**
      * 检测计划发车时间在30分钟内的车辆数
@@ -765,6 +764,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 loadSendCarList();
                 loadGoneCarList();
 
+
             }
         }, userId(), keyCode(), objId, supportLineId);
     }
@@ -840,5 +840,13 @@ public class MainPresenter extends BasePresenter<MainView> {
                                          }
                                      },
                 userId(), keyCode(), id);
+    }
+//判断连个list是否相等
+    private boolean checkList(List<Object> list1, List<Object> list2){
+        if (list1.containsAll(list2) && list2.containsAll(list1)){
+            return true;
+        }else {
+            return false;
+        }
     }
 }
