@@ -19,6 +19,7 @@ import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
 import com.zxw.data.bean.StopHistory;
+import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.bean.VersionBean;
 import com.zxw.data.bean.WaitVehicle;
 
@@ -413,6 +414,17 @@ public class HttpInterfaces {
                                                                               @Field("keyCode") String keyCode,
                                                                               @Field("lineId") int lineId,
                                                                               @Field("typeId") int typeId);
+
+        /**
+         * 获取当前调度点下各线路的待发车辆数
+          */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/vehicle/number")
+        Observable<BaseBean<List<VehicleNumberBean>>> getVehicleNumber(@Field("userId") String userId,
+                                                                       @Field("keyCode") String keyCode,
+                                                                       @Field("spotId") String spotId);
+
+
 
 
 
