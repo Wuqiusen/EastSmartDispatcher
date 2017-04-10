@@ -46,8 +46,10 @@ public class StopEndAdapter extends RecyclerView.Adapter<StopEndAdapter.LineHold
 
     @Override
     public void onBindViewHolder(LineHolder holder, final int position) {
-            setBtnStyle(holder, mData.get(position));
-            holder.tvCarCode.setTextColor(mContext.getResources().getColor(R.color.white));
+
+        holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        holder.tvCarCode.setText(mData.get(position).code);
+            holder.tvCarCode.setTextColor(mContext.getResources().getColor(R.color.font_black));
             holder.llReuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -57,44 +59,6 @@ public class StopEndAdapter extends RecyclerView.Adapter<StopEndAdapter.LineHold
             });
 
     }
-
-    private void setBtnStyle(LineHolder holder, final StopHistory stop){
-           switch (stop.type){
-               case 1:
-                   // 单层（红）
-                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
-                   holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_red));
-                   holder.tvCarCode.setText(stop.code);
-
-                   break;
-               case 2:
-                   // 单层（绿）
-                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
-                   holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_green));
-                   holder.tvCarCode.setText(stop.code);
-                   break;
-               case 3:
-                   // 单层（蓝）
-                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_blue_btn_bg));
-                   holder.llLayerReuse.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
-                   holder.tvCarCode.setText(stop.code);
-                   holder.tvCarCode.setText(stop.code);
-                   break;
-               case 4:
-                   // 双层（红）
-                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
-                   holder.llLayerReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
-                   holder.tvCarCode.setText(stop.code);
-                   break;
-               case 5:
-                   // 双层（绿）
-                   holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
-                   holder.llLayerReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
-                   holder.tvCarCode.setText(stop.code);
-                   break;
-           }
-    }
-
 
     @Override
     public int getItemCount() {

@@ -27,7 +27,6 @@ import butterknife.ButterKnife;
 /**
  * author：CangJie on 2016/9/21 09:53
  * email：cangjie2016@gmail.com
- *
  */
 public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAdapterForNotOperatorEmpty.LineHolder> {
     private final LineParams mLineParams;
@@ -59,9 +58,9 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
         holder.tv_station_name.setText(history.electronRailName);
         holder.tv_count.setText(String.valueOf(history.runNum));
         holder.tv_empty_km.setText(history.runEmpMileage);
-        if (history.taskEditBelongId == history.taskEditRunId){
+        if (history.taskEditBelongId == history.taskEditRunId) {
             holder.tvCarCode.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
-        }else {
+        } else {
             holder.tvCarCode.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
         }
         holder.tvDriver.setText(history.driverName);
@@ -89,16 +88,20 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
 //      holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
 //      holder.tvStationStatus.setText(String.valueOf(history.vehTime));
         holder.tv_send_remark.setText(history.remarks);
-        if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
+        if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO) {
             holder.tvTrainman.setVisibility(View.GONE);
-        }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
+        } else if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL) {
             holder.tvTrainman.setVisibility(View.VISIBLE);
         }
         // 备注
         holder.tv_send_remark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openRemarkDialog(mData.get(position).id, mData.get(position).status, mData.get(position).remarks);
+                try{
+                    openRemarkDialog(mData.get(position).id, mData.get(position).status, mData.get(position).remarks);
+                }catch (Exception e){
+
+                }
             }
         });
         // 查看
@@ -110,9 +113,9 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
 //      });
         // 撤回
         // 如果已有实际发车时间, 则因此撤回按钮
-        if(TextUtils.isEmpty(mData.get(position).vehTimeReal)){
+        if (TextUtils.isEmpty(mData.get(position).vehTimeReal)) {
             holder.tv_send_withdraw.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.tv_send_withdraw.setVisibility(View.GONE);
         }
         holder.tv_send_withdraw.setOnClickListener(new View.OnClickListener() {
@@ -121,29 +124,43 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
                 openWithdrawCarDialog(mData.get(position).id);
             }
         });
+        try {
+            if (mData.get(position).isMakeup == 2
+                    ) {
+                holder.ll_container.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
+            } else {
+                holder.ll_container.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
+            }
+        } catch (Exception e) {
 
+        }
 
+        try{
+            holder.tvStatus.setText(history.status == 1 ? "正常":"异常");
+        }catch (Exception e){
+            holder.tvStatus.setText("");
+        }
     }
 
-    private String setStopCarMinute(SendHistory history){
+    private String setStopCarMinute(SendHistory history) {
         Long arriveMinute;
         Long sendMinute = null;
-        if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime)){
-            arriveMinute = Long.valueOf(history.arriveTime.substring(0,2)) * 60
-                    + Long.valueOf(history.arriveTime.substring(2,4));
-        }else{
+        if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime)) {
+            arriveMinute = Long.valueOf(history.arriveTime.substring(0, 2)) * 60
+                    + Long.valueOf(history.arriveTime.substring(2, 4));
+        } else {
             return "";
         }
-        if (history.vehTimeReal != null && !TextUtils.isEmpty(history.vehTimeReal)){
-            sendMinute = Long.valueOf(history.vehTimeReal.substring(0,2)) * 60
-                    + Long.valueOf(history.vehTimeReal.substring(2,4));
-        }else{
+        if (history.vehTimeReal != null && !TextUtils.isEmpty(history.vehTimeReal)) {
+            sendMinute = Long.valueOf(history.vehTimeReal.substring(0, 2)) * 60
+                    + Long.valueOf(history.vehTimeReal.substring(2, 4));
+        } else {
             return "";
         }
-        Long min = (Long)sendMinute - arriveMinute;
+        Long min = (Long) sendMinute - arriveMinute;
         if (min >= 0) {
             return String.valueOf(min);
-        }else{
+        } else {
             return "";
         }
 
@@ -154,10 +171,10 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
      * 查看
      */
     private void openCarMsgDialog() {
-        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        final Dialog mDialog = new Dialog(mContext, R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_check_car_details_dialog,null);
+        View view = View.inflate(mContext, R.layout.view_check_car_details_dialog, null);
         Button btn_close = (Button) view.findViewById(R.id.btn_close);
         btn_close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +182,7 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
                 mDialog.dismiss();
             }
         });
-        mDialog.setContentView(view,params);
+        mDialog.setContentView(view, params);
         mDialog.setCancelable(true);
         mDialog.show();
     }
@@ -174,10 +191,10 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
      * 撤回
      */
     private void openWithdrawCarDialog(final int objId) {
-        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        final Dialog mDialog = new Dialog(mContext, R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_withdraw_dialog,null);
+        View view = View.inflate(mContext, R.layout.view_withdraw_dialog, null);
         TextView tv_prompt = (TextView) view.findViewById(R.id.tv_prompt);
         tv_prompt.setText("您确定把车辆撤回到待发车辆列表？");
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
@@ -195,7 +212,7 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
                 mDialog.dismiss();
             }
         });
-        mDialog.setContentView(view,params);
+        mDialog.setContentView(view, params);
         mDialog.setCancelable(true);
         mDialog.show();
     }
@@ -204,20 +221,20 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
      * 备注
      */
     private void openRemarkDialog(final int objId, final int status, String remark) {
-        final Dialog rDialog = new Dialog(mContext,R.style.customDialog);
+        final Dialog rDialog = new Dialog(mContext, R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_start_car_remarks_dialog,null);
+        View view = View.inflate(mContext, R.layout.view_start_car_remarks_dialog, null);
         final RadioButton rbNormal = (RadioButton) view.findViewById(R.id.rb_normal);
         final RadioButton rbAbnormal = (RadioButton) view.findViewById(R.id.rb_abnormal);
         final EditText etRemarks = (EditText) view.findViewById(R.id.et_remarks);
-        if (remark != null && !TextUtils.isEmpty(remark)){
+        if (remark != null && !TextUtils.isEmpty(remark)) {
             etRemarks.setText(remark);
             etRemarks.setSelection(remark.length());
         }
-        if (status == 1){
+        if (status == 1) {
             rbNormal.setChecked(true);
-        }else {
+        } else {
             rbAbnormal.setChecked(true);
         }
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
@@ -238,7 +255,7 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
                 rDialog.dismiss();
             }
         });
-        rDialog.setContentView(view,params);
+        rDialog.setContentView(view, params);
         rDialog.setCancelable(true);
         rDialog.show();
     }
@@ -250,6 +267,8 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
     }
 
     static class LineHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.ll_container)
+        LinearLayout ll_container;
         @Bind(R.id.tv_car_sequence)
         TextView tvCarSequence;
         @Bind(R.id.tv_car_code)
@@ -288,6 +307,7 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
         TextView tv_empty_km;
         @Bind(R.id.tv_end_time)
         TextView tv_end_time;
+
         LineHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

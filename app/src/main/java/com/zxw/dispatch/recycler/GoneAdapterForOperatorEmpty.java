@@ -101,7 +101,11 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
         holder.tv_send_remark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openRemarkDialog(mData.get(position).id, mData.get(position).status, mData.get(position).remarks);
+                try{
+                    openRemarkDialog(mData.get(position).id, mData.get(position).status, mData.get(position).remarks);
+                }catch (Exception e){
+
+                }
             }
         });
         // 查看
@@ -125,7 +129,20 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
             }
         });
 
+        try{
+            if(mData.get(position).isMakeup == 2){
+                holder.ll_container.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
+            }else{
+                holder.ll_container.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
+            }
+        }catch (Exception e){
 
+        }
+        try{
+            holder.tvStatus.setText(history.status == 1 ? "正常":"异常");
+        }catch (Exception e){
+            holder.tvStatus.setText("");
+        }
     }
 
     private String setStopCarMinute(SendHistory history){
@@ -253,6 +270,8 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
     }
 
     static class LineHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.ll_container)
+        LinearLayout ll_container;
         @Bind(R.id.tv_car_sequence)
         TextView tvCarSequence;
         @Bind(R.id.tv_car_code)

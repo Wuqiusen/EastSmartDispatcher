@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 
+import com.zxw.data.bean.MissionType;
 import com.zxw.dispatch.R;
 
 import java.util.List;
@@ -17,10 +18,10 @@ import java.util.List;
  * 940762301@qq.com
  */
 public class MySpinnerAdapter extends BaseAdapter {
-    private List<String> mlist;
+    private List<MissionType.TaskContentBean> mlist;
     private Context mContext;
 
-    public MySpinnerAdapter(Context context, List<String> list){
+    public MySpinnerAdapter(Context context, List<MissionType.TaskContentBean> list){
         mContext = context;
         mlist = list;
     }
@@ -48,7 +49,7 @@ public class MySpinnerAdapter extends BaseAdapter {
         {
             //将文本内容填充到 item.xml中的文本显示框中
             TextView one=(TextView)convertView.findViewById(R.id.tv_item_spinner);
-            one.setText(mlist.get(position));
+            one.setText(mlist.get(position).getTaskName());
 
         }
         return convertView;

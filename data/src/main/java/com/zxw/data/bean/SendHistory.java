@@ -16,6 +16,7 @@ public class SendHistory {
     public String spaceTime;
     public Integer type;
     public Integer status;
+    public Integer isMakeup;
     public Integer unRunTaskStatus;
     public String vehTime;
     public String stewardName;

@@ -319,15 +319,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private List<View> inflateVerStopCarViews() {
         View view_stab1 = View.inflate(mContext,R.layout.item_stop_car,null);
         mStopRV1 = (RecyclerView) view_stab1.findViewById(R.id.rv_menu_stop_car);
-        mStopRV1.setLayoutManager(new GridLayoutManager(this,8));
-        mStopRV1.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL_LIST));
+        mStopRV1.setLayoutManager(new GridLayoutManager(this,12));
 
         View view_stab2 = View.inflate(mContext,R.layout.item_stop_car1,null);
         mStopRV2 = (RecyclerView) view_stab2.findViewById(R.id.rv_menu_stop_car);
         mStopRV2.setLayoutManager(new GridLayoutManager(this,8));
-        mStopRV2.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL_LIST));
 
         stopViews.add(view_stab1);
         stopViews.add(view_stab2);

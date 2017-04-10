@@ -49,8 +49,6 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     private List<MissionType> mMissionTypes = new ArrayList<>();
     private List<MissionType.TaskContentBean> emptyTaskContent = new ArrayList<>();
     private List<MissionType.TaskContentBean> noEmptyTaskContent = new ArrayList<>();
-    private List<String> empty_taskNames = new ArrayList<>();
-    private List<String> no_empty_taskNames = new ArrayList<>();
 
 
     public AddRecordingCarTaskDialog(Context context, List<MissionType> missionTypes,OnAddRecordingCarTaskListener listener) {
@@ -66,17 +64,10 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     private void initData(List<MissionType> missionTypes) {
         MissionType emptyMissionType = missionTypes.get(1);
         emptyTaskContent= emptyMissionType.getTaskContent();
-        for (int i=0;i<emptyTaskContent.size();i++){
-            empty_taskNames.add(emptyTaskContent.get(i).getTaskName());
-        }
         MissionType noEmptyMissionType = missionTypes.get(2);
         noEmptyTaskContent = noEmptyMissionType.getTaskContent();
-        for (int i=0;i<noEmptyTaskContent.size();i++){
-            no_empty_taskNames.add(noEmptyTaskContent.get(i).getTaskName());
-        }
-
-        operatorEmptyAdapter = new MySpinnerAdapter(mContext,empty_taskNames);
-        notOperatorEmptyAdapter = new MySpinnerAdapter(mContext,no_empty_taskNames);
+        operatorEmptyAdapter = new MySpinnerAdapter(mContext,emptyTaskContent);
+        notOperatorEmptyAdapter = new MySpinnerAdapter(mContext,noEmptyTaskContent);
     }
 
     private void initView(Context context) {

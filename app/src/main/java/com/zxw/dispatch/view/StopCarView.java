@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
-import com.zxw.dispatch.recycler.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,14 +68,10 @@ public class StopCarView extends LinearLayout implements View.OnClickListener {
         View view_stab1 = View.inflate(mContext,R.layout.item_stop_car,null);
         eStopRV1 = (RecyclerView) view_stab1.findViewById(R.id.rv_menu_stop_car);
         eStopRV1.setLayoutManager(new GridLayoutManager(mContext,8));
-        eStopRV1.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL_LIST));
 
         View view_stab2 = View.inflate(mContext,R.layout.item_stop_car1,null);
         eStopRV2 = (RecyclerView) view_stab2.findViewById(R.id.rv_menu_stop_car);
         eStopRV2.setLayoutManager(new GridLayoutManager(mContext,8));
-        eStopRV2.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL_LIST));
 
         stopViews.add(view_stab1);
         stopViews.add(view_stab2);
