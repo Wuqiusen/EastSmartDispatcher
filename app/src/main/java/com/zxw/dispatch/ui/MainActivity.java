@@ -32,29 +32,34 @@ import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.DragListAdapter;
+import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
+import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.adapter.PopupAdapter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
-import com.zxw.dispatch.recycler.GoneAdapter;
+import com.zxw.dispatch.recycler.GoneAdapterForNormal;
+import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
+import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
-import com.zxw.dispatch.recycler.StopAdapter;
+import com.zxw.dispatch.recycler.StopEndAdapter;
+import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
-import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
 import com.zxw.dispatch.view.DragListView;
 import com.zxw.dispatch.view.MyDialog;
 import com.zxw.dispatch.view.StartCarView;
+import com.zxw.dispatch.view.StopCarView;
 import com.zxw.dispatch.view.WaitCarView;
 import com.zxw.dispatch.view.dialog.AddRecordingCarTaskDialog;
-import com.zxw.dispatch.view.dialog.AddRecordingLineOpreateDialog;
 import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
+import com.zxw.dispatch.view.dialog.StopCarEndToStayDialog;
 import com.zxw.dispatch.view.dialog.VehicleToScheduleDialog;
 
 import java.text.SimpleDateFormat;
@@ -66,6 +71,8 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.zxw.dispatch.R.id.tv_steward_show;
 
 
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
@@ -87,7 +94,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     FrameLayout fl_vertical;
     FrameLayout fl_horizontal;
     CustomViewPager vp_horizontal;
-    RecyclerView eStopRV;
+//    RecyclerView eStopRV;
 
     // 垂直方向
     TextView tv_stab1;// 已发车辆
@@ -97,9 +104,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     TextView tv_wtab1;// 待发车辆
     TextView tv_wtab2;
     TextView tv_wtab3;
-    CustomViewPager vp_wait_car;
+    TextView tv_ver_stop_tab1;
+    TextView tv_ver_stop_tab2;
+    CustomViewPager vp_wait_car, vp_stop_car;
     private List<View> startViews = new ArrayList<View>();
     private List<View> waitViews = new ArrayList<View>();
+    private List<View> stopViews = new ArrayList<View>();
 
     private StartCarView mHorStartCarView;
     private WaitCarView mHorWaitCarView;
@@ -123,9 +133,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Bind(R.id.rv_line)
     RecyclerView mLineRV;
-    RecyclerView mGoneRV;
-    RecyclerView mStopRV;
-    DragListView mSendRV;
+    RecyclerView mGoneRV1, mGoneRV2, mGoneRV3;
+    DragListView mSendRV1, mSendRV2, mSendRV3;
 
     View viewCover;
     @Bind(R.id.vp_main)
@@ -194,6 +203,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             }
         }
     };
+    private TextView mGoneRV1_StewardShow, mGoneRV2_StewardShow, mGoneRV3_StewardShow;
+    private TextView mSendRV1_tv_steward_show, mSendRV2_tv_steward_show, mSendRV3_tv_steward_show;
+    private StopCarView mHorStopCarView;
+    private RecyclerView mStopRV1, mStopRV2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,12 +295,43 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         /*待发车辆*/
         initVerWaitCarViewPager(view);
         /*停场车辆*/
-        mStopRV = (RecyclerView) view.findViewById(R.id.rv_stop_car);
+        initVerStopCarViewPager(view);
         /*固有操作*/
         tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);// 自动发车
         tvManual = (TextView) view.findViewById(R.id.tv_manual);// 手动发车
         tvAutomatic.setOnClickListener(this);
         tvManual.setOnClickListener(this);
+    }
+
+    private void initVerStopCarViewPager(View view) {
+        tv_ver_stop_tab1 = (TextView) view.findViewById(R.id.tv_ver_stop_tab1);
+        tv_ver_stop_tab2 = (TextView) view.findViewById(R.id.tv_ver_stop_tab2);
+        tv_ver_stop_tab1.setOnClickListener(this);
+        tv_ver_stop_tab2.setOnClickListener(this);
+        vp_stop_car = (CustomViewPager) view.findViewById(R.id.vp_stop_car);
+        MyPagerAdapter stopAdapter = new MyPagerAdapter(inflateVerStopCarViews(),null);
+        vp_stop_car.setAdapter(stopAdapter);
+        vp_stop_car.setCurrentItem(0);
+        setVerStopCarTabScrollBar(0);
+        vp_stop_car.setPagingEnabled(false);
+    }
+
+    private List<View> inflateVerStopCarViews() {
+        View view_stab1 = View.inflate(mContext,R.layout.item_stop_car,null);
+        mStopRV1 = (RecyclerView) view_stab1.findViewById(R.id.rv_menu_stop_car);
+        mStopRV1.setLayoutManager(new GridLayoutManager(this,8));
+        mStopRV1.addItemDecoration(new DividerItemDecoration(mContext,
+                DividerItemDecoration.HORIZONTAL_LIST));
+
+        View view_stab2 = View.inflate(mContext,R.layout.item_stop_car1,null);
+        mStopRV2 = (RecyclerView) view_stab2.findViewById(R.id.rv_menu_stop_car);
+        mStopRV2.setLayoutManager(new GridLayoutManager(this,8));
+        mStopRV2.addItemDecoration(new DividerItemDecoration(mContext,
+                DividerItemDecoration.HORIZONTAL_LIST));
+
+        stopViews.add(view_stab1);
+        stopViews.add(view_stab2);
+        return stopViews;
     }
 
     private void initVerWaitCarViewPager(View view) {
@@ -310,19 +354,40 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private List<View> inflateVerWaitCarViews() {
         View view_wtab = View.inflate(mContext, R.layout.item_wait_car1,null);
         viewCover = (View) view_wtab.findViewById(R.id.view_cover); 
-        mSendRV = (DragListView) view_wtab.findViewById(R.id.lv_send_car);
-        View view2 = View.inflate(mContext,R.layout.view_test2,null);
-        View view3 = View.inflate(mContext,R.layout.view_test3,null);
+        mSendRV1 = (DragListView) view_wtab.findViewById(R.id.lv_send_car);
+        mSendRV1_tv_steward_show = (TextView) view_wtab.findViewById(R.id.tv_steward_show);
+        View view_wtab2 = View.inflate(mContext, R.layout.item_wait_car2,null);
+        mSendRV2 = (DragListView) view_wtab2.findViewById(R.id.lv_send_car);
+        mSendRV2_tv_steward_show = (TextView) view_wtab2.findViewById(R.id.tv_steward_show);
+        View view_wtab3 = View.inflate(mContext, R.layout.item_wait_car2,null);
+        mSendRV3 = (DragListView) view_wtab3.findViewById(R.id.lv_send_car);
+        mSendRV3_tv_steward_show = (TextView) view_wtab3.findViewById(R.id.tv_steward_show);
         waitViews.add(view_wtab);
-        waitViews.add(view2);
-        waitViews.add(view3);
+        waitViews.add(view_wtab2);
+        waitViews.add(view_wtab3);
         return waitViews;
     }
 
     private View inflateHorStopCarView() {
-        View stop_view = View.inflate(mContext, R.layout.item_stop_car, null);
-        eStopRV = (RecyclerView) stop_view.findViewById(R.id.rv_menu_stop_car);
-        return stop_view;
+        mHorStopCarView = new StopCarView(mContext, R.layout.item_hor_vp_stop_car,
+                new StopCarView.OnStopCarTabListener() {
+                    @Override
+                    public void onTabIsClick(int pos) {
+                        setVerStopCarViewStyle(pos);
+                        setHorStopCarViewStyle(pos);
+                    }
+                });
+        return mHorStopCarView;
+    }
+
+    private void setHorStopCarViewStyle(int i) {
+        mHorStopCarView.setStopCarCurrentItem(i);
+        mHorStopCarView.setStopCarTabScrollBar(i);
+    }
+
+    private void setVerStopCarViewStyle(int i) {
+        vp_stop_car.setCurrentItem(i);
+        setVerStopCarTabScrollBar(i);
     }
 
     private void initVerStartCarViewPager(View view) {
@@ -345,15 +410,28 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private List<View> inflateVerStartViews() {
         View view_stab = View.inflate(mContext, R.layout.item_gone_car1,null);
-        mGoneRV = (RecyclerView) view_stab.findViewById(R.id.rv_gone_car);
-        mGoneRV.setLayoutManager(new LinearLayoutManager(this));
-        mGoneRV.addItemDecoration(new DividerItemDecoration(this,
+        mGoneRV1 = (RecyclerView) view_stab.findViewById(R.id.rv_gone_car);
+        mGoneRV1_StewardShow = (TextView) view_stab.findViewById(tv_steward_show);
+        mGoneRV1.setLayoutManager(new LinearLayoutManager(this));
+        mGoneRV1.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
-        View view2 = View.inflate(mContext,R.layout.view_test2,null);
-        View view3 = View.inflate(mContext,R.layout.view_test3,null);
-        startViews.add(mGoneRV);
-        startViews.add(view2);
-        startViews.add(view3);
+
+        View view_stab2 = View.inflate(mContext, R.layout.item_gone_car2,null);
+        mGoneRV2 = (RecyclerView) view_stab2.findViewById(R.id.rv_gone_car);
+        mGoneRV2_StewardShow = (TextView) view_stab2.findViewById(tv_steward_show);
+        mGoneRV2.setLayoutManager(new LinearLayoutManager(this));
+        mGoneRV2.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL_LIST));
+
+        View view_stab3 = View.inflate(mContext, R.layout.item_gone_car2,null);
+        mGoneRV3 = (RecyclerView) view_stab3.findViewById(R.id.rv_gone_car);
+        mGoneRV3_StewardShow = (TextView) view_stab3.findViewById(tv_steward_show);
+        mGoneRV3.setLayoutManager(new LinearLayoutManager(this));
+        mGoneRV3.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL_LIST));
+        startViews.add(view_stab);
+        startViews.add(view_stab2);
+        startViews.add(view_stab3);
         return startViews;
     }
 
@@ -378,7 +456,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                         selectAddRecording(true);
                         setVerStartCarViewStyle(pos);
                         setHorStartCarViewStyle(pos);
-
                  }
         });
         return mHorStartCarView;
@@ -392,8 +469,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         vpMain.setPagingEnabled(false);
         setTabBackground(0);
         setTvBackground(1);
-
-        mStopRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
 
@@ -412,7 +487,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         vp_horizontal.setPagingEnabled(false);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 10);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        eStopRV.setLayoutManager(layoutManager);
+//        eStopRV.setLayoutManager(layoutManager);
     }
 
     private void initTabEvent() {
@@ -479,10 +554,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void loadSendCarList(DragListAdapter mDragListAdapter) {
         isHaveSendCar = false;
         DragListView.MyDragListener mListener = createMyDragListener();
-        mSendRV.setAdapter(mDragListAdapter);
-        mSendRV.setMyDragListener(mListener);
+        mSendRV1.setAdapter(mDragListAdapter);
+        mSendRV1.setMyDragListener(mListener);
 
-        mHorWaitCarView.setAdapter(mDragListAdapter);
+        mHorWaitCarView.setAdapterForNormal(mDragListAdapter);
         mHorWaitCarView.setMyDragListener(mListener);
 
         if (mDragListAdapter.getCount() > 0)
@@ -499,25 +574,50 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     @Override
-    public void loadGoneCarList(GoneAdapter goneAdapter) {
-        mGoneRV.setAdapter(goneAdapter);
-        mHorStartCarView.setEGoneRVAdapter(goneAdapter);
-
+    public void loadGoneCarByNormal(GoneAdapterForNormal goneAdapter) {
+        mGoneRV1.setAdapter(goneAdapter);
+        mHorStartCarView.setEGoneRVAdapterForNormal(goneAdapter);
     }
 
     @Override
-    public void loadStopCarList(List<StopHistory> stopHistories) {
-        StopAdapter mAdapter = createStopAdapter(stopHistories);
-        mStopRV.setAdapter(mAdapter);
-        eStopRV.setAdapter(mAdapter);
+    public void loadStopStayCarList(List<StopHistory> stopHistories) {
+        StopStayAdapter mAdapter = createStopStayAdapter(stopHistories);
+        mStopRV1.setAdapter(mAdapter);
+        mHorStopCarView.setAdapterForStay(mAdapter);
+//        eStopRV.setAdapter(mAdapter);
     }
 
-    private StopAdapter createStopAdapter(List<StopHistory> stopHistories) {
-        return new StopAdapter(stopHistories, this, new StopAdapter.OnClickStopCarListListener() {
+    @Override
+    public void loadStopEndCarList(List<StopHistory> stopHistories) {
+        StopEndAdapter mAdapter = createStopEndAdapter(stopHistories);
+        mStopRV2.setAdapter(mAdapter);
+        mHorStopCarView.setAdapterForEnd(mAdapter);
+
+    }
+
+    private StopEndAdapter createStopEndAdapter(List<StopHistory> stopHistories) {
+        return new StopEndAdapter(stopHistories, this, new StopEndAdapter.OnClickStopEndCarListListener() {
+            @Override
+            public void onClickStopEndCarListener(StopHistory stopCar) {
+                showEndToStayDialog(stopCar);
+            }
+        });
+    }
+
+    private void showEndToStayDialog(final StopHistory stopCar) {
+        new StopCarEndToStayDialog(mContext, new StopCarEndToStayDialog.OnStopCarEndToStayListener() {
+            @Override
+            public void onConfirm() {
+                presenter.stopCarEndToStay(stopCar.id);
+            }
+        });
+    }
+
+    private StopStayAdapter createStopStayAdapter(List<StopHistory> stopHistories) {
+        return new StopStayAdapter(stopHistories, this, new StopStayAdapter.OnClickStopCarListListener() {
             @Override
             public void onClickManualButtonListener() {
                 showManualAddStopCarDialog();
-//                showVehicleToScheduleDialog(null);
             }
 
             @Override
@@ -564,14 +664,40 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Override
     public void onGetAddRecordingTaskNameList(List<MissionType> missionTypes) {
         this.mMissionTypes = missionTypes;
-        ToastHelper.showToast("mMissionTypes不为空");
-        DebugLog.i("mMissionTypes:"+missionTypes);
     }
 
 
+    @Override
+    public void loadGoneCarByOperatorEmpty(GoneAdapterForOperatorEmpty goneAdapter) {
+        mGoneRV2.setAdapter(goneAdapter);
+        mHorStartCarView.setEGoneRVAdapterForOperatorEmpty(goneAdapter);
+    }
+
+    @Override
+    public void loadGoneCarByNotOperatorEmpty(GoneAdapterForNotOperatorEmpty goneAdapter) {
+        mGoneRV3.setAdapter(goneAdapter);
+        mHorStartCarView.setEGoneRVAdapterForNotOperatorEmpty(goneAdapter);
+    }
+
+    @Override
+    public void loadSendCarForOperatorEmpty(DragListAdapterForOperatorEmpty mDragListAdapter) {
+        mSendRV2.setAdapter(mDragListAdapter);
+        mHorWaitCarView.setAdapterForOperatorEmpty(mDragListAdapter);
+    }
+
+    @Override
+    public void loadSendCarForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty mDragListAdapter) {
+        mSendRV3.setAdapter(mDragListAdapter);
+        mHorWaitCarView.setAdapterForNotOperatorEmpty(mDragListAdapter);
+    }
+
     private void isShowStewardName(int isVisible) {
-        tv_steward_send.setVisibility(isVisible);
-        tv_steward_gone.setVisibility(isVisible);
+        mGoneRV1_StewardShow.setVisibility(isVisible);
+        mGoneRV2_StewardShow.setVisibility(isVisible);
+        mGoneRV3_StewardShow.setVisibility(isVisible);
+        mSendRV1_tv_steward_show.setVisibility(isVisible);
+        mSendRV2_tv_steward_show.setVisibility(isVisible);
+        mSendRV3_tv_steward_show.setVisibility(isVisible);
 
         mHorWaitCarView.setStewardSendVisibility(isVisible);
         mHorStartCarView.setStewardGoneVisibility(isVisible);
@@ -601,7 +727,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
             @Override
             public void onOffDuty() {
-
+                presenter.stopCarStayToEnd(stopCar.id);
             }
         }, presenter.getLineId());
     }
@@ -740,6 +866,22 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
         }
     }
+    private void setVerStopCarTabScrollBar(int pos){
+        switch (pos){
+            case 0:
+                tv_ver_stop_tab1.setTextColor(mContext.getResources().getColor(R.color.white));
+                tv_ver_stop_tab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_ver_stop_tab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tv_ver_stop_tab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+                break;
+            case 1:
+                tv_ver_stop_tab2.setTextColor(mContext.getResources().getColor(R.color.white));
+                tv_ver_stop_tab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+                tv_ver_stop_tab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tv_ver_stop_tab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+                break;
+        }
+    }
 
 
     private Drawable getDrawable(boolean isTab) {
@@ -814,14 +956,22 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 setVerWaitCarViewStyle(2);
                 setHorWaitCarViewStyle(2);
                 break;
+            // 停场车辆<垂直方向
+            case R.id.tv_ver_stop_tab1:
+                setVerStopCarViewStyle(0);
+                setHorStopCarViewStyle(0);
+                break;
+            case R.id.tv_ver_stop_tab2:
+                setVerStopCarViewStyle(1);
+                setHorStopCarViewStyle(1);
+                break;
             case R.id.tv_add_recording:
                     new AddRecordingCarTaskDialog(mContext,mMissionTypes,
                             new AddRecordingCarTaskDialog.OnAddRecordingCarTaskListener() {
                                @Override
                                public void OnAddRecordingCarTask(String type, String taskId, String vehicleId, String driverId,
                                                           String beginTime, String endTime, String runNum, String runEmpMileage) {
-                           //       presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
-                                   DebugLog.w(type);
+                                  presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
                                }
                     });
                 break;
@@ -870,7 +1020,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             tvAddRecroding.setVisibility(View.GONE);
         }
     }
-    
+
     private void setVerStartCarViewStyle(int i){
         vp_start_car.setCurrentItem(i);
         setVerStartCarTabScrollBar(i);

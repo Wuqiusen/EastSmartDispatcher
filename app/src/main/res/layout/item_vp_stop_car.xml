@@ -7,7 +7,7 @@
     android:background="@color/transparent"
     android:orientation="vertical" >
         <com.zxw.dispatch.view.CustomViewPager
-            android:id="@+id/vp_wait_car"
+            android:id="@+id/vp_stop_car"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
         />

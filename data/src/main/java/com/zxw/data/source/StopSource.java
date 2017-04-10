@@ -12,13 +12,19 @@ import rx.Subscriber;
  * email：cangjie2016@gmail.com
  */
 public class StopSource {
-    String carCode[] = new String[]{"11122", "33221", "99511", "51232","00052","55125", "66434", "66666", "10000"};
-    String driver[] = new String[]{"李白", "王维", "杜甫", "赵信","吕布","诸葛亮", "刘备", "张飞", "盖伦"};
-    String time[] = new String[]{"1100", "0600", "0610", "0630", "0620", "0634", "0644", "0655", "0710","0810", "0712", "0730","0750"};
-    String state[] = new String[]{"已读","未读"};
 
-    public void loadStop(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
-        HttpMethods.getInstance().getStopVehicle(subscriber, userId, keyCode, lineId);
+    public void loadStopByStay(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
+        HttpMethods.getInstance().getStopVehicleByStay(subscriber, userId, keyCode, lineId);
+    }
+    public void loadStopByEnd(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
+        HttpMethods.getInstance().getStopVehicleByEnd(subscriber, userId, keyCode, lineId);
     }
 
+
+    public void stopCarEndToStay(Subscriber subscriber, String userId, String keyCode, int id) {
+        HttpMethods.getInstance().stopCarEndToStay(subscriber, userId, keyCode, id);
+    }
+    public void stopCarStayToEnd(Subscriber subscriber, String userId, String keyCode, int id) {
+        HttpMethods.getInstance().stopCarStayToEnd(subscriber, userId, keyCode, id);
+    }
 }

@@ -36,7 +36,7 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-    public static final String BASE_URL = "http://192.168.0.51:8081/yd_control_app/";
+    public static final String BASE_URL = "http://192.168.0.50:8081/yd_control_app/";
 //    public static final String BASE_URL = "http://192.168.1.133:8082/yd_control_app/";
 //    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
     public Retrofit retrofit = RetrofitSetting.getInstance();
@@ -220,9 +220,15 @@ public class HttpMethods {
         Observable map = browse.sendCar(userId, keyCode, objId).map(new HttpResultFunc());
         toSubscribe(map, subscriber);
     }
-    public void getStopVehicle(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
+    public void getStopVehicleByStay(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<List<StopHistory>> map = browse.getStopVehcile(userId, keyCode, lineId)
+        Observable<List<StopHistory>> map = browse.getStopVehicleByStay(userId, keyCode, lineId)
+                .map(new HttpResultFunc<List<StopHistory>>());
+        toSubscribe(map, subscriber);
+    }
+    public void getStopVehicleByEnd(Subscriber<List<StopHistory>> subscriber, String userId, String keyCode, int lineId){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<StopHistory>> map = browse.getStopVehicleByEnd(userId, keyCode, lineId)
                 .map(new HttpResultFunc<List<StopHistory>>());
         toSubscribe(map, subscriber);
     }
@@ -378,6 +384,16 @@ public class HttpMethods {
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable map = operator.lineMakeup(userId, keyCode, taskLineId, vehicleId, driverId, type, taskType,
                 runNum, runEmpMileage, beginTime, endTime).map(new HttpResultFunc());
+        toSubscribe(map, subscriber);
+    }
+    public void stopCarEndToStay(Subscriber subscriber, String userId, String keyCode, int id){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.stopCarEndToStay(userId, keyCode, id);
+        toSubscribe(map, subscriber);
+    }
+    public void stopCarStayToEnd(Subscriber subscriber, String userId, String keyCode, int id){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.stopCarStayToEnd(userId, keyCode, id);
         toSubscribe(map, subscriber);
     }
 

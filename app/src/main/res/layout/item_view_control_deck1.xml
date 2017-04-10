@@ -11,14 +11,12 @@
         android:layout_weight="0.9"
         android:orientation="vertical">
         <!--已发车辆-ViewPager-->
-        <include
-            android:id="@+id/ll_start_car"
+        <com.zxw.dispatch.view.CustomViewPager
+            android:id="@+id/vp_start_car"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.7"
-            layout="@layout/item_vp_start_car"
             />
-
         <!--分割线-->
         <View
             android:layout_width="match_parent"
@@ -126,10 +124,11 @@
             android:background="@color/background_gray5"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
+
             <TextView
                 android:id="@+id/tv_stop_home"
-                android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_fit_6"
                 android:drawableLeft="@mipmap/stop_car_icon"
@@ -141,12 +140,39 @@
                 android:textSize="@dimen/font_large"
                 android:textStyle="bold"
                 />
+
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/normal_margin10"
-                android:layout_weight="0.24"
+                android:layout_weight="1"
+                android:minHeight="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_ver_stop_tab1"
+                    style="@style/font_menu3"
+                    android:background="@drawable/btn_login_style"
+                    android:text="待班车辆"
+                    android:visibility="visible"
+                    />
+                <TextView
+                    android:id="@+id/tv_ver_stop_tab2"
+                    style="@style/font_menu3"
+                    android:background="@drawable/whitebtn_dialog_deep_style"
+                    android:textSize="@dimen/font_medium"
+                    android:textColor="@color/font_black"
+                    android:text="收班车辆"
+                    android:visibility="visible"
+                    />
+            </LinearLayout>
+
+            <!--停场车辆-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/normal_margin20"
+                android:minHeight="48dp"
+                android:layout_gravity="right"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
                 <!--单班主站-->
@@ -156,12 +182,11 @@
                     android:background="@drawable/ll_stop_car_red_btn_bg"
                     android:minWidth="25dp" />
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:paddingLeft="@dimen/margin_tiny"
-                    android:paddingRight="@dimen/margin_tiny"
-                    android:textSize="@dimen/font_tiny"
+                    android:paddingRight="@dimen/normal_margin10"
+                    android:textSize="@dimen/font_medium"
                     android:textColor="@color/font_blue"
                     android:text="本站"
                     />
@@ -173,11 +198,10 @@
                     android:background="@drawable/ll_stop_car_green_btn_bg"
                     android:minWidth="25dp" />
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:paddingLeft="@dimen/margin_tiny"
-                    android:textSize="@dimen/font_tiny"
+                    android:textSize="@dimen/font_medium"
                     android:textColor="@color/font_blue"
                     android:text="对站"
                     />
@@ -188,14 +212,16 @@
             android:layout_height="0.1dp"
             android:background="@color/background_gray4"
             android:visibility="gone"/>
-        <!--停场车辆列表-->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_stop_car"
+        <!--停场车辆-ViewPager-->
+        <include
+            android:id="@+id/ll_stop_car"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="@dimen/margin_fit_6"
             android:layout_marginLeft="@dimen/margin_tiny"
-            android:layout_marginRight="@dimen/margin_tiny" />
+            android:layout_marginRight="@dimen/margin_tiny"
+            layout="@layout/item_vp_stop_car"
+            />
     </LinearLayout>
 
 

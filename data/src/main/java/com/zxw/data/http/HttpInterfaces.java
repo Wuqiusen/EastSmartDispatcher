@@ -268,7 +268,7 @@ public class HttpInterfaces {
 
 
         /**
-         * 根据线路id获取停场车辆列表
+         * 根据线路id获取停场车辆的待班车辆列表
          *
          * @param userId
          * @param keyCode
@@ -277,9 +277,23 @@ public class HttpInterfaces {
          */
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/vehicle/stop/list")
-        Observable<BaseBean<List<StopHistory>>> getStopVehcile(@Field("userId") String userId,
-                                                               @Field("keyCode") String keyCode,
-                                                               @Field("lineId") int lineId);
+        Observable<BaseBean<List<StopHistory>>> getStopVehicleByStay(@Field("userId") String userId,
+                                                                     @Field("keyCode") String keyCode,
+                                                                     @Field("lineId") int lineId);
+
+        /**
+         * 根据线路id获取停场车辆的收班车辆列表
+         *
+         * @param userId
+         * @param keyCode
+         * @param lineId
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/vehicle/stop/class/list")
+        Observable<BaseBean<List<StopHistory>>> getStopVehicleByEnd(@Field("userId") String userId,
+                                                                     @Field("keyCode") String keyCode,
+                                                                     @Field("lineId") int lineId);
 
         /**
          * 根据Id获取已发车记录列表
@@ -405,6 +419,19 @@ public class HttpInterfaces {
     }
 
     public interface Operator {
+
+        @FormUrlEncoded
+        @POST("phone/control/manage /task/line/stop/class/stop")
+        Observable<BaseBean> stopCarEndToStay(@Field("userId") String code,
+                                         @Field("keyCode") String keyCode,
+                                         @Field("objId") int opId);
+
+        @FormUrlEncoded
+        @POST("phone/control/manage /task/line/stop/class")
+        Observable<BaseBean> stopCarStayToEnd(@Field("userId") String code,
+                                         @Field("keyCode") String keyCode,
+                                         @Field("objId") int opId);
+
 
         /**
          * 调度员调整车辆待操作列表记录排序号
