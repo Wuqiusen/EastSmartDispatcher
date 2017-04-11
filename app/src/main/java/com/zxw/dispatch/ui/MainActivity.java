@@ -170,7 +170,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private List<View> views = new ArrayList<View>();
     private List<View> eViews = new ArrayList<View>();
     private boolean isHaveSendCar = false;
-    private boolean isShow = true;
+    private boolean isShow = false;
     private boolean isClickWaitCar = true;
     private boolean isPopbg = true;
     private int startCarCount = 0;
@@ -304,7 +304,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
         tvMenuAutomatic.setOnClickListener(this);
         tvMenuManual.setOnClickListener(this);
-//      rlMenuBackground.setOnClickListener(this);
         imgOnOff.setOnClickListener(this);
     }
 
@@ -319,8 +318,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         /*固有操作*/
         tvVerWaitCar = (TextView) view.findViewById(R.id.tv_ver_wait_car);
         tvVerStopCar = (TextView) view.findViewById(R.id.tv_ver_stop_car);
-        tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);// 自动发车
-        tvManual = (TextView) view.findViewById(R.id.tv_manual);// 手动发车
+        tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);
+        tvManual = (TextView) view.findViewById(R.id.tv_manual);
         tvAutomatic.setOnClickListener(this);
         tvManual.setOnClickListener(this);
     }
@@ -573,7 +572,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     @Override
-    public void loadSendCarList(DragListAdapter mDragListAdapter) {   // 待发tab1
+    public void loadSendCarList(DragListAdapter mDragListAdapter) {
         isHaveSendCar = false;
         wtab1_size = mDragListAdapter.getCount();
         setWaitCarCount();
@@ -602,7 +601,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     @Override
-    public void loadGoneCarByNormal(GoneAdapterForNormal goneAdapter) { // 已发tab1
+    public void loadGoneCarByNormal(GoneAdapterForNormal goneAdapter) {
         stab1_size = goneAdapter.getCount();
         setStartCarCount();
         tv_stab1.setText(showCount(R.string.line_operate,goneAdapter.getCount()));
@@ -613,7 +612,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     @Override
-    public void loadStopStayCarList(List<StopHistory> stopHistories) { // 停场tab1
+    public void loadStopStayCarList(List<StopHistory> stopHistories) {
         ptab1_size = stopHistories.size()-1;
         setStopCarCount();
         tv_ver_stop_tab1.setText(showCount(R.string.stop_stay,ptab1_size));
@@ -632,7 +631,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     @Override
-    public void loadStopEndCarList(List<StopHistory> stopHistories) { //停场tab2
+    public void loadStopEndCarList(List<StopHistory> stopHistories) {
         ptab2_size = stopHistories.size();
         setStopCarCount();
         tv_ver_stop_tab2.setText(showCount(R.string.stop_end,stopHistories.size()));
@@ -709,7 +708,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvMenuGoneCar.setText(startCount);
     }
 
-
     private void setWaitCarCount() {
         wCount = wtab1_size+wtab2_size+wtab3_size;
         String format= mContext.getResources().getString(R.string.wait_car_count);
@@ -717,7 +715,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvVerWaitCar.setText(waitCount);
         tvMenuWaitCar.setText(waitCount);
     }
-
 
     private void setStopCarCount() {
         tCount= ptab1_size+ptab2_size;
@@ -744,46 +741,42 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     @Override
-    public void loadGoneCarByOperatorEmpty(GoneAdapterForOperatorEmpty goneAdapter) { // 已发tab2
+    public void loadGoneCarByOperatorEmpty(GoneAdapterForOperatorEmpty goneAdapter) {
         stab2_size = goneAdapter.getCount();
         setStartCarCount();
         tv_stab2.setText(showCount(R.string.operator_empty,goneAdapter.getCount()));
         mGoneRV2.setAdapter(goneAdapter);
-
         mHorStartCarView.setTab2tStartCarCount(goneAdapter);
         mHorStartCarView.setEGoneRVAdapterForOperatorEmpty(goneAdapter);
     }
 
     @Override
-    public void loadGoneCarByNotOperatorEmpty(GoneAdapterForNotOperatorEmpty goneAdapter) { // 已发tab3
+    public void loadGoneCarByNotOperatorEmpty(GoneAdapterForNotOperatorEmpty goneAdapter) {
         stab3_size = goneAdapter.getCount();
         setStartCarCount();
         tv_stab3.setText(showCount(R.string.not_operator_empty,goneAdapter.getCount()));
         mGoneRV3.setAdapter(goneAdapter);
-
         mHorStartCarView.setTab3tStartCarCount(goneAdapter);
         mHorStartCarView.setEGoneRVAdapterForNotOperatorEmpty(goneAdapter);
     }
 
     @Override
-    public void loadSendCarForOperatorEmpty(DragListAdapterForOperatorEmpty mDragListAdapter) {  // 待发tab2
+    public void loadSendCarForOperatorEmpty(DragListAdapterForOperatorEmpty mDragListAdapter) {
         wtab2_size = mDragListAdapter.getCount();
         setWaitCarCount();
         tv_wtab2.setText(showCount(R.string.operator_empty,mDragListAdapter.getCount()));
         mSendRV2.setAdapter(mDragListAdapter);
-
         mHorWaitCarView.setTab2tWaitCarCount(mDragListAdapter);
         mHorWaitCarView.setAdapterForOperatorEmpty(mDragListAdapter);
 
     }
 
     @Override
-    public void loadSendCarForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty mDragListAdapter) { // 待发tab3
+    public void loadSendCarForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty mDragListAdapter) {
         wtab3_size = mDragListAdapter.getCount();
         setWaitCarCount();
         tv_wtab3.setText(showCount(R.string.not_operator_empty,mDragListAdapter.getCount()));
         mSendRV3.setAdapter(mDragListAdapter);
-
         mHorWaitCarView.setTab3tWaitCarCount(mDragListAdapter);
         mHorWaitCarView.setAdapterForNotOperatorEmpty(mDragListAdapter);
     }
@@ -1004,7 +997,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.img_setting:
                 showPopupWindow();
                 break;
-//          case R.id.rl_menu_background:
             case R.id.img_menu_on_off:
                 changeControlDeckView();
                 break;
@@ -1103,8 +1095,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                     }
                 }
                 break;
-
-
         }
     }
 
