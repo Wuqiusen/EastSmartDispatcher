@@ -246,6 +246,9 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
         rDialog.show();
     }
 
+    public int getCount() {
+        return mData.size();
+    }
 
     @Override
     public int getItemCount() {

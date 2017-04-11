@@ -5,4 +5,15 @@
     <string name="password_update">密码修改</string>
     <string name="login_out">退出</string>
 
+    <string name="start_car_count">已发车辆(%1$d)</string>
+    <string name="wait_car_count">待发车辆(%1$d)</string>
+    <string name="stop_car_count">停场车辆(%1$d)</string>
+
+    <string name="stop_end">收班车辆(%1$d)</string>
+    <string name="stop_stay">待班车辆(%1$d)</string>
+    <string name="line_operate">线路运营(%1$d)</string>
+    <string name="operator_empty">营运空驶(%1$d)</string>
+    <string name="not_operator_empty">非营运空驶(%1$d)</string>
+
+
 </resources>
