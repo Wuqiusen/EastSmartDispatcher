@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.StopHistory;
+import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.DragListAdapter;
@@ -183,8 +184,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private boolean isAuto = false;
     private Timer mTimer = null;
     private long clickTime = 0;
+    private int spotId;
     private List<MissionType> mMissionTypes = new ArrayList<>();
     private boolean isGetMissionTypes = false;
+    private List<VehicleNumberBean> mSendCarNum;
 
     Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -211,7 +214,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                         break;
                     case SEND_CAR_COUNT:
                         Log.w("onReceive---", "更新待发车辆数");
-                        presenter.timeToSend();
+//                        presenter.timeToSend();
+                        presenter.checkVehicleCount(spotId);
                         break;
                 }
             } catch (Exception e) {
@@ -232,9 +236,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         initData();
         initView();
         initTabEvent();
-        int spotId = getIntent().getIntExtra("spotId", -1);
-        presenter.loadLineList(1);
-//        presenter.loadLineList(spotId);
+        spotId = getIntent().getIntExtra("spotId", -1);
+//        presenter.loadLineList(1);
+        presenter.loadLineList(spotId);
+        presenter.checkStopCar(spotId);
     }
 
 
@@ -685,7 +690,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     @Override
-    public void refreshTimeToSendCarNum(List<Integer> sendCarNum) {
+    public void refreshTimeToSendCarNum(List<VehicleNumberBean> sendCarNum) {
         mLineAdapter.setSendCarNum(sendCarNum);
 
     }
@@ -1268,6 +1273,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             mTimer.cancel();
             mTimer = null;
         }
+        presenter.closeTimer();
         super.onDestroy();
     }
 
