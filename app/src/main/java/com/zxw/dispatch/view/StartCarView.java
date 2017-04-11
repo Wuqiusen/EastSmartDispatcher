@@ -10,8 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
+import com.zxw.dispatch.recycler.GoneAdapterForNormal;
+import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
+import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +83,23 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
         startViews.add(view_stab3);
         return startViews;
     }
+
+
+    public void setTab1tStartCarCount(GoneAdapterForNormal goneAdapter){
+        tv_stab1.setText(showCount(R.string.line_operate,goneAdapter.getCount()));
+    }
+    public void setTab2tStartCarCount(GoneAdapterForOperatorEmpty goneAdapter){
+        tv_stab2.setText(showCount(R.string.operator_empty,goneAdapter.getCount()));
+    }
+    public void setTab3tStartCarCount(GoneAdapterForNotOperatorEmpty goneAdapter){
+        tv_stab3.setText(showCount(R.string.not_operator_empty,goneAdapter.getCount()));
+    }
+
+    private String showCount(int stringRes,int carCount){
+        String format= mContext.getResources().getString(stringRes);
+        return String.format(format,carCount);
+    }
+
 
     public void setEGoneRVAdapterForNormal(RecyclerView.Adapter adapter){
         eGoneRV1.setAdapter(adapter);
