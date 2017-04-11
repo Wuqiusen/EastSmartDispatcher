@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
+import com.zxw.dispatch.recycler.GoneAdapterForNormal;
+import com.zxw.dispatch.recycler.StopEndAdapter;
+import com.zxw.dispatch.recycler.StopStayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +88,18 @@ public class StopCarView extends LinearLayout implements View.OnClickListener {
 
     public void setStopCarCurrentItem(int i) {
         vp_stop_car.setCurrentItem(i);
+    }
+
+    public void setTab1tStopCarCount(StopStayAdapter adapter){
+        tv_wtab1.setText(showCount(R.string.stop_stay,adapter.getItemCount()-1));
+    }
+    public void setTab2tStopCarCount(StopEndAdapter adapter){
+        tv_wtab2.setText(showCount(R.string.stop_end,adapter.getItemCount()));
+    }
+
+    private String showCount(int stringRes,int carCount){
+        String format= mContext.getResources().getString(stringRes);
+        return String.format(format,carCount);
     }
 
     public void setAdapterForStay(RecyclerView.Adapter adapter){

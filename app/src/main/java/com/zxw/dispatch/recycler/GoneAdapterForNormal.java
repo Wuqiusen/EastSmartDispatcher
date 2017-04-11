@@ -247,6 +247,11 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
     }
 
 
+    public int getCount() {
+        return mData.size();
+    }
+
+
     @Override
     public int getItemCount() {
         return mData.size();
