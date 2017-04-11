@@ -126,16 +126,16 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private StartCarView mHorStartCarView;
     private WaitCarView mHorWaitCarView;
 
-    /*导航栏*/
+    // 操控台
     @Bind(R.id.rl_controller)
     RelativeLayout rlController;
     @Bind(R.id.tv_controller)
     TextView tvController;
-//  @Bind(R.id.rl_schedule)
-//  RelativeLayout rlSchedule;
-//  @Bind(R.id.tv_schedule)
-//  TextView tvSchedule;
-
+    // 排班计划
+    @Bind(R.id.rl_schedule)
+    RelativeLayout rlSchedule;
+    @Bind(R.id.tv_schedule)
+    TextView tvSchedule;
 
     /*设置*/
     @Bind(R.id.img_setting)
@@ -255,10 +255,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         hideTitle();
         // 操控台
         views.add(initControlDeckView());
-        // 线路运行图
         // 排班计划
         views.add(initSchedulingView());
-        // 默认视图
+        // 线路运行图
+        // 显示默认视图
         showContentView(views);
 
     }
@@ -515,9 +515,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void initTabEvent() {
         /*控制台*/
         rlController.setOnClickListener(this);
+         /*排班计划*/
+        rlSchedule.setOnClickListener(this);
         /*线路运行图*/
-        /*排班计划*/
-        //rlSchedule.setOnClickListener(this);
         /*设置按钮*/
         imgSetting.setOnClickListener(this);
     }
@@ -854,16 +854,16 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case 0:
                 rlController.setBackground(getDrawable(true));
                 tvController.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
-//              rlSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
-//              tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+                rlSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+                tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
                 break;
             case 1:
+               rlSchedule.setBackground(getDrawable(true));
+               tvSchedule.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
+               rlController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+               tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
                 break;
             case 2:
-//              rlSchedule.setBackground(getDrawable(true));
-//              tvSchedule.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
-//              rlController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
-//              tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
                 break;
             case 3:
                 break;
@@ -997,14 +997,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 vpMain.setCurrentItem(0);
                 setTabBackground(0);
                 break;
-//          case R.id.rl_schedule:
-//              vpMain.setCurrentItem(2);
-//              setTabBackground(2);
-//              break;
+            case R.id.rl_schedule:
+                vpMain.setCurrentItem(1);
+                setTabBackground(1);
+                break;
             case R.id.img_setting:
                 showPopupWindow();
                 break;
-//            case R.id.rl_menu_background:
+//          case R.id.rl_menu_background:
             case R.id.img_menu_on_off:
                 changeControlDeckView();
                 break;
