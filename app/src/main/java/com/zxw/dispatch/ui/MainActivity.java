@@ -48,6 +48,7 @@ import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
+import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
@@ -96,8 +97,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     FrameLayout fl_horizontal;
     CustomViewPager vp_horizontal;
 //    RecyclerView eStopRV;
-
-    // 垂直方向
     TextView tv_stab1;// 已发车辆
     TextView tv_stab2;
     TextView tv_stab3;
@@ -107,6 +106,18 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     TextView tv_wtab3;
     TextView tv_ver_stop_tab1;
     TextView tv_ver_stop_tab2;
+    private int stab1_size=0;
+    private int stab2_size=0;
+    private int stab3_size=0;
+    private int wtab1_size=0;
+    private int wtab2_size=0;
+    private int wtab3_size=0;
+    private int ptab1_size=0;
+    private int ptab2_size=0;
+
+    private int sCount = 0;
+    private int wCount = 0;
+    private int tCount = 0;
     CustomViewPager vp_wait_car, vp_stop_car;
     private List<View> startViews = new ArrayList<View>();
     private List<View> waitViews = new ArrayList<View>();
@@ -142,6 +153,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     CustomViewPager vpMain;
     TextView tvAutomatic;
     TextView tvManual;
+    TextView tvVerWaitCar;
+    TextView tvVerStopCar;
+
     @Bind(R.id.tv_user_name)
     TextView tvUserName;
     @Bind(R.id.tv_system_date)
@@ -159,6 +173,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private boolean isShow = true;
     private boolean isClickWaitCar = true;
     private boolean isPopbg = true;
+    private int startCarCount = 0;
     private TextView tv_steward_send;
     private TextView tv_steward_gone;
 
@@ -302,6 +317,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         /*停场车辆*/
         initVerStopCarViewPager(view);
         /*固有操作*/
+        tvVerWaitCar = (TextView) view.findViewById(R.id.tv_ver_wait_car);
+        tvVerStopCar = (TextView) view.findViewById(R.id.tv_ver_stop_car);
         tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);// 自动发车
         tvManual = (TextView) view.findViewById(R.id.tv_manual);// 手动发车
         tvAutomatic.setOnClickListener(this);
@@ -552,12 +569,17 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     @Override
-    public void loadSendCarList(DragListAdapter mDragListAdapter) {
+    public void loadSendCarList(DragListAdapter mDragListAdapter) {   // 待发tab1
         isHaveSendCar = false;
+        wtab1_size = mDragListAdapter.getCount();
+        setWaitCarCount();
+        tv_wtab1.setText(showCount(R.string.line_operate,mDragListAdapter.getCount()));
+
         DragListView.MyDragListener mListener = createMyDragListener();
         mSendRV1.setAdapter(mDragListAdapter);
         mSendRV1.setMyDragListener(mListener);
 
+        mHorWaitCarView.setTab1tWaitCarCount(mDragListAdapter);
         mHorWaitCarView.setAdapterForNormal(mDragListAdapter);
         mHorWaitCarView.setMyDragListener(mListener);
 
@@ -574,24 +596,46 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         };
     }
 
+
     @Override
-    public void loadGoneCarByNormal(GoneAdapterForNormal goneAdapter) {
+    public void loadGoneCarByNormal(GoneAdapterForNormal goneAdapter) { // 已发tab1
+        stab1_size = goneAdapter.getCount();
+        setStartCarCount();
+        tv_stab1.setText(showCount(R.string.line_operate,goneAdapter.getCount()));
         mGoneRV1.setAdapter(goneAdapter);
+
+        mHorStartCarView.setTab1tStartCarCount(goneAdapter);
         mHorStartCarView.setEGoneRVAdapterForNormal(goneAdapter);
     }
 
     @Override
-    public void loadStopStayCarList(List<StopHistory> stopHistories) {
+    public void loadStopStayCarList(List<StopHistory> stopHistories) { // 停场tab1
+        ptab1_size = stopHistories.size()-1;
+        setStopCarCount();
+        tv_ver_stop_tab1.setText(showCount(R.string.stop_stay,ptab1_size));
         StopStayAdapter mAdapter = createStopStayAdapter(stopHistories);
         mStopRV1.setAdapter(mAdapter);
+
+        mHorStopCarView.setTab1tStopCarCount(mAdapter);
         mHorStopCarView.setAdapterForStay(mAdapter);
 //        eStopRV.setAdapter(mAdapter);
     }
 
+    private String showCount(int stringRes,int carCount){
+        String format= mContext.getResources().getString(stringRes);
+        return String.format(format,carCount);
+    }
+
+
     @Override
-    public void loadStopEndCarList(List<StopHistory> stopHistories) {
+    public void loadStopEndCarList(List<StopHistory> stopHistories) { //停场tab2
+        ptab2_size = stopHistories.size();
+        setStopCarCount();
+        tv_ver_stop_tab2.setText(showCount(R.string.stop_end,stopHistories.size()));
         StopEndAdapter mAdapter = createStopEndAdapter(stopHistories);
         mStopRV2.setAdapter(mAdapter);
+
+        mHorStopCarView.setTab2tStopCarCount(mAdapter);
         mHorStopCarView.setAdapterForEnd(mAdapter);
 
     }
@@ -652,6 +696,38 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         new NoMissionTypeWaitCarDialog(mContext,adapter);
     }
 
+
+
+
+    private void setStartCarCount() {
+        sCount = stab1_size+stab2_size+stab3_size;
+        String format= mContext.getResources().getString(R.string.start_car_count);
+        String startCount = String.format(format,sCount);
+        tvMenuDepart.setText(startCount);
+        tvMenuGoneCar.setText(startCount);
+        DebugLog.i("已发车辆："+startCount);
+    }
+
+
+    private void setWaitCarCount() {
+        wCount = wtab1_size+wtab2_size+wtab3_size;
+        String format= mContext.getResources().getString(R.string.wait_car_count);
+        String waitCount = String.format(format,wCount);
+        tvVerWaitCar.setText(waitCount);
+        tvMenuWaitCar.setText(waitCount);
+        DebugLog.i("待发车辆："+waitCount);
+    }
+
+
+    private void setStopCarCount() {
+        tCount= ptab1_size+ptab2_size;
+        String format= mContext.getResources().getString(R.string.stop_car_count);
+        String stopCount = String.format(format,tCount);
+        tvVerStopCar.setText(stopCount);
+        tvMenuStopCar.setText(stopCount);
+        DebugLog.i("停场车辆："+stopCount);
+    }
+
     @Override
     public void hideStewardName() {
         isShowStewardName(View.GONE);
@@ -669,26 +745,47 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     @Override
-    public void loadGoneCarByOperatorEmpty(GoneAdapterForOperatorEmpty goneAdapter) {
+    public void loadGoneCarByOperatorEmpty(GoneAdapterForOperatorEmpty goneAdapter) { // 已发tab2
+        stab2_size = goneAdapter.getCount();
+        setStartCarCount();
+        tv_stab2.setText(showCount(R.string.operator_empty,goneAdapter.getCount()));
         mGoneRV2.setAdapter(goneAdapter);
+
+        mHorStartCarView.setTab2tStartCarCount(goneAdapter);
         mHorStartCarView.setEGoneRVAdapterForOperatorEmpty(goneAdapter);
     }
 
     @Override
-    public void loadGoneCarByNotOperatorEmpty(GoneAdapterForNotOperatorEmpty goneAdapter) {
+    public void loadGoneCarByNotOperatorEmpty(GoneAdapterForNotOperatorEmpty goneAdapter) { // 已发tab3
+        stab3_size = goneAdapter.getCount();
+        setStartCarCount();
+        tv_stab3.setText(showCount(R.string.not_operator_empty,goneAdapter.getCount()));
         mGoneRV3.setAdapter(goneAdapter);
+
+        mHorStartCarView.setTab3tStartCarCount(goneAdapter);
         mHorStartCarView.setEGoneRVAdapterForNotOperatorEmpty(goneAdapter);
     }
 
     @Override
-    public void loadSendCarForOperatorEmpty(DragListAdapterForOperatorEmpty mDragListAdapter) {
+    public void loadSendCarForOperatorEmpty(DragListAdapterForOperatorEmpty mDragListAdapter) {  // 待发tab2
+        wtab2_size = mDragListAdapter.getCount();
+        setWaitCarCount();
+        tv_wtab2.setText(showCount(R.string.operator_empty,mDragListAdapter.getCount()));
         mSendRV2.setAdapter(mDragListAdapter);
+
+        mHorWaitCarView.setTab2tWaitCarCount(mDragListAdapter);
         mHorWaitCarView.setAdapterForOperatorEmpty(mDragListAdapter);
+
     }
 
     @Override
-    public void loadSendCarForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty mDragListAdapter) {
+    public void loadSendCarForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty mDragListAdapter) { // 待发tab3
+        wtab3_size = mDragListAdapter.getCount();
+        setWaitCarCount();
+        tv_wtab3.setText(showCount(R.string.not_operator_empty,mDragListAdapter.getCount()));
         mSendRV3.setAdapter(mDragListAdapter);
+
+        mHorWaitCarView.setTab3tWaitCarCount(mDragListAdapter);
         mHorWaitCarView.setAdapterForNotOperatorEmpty(mDragListAdapter);
     }
 
@@ -750,7 +847,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         intent.putExtra("lineKey", line.lineId);
         sendBroadcast(intent);
         presenter.onSelectLine(line);
-        int lineId = line.lineId;
         presenter.onAddRecordingCarTaskNameList(line.lineId);
     }
 

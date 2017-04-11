@@ -261,6 +261,11 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
     }
 
 
+    public int getCount() {
+        return mData.size();
+    }
+
+
     @Override
     public int getItemCount() {
         return mData.size();

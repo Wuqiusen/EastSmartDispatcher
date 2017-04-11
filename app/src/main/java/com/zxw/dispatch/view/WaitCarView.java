@@ -98,6 +98,23 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
         vp_wait_car.setCurrentItem(i);
     }
 
+    public void setTab1tWaitCarCount(DragListAdapter adapter){
+        tv_wtab1.setText(showCount(R.string.line_operate,adapter.getCount()));
+    }
+
+    public void setTab2tWaitCarCount(DragListAdapterForOperatorEmpty mDragListAdapter){
+        tv_wtab2.setText(showCount(R.string.operator_empty,mDragListAdapter.getCount()));
+    }
+
+    public void setTab3tWaitCarCount(DragListAdapterForNotOperatorEmpty mDragListAdapter){
+        tv_wtab3.setText(showCount(R.string.not_operator_empty,mDragListAdapter.getCount()));
+    }
+
+    private String showCount(int stringRes,int carCount){
+        String format= mContext.getResources().getString(stringRes);
+        return String.format(format,carCount);
+    }
+
     public void setAdapterForNormal(DragListAdapter adapter){
        eSendRV1.setAdapter(adapter);
     }
