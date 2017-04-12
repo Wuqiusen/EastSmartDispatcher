@@ -2,7 +2,6 @@ package com.zxw.dispatch.presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.Line;
@@ -31,7 +30,6 @@ import com.zxw.dispatch.utils.DebugLog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -61,6 +59,14 @@ public class MainPresenter extends BasePresenter<MainView> {
     private Timer timer = null;
     private TimerTask timerTask;
     private int spotId;
+    private List<DepartCar> mWaitVehicles;
+    private List<DepartCar> operatorVehicles;
+    private List<DepartCar> noOperatorVehicles;
+    private List<SendHistory> mSendHistories;
+    private List<SendHistory> operatorHistories;
+    private List<SendHistory> noOperatorHistories;
+    private List<StopHistory> mStopHistories;
+    private List<StopHistory> endStopHistories;
 
     public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
@@ -184,7 +190,10 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<SendHistory> sendHistories) {
-                mvpView.loadGoneCarByNormal(new GoneAdapterForNormal(sendHistories, mContext, mLineParams, MainPresenter.this));
+                if (mSendHistories == null || !checkList(mSendHistories, sendHistories)){
+                    mSendHistories = sendHistories;
+                    mvpView.loadGoneCarByNormal(new GoneAdapterForNormal(sendHistories, mContext, mLineParams, MainPresenter.this));
+                }
             }
         }, userId(), keyCode(), lineId);
     }
@@ -202,7 +211,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<SendHistory> sendHistories) {
-                mvpView.loadGoneCarByOperatorEmpty(new GoneAdapterForOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+                if (operatorHistories == null || !checkList(operatorHistories, sendHistories)){
+                    operatorHistories = sendHistories;
+                    mvpView.loadGoneCarByOperatorEmpty(new GoneAdapterForOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+                }
+
             }
         }, userId(), keyCode(), lineId);
     }
@@ -220,7 +233,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<SendHistory> sendHistories) {
-                mvpView.loadGoneCarByNotOperatorEmpty(new GoneAdapterForNotOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+                if (noOperatorHistories == null || !checkList(noOperatorHistories, sendHistories)){
+                    noOperatorHistories = sendHistories;
+                    mvpView.loadGoneCarByNotOperatorEmpty(new GoneAdapterForNotOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+                }
+
             }
         }, userId(), keyCode(), lineId);
     }
@@ -246,8 +263,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
-                DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
-                mvpView.loadSendCarList(mDragListAdapter);
+                if (mWaitVehicles == null || !checkList(mWaitVehicles, waitVehicles)){
+                    mWaitVehicles = waitVehicles;
+                    DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+                    mvpView.loadSendCarList(mDragListAdapter);
+                }
 
             }
         }, userId(), keyCode(), lineId);
@@ -266,8 +286,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
-                DragListAdapterForOperatorEmpty mDragListAdapter = new DragListAdapterForOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
-                mvpView.loadSendCarForOperatorEmpty(mDragListAdapter);
+                if (operatorVehicles == null || !checkList(operatorVehicles, waitVehicles)){
+                    operatorVehicles = waitVehicles;
+                    DragListAdapterForOperatorEmpty mDragListAdapter = new DragListAdapterForOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+                    mvpView.loadSendCarForOperatorEmpty(mDragListAdapter);
+                }
             }
         }, userId(), keyCode(), lineId);
     }
@@ -285,8 +308,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
-                DragListAdapterForNotOperatorEmpty mDragListAdapter = new DragListAdapterForNotOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
-                mvpView.loadSendCarForNotOperatorEmpty(mDragListAdapter);
+                if (noOperatorVehicles == null || !checkList(noOperatorVehicles, waitVehicles)){
+                    noOperatorVehicles = waitVehicles;
+                    DragListAdapterForNotOperatorEmpty mDragListAdapter = new DragListAdapterForNotOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+                    mvpView.loadSendCarForNotOperatorEmpty(mDragListAdapter);
+                }
             }
         }, userId(), keyCode(), lineId);
     }
@@ -377,7 +403,10 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<StopHistory> stopHistories) {
-                mvpView.loadStopEndCarList(stopHistories);
+                if (endStopHistories == null || !checkList(endStopHistories, stopHistories)){
+                    endStopHistories = stopHistories;
+                    mvpView.loadStopEndCarList(stopHistories);
+                }
             }
         }, userId(), keyCode(), lineId);
     }
@@ -396,8 +425,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<StopHistory> stopHistories) {
-                stopHistories.add(new StopHistory());
-                mvpView.loadStopStayCarList(stopHistories);
+                if (mStopHistories == null || !checkList(mStopHistories, stopHistories)){
+                    stopHistories.add(new StopHistory());
+                    mStopHistories = stopHistories;
+                    mvpView.loadStopStayCarList(stopHistories);
+                }
             }
         }, userId(), keyCode(), lineId);
     }
@@ -418,6 +450,11 @@ public class MainPresenter extends BasePresenter<MainView> {
     public void selectManual() {
 //        Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
         receiverIntent.putExtra("lineId", lineId);
+        mContext.sendBroadcast(receiverIntent);
+    }
+
+    public void closeService(){
+        receiverIntent.putExtra("order", "close");
         mContext.sendBroadcast(receiverIntent);
     }
 
@@ -841,8 +878,14 @@ public class MainPresenter extends BasePresenter<MainView> {
                                      },
                 userId(), keyCode(), id);
     }
-//判断连个list是否相等
-    private boolean checkList(List<Object> list1, List<Object> list2){
+
+    /**
+     * 判断两个list是否相等
+     * @param list1
+     * @param list2
+     * @return
+     */
+    private boolean checkList(List<?> list1, List<?> list2){
         if (list1.containsAll(list2) && list2.containsAll(list1)){
             return true;
         }else {

@@ -566,6 +566,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void reLogin() {
+        //取消自动发车
+        if (isAuto) {
+            presenter.closeService();
+            isAuto = false;
+        }
         SpUtils.logOut(MyApplication.mContext);
         startActivity(new Intent(this, LoginActivity.class));
         finish();
@@ -1302,6 +1307,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void doLoginOut() {
+        //取消自动发车
+        if (isAuto) {
+            presenter.closeService();
+            isAuto = false;
+        }
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         SpUtils.logOut(mContext);
         startActivity(intent);

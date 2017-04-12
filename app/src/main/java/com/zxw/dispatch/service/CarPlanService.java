@@ -224,6 +224,10 @@ public class CarPlanService extends Service {
                 handler.sendMessage(obtain);
 
             }
+            //关闭service，注销时候使用
+            if (TextUtils.equals(intent.getStringExtra("order"), "close")){
+                serviceDestroy();
+            }
         }
     }
 
@@ -275,6 +279,14 @@ public class CarPlanService extends Service {
             Log.e("closeService---", "service数据为空");
             this.onDestroy();
         }
+    }
+
+    /**
+     * 切底关闭service
+     */
+    private void serviceDestroy(){
+        Log.e("serviceDestroy------", "service关闭");
+        this.onDestroy();
     }
 
 

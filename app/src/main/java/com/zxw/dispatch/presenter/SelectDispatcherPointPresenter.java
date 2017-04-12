@@ -17,6 +17,7 @@ import rx.Subscriber;
 
 public class SelectDispatcherPointPresenter extends BasePresenter<SelectDispatcherPointView> {
     private Activity mActivity;
+    private Intent receiverIntent = new Intent("com.zxw.dispatch.service.RECEIVER");
     public SelectDispatcherPointPresenter(SelectDispatcherPointView mvpView, Activity mActivity) {
         super(mvpView);
         this.mActivity = mActivity;
@@ -33,6 +34,8 @@ public class SelectDispatcherPointPresenter extends BasePresenter<SelectDispatch
             public void onError(Throwable e) {
                 DebugLog.w(e.getMessage());
                 if (e.getMessage().equals("重复登录")){
+                    receiverIntent.putExtra("order", "close");
+                    mActivity.sendBroadcast(receiverIntent);
                     SpUtils.logOut(mActivity);
                     Intent intent = new Intent(mActivity, LoginActivity.class);
                     mActivity.startActivity(intent);
