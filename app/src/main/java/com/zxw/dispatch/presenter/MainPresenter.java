@@ -8,6 +8,7 @@ import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.NonMissionType;
+import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
@@ -23,6 +24,7 @@ import com.zxw.dispatch.recycler.GoneAdapterForNormal;
 import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
+import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
 import com.zxw.dispatch.service.CarPlanService;
 import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.DESPlus;
@@ -891,5 +893,31 @@ public class MainPresenter extends BasePresenter<MainView> {
         }else {
             return false;
         }
+    }
+
+    public void loadSchedulePlan() {
+        HttpMethods.getInstance().schedulePlan(new Subscriber<List<SchedulePlanBean>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+               mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(List<SchedulePlanBean> schedulePlanBeen) {
+                if (schedulePlanBeen!=null && !schedulePlanBeen.isEmpty()){
+                    SchedulePlanListAdapter mAdapter = new SchedulePlanListAdapter(mContext,schedulePlanBeen);
+                    mvpView.loadSchedulePlanList(mAdapter);
+                }else{
+                    mvpView.disPlay("排班计划暂时无数据");
+                }
+
+            }
+        },userId(),keyCode(),lineId);
+
     }
 }
