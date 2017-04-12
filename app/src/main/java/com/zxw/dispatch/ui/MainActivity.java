@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.MissionType;
+import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.MyApplication;
@@ -45,6 +46,7 @@ import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
+import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
@@ -135,6 +137,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     RelativeLayout rlSchedule;
     @Bind(R.id.tv_schedule)
     TextView tvSchedule;
+    RecyclerView mScheduleRV;
 
     /*设置*/
     @Bind(R.id.img_setting)
@@ -264,6 +267,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private View initSchedulingView() {
         View view = View.inflate(mContext, R.layout.tab_view_scheduling_plan, null);
+        mScheduleRV = (RecyclerView) view.findViewById(R.id.rv_scheduling_plan);
+        mScheduleRV.setLayoutManager(new LinearLayoutManager(this));
+        mScheduleRV.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL_LIST));
         return view;
     }
 
@@ -781,6 +788,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mHorWaitCarView.setAdapterForNotOperatorEmpty(mDragListAdapter);
     }
 
+    @Override
+    public void loadSchedulePlanList(SchedulePlanListAdapter adapter) {
+        mScheduleRV.setAdapter(adapter);
+    }
+
     private void isShowStewardName(int isVisible) {
         mGoneRV1_StewardShow.setVisibility(isVisible);
         mGoneRV2_StewardShow.setVisibility(isVisible);
@@ -993,6 +1005,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.rl_schedule:
                 vpMain.setCurrentItem(1);
                 setTabBackground(1);
+                presenter.loadSchedulePlan();
+                isPopbg = false;
                 break;
             case R.id.img_setting:
                 showPopupWindow();
