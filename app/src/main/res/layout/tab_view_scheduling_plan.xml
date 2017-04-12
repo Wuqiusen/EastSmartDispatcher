@@ -2,46 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/normal_margin10"
     android:background="@color/white"
     android:orientation="vertical" >
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_marginBottom="@dimen/margin_tiny"
+       android:layout_margin="@dimen/normal_margin10"
        android:orientation="horizontal">
        <TextView
            style="@style/main_activity_top_button"
+           android:layout_width="0dp"
            android:layout_weight="1"
            android:text="序号"
            />
 
        <TextView
            style="@style/main_activity_top_button"
+           android:layout_width="0dp"
            android:layout_weight="1"
            android:text="车牌号"
            />
 
        <TextView
            style="@style/main_activity_top_button"
+           android:layout_width="0dp"
            android:layout_weight="1"
            android:text="单双班"
            />
 
        <TextView
            style="@style/main_activity_top_button"
+           android:layout_width="0dp"
            android:layout_weight="1"
            android:text="驾驶员"
            />
 
        <TextView
            style="@style/main_activity_top_button"
+           android:layout_width="0dp"
            android:layout_weight="1"
            android:text="乘务员"
            />
 
        <TextView
            style="@style/main_activity_top_button"
+           android:layout_width="0dp"
            android:layout_weight="1"
            android:text="单次(次)"
            />
@@ -52,9 +57,12 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/line_blue"
+        android:layout_marginLeft="@dimen/normal_margin10"
+        android:layout_marginRight="@dimen/normal_margin10"
         />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_scheduling_plan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/normal_margin10"
