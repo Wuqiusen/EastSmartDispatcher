@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="0dp"
     android:layout_weight="1"
-    android:layout_height="wrap_content">
+    android:layout_height="300dp">
     <com.zxw.dispatch.view.smart_edittext.SmartEditText
         android:id="@+id/se_line"
         android:layout_width="match_parent"

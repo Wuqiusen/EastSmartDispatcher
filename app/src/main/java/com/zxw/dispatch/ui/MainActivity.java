@@ -50,7 +50,6 @@ import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
-import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.CustomViewPager;
@@ -240,7 +239,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         initView();
         initTabEvent();
         spotId = getIntent().getIntExtra("spotId", -1);
-//        presenter.loadLineList(1);
+//        spotId = 1;
         presenter.loadLineList(spotId);
         presenter.checkStopCar(spotId);
     }
@@ -348,14 +347,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         View view_stab1 = View.inflate(mContext,R.layout.item_stop_car,null);
         mStopRV1 = (RecyclerView) view_stab1.findViewById(R.id.rv_menu_stop_car);
         mStopRV1.setLayoutManager(new GridLayoutManager(this,8));
-        mStopRV1.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL_LIST));
 
         View view_stab2 = View.inflate(mContext,R.layout.item_stop_car1,null);
         mStopRV2 = (RecyclerView) view_stab2.findViewById(R.id.rv_menu_stop_car);
         mStopRV2.setLayoutManager(new GridLayoutManager(this,8));
-        mStopRV2.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL_LIST));
 
         stopViews.add(view_stab1);
         stopViews.add(view_stab2);

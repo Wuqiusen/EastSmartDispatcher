@@ -144,7 +144,6 @@ public class DragListAdapter extends BaseAdapter {
                 new TimePlanPickerDialog(mContext,mDatas.get(position).getVehTime(),new TimePlanPickerDialog.OnTimePickerListener() {
                     @Override
                     public void onTimePicker(String sHour, String sMinute) {
-                             ToastHelper.showToast(sHour+":"+sMinute,mContext);
                              presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
                     }
                 }).show();
@@ -182,16 +181,6 @@ public class DragListAdapter extends BaseAdapter {
         tv_is_double.setText(mDatas.get(position).getIsDouble() == 0 ?"单班":"双班");
         // 任务类型
         tv_work_type.setText(mDatas.get(position).getTypeName());
-        tv_work_type.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDatas.get(position).getTaskId() != null)
-                presenter.getMissionList(mDatas.get(position).getId(), mDatas.get(position).getType(), mDatas.get(position).getTaskId());
-                else
-                    presenter.getMissionList(mDatas.get(position).getId(), mDatas.get(position).getType(),"");
-//                  openTaskTypeDialog();
-            }
-        });
 
         tv_send_car.setOnClickListener(new View.OnClickListener() {
             @Override

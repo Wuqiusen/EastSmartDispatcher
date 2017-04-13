@@ -1,75 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="0dp"
+    android:layout_width="wrap_content"
     android:layout_weight="1"
+    android:gravity="center"
     android:layout_height="wrap_content">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <Spinner
-        android:id="@+id/sp_stop_car_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp">
+        <TextView
+            style="@style/stop_car_dialog_show_tv"
+            android:text="请选择任务"/>
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:layout_weight="1">
+            <Spinner
+                android:id="@+id/sp_stop_car_item"
+                style="@style/sp_style"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:spinnerMode="dropdown"
+                android:overlapAnchor="false"
+                android:layout_centerVertical="true"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/trgion_gray"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/normal_margin10"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="预计开始时间"/>
+            style="@style/stop_car_dialog_show_tv"
+            android:text="预计出发时间"/>
         <EditText
             android:id="@+id/et_stop_car_item_start_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/stop_car_dialog_edittext"
             />
     </LinearLayout>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="预计结束时间"/>
+            style="@style/stop_car_dialog_show_tv"
+            android:text="预计到达时间"/>
         <EditText
             android:id="@+id/et_stop_car_item_end_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="@style/stop_car_dialog_edittext" />
     </LinearLayout>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/stop_car_dialog_show_tv"
             android:text="折算单次（次）"/>
         <EditText
             android:id="@+id/et_stop_car_item_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="@style/stop_car_dialog_edittext" />
     </LinearLayout>
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/stop_car_dialog_show_tv"
             android:text="里程（km）"/>
         <EditText
             android:id="@+id/et_stop_car_item_km"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="@style/stop_car_dialog_edittext" />
     </LinearLayout>
 </LinearLayout>

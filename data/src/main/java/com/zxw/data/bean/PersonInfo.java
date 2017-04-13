@@ -9,4 +9,5 @@ package com.zxw.data.bean;
 public class PersonInfo {
     public int personId;
     public String personName;
+    public String personCode;
 }
