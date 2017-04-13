@@ -15,6 +15,7 @@ import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
+import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
@@ -37,10 +38,10 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-//    public static final String BASE_URL = "http://192.168.0.50:8081/yd_control_app/";
+    public static final String BASE_URL = "http://192.168.0.50:8081/yd_control_app/";
 //    public static final String BASE_URL = "http://192.168.1.133:8082/yd_control_app/";
 //    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
-    public static final String BASE_URL = "http://150970t1u9.51mypc.cn:52222/yd_control_app/";
+//    public static final String BASE_URL = "http://150970t1u9.51mypc.cn:52222/yd_control_app/";// 测试
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
     private static class SingletonHolder{
@@ -341,6 +342,13 @@ public class HttpMethods {
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable<List<Line>> map = operator.lineSupport(userId, keyCode,objId, lineId).map(new HttpResultFunc());
         toSubscribe(map, subscriber);
+    }
+
+    //排班计划
+    public void schedulePlan(Subscriber<List<SchedulePlanBean>> subscriber,String userId,String keyCode,int lineId){
+        HttpInterfaces.SchedulePlan schedulePlan = retrofit.create(HttpInterfaces.SchedulePlan.class);
+        Observable<List<SchedulePlanBean>> map = schedulePlan.shedulePlan(userId,keyCode,lineId).map(new HttpResultFunc<List<SchedulePlanBean>>());
+        toSubscribe(map,subscriber);
     }
 
     public void getInformData(Subscriber<List<InformDataBean>> subscriber, String userId, String keyCode){
