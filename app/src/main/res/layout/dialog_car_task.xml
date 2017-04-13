@@ -181,7 +181,7 @@
             <TextView
                 style="@style/font_dialog_add_recording"
                 android:layout_weight="1.4"
-                android:text="开始时间:"
+                android:text="出发时间:"
                 />
             <View style="@style/line_dialog_style"/>
             <EditText
@@ -204,7 +204,7 @@
             <TextView
                 style="@style/font_dialog_add_recording"
                 android:layout_weight="1.4"
-                android:text="结束时间:"
+                android:text="到达时间:"
                 />
             <View style="@style/line_dialog_style"/>
             <EditText

@@ -209,6 +209,11 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
                 ToastHelper.showToast("请输入结束时间");
                 return;
             }
+
+            if (beginTime.length() != 4 || endTime.length() != 4){
+                ToastHelper.showToast("请输入正确的时间");
+                return;
+            }
             String runNum = et_runNum.getText().toString().trim();
             if (TextUtils.isEmpty(runNum)){
                 ToastHelper.showToast("请输入折算单次(次)");

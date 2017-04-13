@@ -66,6 +66,13 @@
             <include layout="@layout/dialog_stop_car_item4"
                 android:visibility="gone"
                 android:id="@+id/item4"/>
+            <TextView
+                android:id="@+id/item5"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="温馨提示：请确认是否收班？"/>
 
         </LinearLayout>
         <LinearLayout

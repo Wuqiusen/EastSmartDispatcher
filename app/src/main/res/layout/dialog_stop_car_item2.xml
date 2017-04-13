@@ -48,7 +48,7 @@
         android:orientation="horizontal">
         <TextView
             style="@style/stop_car_dialog_show_tv"
-            android:text="预计开始时间"/>
+            android:text="预计出发时间"/>
         <EditText
             android:id="@+id/et_stop_car_item_start_time"
             style="@style/stop_car_dialog_edittext"
@@ -60,7 +60,7 @@
         android:orientation="horizontal">
         <TextView
             style="@style/stop_car_dialog_show_tv"
-            android:text="预计结束时间"/>
+            android:text="预计到达时间"/>
         <EditText
             android:id="@+id/et_stop_car_item_end_time"
             style="@style/stop_car_dialog_edittext" />

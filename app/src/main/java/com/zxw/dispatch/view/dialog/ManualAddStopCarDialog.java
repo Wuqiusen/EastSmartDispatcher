@@ -105,6 +105,7 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
             }
         });
         dialog = setView(container).show();
+        dialog.setCancelable(false);
     }
 
     private void initSmartEditText() {

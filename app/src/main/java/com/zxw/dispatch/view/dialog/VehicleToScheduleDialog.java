@@ -60,6 +60,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
     private List<MissionType.TaskContentBean> taskContents2;
     private Spinner sp_stop_car_item2;
     private Spinner sp_stop_car_item3;
+    private TextView containerView5;
 
     public VehicleToScheduleDialog(Context context, StopHistory stopCar, OnClickListener listener, int lineId) {
         super(context, R.style.alder_dialog);
@@ -127,6 +128,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
                         break;
                     case R.id.rb_off_duty:
                         currentCategory = 5;
+                        showContainerView5();
                 }
             }
         });
@@ -135,6 +137,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         containerView2 = (LinearLayout) container.findViewById(R.id.item2);
         containerView3 = (LinearLayout) container.findViewById(R.id.item3);
         containerView4 = (LinearLayout) container.findViewById(R.id.item4);
+        containerView5 = (TextView) container.findViewById(R.id.item5);
         seLine = (SmartEditText) container.findViewById(R.id.se_line);
         seLine.addQueryLineEditTextListener(lineId + "");
 
@@ -207,6 +210,9 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         return false;
     }
 
+    private void showContainerView5() {
+        containerView5.setVisibility(View.VISIBLE);
+    }
     private void showContainerView4() {
         containerView4.setVisibility(View.VISIBLE);
     }
@@ -228,6 +234,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         containerView2.setVisibility(View.GONE);
         containerView3.setVisibility(View.GONE);
         containerView4.setVisibility(View.GONE);
+        containerView5.setVisibility(View.GONE);
     }
 
 
@@ -254,6 +261,10 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         if (isEmpty(endTime, "请填写预计结束时间")) return false;
         if (isEmpty(count, "请填写折算单次")) return false;
         if (isEmpty(km, "请填写里程")) return false;
+        if (beginTime.length() != 4 || endTime.length() != 4){
+            ToastHelper.showToast("请输入正确的时间");
+            return false;
+        }
         int selectedItemPosition = sp_stop_car_item2.getSelectedItemPosition();
         int taskId = taskContents2.get(selectedItemPosition).getTaskId();
         mListener.onClickOperatorNotEmptyMission(currentCategory, taskId, beginTime, endTime, count, km);
@@ -269,6 +280,10 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         if (isEmpty(endTime, "请填写预计结束时间")) return false;
         if (isEmpty(count, "请填写折算单次")) return false;
         if (isEmpty(km, "请填写里程")) return false;
+        if (beginTime.length() != 4 || endTime.length() != 4){
+            ToastHelper.showToast("请输入正确的时间");
+            return false;
+        }
         int selectedItemPosition = sp_stop_car_item2.getSelectedItemPosition();
         int taskId = taskContents2.get(selectedItemPosition).getTaskId();
         mListener.onClickOperatorEmptyMission(currentCategory, taskId, beginTime, endTime, count, km);
