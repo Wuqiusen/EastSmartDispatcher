@@ -15,6 +15,7 @@ import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
+import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
@@ -696,5 +697,15 @@ public class HttpInterfaces {
         Observable<BaseBean> upLoadLog(@Url String url, @Field("log") String log,
                                        @Field("phone") String phone,
                                        @Field("key") String key);
+    }
+
+    // 排班计划
+    public interface SchedulePlan{
+        @FormUrlEncoded
+        @POST("phone/control/manage/duty/schedule/list")
+        Observable<BaseBean<List<SchedulePlanBean>>> shedulePlan(
+                                                      @Field("userId") String userId,
+                                                      @Field("keyCode") String keyCode,
+                                                      @Field("lineId") int lineId);
     }
 }
