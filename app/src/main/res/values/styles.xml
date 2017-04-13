@@ -158,9 +158,8 @@
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
         <item name="android:paddingLeft">@dimen/margin_fit_6</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_marginTop">@dimen/margin_fit_6</item>
-        <item name="android:layout_marginBottom">@dimen/margin_fit_6</item>
         <item name="android:layout_marginRight">@dimen/normal_margin10</item>
+        <item name="android:inputType">number</item>
     </style>
 
     <!--自定义下拉列表-->
@@ -438,10 +437,10 @@
 
     <!--主界面顶部按钮样式-->
     <style name="main_activity_top_button">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">@color/font_blue</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_weight">0.2</item>
@@ -468,5 +467,31 @@
         <item name="android:layout_alignParentLeft">true</item>
     </style>
 
+    <style name="stop_car_dialog_radio_button">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:paddingLeft">6dp</item>
+    </style>
+    <style name="stop_car_dialog_show_tv" parent="stop_car_dialog_radio_button">
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+    <style name="stop_car_dialog_edittext">
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">10</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginRight">@dimen/normal_margin10</item>
+        <item name="android:inputType">number</item>
+        <item name="android:imeOptions">flagNoExtractUi</item>
+    </style>
 
 </resources>
