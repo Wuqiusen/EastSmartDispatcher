@@ -2,94 +2,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/background_gray3"
-    android:orientation="vertical">
-    <!--基本信息-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:layout_margin="@dimen/normal_margin10"
-        android:orientation="horizontal">
-        <TextView
-            style="@style/font_scheduling_body_style"
-            android:paddingLeft="@dimen/normal_margin10"
-            tools:text="2017"
-            android:text="2017"/>
-        <TextView
-            style="@style/font_scheduling_body_style"
-            android:text="年"
-             />
-        <TextView
-            style="@style/font_scheduling_body_style"
-            tools:text="2"
-            android:text="2"
-            />
-        <TextView
-            style="@style/font_scheduling_body_style"
-            android:text="月"
-             />
-        <TextView
-            style="@style/font_scheduling_body_style"
-            tools:text="15"
-            android:text="15"
-            />
-        <TextView
-            style="@style/font_scheduling_body_style"
-            android:text="日"
-             />
-        <TextView
-            style="@style/font_scheduling_body_style"
-            android:paddingLeft="10dp"
-            tools:text="车队一"
-            android:text="车队一"
-            />
-        <TextView
-            style="@style/font_scheduling_body_style"
-            android:paddingLeft="10dp"
-            android:text="排班计划" />
-    </LinearLayout>
+    android:background="@color/white"
+    android:orientation="vertical" >
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_margin="@dimen/normal_margin10"
+       android:orientation="horizontal">
+       <TextView
+           style="@style/main_activity_top_button"
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:text="序号"
+           />
+
+       <TextView
+           style="@style/main_activity_top_button"
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:text="车牌号"
+           />
+
+       <TextView
+           style="@style/main_activity_top_button"
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:text="单双班"
+           />
+
+       <TextView
+           style="@style/main_activity_top_button"
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:text="驾驶员"
+           />
+
+       <TextView
+           style="@style/main_activity_top_button"
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:text="乘务员"
+           />
+
+       <TextView
+           style="@style/main_activity_top_button"
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:text="单次(次)"
+           />
+   </LinearLayout>
+
+    <!--分割线-->
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginBottom="@dimen/normal_margin10"
-        android:background="@color/background_gray4"/>
-    <LinearLayout
+        android:background="@color/line_blue"
+        android:layout_marginLeft="@dimen/normal_margin10"
+        android:layout_marginRight="@dimen/normal_margin10"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_scheduling_plan"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:orientation="horizontal">
-         <!--主站（XX场站）-->
-           <LinearLayout
-               android:layout_width="0dp"
-               android:layout_weight="1"
-               android:layout_height="wrap_content"
-               android:minHeight="600dp"
-               android:orientation="vertical">
-               <!--副标题-->
-               <include layout="@layout/item_scheduling_head"/>
-               <!--主站列表-->
-               <android.support.v7.widget.RecyclerView
-                   android:layout_width="match_parent"
-                   android:layout_height="0dp"
-                   android:layout_weight="1"/>
-           </LinearLayout>
-        <!--副站（XX场站）-->
-           <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:minHeight="600dp"
-            android:orientation="vertical">
-            <!--副标题-->
-            <include layout="@layout/item_scheduling_head"/>
-            <!--副站列表-->
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/normal_margin10"
+        android:layout_marginRight="@dimen/normal_margin10"
+        />
 </LinearLayout>

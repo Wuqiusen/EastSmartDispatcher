@@ -61,13 +61,13 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_hor_wtab1:
-                mListener.onTabIsClick(0);
+                mListener.onTabIsClick(0,View.VISIBLE);
                 break;
             case R.id.tv_hor_wtab2:
-                mListener.onTabIsClick(1);
+                mListener.onTabIsClick(1,View.GONE);
                 break;
             case R.id.tv_hor_wtab3:
-                mListener.onTabIsClick(2);
+                mListener.onTabIsClick(2,View.GONE);
                 break;
         }
 
@@ -171,15 +171,9 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    private Drawable getDrawable(boolean isTab) {
-        if (isTab) {
-            return mContext.getResources().getDrawable(R.drawable.tab_white_rectangle);
-        }
-        return mContext.getResources().getDrawable(R.drawable.line_blue_height);
-    }
 
 
     public interface OnWaitCarTabListener{
-        void onTabIsClick(int pos);
+        void onTabIsClick(int pos,int isVisible);
     }
 }

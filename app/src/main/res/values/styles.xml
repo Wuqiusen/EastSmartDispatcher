@@ -183,6 +183,11 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="font_schedule_plan_style" parent="font_item_xml_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 
   <!--Dialog布局-->
     <!--TitleText被取代-->
