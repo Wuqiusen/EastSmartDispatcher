@@ -28,7 +28,7 @@ public class StopCarView extends LinearLayout implements View.OnClickListener {
     private TextView tv_wtab1;
     private TextView tv_wtab2;
     private OnStopCarTabListener mListener;
-    private CustomViewPager vp_stop_car;
+    private ChildViewPager vp_stop_car;
     private List<View> stopViews = new ArrayList<>();
     private RecyclerView eStopRV1;
     private RecyclerView eStopRV2;
@@ -44,7 +44,7 @@ public class StopCarView extends LinearLayout implements View.OnClickListener {
         tv_wtab2 = (TextView) findViewById(R.id.tv_hor_stop_tab2);
         tv_wtab1.setOnClickListener(this);
         tv_wtab2.setOnClickListener(this);
-        vp_stop_car = (CustomViewPager) findViewById(R.id.vp_stop_car);
+        vp_stop_car = (ChildViewPager) findViewById(R.id.vp_stop_car);
 
         MyPagerAdapter wAdapter = new MyPagerAdapter(inflateStopViews(),null);
         vp_stop_car.setAdapter(wAdapter);

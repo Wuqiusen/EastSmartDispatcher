@@ -8,6 +8,7 @@ import android.util.Log;
 public class ClickUtil {
 
     private static long lastClickTime = 0;
+    private static long lastClickBtnTime = 0;
 
     public static boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
@@ -16,4 +17,17 @@ public class ClickUtil {
         Log.i("log",""+timeD);
         return timeD <= 100;
     }
+
+
+
+    public static boolean isFastDoubleClickStopBtn() {
+        long time = System.currentTimeMillis();
+        if (time - lastClickBtnTime < 500) {
+            return true;
+        }
+        lastClickBtnTime = time;
+        return false;
+    }
+
+
 }
