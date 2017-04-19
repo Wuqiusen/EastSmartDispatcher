@@ -29,9 +29,9 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     private Context mContext;
     private OnAddRecordingCarTaskListener mListener;
     private RadioButton rb_operator_empty;
-    private TextView tv_operator_empty;
+//    private TextView tv_operator_empty;
     private RadioButton rb_no_operator_empty;
-    private TextView tv_no_operator_empty;
+//    private TextView tv_no_operator_empty;
     private Spinner sp_task_name;
     private SmartEditText smartEt_vehicleId;
     private SmartEditText smartEt_driverId;
@@ -73,9 +73,9 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     private void initView(Context context) {
         View view = View.inflate(context, R.layout.dialog_car_task,null);
         rb_operator_empty = (RadioButton) view.findViewById(R.id.rb_operator_empty);
-        tv_operator_empty = (TextView) view.findViewById(R.id.tv_operator_empty);
+//        tv_operator_empty = (TextView) view.findViewById(R.id.tv_operator_empty);
         rb_no_operator_empty = (RadioButton) view.findViewById(R.id.rb_no_operator_empty);
-        tv_no_operator_empty = (TextView) view.findViewById(R.id.tv_no_operator_empty);
+//        tv_no_operator_empty = (TextView) view.findViewById(R.id.tv_no_operator_empty);
         smartEt_vehicleId = (SmartEditText) view.findViewById(R.id.smartEt_vehicleId);
         smartEt_vehicleId.addQueryCarCodeEditTextListener();
         smartEt_driverId = (SmartEditText) view.findViewById(R.id.smartEt_driverId);
@@ -88,9 +88,9 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
         btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         sp_task_name = (Spinner) view.findViewById(R.id.sp_task_name);
         rb_operator_empty.setOnClickListener(this);
-        tv_operator_empty.setOnClickListener(this);
+//        tv_operator_empty.setOnClickListener(this);
         rb_no_operator_empty.setOnClickListener(this);
-        tv_no_operator_empty.setOnClickListener(this);
+//        tv_no_operator_empty.setOnClickListener(this);
         btn_save.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
 
@@ -103,11 +103,11 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rb_operator_empty:    //营运空驶
-            case R.id.tv_operator_empty:
+//            case R.id.tv_operator_empty:
                 setEmptyRbChecked();
                 break;
             case R.id.rb_no_operator_empty: // 非营运空驶
-            case R.id.tv_no_operator_empty:
+//            case R.id.tv_no_operator_empty:
                 setNoEmptyRbChecked();
                 break;
             case R.id.btn_save:

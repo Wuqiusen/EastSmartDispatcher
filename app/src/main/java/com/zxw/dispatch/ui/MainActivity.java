@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
@@ -132,24 +133,33 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private StartCarView mHorStartCarView;
     private WaitCarView mHorWaitCarView;
+    /*标题栏*/
+    @Bind(R.id.tv_user_name)
+    TextView tvUserName;
+    @Bind(R.id.tv_system_date)
+    TextView tvDate;
 
     // 操控台
-    @Bind(R.id.rl_controller)
-    RelativeLayout rlController;
+//    @Bind(R.id.rl_controller)
+//    RelativeLayout rlController;
+
     @Bind(R.id.tv_controller)
-    TextView tvController;
-    // 排班计划
-    @Bind(R.id.rl_schedule)
-    RelativeLayout rlSchedule;
+    TextView tvController; // 操控台
+
+
+//    @Bind(R.id.rl_schedule)
+//    RelativeLayout rlSchedule;
+
     @Bind(R.id.tv_schedule)
-    TextView tvSchedule;
+    TextView tvSchedule;// 排班计划
+
     RecyclerView mScheduleRV;
 
-    /*设置*/
+
     @Bind(R.id.img_setting)
-    ImageView imgSetting;
-    @Bind(R.id.rl_setting)
-    RelativeLayout rlSetting;
+    ImageView imgSetting;// 设置
+//    @Bind(R.id.rl_setting)
+//    RelativeLayout rlSetting;
 
     @Bind(R.id.rv_line)
     RecyclerView mLineRV;
@@ -164,10 +174,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     TextView tvVerWaitCar;
     TextView tvVerStopCar;
 
-    @Bind(R.id.tv_user_name)
-    TextView tvUserName;
-    @Bind(R.id.tv_system_date)
-    TextView tvDate;
+
     private MainAdapter mLineAdapter;
     private PopupAdapter popupAdapter;
     private AlertDialog mManualStopDialog, mStopCarDialog;
@@ -238,7 +245,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_new);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         createReceiver();
         initData();
@@ -254,8 +261,15 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void initData() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-        tvUserName.setText(SpUtils.getCache(mContext, SpUtils.NAME));
         tvDate.setText(formatter.format(curDate));
+
+        BitmapDrawable bitmap = (BitmapDrawable) mContext.getResources().getDrawable(R.mipmap.my_icon);
+        bitmap.setBounds(0,0,60,60);
+        tvUserName.setText(SpUtils.getCache(mContext, SpUtils.NAME));
+        tvUserName.setCompoundDrawables(bitmap,null,null,null);
+
+
+
     }
 
     private void initView() {
@@ -371,7 +385,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tv_wtab1.setOnClickListener(this);
         tv_wtab2.setOnClickListener(this);
         tv_wtab3.setOnClickListener(this);
-        tv_steward_send = (TextView) view.findViewById(R.id.tv_steward_send);
+//      tv_steward_send = (TextView) view.findViewById(R.id.tv_steward_send);
         vp_wait_car = (ChildViewPager) view.findViewById(R.id.vp_wait_car);
 
         MyPagerAdapter wAdapter = new MyPagerAdapter(inflateVerWaitCarViews(),null);
@@ -513,9 +527,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private void initTabEvent() {
         /*控制台*/
-        rlController.setOnClickListener(this);
+        tvController.setOnClickListener(this);
          /*排班计划*/
-        rlSchedule.setOnClickListener(this);
+        tvSchedule.setOnClickListener(this);
         /*线路运行图*/
         /*设置按钮*/
         imgSetting.setOnClickListener(this);
@@ -869,16 +883,16 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void setTabBackground(int tabPosition) {
         switch (tabPosition) {
             case 0:
-                rlController.setBackground(getDrawable(true));
                 tvController.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
-                rlSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+                tvController.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
                 tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+                tvSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 1:
-               rlSchedule.setBackground(getDrawable(true));
-               tvSchedule.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
-               rlController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
-               tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+                tvSchedule.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
+                tvSchedule.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
+                tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+                tvController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 2:
                 break;
@@ -1010,15 +1024,24 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rl_controller:
-                vpMain.setCurrentItem(0);
-                setTabBackground(0);
-                break;
-            case R.id.rl_schedule:
+//            case R.id.rl_controller:
+//                vpMain.setCurrentItem(0);
+//                setTabBackground(0);
+//                break;
+            case R.id.tv_controller:
+                 vpMain.setCurrentItem(0);
+                 setTabBackground(0);
+                 break;
+//            case R.id.rl_schedule:
+//                vpMain.setCurrentItem(1);
+//                setTabBackground(1);
+//                presenter.loadSchedulePlan();
+//                isPopbg = false;
+//                break;
+            case R.id.tv_schedule:
                 vpMain.setCurrentItem(1);
                 setTabBackground(1);
                 presenter.loadSchedulePlan();
-                isPopbg = false;
                 break;
             case R.id.img_setting:
                 showPopupWindow();
@@ -1120,17 +1143,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void showStartCarView(int i){
         vp_start_car.setCurrentItem(i);
         setVerStartCarTabScrollBar(i);
-
         mHorStartCarView.setStartCarCurrentItem(i);
         mHorStartCarView.setStartCarTabScrollBar(i);
-
         showAddRecordingBtn(View.VISIBLE);
     }
 
     private void showWaitCarView(int i,int visible) {
         vp_wait_car.setCurrentItem(i);
         setVerWaitCarTabScrollBar(i);
-
         mHorWaitCarView.setWaitCarCurrentItem(i);
         mHorWaitCarView.setWaitCarTabScrollBar(i);
         showVerAutoDepart(visible);
@@ -1143,7 +1163,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mHorStopCarView.setStopCarCurrentItem(i);
         setVerStopCarTabScrollBar(i);
         mHorStopCarView.setStopCarTabScrollBar(i);
-
     }
 
     private void showVerAutoDepart(int isVisible) {
@@ -1237,7 +1256,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mPopupWindow = new PopupWindow(popView, 360, LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
         mPopupWindow.setBackgroundDrawable(new PaintDrawable());
-        mPopupWindow.showAsDropDown(rlSetting,300,12);
+        mPopupWindow.showAsDropDown(imgSetting,300,6);
     }
 
     @Override

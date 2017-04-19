@@ -3,38 +3,46 @@
     <item
           android:state_checked="true"
           android:state_window_focused="false"
-          android:drawable="@drawable/radio_is_click_style" />
+          android:drawable="@drawable/radio_is_click_style">
+    </item>
     <item
         android:state_checked="false"
         android:state_window_focused="false"
-        android:drawable="@drawable/radio_no_click_style" />
+        android:drawable="@drawable/radio_no_click_style" >
+    </item>
 
     <item
         android:state_checked="true"
         android:state_pressed="true"
-        android:drawable="@drawable/radio_is_click_style" />
+        android:drawable="@drawable/radio_is_click_style">
+    </item>
 
     <item
         android:state_checked="false"
         android:state_pressed="true"
-        android:drawable="@drawable/radio_no_click_style" />
+        android:drawable="@drawable/radio_no_click_style" >
+    </item>
 
     <item
         android:state_checked="true"
         android:state_focused="true"
-        android:drawable="@drawable/radio_is_click_style" />
+        android:drawable="@drawable/radio_is_click_style" >
+    </item>
 
     <item
         android:state_checked="false"
         android:state_focused="true"
-        android:drawable="@drawable/radio_no_click_style" />
+        android:drawable="@drawable/radio_no_click_style" >
+    </item>
 
     <item
         android:state_checked="false"
-        android:drawable="@drawable/radio_no_click_style" />
+        android:drawable="@drawable/radio_no_click_style" >
+    </item>
 
     <item
         android:state_checked="true"
-        android:drawable="@drawable/radio_is_click_style" />
+        android:drawable="@drawable/radio_is_click_style" >
+    </item>
 
 </selector>

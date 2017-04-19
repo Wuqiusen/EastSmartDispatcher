@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    >
     <LinearLayout
         android:layout_width="600dp"
         android:layout_height="wrap_content"
@@ -31,41 +32,53 @@
             <View style="@style/line_dialog_style"/>
             <LinearLayout
                android:layout_width="0dp"
-               android:layout_height="wrap_content"
+               android:layout_height="match_parent"
                android:layout_weight="4.2"
-               android:gravity="center_horizontal"
+               android:gravity="center"
                android:orientation="horizontal">
+
                 <RadioButton
-                  android:id="@+id/rb_operator_empty"
-                  style="@style/rb_bg_style"
-                  android:layout_margin="@dimen/margin_fit_10"
-                  android:clickable="false"
-                  android:checked="true"
-                  android:textSize="@dimen/font_medium"
-                />
-                <TextView
-                  android:id="@+id/tv_operator_empty"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginRight="@dimen/normal_margin10"
-                  style="@style/font_rb_cb_style"
-                  android:text="营运空驶"
-                />
+                    android:id="@+id/rb_operator_empty"
+                    style="@style/rb_is_checked_style"
+                    android:text="营运空驶"
+                    />
+                <!--<RadioButton-->
+                  <!--android:id="@+id/rb_operator_empty"-->
+                  <!--style="@style/rb_bg_style"-->
+                  <!--android:layout_margin="@dimen/margin_fit_10"-->
+                  <!--android:clickable="false"-->
+                  <!--android:checked="true"-->
+                  <!--android:textSize="@dimen/font_medium"-->
+                <!--/>-->
+                <!--<TextView-->
+                  <!--android:id="@+id/tv_operator_empty"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_marginRight="@dimen/normal_margin10"-->
+                  <!--style="@style/font_rb_cb_style"-->
+                  <!--android:text="营运空驶"-->
+                <!--/>-->
 
                 <RadioButton
                     android:id="@+id/rb_no_operator_empty"
-                    style="@style/rb_bg_style"
-                    android:layout_margin="@dimen/margin_fit_10"
-                    android:clickable="false"
-                    android:textSize="@dimen/font_medium"
-                    />
-                <TextView
-                    android:id="@+id/tv_no_operator_empty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/font_rb_cb_style"
+                    style="@style/rb_not_checked_style"
                     android:text="非营运空驶"
                     />
+
+                <!--<RadioButton-->
+                    <!--android:id="@+id/rb_no_operator_empty"-->
+                    <!--style="@style/rb_bg_style"-->
+                    <!--android:layout_margin="@dimen/margin_fit_10"-->
+                    <!--android:clickable="false"-->
+                    <!--android:textSize="@dimen/font_medium"-->
+                    <!--/>-->
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_no_operator_empty"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--style="@style/font_rb_cb_style"-->
+                    <!--android:text="非营运空驶"-->
+                    <!--/>-->
             </LinearLayout>
         </LinearLayout>
         <View style="@style/line_horizontal_dialog_style"/>
