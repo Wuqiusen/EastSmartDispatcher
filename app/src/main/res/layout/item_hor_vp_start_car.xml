@@ -10,7 +10,6 @@
     <include
         layout="@layout/ll_tab_ver_start_car"
         android:visibility="visible"/>
-    <!--StartCar_Title-->
     <!--已发车辆-ViewPager-->
     <com.zxw.dispatch.view.ChildViewPager
         android:id="@+id/vp_start_car"

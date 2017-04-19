@@ -28,10 +28,10 @@ public class MissionTypeWaitCarDialog extends AlertDialog.Builder{
     private Context mContext;
     private  Button btn_confirm;
     private Button btn_cancel;
-    private LinearLayout ll_line_work;
-    private LinearLayout ll_work_mission;
-    private LinearLayout ll_no_work_mission;
-    private TextView tv_line_name;
+//    private LinearLayout ll_line_work;
+//    private LinearLayout ll_work_mission;
+//    private LinearLayout ll_no_work_mission;
+//    private TextView tv_line_name;
     private RadioButton rb_line_work;
     private RadioButton rb_work_mission;
     private RadioButton rb_no_work_mission;
@@ -64,10 +64,10 @@ public class MissionTypeWaitCarDialog extends AlertDialog.Builder{
         View view = View.inflate(mContext, R.layout.view_task_type_dialog, null);
         btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
-        ll_line_work = (LinearLayout) view.findViewById(R.id.ll_line_work);
-        ll_work_mission = (LinearLayout) view.findViewById(R.id.ll_work_mission);
-        ll_no_work_mission = (LinearLayout) view.findViewById(R.id.ll_no_work_mission);
-        tv_line_name = (TextView) view.findViewById(R.id.tv_line_name);
+//        ll_line_work = (LinearLayout) view.findViewById(R.id.ll_line_work);
+//        ll_work_mission = (LinearLayout) view.findViewById(R.id.ll_work_mission);
+//        ll_no_work_mission = (LinearLayout) view.findViewById(R.id.ll_no_work_mission);
+//        tv_line_name = (TextView) view.findViewById(R.id.tv_line_name);
         rb_line_work = (RadioButton) view.findViewById(R.id.rb_line_work);
         rb_work_mission = (RadioButton) view.findViewById(R.id.rb_work_mission);
         rb_no_work_mission = (RadioButton) view.findViewById(R.id.rb_no_work_mission);
@@ -80,7 +80,7 @@ public class MissionTypeWaitCarDialog extends AlertDialog.Builder{
         rv_no_work_mission.addItemDecoration(new DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL_LIST));
 
-        tv_line_name.setText(mLineName);
+        rb_line_work.setText(mLineName);
         if (type == 1){//正线运行
             rb_line_work.setChecked(true);
         }else if (type == 2){//营运任务
@@ -88,7 +88,7 @@ public class MissionTypeWaitCarDialog extends AlertDialog.Builder{
         }else if (type == 3){//非营运任务
             rb_no_work_mission.setChecked(true);
         }
-        ll_line_work.setOnClickListener(new View.OnClickListener() {
+        rb_line_work.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rb_line_work.setChecked(true);
@@ -102,7 +102,7 @@ public class MissionTypeWaitCarDialog extends AlertDialog.Builder{
                     noWorkMission.choice(-1);
             }
         });
-        ll_work_mission.setOnClickListener(new View.OnClickListener() {
+        rb_work_mission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rb_line_work.setChecked(false);
@@ -112,7 +112,7 @@ public class MissionTypeWaitCarDialog extends AlertDialog.Builder{
                     noWorkMission.choice(-1);
             }
         });
-        ll_no_work_mission.setOnClickListener(new View.OnClickListener() {
+        rb_no_work_mission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rb_line_work.setChecked(false);

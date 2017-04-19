@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,55 +16,37 @@
 
         <TextView
             android:id="@+id/tv_no"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
+            style="@style/font_schedule_plan_style"
             tools:text="1"
             />
 
         <TextView
             android:id="@+id/tv_veh_code"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
+            style="@style/font_schedule_plan_style"
             tools:text="粤B12345"
             />
 
         <TextView
             android:id="@+id/tv_single_class_name"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
+            style="@style/font_schedule_plan_style"
             tools:text="单班"
             />
 
         <TextView
             android:id="@+id/tv_driver_name"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
+            style="@style/font_schedule_plan_style"
             tools:text="张三/001"
             />
 
         <TextView
             android:id="@+id/tv_steward_name"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
+            style="@style/font_schedule_plan_style"
             tools:text="王二/101"
             />
 
         <TextView
             android:id="@+id/tv_run_num"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
+            style="@style/font_schedule_plan_style"
             tools:text="20"
             />
     </LinearLayout>
@@ -81,33 +64,28 @@
         android:minHeight="50dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="visible"
+        >
+        <TextView
+            style="@style/font_schedule_plan_style"
+            android:layout_weight="3"
+            />
+
         <TextView
             android:id="@+id/tv_dual_driver_name"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:paddingRight="60dp"
+            style="@style/font_schedule_plan_style"
             tools:text="陈大/001"
             />
 
         <TextView
             android:id="@+id/tv_dul_steward_name"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
+            style="@style/font_schedule_plan_style"
             tools:text="李四/101"
             />
 
         <TextView
             android:id="@+id/tv_dual_run_num"
-            style="@style/font_item_xml_style"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
+            style="@style/font_schedule_plan_style"
             tools:text="20"
             />
     </LinearLayout>

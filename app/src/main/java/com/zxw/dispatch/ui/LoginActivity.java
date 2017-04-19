@@ -2,6 +2,7 @@ package com.zxw.dispatch.ui;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -45,9 +46,12 @@ public class LoginActivity extends PresenterActivity<LoginPresenter> implements 
     }
 
     private void initView() {
-        //showTitle("用户登录");
         isShowTitleLinearLayout(View.GONE);
         tv_forgetPwd.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        Drawable drawable = mContext.getResources().getDrawable(R.drawable.checkbox_remark_style);
+        drawable.setBounds(0,0,30,30);
+        cb_rememberPwd.setCompoundDrawables(drawable,null,null,null);
+
 
         String cacheUserName = presenter.getCacheUserName();
         if (!TextUtils.isEmpty(cacheUserName)){

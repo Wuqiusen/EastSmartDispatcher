@@ -5,7 +5,6 @@
     android:gravity="center"
     android:minHeight="40dp"
     >
-    <!--Title_已发车辆/线路运营(对比一致)-->
     <TextView
         style="@style/main_activity_top_button"
         android:layout_weight="4"
