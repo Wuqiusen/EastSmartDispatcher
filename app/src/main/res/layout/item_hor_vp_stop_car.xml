@@ -79,10 +79,10 @@
     </LinearLayout>
 
 
-    <com.zxw.dispatch.view.CustomViewPager
+    <com.zxw.dispatch.view.ChildViewPager
         android:id="@+id/vp_stop_car"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+    />
 
 </LinearLayout>

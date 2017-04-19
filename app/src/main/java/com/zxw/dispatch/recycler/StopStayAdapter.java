@@ -7,10 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.utils.ClickUtil;
+import com.zxw.dispatch.utils.ToastHelper;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -44,9 +48,11 @@ public class StopStayAdapter extends RecyclerView.Adapter<StopStayAdapter.LineHo
         return new LineHolder(inflate);
     }
 
+    private LineHolder mHolder = null;
     @Override
-    public void onBindViewHolder(LineHolder holder, final int position) {
+    public void onBindViewHolder(final LineHolder holder, final int position) {
         // 依据backStyle显示按钮样式(后期删除position判断)
+        mHolder = holder;
         if (position == 0){
             // 手动添加
             holder.llReuse.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_white_btn_bg));
@@ -66,13 +72,16 @@ public class StopStayAdapter extends RecyclerView.Adapter<StopStayAdapter.LineHo
             holder.llReuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(listener != null)
+                    if(listener != null && !ClickUtil.isFastDoubleClickStopBtn()) {
                         listener.onClickStopCarListener(mData.get(position - 1));
+                    }
                 }
             });
         }
 
     }
+
+
 
     private void setBtnStyle(LineHolder holder, final StopHistory stop){
            switch (stop.type){

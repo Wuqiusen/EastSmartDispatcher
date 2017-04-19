@@ -39,7 +39,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
     private Context mContext;
     private StopHistory mStopCar;
     //    private TextView tv_carCode;
-    private AlertDialog dialog;
+    public static  AlertDialog dialog = null;
     private OnClickListener mListener;
     private RadioGroup rg_stop_car_item1;
     private RadioButton rb_normal, rb_operator_empty, rb_operator_not_empty, rb_help, rb_off_duty;
@@ -194,9 +194,12 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
                 }
             }
         });
+
         dialog = setView(container).show();
         dialog.setCancelable(false);
     }
+
+
 
     private void clearNormalMissionRadioButtonStatus() {
         rg_stop_car_item1.clearCheck();
@@ -373,6 +376,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         void onClickHelpMission(int type, int taskId);
 
         void onOffDuty();
+
     }
 
     public class SpinnerAdapter extends CommonAdapter<MissionType.TaskContentBean> {
