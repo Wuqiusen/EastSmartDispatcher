@@ -52,13 +52,12 @@ public class PersonAdapter extends BaseAdapter{
             holder.ll_tv = (LinearLayout) convertView.findViewById(R.id.ll_tv);
             holder.tv = (TextView) convertView.findViewById(R.id.tv);
             holder.tv_code = (TextView) convertView.findViewById(R.id.tv_code);
-            holder.tv_code.setVisibility(View.GONE);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv.setText(mData.get(position).personName);
-//      holder.tv_code.setText(mData.get(position).personId+"");
+        holder.tv.setText(mData.get(position).personName + "--" + mData.get(position).personCode);
+//      holder.tv_code.setText(mData.get(position).personCode);
 
         holder.ll_tv.setOnClickListener(new View.OnClickListener() {
             @Override

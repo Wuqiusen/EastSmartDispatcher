@@ -4,6 +4,7 @@
     tools:context="com.zxw.dispatch.ui.LoginActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -30,27 +31,20 @@
         android:maxLines="1"
         android:singleLine="true"
         />
-     <RelativeLayout
-         android:layout_width="500dp"
-         android:layout_height="wrap_content"
-         android:minHeight="@dimen/login_height40"
-         android:layout_margin="@dimen/normal_margin10"
-         android:orientation="horizontal">
-         <CheckBox
-             android:id="@+id/cb_remember_pwd"
-             style="@style/cb_bg_style"
-             android:layout_toLeftOf="@+id/tv_remember_pwd"
-             />
-         <TextView
-             android:id="@+id/tv_remember_pwd"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_centerInParent="true"
-             android:layout_alignParentRight="true"
-             android:layout_marginRight="@dimen/normal_margin20"
-             android:textColor="@color/font_black"
-             android:text="记住密码"/>
-     </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/cb_remember_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/login_height40"
+        android:layout_gravity="end"
+        android:layout_marginRight="400dp"
+        android:button="@null"
+        android:drawablePadding="@dimen/margin_tiny"
+        android:text="记住密码"
+        android:textSize="@dimen/font_small"
+        android:textColor="@color/font_black"
+        />
 
     <Button
         android:id="@+id/btn_login"
@@ -73,6 +67,5 @@
         android:textColor="@color/font_black"
         android:textSize="@dimen/font_medium"
         />
-
 
 </LinearLayout>

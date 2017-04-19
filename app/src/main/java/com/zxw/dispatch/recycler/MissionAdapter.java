@@ -68,7 +68,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.MissionH
         }else {
             holder.rbMissionType.setChecked(isClick[position]);
         }
-        holder.tv_mission_type.setText(mData.get(position).getTaskName());
+        holder.rbMissionType.setText(mData.get(position).getTaskName());
     }
 
     public void choice(int poi){
@@ -93,8 +93,8 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.MissionH
         RadioButton rbMissionType;
         @Bind(R.id.ll_mission_type)
         LinearLayout llMissionType;
-        @Bind(R.id.tv_mission_type)
-        TextView tv_mission_type;
+//        @Bind(R.id.tv_mission_type)
+//        TextView tv_mission_type;
 
         MissionHolder(View view) {
             super(view);

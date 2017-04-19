@@ -33,68 +33,56 @@
               android:layout_marginRight="@dimen/normal_margin10"
               android:background="@color/btn_app_theme5"
               android:layout_weight="1"
+              android:gravity="center_horizontal"
               android:orientation="vertical">
-               <LinearLayout
-                   android:id="@+id/ll_line_work"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:gravity="center_horizontal"
-                   android:orientation="horizontal">
+               <!--<LinearLayout-->
+                   <!--android:id="@+id/ll_line_work"-->
+                   <!--android:layout_width="match_parent"-->
+                   <!--android:layout_height="wrap_content"-->
+                   <!--android:minHeight="40dp"-->
+                   <!--android:gravity="center"-->
+                   <!--android:orientation="horizontal">-->
                    <RadioButton
                        android:id="@+id/rb_line_work"
-                       style="@style/rb_bg_style"
-                       android:layout_margin="@dimen/margin_fit_10"
-                       android:clickable="false"
-                       />
-                   <TextView
-                       android:id="@+id/tv_line_name"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       style="@style/font_rb_cb_style"
+                       style="@style/rb_task_type_dialog_style"
                        android:text="正线运营"
                        />
-               </LinearLayout>
-               <View
-                   android:layout_width="match_parent"
-                   android:layout_height="1dp"
-                   android:layout_margin="@dimen/main_margin6"
-                   android:background="@color/line_dark2"/>
-
+                   <!--<TextView-->
+                       <!--android:id="@+id/tv_line_name"-->
+                       <!--android:layout_width="wrap_content"-->
+                       <!--android:layout_height="wrap_content"-->
+                       <!--style="@style/font_rb_cb_style"-->
+                       <!--android:text="正线运营"-->
+                       <!--/>-->
+               <!--</LinearLayout>-->
+               <View style="@style/line_task_type_dialog_style"/>
 
           </LinearLayout>
-          <!--营运任务-->
+
+       <!--营运任务-->
           <LinearLayout
               android:layout_width="0dp"
               android:layout_height="300dp"
               android:layout_marginRight="@dimen/normal_margin10"
               android:background="@color/btn_app_theme5"
               android:layout_weight="1"
+              android:gravity="center_horizontal"
               android:orientation="vertical">
-              <LinearLayout
-                  android:id="@+id/ll_work_mission"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:gravity="center_horizontal"
-                  android:orientation="horizontal">
+              <!--<LinearLayout-->
+                  <!--android:id="@+id/ll_work_mission"-->
+                  <!--android:layout_width="match_parent"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:minHeight="40dp"-->
+                  <!--android:gravity="center"-->
+                  <!--android:orientation="horizontal">-->
                   <RadioButton
                       android:id="@+id/rb_work_mission"
-                      style="@style/rb_bg_style"
-                      android:layout_margin="@dimen/margin_fit_10"
-                      android:clickable="false"
-                      />
-
-                  <TextView
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      style="@style/font_rb_cb_style"
+                      style="@style/rb_task_type_dialog_style"
                       android:text="营运任务"
-                      android:id="@+id/textView9" />
-              </LinearLayout>
-              <View
-                  android:layout_width="match_parent"
-                  android:layout_height="1dp"
-                  android:layout_margin="@dimen/main_margin6"
-                  android:background="@color/line_dark2"/>
+                      />
+              <!--</LinearLayout>-->
+              <View style="@style/line_task_type_dialog_style"/>
+
               <android.support.v7.widget.RecyclerView
                   android:id="@+id/rv_work_mission"
                   android:layout_width="match_parent"
@@ -109,32 +97,24 @@
               android:layout_marginRight="@dimen/normal_margin10"
               android:background="@color/btn_app_theme5"
               android:layout_weight="1"
+              android:gravity="center_horizontal"
               android:orientation="vertical">
-              <LinearLayout
-                  android:id="@+id/ll_no_work_mission"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:gravity="center_horizontal"
-                  android:orientation="horizontal">
+              <!--<LinearLayout-->
+                  <!--android:id="@+id/ll_no_work_mission"-->
+                  <!--android:layout_width="match_parent"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:minHeight="40dp"-->
+                  <!--android:gravity="center"-->
+                  <!--android:orientation="horizontal">-->
                   <RadioButton
                       android:id="@+id/rb_no_work_mission"
-                      style="@style/rb_bg_style"
-                      android:layout_margin="@dimen/margin_fit_10"
-                      android:clickable="false"
+                      style="@style/rb_task_type_dialog_style"
+                      android:text="非营运任务"
                       />
 
-                  <TextView
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      style="@style/font_rb_cb_style"
-                      android:text="非营运任务"
-                      android:id="@+id/textView8" />
-              </LinearLayout>
-              <View
-                  android:layout_width="match_parent"
-                  android:layout_height="1dp"
-                  android:layout_margin="@dimen/main_margin6"
-                  android:background="@color/line_dark2"/>
+              <!--</LinearLayout>-->
+              <View style="@style/line_task_type_dialog_style"/>
+
               <android.support.v7.widget.RecyclerView
                   android:id="@+id/rv_no_work_mission"
                   android:layout_width="match_parent"

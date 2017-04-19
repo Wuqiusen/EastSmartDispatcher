@@ -48,7 +48,6 @@ public class SelectDispatcherPointActivity extends PresenterActivity<SelectDispa
 
     @Override
     public void showSpotList(SpotAdapter spotAdapter) {
-//      mSpotRV.setLayoutManager(new LinearLayoutManager(this));
         GridLayoutManager layoutManager = new GridLayoutManager(this,3);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 

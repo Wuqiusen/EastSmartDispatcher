@@ -143,7 +143,6 @@ public class DragListAdapterForNotOperatorEmpty extends BaseAdapter {
                 new TimePlanPickerDialog(mContext,mDatas.get(position).getVehTime(),new TimePlanPickerDialog.OnTimePickerListener() {
                     @Override
                     public void onTimePicker(String sHour, String sMinute) {
-                        ToastHelper.showToast(sHour+":"+sMinute,mContext);
                         presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
                     }
                 }).show();

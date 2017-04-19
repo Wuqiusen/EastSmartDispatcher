@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
-import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.recycler.GoneAdapterForNormal;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
@@ -29,7 +28,7 @@ public class StopCarView extends LinearLayout implements View.OnClickListener {
     private TextView tv_wtab1;
     private TextView tv_wtab2;
     private OnStopCarTabListener mListener;
-    private CustomViewPager vp_stop_car;
+    private ChildViewPager vp_stop_car;
     private List<View> stopViews = new ArrayList<>();
     private RecyclerView eStopRV1;
     private RecyclerView eStopRV2;
@@ -45,7 +44,7 @@ public class StopCarView extends LinearLayout implements View.OnClickListener {
         tv_wtab2 = (TextView) findViewById(R.id.tv_hor_stop_tab2);
         tv_wtab1.setOnClickListener(this);
         tv_wtab2.setOnClickListener(this);
-        vp_stop_car = (CustomViewPager) findViewById(R.id.vp_stop_car);
+        vp_stop_car = (ChildViewPager) findViewById(R.id.vp_stop_car);
 
         MyPagerAdapter wAdapter = new MyPagerAdapter(inflateStopViews(),null);
         vp_stop_car.setAdapter(wAdapter);
@@ -72,14 +71,10 @@ public class StopCarView extends LinearLayout implements View.OnClickListener {
         View view_stab1 = View.inflate(mContext,R.layout.item_stop_car,null);
         eStopRV1 = (RecyclerView) view_stab1.findViewById(R.id.rv_menu_stop_car);
         eStopRV1.setLayoutManager(new GridLayoutManager(mContext,8));
-        eStopRV1.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL_LIST));
 
         View view_stab2 = View.inflate(mContext,R.layout.item_stop_car1,null);
         eStopRV2 = (RecyclerView) view_stab2.findViewById(R.id.rv_menu_stop_car);
         eStopRV2.setLayoutManager(new GridLayoutManager(mContext,8));
-        eStopRV2.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL_LIST));
 
         stopViews.add(view_stab1);
         stopViews.add(view_stab2);

@@ -1,5 +1,6 @@
 package com.zxw.dispatch.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
+import com.zxw.dispatch.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
     private TextView tv_wtab2;
     private TextView tv_wtab3;
     private OnWaitCarTabListener mListener;
-    private CustomViewPager vp_wait_car;
+    private ChildViewPager vp_wait_car;
     private View eViewCover;
     private DragListView eSendRV1, eSendRV2, eSendRV3;
     private List<View> waitViews = new ArrayList<>();
@@ -48,12 +50,13 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
         tv_wtab1.setOnClickListener(this);
         tv_wtab2.setOnClickListener(this);
         tv_wtab3.setOnClickListener(this);
-        vp_wait_car = (CustomViewPager) findViewById(R.id.vp_wait_car);
+        vp_wait_car = (ChildViewPager) findViewById(R.id.vp_wait_car);
 
         MyPagerAdapter wAdapter = new MyPagerAdapter(inflateWaitViews(),null);
         vp_wait_car.setAdapter(wAdapter);
         vp_wait_car.setCurrentItem(0);
         setWaitCarTabScrollBar(0);
+        ((MainActivity)mContext).showMenuAutoDepart(View.VISIBLE);
         vp_wait_car.setPagingEnabled(false);
     }
 
@@ -64,10 +67,10 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
                 mListener.onTabIsClick(0,View.VISIBLE);
                 break;
             case R.id.tv_hor_wtab2:
-                mListener.onTabIsClick(1,View.GONE);
+                mListener.onTabIsClick(1,View.INVISIBLE);
                 break;
             case R.id.tv_hor_wtab3:
-                mListener.onTabIsClick(2,View.GONE);
+                mListener.onTabIsClick(2,View.INVISIBLE);
                 break;
         }
 

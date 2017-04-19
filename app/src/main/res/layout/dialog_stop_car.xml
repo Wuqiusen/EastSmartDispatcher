@@ -1,10 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    >
 
     <LinearLayout
-        android:layout_width="600dp"
+        android:layout_width="1000dp"
         android:layout_height="wrap_content"
         android:background="@drawable/ll_car_dialog"
         android:orientation="vertical">
@@ -27,42 +28,53 @@
             android:orientation="horizontal">
             <RadioButton
                 android:id="@+id/rb_normal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/stop_car_dialog_radio_button"
                 android:checked="true"
                 android:text="线路运营"/>
             <RadioButton
                 android:id="@+id/rb_operator_empty"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/stop_car_dialog_radio_button"
                 android:text="营运空驶"/>
             <RadioButton
                 android:id="@+id/rb_operator_not_empty"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/stop_car_dialog_radio_button"
                 android:text="非营运空驶"/>
             <RadioButton
                 android:id="@+id/rb_help"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/stop_car_dialog_radio_button"
                 android:text="支援"/>
+
+            <RadioButton
+                android:id="@+id/rb_off_duty"
+                style="@style/stop_car_dialog_radio_button"
+                android:text="收班"/>
         </RadioGroup>
 
         <View style="@style/line_title_bottom_dialog"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:orientation="horizontal">
-            <include layout="@layout/dialog_stop_car_item1"/>
+            <include layout="@layout/dialog_stop_car_item1"
+                android:visibility="visible"
+                android:id="@+id/item1"/>
             <include layout="@layout/dialog_stop_car_item2"
+                android:visibility="gone"
                 android:id="@+id/item2"/>
             <include layout="@layout/dialog_stop_car_item2"
+                android:visibility="gone"
                 android:id="@+id/item3"/>
-            <include layout="@layout/dialog_stop_car_item4"/>
+            <include layout="@layout/dialog_stop_car_item4"
+                android:visibility="gone"
+                android:id="@+id/item4"/>
+            <TextView
+                android:id="@+id/item5"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="温馨提示：请确认是否收班？"/>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,13 +85,7 @@
             <Button
                 android:id="@+id/btn_confirm"
                 style="@style/bluebtn_dialog_style"
-                android:text="发班"
-                />
-
-            <Button
-                android:id="@+id/btn_off_duty"
-                style="@style/bluebtn_dialog_style"
-                android:text="收班"
+                android:text="确定"
                 />
             <Button
                 android:id="@+id/btn_cancel"

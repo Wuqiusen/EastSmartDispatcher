@@ -70,25 +70,13 @@
         android:visibility="visible">
         <TextView
             android:id="@+id/tv_menu_manual"
-            style="@style/btn_send_car_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="30dp"
-            android:minWidth="60dp"
-            android:gravity="center"
-            android:background="@drawable/tv_manual_normal_style"
+            style="@style/btn_manual_send_car_style"
             android:text="手动发车"
             />
 
         <TextView
             android:id="@+id/tv_menu_automatic"
-            style="@style/btn_send_car_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="30dp"
-            android:minWidth="60dp"
-            android:gravity="center"
-            android:background="@drawable/tv_manual_unnormal_style"
+            style="@style/btn_automatic_send_car_style"
             android:text="自动发车"
             />
     </LinearLayout>

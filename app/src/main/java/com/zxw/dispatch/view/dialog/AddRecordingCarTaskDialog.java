@@ -29,9 +29,9 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     private Context mContext;
     private OnAddRecordingCarTaskListener mListener;
     private RadioButton rb_operator_empty;
-    private TextView tv_operator_empty;
+//    private TextView tv_operator_empty;
     private RadioButton rb_no_operator_empty;
-    private TextView tv_no_operator_empty;
+//    private TextView tv_no_operator_empty;
     private Spinner sp_task_name;
     private SmartEditText smartEt_vehicleId;
     private SmartEditText smartEt_driverId;
@@ -49,8 +49,6 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     private List<MissionType> mMissionTypes = new ArrayList<>();
     private List<MissionType.TaskContentBean> emptyTaskContent = new ArrayList<>();
     private List<MissionType.TaskContentBean> noEmptyTaskContent = new ArrayList<>();
-    private List<String> empty_taskNames = new ArrayList<>();
-    private List<String> no_empty_taskNames = new ArrayList<>();
 
 
     public AddRecordingCarTaskDialog(Context context, List<MissionType> missionTypes,OnAddRecordingCarTaskListener listener) {
@@ -66,25 +64,18 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     private void initData(List<MissionType> missionTypes) {
         MissionType emptyMissionType = missionTypes.get(1);
         emptyTaskContent= emptyMissionType.getTaskContent();
-        for (int i=0;i<emptyTaskContent.size();i++){
-            empty_taskNames.add(emptyTaskContent.get(i).getTaskName());
-        }
         MissionType noEmptyMissionType = missionTypes.get(2);
         noEmptyTaskContent = noEmptyMissionType.getTaskContent();
-        for (int i=0;i<noEmptyTaskContent.size();i++){
-            no_empty_taskNames.add(noEmptyTaskContent.get(i).getTaskName());
-        }
-
-        operatorEmptyAdapter = new MySpinnerAdapter(mContext,empty_taskNames);
-        notOperatorEmptyAdapter = new MySpinnerAdapter(mContext,no_empty_taskNames);
+        operatorEmptyAdapter = new MySpinnerAdapter(mContext,emptyTaskContent);
+        notOperatorEmptyAdapter = new MySpinnerAdapter(mContext,noEmptyTaskContent);
     }
 
     private void initView(Context context) {
         View view = View.inflate(context, R.layout.dialog_car_task,null);
         rb_operator_empty = (RadioButton) view.findViewById(R.id.rb_operator_empty);
-        tv_operator_empty = (TextView) view.findViewById(R.id.tv_operator_empty);
+//        tv_operator_empty = (TextView) view.findViewById(R.id.tv_operator_empty);
         rb_no_operator_empty = (RadioButton) view.findViewById(R.id.rb_no_operator_empty);
-        tv_no_operator_empty = (TextView) view.findViewById(R.id.tv_no_operator_empty);
+//        tv_no_operator_empty = (TextView) view.findViewById(R.id.tv_no_operator_empty);
         smartEt_vehicleId = (SmartEditText) view.findViewById(R.id.smartEt_vehicleId);
         smartEt_vehicleId.addQueryCarCodeEditTextListener();
         smartEt_driverId = (SmartEditText) view.findViewById(R.id.smartEt_driverId);
@@ -97,9 +88,9 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
         btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         sp_task_name = (Spinner) view.findViewById(R.id.sp_task_name);
         rb_operator_empty.setOnClickListener(this);
-        tv_operator_empty.setOnClickListener(this);
+//        tv_operator_empty.setOnClickListener(this);
         rb_no_operator_empty.setOnClickListener(this);
-        tv_no_operator_empty.setOnClickListener(this);
+//        tv_no_operator_empty.setOnClickListener(this);
         btn_save.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
 
@@ -112,11 +103,11 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rb_operator_empty:    //营运空驶
-            case R.id.tv_operator_empty:
+//            case R.id.tv_operator_empty:
                 setEmptyRbChecked();
                 break;
             case R.id.rb_no_operator_empty: // 非营运空驶
-            case R.id.tv_no_operator_empty:
+//            case R.id.tv_no_operator_empty:
                 setNoEmptyRbChecked();
                 break;
             case R.id.btn_save:
@@ -216,6 +207,11 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
             String endTime = et_endTime.getText().toString().trim();
             if (TextUtils.isEmpty(endTime)) {
                 ToastHelper.showToast("请输入结束时间");
+                return;
+            }
+
+            if (beginTime.length() != 4 || endTime.length() != 4){
+                ToastHelper.showToast("请输入正确的时间");
                 return;
             }
             String runNum = et_runNum.getText().toString().trim();

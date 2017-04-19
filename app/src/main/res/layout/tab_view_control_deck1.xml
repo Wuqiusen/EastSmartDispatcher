@@ -16,7 +16,6 @@
         android:background="@color/transparent"
         android:visibility="visible"
         >
-
         <include layout="@layout/item_view_control_deck1"/>
     </FrameLayout>
     <!--横向的操控台界面-->
@@ -32,6 +31,6 @@
             android:id="@+id/vp_main_horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+        />
     </FrameLayout>
 </LinearLayout>

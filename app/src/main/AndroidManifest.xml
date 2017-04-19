@@ -58,9 +58,10 @@
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--&lt;!&ndash;</intent-filter>-->
-            </activity>
-        <activity android:name=".ui.WelcomeActivity"
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".ui.WelcomeActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -71,13 +72,14 @@
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.my.ForgetPasswordActivity" />
 
-        <service android:name=".service.CarPlanService"></service>
+        <service android:name=".service.CarPlanService" />
 
         <activity
             android:name=".ui.WeatherDialogActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
-        <activity android:name=".ui.SelectDispatcherPointActivity"
-            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".ui.SelectDispatcherPointActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

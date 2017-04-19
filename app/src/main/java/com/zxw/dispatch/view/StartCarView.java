@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,7 +33,7 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
     private TextView tv_stab1;
     private TextView tv_stab2;
     private TextView tv_stab3;
-    private CustomViewPager vp_start_car;
+    private ChildViewPager vp_start_car;
     private RecyclerView eGoneRV1, eGoneRV2, eGoneRV3;
     private List<View> startViews = new ArrayList<View>();
     private OnStartCarTabListener mListener;
@@ -50,7 +51,8 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
         tv_stab1.setOnClickListener(this);
         tv_stab2.setOnClickListener(this);
         tv_stab3.setOnClickListener(this);
-        vp_start_car = (CustomViewPager) findViewById(R.id.vp_start_car);
+        vp_start_car = (ChildViewPager) findViewById(R.id.vp_start_car);
+
         MyPagerAdapter sAdapter = new MyPagerAdapter(inflateStartViews(),null);
         vp_start_car.setAdapter(sAdapter);
         vp_start_car.setCurrentItem(0);
@@ -173,6 +175,9 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
         }
         return mContext.getResources().getDrawable(R.drawable.line_blue_height);
     }
+
+
+
 
 
     public interface OnStartCarTabListener{
