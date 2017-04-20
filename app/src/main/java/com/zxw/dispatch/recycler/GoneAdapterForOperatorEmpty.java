@@ -132,7 +132,7 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
 
         try{
             if(mData.get(position).isMakeup == 2){
-                holder.ll_container.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
+                holder.ll_container.setBackgroundColor(mContext.getResources().getColor(R.color.background_gone_car));
             }else{
                 holder.ll_container.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
             }
