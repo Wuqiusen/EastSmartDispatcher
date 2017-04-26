@@ -434,13 +434,13 @@ public class HttpInterfaces {
     public interface Operator {
 
         @FormUrlEncoded
-        @POST("phone/control/manage /task/line/stop/class/stop")
+        @POST("phone/control/manage/task/line/stop/class/stop")
         Observable<BaseBean> stopCarEndToStay(@Field("userId") String code,
                                          @Field("keyCode") String keyCode,
                                          @Field("objId") int opId);
 
         @FormUrlEncoded
-        @POST("phone/control/manage /task/line/stop/class")
+        @POST("phone/control/manage/task/line/stop/class")
         Observable<BaseBean> stopCarStayToEnd(@Field("userId") String code,
                                          @Field("keyCode") String keyCode,
                                          @Field("objId") int opId);

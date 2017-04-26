@@ -94,8 +94,6 @@
             android:id="@+id/lv_send_car"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/normal_margin10"
-            android:layout_marginRight="@dimen/normal_margin10"
             android:descendantFocusability="blocksDescendants"
            />
 
