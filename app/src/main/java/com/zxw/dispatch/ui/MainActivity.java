@@ -254,7 +254,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         spotId = getIntent().getIntExtra("spotId", -1);
 //        spotId = 1;
         presenter.loadLineList(spotId);
-        presenter.checkStopCar(spotId);
+        presenter.checkStopCar();
     }
 
 

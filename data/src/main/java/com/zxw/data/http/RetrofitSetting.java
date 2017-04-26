@@ -1,8 +1,12 @@
 package com.zxw.data.http;
 
+import com.zxw.data.BuildConfig;
+import com.zxw.data.utils.LogInterceptor;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,6 +25,7 @@ public class RetrofitSetting {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
             builder.readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+//            builder.addInterceptor(new LogInterceptor());
             retrofit = new Retrofit.Builder()
                     .client(builder.build())
                     .addConverterFactory(GsonConverterFactory.create())
