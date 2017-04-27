@@ -2,6 +2,7 @@ package com.zxw.dispatch.presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.Line;
@@ -61,14 +62,16 @@ public class MainPresenter extends BasePresenter<MainView> {
     private Timer timer = null;
     private TimerTask timerTask;
     private int spotId;
-    private List<DepartCar> mWaitVehicles;
-    private List<DepartCar> operatorVehicles;
-    private List<DepartCar> noOperatorVehicles;
-    private List<SendHistory> mSendHistories;
-    private List<SendHistory> operatorHistories;
-    private List<SendHistory> noOperatorHistories;
-    private List<StopHistory> mStopHistories;
-    private List<StopHistory> endStopHistories;
+    private List<DepartCar> mWaitVehicles = new ArrayList<>();
+    private List<DepartCar> operatorVehicles = new ArrayList<>();
+    private List<DepartCar> noOperatorVehicles = new ArrayList<>();
+    private List<SendHistory> mSendHistories = new ArrayList<>();
+    private List<SendHistory> operatorHistories = new ArrayList<>();
+    private List<SendHistory> noOperatorHistories = new ArrayList<>();
+    private List<StopHistory> mStopHistories = new ArrayList<>();
+    private List<StopHistory> endStopHistories = new ArrayList<>();
+    private List<VehicleNumberBean> mVehicleNumberBeen = new ArrayList<>();
+
 
     public MainPresenter(Context context, MainView mvpView) {
         super(mvpView);
@@ -100,10 +103,11 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void onSelectLine(final Line line) {
+//        mvpView.showLoading();
         HttpMethods.getInstance().lineParams(new Subscriber<LineParams>() {
             @Override
             public void onCompleted() {
-
+//                mvpView.hideLoading();
             }
 
             @Override
@@ -182,7 +186,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         mDepartSource.goneListByLine(new Subscriber<List<SendHistory>>() {
             @Override
             public void onCompleted() {
-                mvpView.hideLoading();
             }
 
             @Override
@@ -192,9 +195,27 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<SendHistory> sendHistories) {
-                if (mSendHistories == null || !checkList(mSendHistories, sendHistories)){
-                    mSendHistories = sendHistories;
+//                DebugLog.e("加载已发历史-----------");
+//                if (mSendHistories == null || !checkList(mSendHistories, sendHistories)){
+//                    DebugLog.e("刷新已发历史-----------");
+//                    mSendHistories = sendHistories;
+//                    mvpView.loadGoneCarByNormal(new GoneAdapterForNormal(sendHistories, mContext, mLineParams, MainPresenter.this));
+//                }
+                if (mSendHistories != null && mSendHistories.size() == sendHistories.size()){
+                    for (int i = 0; i < sendHistories.size(); i ++){
+                        if (mSendHistories.get(i).id != sendHistories.get(i).id){
+                            mvpView.loadGoneCarByNormal(new GoneAdapterForNormal(sendHistories, mContext, mLineParams, MainPresenter.this));
+                            mSendHistories.clear();
+                            mSendHistories.addAll(sendHistories);
+                            mvpView.hideLoading();
+                            return;
+                        }
+                    }
+                }else {
                     mvpView.loadGoneCarByNormal(new GoneAdapterForNormal(sendHistories, mContext, mLineParams, MainPresenter.this));
+                    mSendHistories.clear();
+                    mSendHistories.addAll(sendHistories);
+                    mvpView.hideLoading();
                 }
             }
         }, userId(), keyCode(), lineId);
@@ -203,7 +224,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         mDepartSource.goneListByOperation(new Subscriber<List<SendHistory>>() {
             @Override
             public void onCompleted() {
-                mvpView.hideLoading();
             }
 
             @Override
@@ -213,9 +233,26 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<SendHistory> sendHistories) {
-                if (operatorHistories == null || !checkList(operatorHistories, sendHistories)){
-                    operatorHistories = sendHistories;
+//                if (operatorHistories == null || !checkList(operatorHistories, sendHistories)){
+//                    operatorHistories = sendHistories;
+//                    mvpView.loadGoneCarByOperatorEmpty(new GoneAdapterForOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+//                }
+
+                if (operatorHistories != null && operatorHistories.size() == sendHistories.size()){
+                    for (int i = 0; i < sendHistories.size(); i ++){
+                        if (operatorHistories.get(i).id != sendHistories.get(i).id){
+                            mvpView.loadGoneCarByOperatorEmpty(new GoneAdapterForOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+                            operatorHistories.clear();
+                            operatorHistories.addAll(sendHistories);
+                            mvpView.hideLoading();
+                            return;
+                        }
+                    }
+                }else {
                     mvpView.loadGoneCarByOperatorEmpty(new GoneAdapterForOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+                    operatorHistories.clear();
+                    operatorHistories.addAll(sendHistories);
+                    mvpView.hideLoading();
                 }
 
             }
@@ -225,7 +262,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         mDepartSource.goneListByOther(new Subscriber<List<SendHistory>>() {
             @Override
             public void onCompleted() {
-                mvpView.hideLoading();
             }
 
             @Override
@@ -235,9 +271,26 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<SendHistory> sendHistories) {
-                if (noOperatorHistories == null || !checkList(noOperatorHistories, sendHistories)){
-                    noOperatorHistories = sendHistories;
+//                if (noOperatorHistories == null || !checkList(noOperatorHistories, sendHistories)){
+//                    noOperatorHistories = sendHistories;
+//                    mvpView.loadGoneCarByNotOperatorEmpty(new GoneAdapterForNotOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+//                }
+
+                if (noOperatorHistories != null && noOperatorHistories.size() == sendHistories.size()){
+                    for (int i = 0; i < sendHistories.size(); i ++){
+                        if (noOperatorHistories.get(i).id != sendHistories.get(i).id){
+                            mvpView.loadGoneCarByNotOperatorEmpty(new GoneAdapterForNotOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+                            noOperatorHistories.clear();
+                            noOperatorHistories.addAll(sendHistories);
+                            mvpView.hideLoading();
+                            return;
+                        }
+                    }
+                }else {
                     mvpView.loadGoneCarByNotOperatorEmpty(new GoneAdapterForNotOperatorEmpty(sendHistories, mContext, mLineParams, MainPresenter.this));
+                    noOperatorHistories.clear();
+                    noOperatorHistories.addAll(sendHistories);
+                    mvpView.hideLoading();
                 }
 
             }
@@ -255,7 +308,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         mDepartSource.departListByLine(new Subscriber<List<DepartCar>>() {
             @Override
             public void onCompleted() {
-                mvpView.hideLoading();
             }
 
             @Override
@@ -265,10 +317,29 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
-                if (mWaitVehicles == null || !checkList(mWaitVehicles, waitVehicles)){
-                    mWaitVehicles = waitVehicles;
+//                if (mWaitVehicles == null || !checkList(mWaitVehicles, waitVehicles)){
+//                    mWaitVehicles = waitVehicles;
+//                    DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+//                    mvpView.loadSendCarList(mDragListAdapter);
+//                }
+
+                if (mWaitVehicles != null && mWaitVehicles.size() == waitVehicles.size()){
+                    for (int i = 0; i < waitVehicles.size(); i ++){
+                        if (mWaitVehicles.get(i).getId() != waitVehicles.get(i).getId()){
+                            DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+                            mvpView.loadSendCarList(mDragListAdapter);
+                            mWaitVehicles.clear();
+                            mWaitVehicles.addAll(waitVehicles);
+                            mvpView.hideLoading();
+                            return;
+                        }
+                    }
+                }else {
                     DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
                     mvpView.loadSendCarList(mDragListAdapter);
+                    mWaitVehicles.clear();
+                    mWaitVehicles.addAll(waitVehicles);
+                    mvpView.hideLoading();
                 }
 
             }
@@ -278,7 +349,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         mDepartSource.departListByOperation(new Subscriber<List<DepartCar>>() {
             @Override
             public void onCompleted() {
-                mvpView.hideLoading();
             }
 
             @Override
@@ -288,11 +358,31 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
-                if (operatorVehicles == null || !checkList(operatorVehicles, waitVehicles)){
-                    operatorVehicles = waitVehicles;
+//                if (operatorVehicles == null || !checkList(operatorVehicles, waitVehicles)){
+//                    operatorVehicles = waitVehicles;
+//                    DragListAdapterForOperatorEmpty mDragListAdapter = new DragListAdapterForOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+//                    mvpView.loadSendCarForOperatorEmpty(mDragListAdapter);
+//                }
+
+                if (operatorVehicles != null && operatorVehicles.size() == waitVehicles.size()){
+                    for (int i = 0; i < waitVehicles.size(); i ++){
+                        if (operatorVehicles.get(i).getId() != waitVehicles.get(i).getId()){
+                            DragListAdapterForOperatorEmpty mDragListAdapter = new DragListAdapterForOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+                            mvpView.loadSendCarForOperatorEmpty(mDragListAdapter);
+                            operatorVehicles.clear();
+                            operatorVehicles.addAll(waitVehicles);
+                            mvpView.hideLoading();
+                            return;
+                        }
+                    }
+                }else {
                     DragListAdapterForOperatorEmpty mDragListAdapter = new DragListAdapterForOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
                     mvpView.loadSendCarForOperatorEmpty(mDragListAdapter);
+                    operatorVehicles.clear();
+                    operatorVehicles.addAll(waitVehicles);
+                    mvpView.hideLoading();
                 }
+
             }
         }, userId(), keyCode(), lineId);
     }
@@ -300,7 +390,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         mDepartSource.departListByOther(new Subscriber<List<DepartCar>>() {
             @Override
             public void onCompleted() {
-                mvpView.hideLoading();
             }
 
             @Override
@@ -310,10 +399,29 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<DepartCar> waitVehicles) {
-                if (noOperatorVehicles == null || !checkList(noOperatorVehicles, waitVehicles)){
-                    noOperatorVehicles = waitVehicles;
+//                if (noOperatorVehicles == null || !checkList(noOperatorVehicles, waitVehicles)){
+//                    noOperatorVehicles = waitVehicles;
+//                    DragListAdapterForNotOperatorEmpty mDragListAdapter = new DragListAdapterForNotOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+//                    mvpView.loadSendCarForNotOperatorEmpty(mDragListAdapter);
+//                }
+
+                if (noOperatorVehicles != null && noOperatorVehicles.size() == waitVehicles.size()){
+                    for (int i = 0; i < waitVehicles.size(); i ++){
+                        if (noOperatorVehicles.get(i).getId() != waitVehicles.get(i).getId()){
+                            DragListAdapterForNotOperatorEmpty mDragListAdapter = new DragListAdapterForNotOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
+                            mvpView.loadSendCarForNotOperatorEmpty(mDragListAdapter);
+                            noOperatorVehicles.clear();
+                            noOperatorVehicles.addAll(waitVehicles);
+                            mvpView.hideLoading();
+                            return;
+                        }
+                    }
+                }else {
                     DragListAdapterForNotOperatorEmpty mDragListAdapter = new DragListAdapterForNotOperatorEmpty(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
                     mvpView.loadSendCarForNotOperatorEmpty(mDragListAdapter);
+                    noOperatorVehicles.clear();
+                    noOperatorVehicles.addAll(waitVehicles);
+                    mvpView.hideLoading();
                 }
             }
         }, userId(), keyCode(), lineId);
@@ -375,6 +483,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(Object o) {
+                refreshPlanData();
                 refreshList();
             }
         }, userId(), keyCode(), opId, replaceId);
@@ -405,10 +514,28 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<StopHistory> stopHistories) {
-                if (endStopHistories == null || !checkList(endStopHistories, stopHistories)){
-                    endStopHistories = stopHistories;
+//                if (endStopHistories == null || !checkList(endStopHistories, stopHistories)){
+//                    endStopHistories = stopHistories;
+//                    mvpView.loadStopEndCarList(stopHistories);
+//                }
+
+                if (endStopHistories != null && endStopHistories.size() == stopHistories.size()){
+                    for (int i = 0; i < stopHistories.size(); i ++){
+                        if (endStopHistories.get(i).id != stopHistories.get(i).id){
+                            mvpView.loadStopEndCarList(stopHistories);
+                            endStopHistories.clear();
+                            endStopHistories.addAll(stopHistories);
+                            mvpView.hideLoading();
+                            return;
+                        }
+                    }
+                }else {
                     mvpView.loadStopEndCarList(stopHistories);
+                    endStopHistories.clear();
+                    endStopHistories.addAll(stopHistories);
+                    mvpView.hideLoading();
                 }
+
             }
         }, userId(), keyCode(), lineId);
     }
@@ -427,11 +554,32 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<StopHistory> stopHistories) {
-                if (mStopHistories == null || !checkList(mStopHistories, stopHistories)){
-                    stopHistories.add(new StopHistory());
-                    mStopHistories = stopHistories;
+//                if (mStopHistories == null || !checkList(mStopHistories, stopHistories)){
+//                    stopHistories.add(new StopHistory());
+//                    mStopHistories = stopHistories;
+//                    mvpView.loadStopStayCarList(stopHistories);
+//                }
+                DebugLog.e("加载已发历史0000-----------");
+                stopHistories.add(new StopHistory());
+                if (mStopHistories != null && mStopHistories.size() == stopHistories.size()){
+                    for (int i = 0; i < stopHistories.size(); i ++){
+                        if (mStopHistories.get(i).id != stopHistories.get(i).id){
+                            mvpView.loadStopStayCarList(stopHistories);
+                            mStopHistories.clear();
+                            mStopHistories.addAll(stopHistories);
+                            mvpView.hideLoading();
+                            DebugLog.e("加载已发历史11111-----------");
+                            return;
+                        }
+                    }
+                }else {
                     mvpView.loadStopStayCarList(stopHistories);
+                    mStopHistories.clear();
+                    mStopHistories.addAll(stopHistories);
+                    mvpView.hideLoading();
+                    DebugLog.e("加载已发历史22222-----------");
                 }
+
             }
         }, userId(), keyCode(), lineId);
     }
@@ -513,6 +661,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(Object baseBean) {
+                refreshPlanData();
                 refreshList();
             }
         }, userId(), keyCode(), id, peopleId, type);
@@ -537,6 +686,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(Object o) {
+                refreshPlanData();
                 loadSendCarList();
 
             }
@@ -589,6 +739,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(Object o) {
+                refreshPlanData();
                 refreshList();
 
             }
@@ -599,7 +750,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * 检测计划发车时间在30分钟内的车辆数
      * ------------------begin--------------
      */
-    public void checkStopCar(final int spotId){
+    public void checkStopCar(){
         if (timer == null){
             timer = new Timer();
             timerTask = new TimerTask() {
@@ -638,7 +789,30 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(List<VehicleNumberBean> vehicleNumberBeen) {
-                mvpView.refreshTimeToSendCarNum(vehicleNumberBeen);
+//                DebugLog.e("加载停场车辆-------");
+//                if (mVehicleNumberBeen == null || !checkList(mVehicleNumberBeen, vehicleNumberBeen)){
+//                    DebugLog.e("刷新停场车辆--------");
+//                    mVehicleNumberBeen = vehicleNumberBeen;
+//                    mvpView.refreshTimeToSendCarNum(vehicleNumberBeen);
+//                }
+
+                if (mVehicleNumberBeen != null && mVehicleNumberBeen.size() == vehicleNumberBeen.size()){
+                    for (int i = 0; i < vehicleNumberBeen.size(); i ++){
+                        if (!TextUtils.equals(mVehicleNumberBeen.get(i).vehNumber, vehicleNumberBeen.get(i).vehNumber)
+                                || !TextUtils.equals(mVehicleNumberBeen.get(i).lineId, vehicleNumberBeen.get(i).lineId)){
+                            mvpView.refreshTimeToSendCarNum(vehicleNumberBeen);
+                            mVehicleNumberBeen.clear();
+                            mVehicleNumberBeen.addAll(vehicleNumberBeen);
+                            mvpView.hideLoading();
+                            return;
+                        }
+                    }
+                }else {
+                    mvpView.refreshTimeToSendCarNum(vehicleNumberBeen);
+                    mVehicleNumberBeen.clear();
+                    mVehicleNumberBeen.addAll(vehicleNumberBeen);
+                    mvpView.hideLoading();
+                }
 
             }
         }, userId(), keyCode(), spotId);
@@ -724,6 +898,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                 @Override
                 public void onNext(Object o) {
+                    refreshHistoryData();
                     loadGoneCarList();
 
                 }
@@ -750,6 +925,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onNext(Object o) {
+                refreshPlanData();
                 loadSendCarList();
             }
         }, userId(), keyCode(), objId, spaceTime);
@@ -882,18 +1058,22 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     /**
-     * 判断两个list是否相等
-     * @param list1
-     * @param list2
-     * @return
+     * 要刷新列表所以要清空
      */
-    private boolean checkList(List<?> list1, List<?> list2){
-        if (list1.containsAll(list2) && list2.containsAll(list1)){
-            return true;
-        }else {
-            return false;
-        }
+    private void refreshPlanData(){
+        mWaitVehicles.clear();
+        operatorVehicles.clear();
+        noOperatorVehicles.clear();
     }
+    /**
+     * 要刷新列表所以要清空
+     */
+    private void refreshHistoryData(){
+        mSendHistories.clear();
+        operatorHistories.clear();
+        noOperatorHistories.clear();
+    }
+
 
     public void loadSchedulePlan() {
         HttpMethods.getInstance().schedulePlan(new Subscriber<List<SchedulePlanBean>>() {

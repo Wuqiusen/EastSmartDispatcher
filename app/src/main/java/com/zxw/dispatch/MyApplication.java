@@ -28,8 +28,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         this.mContext = this;
-//        Thread.currentThread().setUncaughtExceptionHandler(
-//                new MyUncaughtExceptionHandler());
+        Thread.currentThread().setUncaughtExceptionHandler(
+                new MyUncaughtExceptionHandler());
         Stetho.initializeWithDefaults(this);
     }
     private class MyUncaughtExceptionHandler implements

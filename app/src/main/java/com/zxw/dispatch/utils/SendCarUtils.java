@@ -32,7 +32,7 @@ public class SendCarUtils {
     private DepartSource mSource = new DepartSource();
     private String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
     private String keyCode = SpUtils.getCache(mContext, SpUtils.KEYCODE);
-    private SendCarResult sendCarResult;
+    private SendCarResult sendCarResult;//车辆发车结果回调
     private Map<Integer, Boolean> sendResult = new HashMap<>();//是否发车成功
     private Map<Integer, Boolean> isSend = new HashMap<>();//是否已发车
 
@@ -52,14 +52,14 @@ public class SendCarUtils {
 
     private void startTimer() {
 //        //定时器
-        Log.w("createTimer---", "创建定时器");
+        Log.w("createTimer----------", "创建定时器");
         createTimeTool();
         mTimer.schedule(mTimerTask, 0, 1000 * 30);
 
     }
 
     private void stopTimer() {
-        Log.w("stopTimer---", "停止定时器");
+        Log.w("stopTimer---------", "停止定时器");
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;
@@ -78,18 +78,17 @@ public class SendCarUtils {
             mTimerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Log.w("createTimer---", "定时器运行");
+                    Log.w("createTimer---------", "定时器运行");
                     if (departCars != null && !departCars.isEmpty()) {
                         if (!isSend.get(departCars.get(0).getId()) && !sendResult.get(departCars.get(0).getId())) {
                             if (checkTime(departCars.get(0))) {
                                 isSend.put(departCars.get(0).getId(), true);
-                                Log.w("createTimer---", "checkTime");
+                                Log.w("createTimer--------", "checkTime");
                                 sendCar();
                             }
                         }
                     } else {
-                        Log.w("createTimer---", "定时器停止");
-                        if (mTimer != null) mTimer.cancel();
+                        Log.w("createTimer-----------", "定时器停止");
                         if (sendCarResult != null) {
                             sendCarResult.onSendCarFail(lineID);
                         }
@@ -110,7 +109,7 @@ public class SendCarUtils {
 
             @Override
             public void onError(Throwable e) {
-                Log.w("sendCar---", departCars.get(0).getCode() + "发车失败");
+                Log.w("sendCar---------", departCars.get(0).getCode() + "发车失败");
                 if (sendCarResult != null) {
                     sendCarResult.onSendCarFail(lineID);
                 }
@@ -120,16 +119,18 @@ public class SendCarUtils {
             @Override
             public void onNext(Object o) {
                 DebugLog.e("sendCar" + lineID);
-                Log.w("sendCar---", departCars.get(0).getCode() + "已经发出");
+                Log.w("sendCar--------", departCars.get(0).getCode() + "已经发出");
                 if (sendCarResult != null) {
                     sendCarResult.onSendCarSuccess(lineID);
                 }
                 sendResult.put(departCars.get(0).getId(), true);
                 if (isSend.get(departCars.get(0).getId()) && sendResult.get(departCars.get(0).getId())) {
+                    stopTimer();//发车成功后，取消定时器，发送更新待发车列表广播，马上检测第二辆车是否到达发车时间
                     departCars.remove(0);
-                    stopTimer();
                     startTimer();
                 }
+
+
             }
         }, code, keyCode, departCars.get(0).getId());
     }
@@ -138,10 +139,10 @@ public class SendCarUtils {
         SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         String str = formatter.format(curDate);
-        Log.w("checkTime---", w.getCode() + "等待发车");
+        Log.w("checkTime----------", w.getCode() + "等待发车");
         if (w.getVehTime() != null && !TextUtils.isEmpty(w.getVehTime())) {
             if (Integer.valueOf(w.getVehTime()) <= Integer.valueOf(str)) {
-                Log.w("checkTime---", w.getCode() + "发车时间到");
+                Log.w("checkTime---------", w.getCode() + "发车时间到");
                 return true;
             }
         }

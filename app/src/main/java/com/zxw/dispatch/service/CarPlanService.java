@@ -42,6 +42,7 @@ public class CarPlanService extends Service {
     private Map<Integer, SendCarUtils> autoData = new HashMap<>();
     private Map<Integer, Integer> failData = new HashMap<>();
     private Map<Integer, Timer> failTimer = new HashMap<>();
+    private Map<Integer, TimerTask> failTimerTask = new HashMap<>();
 
     private DepartSource mSource = new DepartSource();
     private String code = SpUtils.getCache(mContext, SpUtils.USER_ID);
@@ -60,16 +61,17 @@ public class CarPlanService extends Service {
             try {
                 switch (msg.what) {
                     case CANCEL_AUTO:
-                        Log.w("service---", "关闭自动发车");
+                        Log.w("service-------", "关闭自动发车");
                         if (rIntent != null)
                         removeAutoData(rIntent.getIntExtra("lineId", 0));
                         break;
                     case IS_AUTO:
-                        Log.w("service---", "判断是否自动发车");
+                        Log.w("service---------", "判断是否自动发车");
                         if (rIntent != null)
                         checkIsAuto(rIntent.getIntExtra("lineKey", 0));
                         break;
                     default:
+                        if (rIntent != null)
                         rIntent = null;
                         break;
                 }
@@ -100,6 +102,13 @@ public class CarPlanService extends Service {
             lineIds.add(lineId);
             failData.put(lineId, 0);
             failTimer.put(lineId, new Timer());
+            failTimerTask.put(lineId, new TimerTask() {
+                @Override
+                public void run() {
+                    Log.e("failSleep-------", "重新加载");
+                    loadCarDataTimer(lineId);
+                }
+            });
             loadCarDataTimer(lineId);
         }
         return super.onStartCommand(intent, flags, startId);
@@ -124,7 +133,7 @@ public class CarPlanService extends Service {
 
             @Override
             public void onNext(final List<DepartCar> waitVehicles) {
-                DebugLog.e("loadCarDataTimer" + lineId);
+                DebugLog.e("loadCarDataTimer--------" + lineId);
                 //如果获取数据为空则停止该线路自动发车功能
                 if (waitVehicles == null || waitVehicles.isEmpty()) {
                     if (autoData.get(lineId) != null) {
@@ -148,20 +157,23 @@ public class CarPlanService extends Service {
      * @param lineId
      */
     private void failSleep(final int lineId) {
-        Log.e("failSleep---", "加载失败");
+        Log.e("failSleep------", "加载失败");
         failData.put(lineId, failData.get(lineId) + 1);
-        Log.e("failSleep---", "失败次数：" + failData.get(lineId));
+        Log.e("failSleep------", "失败次数：" + failData.get(lineId));
         if (failData.get(lineId) == 2) {
             if (failTimer.get(lineId) == null) {
                 failTimer.put(lineId, new Timer());
             }
-            failTimer.get(lineId).schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Log.e("failSleep---", "重新加载");
-                    loadCarDataTimer(lineId);
-                }
-            }, 0, 1000 * 30);
+            if (failTimerTask.get(lineId) == null){
+                failTimerTask.put(lineId, new TimerTask() {
+                    @Override
+                    public void run() {
+                        Log.e("failSleep----------", "重新加载");
+                        loadCarDataTimer(lineId);
+                    }
+                });
+            }
+            failTimer.get(lineId).schedule(failTimerTask.get(lineId), 0, 1000 * 30);
         } else if (failData.get(lineId) < 2) {
             loadCarDataTimer(lineId);
         }
@@ -169,9 +181,18 @@ public class CarPlanService extends Service {
 
     //更新失败次数
     private void updateFailCount(int lineId) {
+        DebugLog.e("更新失败次数-------");
         failData.put(lineId, 0);
-        if (failTimer.get(lineId) != null)
+        if (failTimer.get(lineId) != null){
             failTimer.get(lineId).cancel();
+            failTimer.put(lineId, null);
+            failTimer.remove(lineId);
+        }
+        if (failTimerTask.get(lineId) != null){
+            failTimerTask.get(lineId).cancel();
+            failTimerTask.put(lineId, null);
+            failTimerTask.remove(lineId);
+        }
     }
 
     /**
@@ -186,6 +207,7 @@ public class CarPlanService extends Service {
             @Override
             public void onSendCarSuccess(int lineId) {
                 //发车成功，发送广播更新列表数据
+                Log.e("CarSuccess---------", "发车成功，发送广播更新列表数据");
                 updateIntent.putExtra("lineId", lineId);
                 sendBroadcast(updateIntent);
                 checkIsAuto(lineId);
@@ -194,6 +216,7 @@ public class CarPlanService extends Service {
             @Override
             public void onSendCarFail(int lineId) {
                 //发送失败，重新获取发车列表
+                Log.e("onSendCarFail---------", "发送失败，重新获取发车列表");
                 removeAutoData(lineId);
                 loadCarDataTimer(lineId);
 
@@ -210,19 +233,18 @@ public class CarPlanService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.w("onReceive---", "广播已接收");
+            Log.w("onReceive--------", "广播已接收");
             Message obtain = Message.obtain();
             rIntent = intent;
             if (intent.getStringExtra("type") != null && TextUtils.equals(intent.getStringExtra("type"), "getData")) {
+                Log.w("onReceive--------", "自动发车信息");
                 obtain.what = IS_AUTO;
                 handler.sendMessage(obtain);
-
-
             } else {
                 //取消自动发车
+                Log.w("onReceive--------", "取消自动发车信息");
                 obtain.what = CANCEL_AUTO;
                 handler.sendMessage(obtain);
-
             }
             //关闭service，注销时候使用
             if (TextUtils.equals(intent.getStringExtra("order"), "close")){
@@ -260,11 +282,21 @@ public class CarPlanService extends Service {
         if (lineIds != null && !lineIds.isEmpty()) {
             for (int i = 0; i < lineIds.size(); i++) {
                 if (lineIds.get(i) == lineId) {
-                    Log.e("removeAutoData--", "移除定时器:" + lineId);
+                    Log.e("removeAutoData---------", "移除定时器:" + lineId);
                     lineIds.remove(i);
                     autoData.get(lineId).setTimerCancel();
                     autoData.remove(lineId);//移除自动发车
-                    failTimer.remove(lineId);
+                    if (failTimer != null && !failTimer.isEmpty() && failTimer.get(lineId) != null){
+                        failTimer.get(lineId).cancel();
+                        failTimer.put(lineId, null);
+                        failTimer.remove(lineId);
+                    }
+                    if (failTimerTask != null && !failTimerTask.isEmpty() && failTimerTask.get(lineId) != null){
+                        failTimerTask.get(lineId).cancel();
+                        failTimerTask.put(lineId, null);
+                        failTimerTask.remove(lineId);
+                    }
+
                 }
             }
         }
@@ -276,7 +308,7 @@ public class CarPlanService extends Service {
      */
     private void closeService() {
         if (lineIds == null || lineIds.isEmpty()) {
-            Log.e("closeService---", "service数据为空");
+            Log.e("closeService-----------", "service数据为空");
             this.onDestroy();
         }
     }
@@ -285,18 +317,21 @@ public class CarPlanService extends Service {
      * 切底关闭service
      */
     private void serviceDestroy(){
-        Log.e("serviceDestroy------", "service关闭");
+        Log.e("serviceDestroy-------", "service关闭");
         this.onDestroy();
     }
 
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(carPlanReceiver);
-        carPlanReceiver = null;
+        if (carPlanReceiver != null){
+            unregisterReceiver(carPlanReceiver);
+            carPlanReceiver = null;
+        }
         clearData();
         super.onDestroy();
-        Log.e("onDestroy---", "service销毁");
+        Log.e("onDestroy---------", "service销毁");
+        if (rIntent != null)
         rIntent = null;
     }
 
@@ -304,13 +339,23 @@ public class CarPlanService extends Service {
         if (autoData != null && !autoData.isEmpty())
             for (int key : autoData.keySet()) {
                 autoData.get(key).setTimerCancel();
+                autoData.put(key, null);
                 autoData.remove(key);
             }
 
         if (failTimer != null && !failTimer.isEmpty())
             for (int key : failTimer.keySet()) {
                 failTimer.get(key).cancel();
+                failTimer.put(key, null);
                 failTimer.remove(key);
+            }
+
+            if (failTimerTask != null && !failTimerTask.isEmpty()){
+                for (int key : failTimerTask.keySet()) {
+                    failTimerTask.get(key).cancel();
+                    failTimerTask.put(key, null);
+                    failTimerTask.remove(key);
+                }
             }
 
         failData.clear();
