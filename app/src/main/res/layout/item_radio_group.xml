@@ -21,6 +21,5 @@
             style="@style/rb_huge_margin_left_style"
             android:text="异常"
             />
-
     </RadioGroup>
 </LinearLayout>

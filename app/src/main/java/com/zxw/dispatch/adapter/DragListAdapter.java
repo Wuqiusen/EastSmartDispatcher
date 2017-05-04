@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.LineParams;
+import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
@@ -25,8 +26,10 @@ import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.TimePlanPickerDialog;
 import com.zxw.dispatch.view.UpdateIntervalPickerDialog;
 import com.zxw.dispatch.view.dialog.AlertNameDialog;
+import com.zxw.dispatch.view.dialog.UpdateWaitCarCodeDialog;
 import com.zxw.dispatch.view.smart_edittext.SmartEditText;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -61,6 +64,7 @@ public class DragListAdapter extends BaseAdapter {
     private Button btn_cancel;
     private View viewDialog;
     private LinearLayout.LayoutParams params;
+    private List<StopCarCodeBean> mStopCarCodeList = new ArrayList<StopCarCodeBean>();
 
     public DragListAdapter(Context context, MainPresenter presenter, List<DepartCar> waitVehicles, LineParams mLineParams, int lineId) {
         this.mContext = context;
@@ -84,7 +88,7 @@ public class DragListAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_car_sequence);
         tv_car_sequence.setText((position + 1) + "");
 
-        TextView tv_car_code = (TextView) view
+         TextView tv_car_code = (TextView) view
                 .findViewById(R.id.tv_car_code);
         tv_car_code.setText(mDatas.get(position).getCode());
         if (mDatas.get(position).getTaskEditBelongId() == mDatas.get(position).getTaskEditRunId()){
@@ -92,6 +96,19 @@ public class DragListAdapter extends BaseAdapter {
         }else {
             tv_car_code.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
         }
+
+        // 车号
+        tv_car_code.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 new UpdateWaitCarCodeDialog(mContext,presenter.getLineId(),new UpdateWaitCarCodeDialog.OnListener() {
+                     @Override
+                     public void onConfirmChangeCarCode(StopCarCodeBean bean) {
+                          presenter.updateWaitCarCode(mDatas.get(position).getId(),bean);
+                    }
+                });
+            }
+        });
 
         // 驾驶员
         TextView tv_driver = (TextView) view
@@ -229,6 +246,8 @@ public class DragListAdapter extends BaseAdapter {
 
         return view;
     }
+
+
 
     private String noOperationStatus(int status){
         if (status == 1)

@@ -19,6 +19,7 @@ import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
+import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.bean.VersionBean;
@@ -432,6 +433,29 @@ public class HttpInterfaces {
     }
 
     public interface Operator {
+        /**
+         * 44.获取停场车辆
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/stop/replace/veh")
+        Observable<BaseBean<List<StopCarCodeBean>>> getStopCarList(@Field("userId") String userId,
+                                                                   @Field("keyCode") String keyCode,
+                                                                   @Field("taskLineId") String taskLineId);
+
+        /**
+         * 45.待发车替换停场车辆
+         * @param userId
+         * @param keyCode
+         * @param objId
+         * @param vehId
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/schedule/replace/veh")
+        Observable<BaseBean> updateWaitCarCode(@Field("userId") String userId,
+                                               @Field("keyCode") String keyCode,
+                                               @Field("objId") int objId,
+                                               @Field("vehId") int vehId);
 
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/stop/class/stop")
@@ -669,7 +693,8 @@ public class HttpInterfaces {
                                            @Field("endTime") String endTime,
                                            @Field("runNum") String runNum,
                                            @Field("runEmpMileage") String runEmpMileage,
-                                           @Field("workScheduleType") int workScheduleType);
+                                           @Field("workScheduleType") int workScheduleType,
+                                           @Field("remarks") String remarks) ;
 
         /**
          * 任务补录(新)
@@ -708,4 +733,6 @@ public class HttpInterfaces {
                                                       @Field("keyCode") String keyCode,
                                                       @Field("lineId") int lineId);
     }
+
+
 }

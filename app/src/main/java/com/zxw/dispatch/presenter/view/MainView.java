@@ -55,4 +55,5 @@ public interface MainView extends BaseView {
 
     void loadSchedulePlanList(SchedulePlanListAdapter adapter);
 
+
 }
