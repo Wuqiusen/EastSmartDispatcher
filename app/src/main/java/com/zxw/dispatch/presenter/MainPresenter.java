@@ -11,6 +11,7 @@ import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
+import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.http.HttpMethods;
@@ -386,6 +387,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
         }, userId(), keyCode(), lineId);
     }
+
     private void loadSendCarForNotOperatorEmpty() {
         mDepartSource.departListByOther(new Subscriber<List<DepartCar>>() {
             @Override
@@ -628,23 +630,31 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void stopCarMission(StopHistory stopCar, int type, String taskId, String taskType,
-                               String beginTime, String endTime,  String runNum, String runEmpMileage) {
-        mDepartSource.stopToSchedule(new Subscriber() {
-            @Override
-            public void onCompleted() {
+                               String beginTime, String endTime,  String runNum, String runEmpMileage,String remarks) {
 
-            }
+        try {
+            String mRemarks = new DESPlus().encrypt(Base64.encode(remarks.getBytes("utf-8")));
+            mDepartSource.stopToSchedule(new Subscriber() {
+                @Override
+                public void onCompleted() {
 
-            @Override
-            public void onError(Throwable e) {
-                mvpView.disPlay(e.getMessage());
-            }
+                }
 
-            @Override
-            public void onNext(Object o) {
-                refreshList();
-            }
-        }, userId(), keyCode(), String.valueOf(stopCar.id), type, taskId, taskType, beginTime, endTime, runNum, runEmpMileage, mLineParams.getTimeType());
+                @Override
+                public void onError(Throwable e) {
+                    mvpView.disPlay(e.getMessage());
+                }
+
+                @Override
+                public void onNext(Object o) {
+                    refreshList();
+                }
+            }, userId(), keyCode(), String.valueOf(stopCar.id), type, taskId, taskType, beginTime, endTime, runNum, runEmpMileage, mLineParams.getTimeType(),mRemarks);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void alertPeople(int id, int peopleId, int type) {
@@ -1074,7 +1084,11 @@ public class MainPresenter extends BasePresenter<MainView> {
         noOperatorHistories.clear();
     }
 
+    private void refreshStopData(){
+        endStopHistories.clear();
+        mStopHistories.clear();
 
+    }
     public void loadSchedulePlan() {
         HttpMethods.getInstance().schedulePlan(new Subscriber<List<SchedulePlanBean>>() {
             @Override
@@ -1100,4 +1114,36 @@ public class MainPresenter extends BasePresenter<MainView> {
         },userId(),keyCode(),lineId);
 
     }
+
+    // 待发车辆替换停场车辆
+    public void updateWaitCarCode(int objId, final StopCarCodeBean bean){
+       mvpView.showLoading();
+       HttpMethods.getInstance().updateWaitCarCode(new Subscriber() {
+           @Override
+           public void onCompleted() {
+               mvpView.hideLoading();
+           }
+
+           @Override
+           public void onError(Throwable e) {
+               mvpView.hideLoading();
+               mvpView.disPlay(e.getMessage());
+
+           }
+
+           @Override
+           public void onNext(Object o) {
+              mvpView.disPlay("操作成功");
+              refreshPlanData();
+              loadSendCarList();
+
+              refreshStopData();
+              loadStopCarList();
+
+           }
+       },userId(),keyCode(),objId,bean.vehicleId);
+
+    }
+
+
 }

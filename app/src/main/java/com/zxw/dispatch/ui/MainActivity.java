@@ -133,33 +133,24 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private StartCarView mHorStartCarView;
     private WaitCarView mHorWaitCarView;
-    /*标题栏*/
+    // 标题栏
     @Bind(R.id.tv_user_name)
     TextView tvUserName;
     @Bind(R.id.tv_system_date)
     TextView tvDate;
-
     // 操控台
-//    @Bind(R.id.rl_controller)
-//    RelativeLayout rlController;
-
     @Bind(R.id.tv_controller)
-    TextView tvController; // 操控台
-
-
-//    @Bind(R.id.rl_schedule)
-//    RelativeLayout rlSchedule;
-
+    TextView tvController;
+    // 排班计划
     @Bind(R.id.tv_schedule)
-    TextView tvSchedule;// 排班计划
+    TextView tvSchedule;
 
     RecyclerView mScheduleRV;
 
-
+    // 设置
     @Bind(R.id.img_setting)
-    ImageView imgSetting;// 设置
-//    @Bind(R.id.rl_setting)
-//    RelativeLayout rlSetting;
+    ImageView imgSetting;
+
 
     @Bind(R.id.rv_line)
     RecyclerView mLineRV;
@@ -806,6 +797,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mScheduleRV.setAdapter(adapter);
     }
 
+
     private void isShowStewardName(int isVisible) {
         mGoneRV1_StewardShow.setVisibility(isVisible);
         mGoneRV2_StewardShow.setVisibility(isVisible);
@@ -832,22 +824,22 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
             @Override
             public void onClickNormalMission(int type, int taskId) {
-                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null);
+                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null);
             }
 
             @Override
-            public void onClickOperatorEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage) {
-                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage);
+            public void onClickOperatorEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks) {
+                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks);
             }
 
             @Override
-            public void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage) {
-                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage);
+            public void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks) {
+                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks);
             }
 
             @Override
             public void onClickHelpMission(int type, int taskId) {
-                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null);
+                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null);
             }
 
             @Override
@@ -1024,20 +1016,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.rl_controller:
-//                vpMain.setCurrentItem(0);
-//                setTabBackground(0);
-//                break;
             case R.id.tv_controller:
                  vpMain.setCurrentItem(0);
                  setTabBackground(0);
                  break;
-//            case R.id.rl_schedule:
-//                vpMain.setCurrentItem(1);
-//                setTabBackground(1);
-//                presenter.loadSchedulePlan();
-//                isPopbg = false;
-//                break;
             case R.id.tv_schedule:
                 vpMain.setCurrentItem(1);
                 setTabBackground(1);

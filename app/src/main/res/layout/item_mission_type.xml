@@ -12,13 +12,4 @@
         style="@style/rb_not_checked_style"
         tools:text="正线运营"
         />
-    <!--<TextView-->
-        <!--android:id="@+id/tv_mission_type"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:textSize="@dimen/font_small"-->
-        <!--android:textColor="@color/font_black"-->
-        <!--tools:text="正线运营"-->
-        <!--/>-->
 </LinearLayout>

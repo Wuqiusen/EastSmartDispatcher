@@ -19,6 +19,7 @@ import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
+import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.bean.VersionBean;
@@ -38,8 +39,8 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-//    public static final String BASE_URL = "http://192.168.0.50:8081/yd_control_app/";
-    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+    public static final String BASE_URL = "http://192.168.0.51:8081/yd_control_app/";
+//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
 //    public static final String BASE_URL = "http://150970t1u9.51mypc.cn:52222/yd_control_app/";// 测试
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
@@ -380,10 +381,10 @@ public class HttpMethods {
         toSubscribe(map, subscriber);
     }
     public void stopToSchedule(Subscriber subscriber, String userId, String keyCode, String objId, int type, String taskId, String taskType,
-                               String beginTime, String endTime,  String runNum, String runEmpMileage,  int workScheduleType){
+                               String beginTime, String endTime,  String runNum, String runEmpMileage,  int workScheduleType,String remarks){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable map = operator.stopToSchedule(userId, keyCode, objId, type, taskId, taskType,
-                beginTime, endTime, runNum, runEmpMileage, workScheduleType).map(new HttpResultFunc());
+                beginTime, endTime, runNum, runEmpMileage, workScheduleType,remarks).map(new HttpResultFunc());
         toSubscribe(map, subscriber);
 
     }
@@ -410,6 +411,20 @@ public class HttpMethods {
         HttpInterfaces.Browse browse  = retrofit.create(HttpInterfaces.Browse.class);
         Observable<List<VehicleNumberBean>> map = browse.getVehicleNumber(userId, keyCode, spotId + "").map(new HttpResultFunc<List<VehicleNumberBean>>());
         toSubscribe(map, subscriber);
+    }
+
+    // 获取停场车辆
+    public void getStopCarList(Subscriber<List<StopCarCodeBean>> subscriber,String userId,String keyCode,String taskLineId){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable<List<StopCarCodeBean>> map = operator.getStopCarList(userId, keyCode, taskLineId).map(new HttpResultFunc<List<StopCarCodeBean>>());
+        toSubscribe(map,subscriber);
+    }
+
+    // 待发车替换停场车辆
+    public void updateWaitCarCode(Subscriber subscriber,String userId,String keyCode,int objId,int vehId){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.updateWaitCarCode(userId, keyCode, objId, vehId);
+        toSubscribe(map,subscriber);
     }
 
 

@@ -81,8 +81,8 @@ public class DepartSource {
     }
 
     public void stopToSchedule(Subscriber subscriber, String userId, String keyCode, String objId, int type, String taskId, String taskType,
-                               String beginTime, String endTime,  String runNum, String runEmpMileage,  int workScheduleType){
-        HttpMethods.getInstance().stopToSchedule(subscriber, userId, keyCode, objId, type, taskId, taskType, beginTime, endTime, runNum, runEmpMileage, workScheduleType);
+                               String beginTime, String endTime,  String runNum, String runEmpMileage,  int workScheduleType,String remarks){
+        HttpMethods.getInstance().stopToSchedule(subscriber, userId, keyCode, objId, type, taskId, taskType, beginTime, endTime, runNum, runEmpMileage, workScheduleType,remarks);
     }
     public void changePersonInfo(Subscriber subscriber, String userId, String keyCode,
                                  int objId, int personId, int type){

@@ -5,8 +5,9 @@
     android:layout_marginLeft="@dimen/margin_tiny"
     android:layout_marginRight="@dimen/margin_tiny"
     android:background="@color/transparent"
-    android:orientation="vertical" >
-    <!--WaitCar_Tab-->
+    android:orientation="vertical"
+    >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,34 +42,21 @@
             android:layout_gravity="right"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-            <!--单班主站-->
+            <!--本站-->
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/btn_height12"
-                android:background="@drawable/ll_stop_car_red_btn_bg"
-                android:minWidth="25dp" />
+                style="@style/btn_dui_red_station"
+                />
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/margin_tiny"
-                android:paddingRight="@dimen/normal_margin10"
-                android:textSize="@dimen/font_medium"
-                android:textColor="@color/font_blue"
+                style="@style/tv_dui_station"
                 android:text="本站"
                 />
 
-            <!--单班副站-->
+            <!--对站-->
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/btn_height12"
-                android:background="@drawable/ll_stop_car_green_btn_bg"
-                android:minWidth="25dp" />
+                style="@style/btn_dui_green_station"
+                />
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/margin_tiny"
-                android:textSize="@dimen/font_medium"
-                android:textColor="@color/font_blue"
+                style="@style/tv_dui_station"
                 android:text="对站"
                 />
         </LinearLayout>

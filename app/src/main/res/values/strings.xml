@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">运调调度员</string>
     <string name="hint_car_remarks_dialog">请您备注该线路运营的具体情况(100个字符以内)</string>
+    <string name="hint_not_operate_empty_dialog">请您备注该线路非营运空驶的具体情况(100个字符以内)</string>
+    <string name="hint_operate_empty_dialog">请您备注该线路营运空驶的具体情况(100个字符以内)</string>
     <string name="datum_update">修改资料</string>
     <string name="password_update">密码修改</string>
     <string name="login_out">退出</string>
