@@ -143,7 +143,7 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
                 new TimePlanPickerDialog(mContext,mDatas.get(position).getVehTime(),new TimePlanPickerDialog.OnTimePickerListener() {
                     @Override
                     public void onTimePicker(String sHour, String sMinute) {
-                             presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
+                        presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
                     }
                 }).show();
             }
@@ -178,6 +178,16 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
         TextView tv_no_operation_task = (TextView) view.findViewById(R.id.tv_no_operation_task);
         tv_no_operation_task.setText(mDatas.get(position).getTypeName());
 
+        // 备注
+        TextView tv_empty_remarks = (TextView) view.findViewById(R.id.tv_empty_remarks);
+        tv_empty_remarks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEmptyRemarksDialog();
+            }
+        });
+
+
         // 发车
         TextView tv_send_car = (TextView) view
                 .findViewById(R.id.tv_send_car);
@@ -197,7 +207,7 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
         tv_withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    openWithdrawCarDialog(mDatas.get(position).getId());
+                openWithdrawCarDialog(mDatas.get(position).getId());
             }
         });
 
@@ -216,7 +226,33 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
                 openInformDialog(mDatas.get(position).getId() + "");
             }
         });
+
         return view;
+    }
+
+    //备注
+    private void openEmptyRemarksDialog() {
+        final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext,R.layout.dialog_wait_car_remarks_dialog,null);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sDialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sDialog.dismiss();
+            }
+        });
+        sDialog.setContentView(view,params);
+        sDialog.setCancelable(true);
+        sDialog.show();
     }
 
     private String noOperationStatus(int status){
