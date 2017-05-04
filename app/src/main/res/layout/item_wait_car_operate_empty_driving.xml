@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:minHeight="40dp"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:minHeight="40dp"
 
     >
     <!--数据Item_待发车辆/营运空驶 或 非营运空驶-->
@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/tv_car_code"
         style="@style/font_random_weight_style"
-        android:layout_weight="4"
+        android:layout_weight="3.8"
         tools:text="车号"
         />
     <TextView
@@ -44,6 +44,7 @@
         android:layout_weight="3"
         tools:text="任务名称"
         />
+
     <TextView
         android:id="@+id/tv_driver"
         style="@style/font_random_weight_style"
@@ -65,7 +66,7 @@
     <TextView
         android:id="@+id/tv_count"
         style="@style/font_random_weight_style"
-        android:layout_weight="3"
+        android:layout_weight="2"
         tools:text="折算单次"
         />
     <TextView
@@ -74,10 +75,16 @@
         android:layout_weight="3"
         tools:text="空驶里程"
         />
+    <TextView
+        android:id="@+id/tv_empty_remarks"
+        style="@style/font_random_weight_style"
+        android:layout_weight="3"
+        tools:text="备注"
+        />
     <!--操作-->
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="5"
+        android:layout_weight="4"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
