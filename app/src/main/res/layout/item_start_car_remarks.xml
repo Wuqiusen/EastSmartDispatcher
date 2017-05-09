@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="@dimen/dialog_margin60"
+              android:layout_marginRight="@dimen/dialog_margin60"
+              android:layout_marginBottom="@dimen/normal_margin10"
+              android:background="@color/white"
+              android:orientation="vertical"
+              >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/normal_margin10"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/tv_start_car_remarks_dialog"
+                android:text="实跑单次："
+                />
+            <EditText
+                android:id="@+id/et_remarks_once"
+                style="@style/et_start_car_remarks_dialog"
+                />
+            <TextView
+                style="@style/tv_start_car_remarks_unit_dialog"
+                android:text="/次"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/normal_margin10"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/tv_start_car_remarks_dialog"
+                android:text="里程："
+                />
+            <EditText
+                android:id="@+id/et_remarks_mileage"
+                style="@style/et_start_car_remarks_dialog"
+                />
+            <TextView
+                style="@style/tv_start_car_remarks_unit_dialog"
+                android:text="/km"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/tv_start_car_remarks_dialog"
+                android:text="空驶里程："
+                />
+            <EditText
+                android:id="@+id/et_remarks_empty_mileage"
+                style="@style/et_start_car_remarks_dialog"
+                />
+            <TextView
+                style="@style/tv_start_car_remarks_unit_dialog"
+                android:text="/km"
+                />
+        </LinearLayout>
+
+</LinearLayout>

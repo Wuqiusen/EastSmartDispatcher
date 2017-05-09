@@ -35,6 +35,7 @@ import rx.Subscriber;
  * email: 1299242483@qq.com
  */
 public class VehicleToScheduleDialog extends AlertDialog.Builder {
+
     private final int lineId;
     private Context mContext;
     private StopHistory mStopCar;
@@ -69,7 +70,6 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         this.mListener = listener;
         this.lineId = lineId;
         loadMissionTypeByRemote();
-//        init();
     }
 
     private void loadMissionTypeByRemote() {

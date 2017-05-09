@@ -9,9 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.DoubleBill;
+import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SingleBill;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.MainPresenter;
 
 import java.util.List;
 
@@ -29,11 +31,13 @@ public class SchedulePlanListAdapter extends RecyclerView.Adapter<SchedulePlanLi
     private SingleBill singleBill;
     private DoubleBill doubleBill;
     private List<SchedulePlanBean> mData;
+    private LineParams mLineParams;
     private final LayoutInflater mLayoutInflater;
 
 
-    public SchedulePlanListAdapter(Context context, List<SchedulePlanBean> data){
+    public SchedulePlanListAdapter(Context context, LineParams lineParams, List<SchedulePlanBean> data){
         this.mContext = context;
+        this.mLineParams = lineParams;
         this.mData = data;
         this.mLayoutInflater = LayoutInflater.from(mContext);
     }
@@ -51,26 +55,31 @@ public class SchedulePlanListAdapter extends RecyclerView.Adapter<SchedulePlanLi
           doubleBill = mData.get(position).doubleBill;
           holder.tvNo.setText(String.valueOf(mData.get(position).sortNum));
           holder.tvVehCode.setText(mData.get(position).vehCode);
-          String driverName = singleBill.getDriverName()+"/"
-                                   + String.valueOf(mData.get(position).getVehId());
-          holder.tvDriverName.setText(driverName);
-          holder.tvRunNum.setText(String.valueOf(singleBill.getRunNum()));
-          // 单双班
           if (mData.get(position).isDouble == 0) {
              //单班
               holder.tvClassName.setText("单班");
-              holder.llDualClass.setVisibility(View.GONE);
+              holder.tvDriverName.setText(singleBill.getDriverName()+"/"
+                      + String.valueOf(mData.get(position).getVehId()));
+              holder.tvRunNum.setText(String.valueOf(singleBill.getRunNum()));
               holder.viewLine.setVisibility(View.GONE);
+              holder.llDualClass.setVisibility(View.GONE);
+
           }else{
              //双班
               holder.tvClassName.setText("双班");
-              holder.llDualClass.setVisibility(View.VISIBLE);
               holder.viewLine.setVisibility(View.VISIBLE);
+              holder.llDualClass.setVisibility(View.VISIBLE);
               holder.tvDualDriverName.setText(doubleBill.getDriverName()+"/"
                                               + String.valueOf(doubleBill.getVehId()));
               holder.tvDualRunNum.setText(String.valueOf(doubleBill.getRunNum()));
           }
 
+         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
+              holder.tvStewardName.setVisibility(View.GONE);
+         }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL) {
+              holder.tvStewardName.setVisibility(View.VISIBLE);
+              holder.tvStewardName.setText(mData.get(position).getStewardName());
+         }
 
     }
 

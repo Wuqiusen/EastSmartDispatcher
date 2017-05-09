@@ -44,6 +44,7 @@
     <dimen name="dialog_margin30">30dp</dimen>
     <dimen name="dialog_margin50">50dp</dimen>
     <dimen name="dialog_margin54">54dp</dimen>
+    <dimen name="dialog_margin60">60dp</dimen>
     <!--dialog_height-->
     <dimen name="dialog_height36">36dp</dimen>
     <dimen name="dialog_height40">40dp</dimen>

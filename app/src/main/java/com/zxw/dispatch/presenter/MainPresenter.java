@@ -1104,7 +1104,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onNext(List<SchedulePlanBean> schedulePlanBeen) {
                 if (schedulePlanBeen!=null && !schedulePlanBeen.isEmpty()){
-                    SchedulePlanListAdapter mAdapter = new SchedulePlanListAdapter(mContext,schedulePlanBeen);
+                    SchedulePlanListAdapter mAdapter = new SchedulePlanListAdapter(mContext,mLineParams,schedulePlanBeen);
                     mvpView.loadSchedulePlanList(mAdapter);
                 }else{
                     mvpView.disPlay("排班计划暂时无数据");

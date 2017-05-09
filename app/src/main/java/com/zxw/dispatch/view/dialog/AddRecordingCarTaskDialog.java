@@ -61,6 +61,7 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
     }
 
 
+
     private void initData(List<MissionType> missionTypes) {
         MissionType emptyMissionType = missionTypes.get(1);
         emptyTaskContent= emptyMissionType.getTaskContent();

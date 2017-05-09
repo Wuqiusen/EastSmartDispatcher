@@ -34,6 +34,7 @@ import rx.Subscriber;
 /**
  * author：CangJie on 2016/9/21 11:12
  * email：cangjie2016@gmail.com
+ *
  */
 public class DragListAdapterForOperatorEmpty extends BaseAdapter {
     private List<DepartCar> mDatas;
@@ -180,10 +181,15 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
 
         // 备注
         TextView tv_empty_remarks = (TextView) view.findViewById(R.id.tv_empty_remarks);
+        tv_empty_remarks.setText(mDatas.get(position).getRemarks());
         tv_empty_remarks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openEmptyRemarksDialog();
+                if (TextUtils.isEmpty(mDatas.get(position).getRemarks())){
+                    ToastHelper.showToast("当前没有备注");
+                    return;
+                }
+                openEmptyRemarksDialog(position);
             }
         });
 
@@ -231,16 +237,18 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
     }
 
     //备注
-    private void openEmptyRemarksDialog() {
+    private void openEmptyRemarksDialog(final int position) {
         final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext,R.layout.dialog_wait_car_remarks_dialog,null);
+        final TextView tv_empty_remarks = (TextView) view.findViewById(R.id.tv_empty_remarks);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tv_empty_remarks.setText(mDatas.get(position).getRemarks());
                 sDialog.dismiss();
             }
         });

@@ -1,22 +1,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-
-    >
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal">
 
     <LinearLayout
         android:layout_width="1000dp"
         android:layout_height="wrap_content"
         android:background="@drawable/ll_car_dialog"
         android:orientation="vertical">
-        <!--请确认是否将粤B12312添加到待发车辆列表中?-->
         <TextView
-            android:id="@+id/tv_carCode"
+            android:id="@+id/tv_recording_car"
             style="@style/title_font_dialog_style"
             android:layout_marginLeft="@dimen/dialog_height36"
             android:minHeight="@dimen/dialog_height50"
-            android:text="车辆任务"
+            android:text="补录车辆任务"
             android:textStyle="bold"
             />
 
@@ -54,25 +51,20 @@
         <View style="@style/line_title_bottom_dialog"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="360dp"
+            android:layout_height="440dp"
             android:orientation="horizontal">
-            <!--线路运营-->
-            <include layout="@layout/dialog_stop_car_item1"
-                android:visibility="visible"
-                android:id="@+id/item1"/>
-            <!--营运空驶-->
-            <include layout="@layout/dialog_stop_car_item2"
-                android:visibility="gone"
-                android:id="@+id/item2"/>
-            <!--非营运空驶-->
-            <include layout="@layout/dialog_stop_car_item2"
-                android:visibility="gone"
-                android:id="@+id/item3"/>
-            <!--支援-->
-            <include layout="@layout/dialog_stop_car_item4"
-                android:visibility="gone"
-                android:id="@+id/item4"/>
-            <!--收班-->
+            <include layout="@layout/dialog_recording_car_item1"
+                     android:visibility="visible"
+                     android:id="@+id/item1"/>
+            <include layout="@layout/dialog_recording_car_item2"
+                     android:visibility="gone"
+                     android:id="@+id/item2"/>
+            <include layout="@layout/dialog_recording_car_item2"
+                     android:visibility="gone"
+                     android:id="@+id/item3"/>
+            <include layout="@layout/dialog_recording_car_item4"
+                     android:visibility="gone"
+                     android:id="@+id/item4"/>
             <TextView
                 android:id="@+id/item5"
                 android:visibility="gone"

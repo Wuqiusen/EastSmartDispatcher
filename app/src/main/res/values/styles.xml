@@ -394,25 +394,6 @@
         <item name="android:background">@color/line_dark2</item>
     </style>
 
-
-    <!--RadioButton-->
-    <!--<style name="rb_bg_style">-->
-        <!--<item name="android:layout_width">@dimen/rb_width14</item>-->
-        <!--<item name="android:layout_height">@dimen/rb_height14</item>-->
-        <!--<item name="android:button">@null</item>-->
-        <!--<item name="android:text">@null</item>-->
-        <!--<item name="android:background">@drawable/radio_bg_style</item>-->
-    <!--</style>-->
-    <!--Font_RadioButton/CheckBox-->
-    <!--<style name="font_rb_cb_style">-->
-        <!--<item name="android:ellipsize">end</item>-->
-        <!--<item name="android:maxLines">1</item>-->
-        <!--<item name="android:maxLength">10</item>-->
-        <!--<item name="android:textSize">@dimen/font_medium</item>-->
-        <!--<item name="android:textColor">@color/background_deep_blue</item>-->
-        <!--<item name="android:layout_gravity">center</item>-->
-    <!--</style>-->
-
     <!--Font_CheckCarDetailDialog-->
     <style name="font_title_car_detail_dialog_style">
         <item name="android:layout_width">0dp</item>
@@ -497,6 +478,45 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/white</item>
     </style>
+
+    <!--<item name=""></item>-->
+    <!--<item name=""></item>-->
+    <!--<item name=""></item>-->
+    <!--<item name=""></item>-->
+    <!--<item name=""></item>-->
+
+    <!--备注弹出框-->
+    <style name="tv_start_car_remarks_dialog">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/font_gray</item>
+    </style>
+
+    <style name="et_start_car_remarks_dialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:minHeight">30dp</item>
+        <item name="android:background">@drawable/et_add_recoding</item>
+        <item name="android:inputType">number</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/font_black</item>
+    </style>
+
+    <style name="tv_start_car_remarks_unit_dialog">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">0.4</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:textColor">@color/font_gray</item>
+    </style>
+
+    <!--#-->
+
  <!--以上新增-->
 
 

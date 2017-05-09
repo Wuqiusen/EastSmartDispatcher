@@ -45,7 +45,7 @@
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="3"
-            android:text="计划结束时间"
+            android:text="计划到达时间"
             />
 
         <TextView

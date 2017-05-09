@@ -38,10 +38,12 @@
            />
 
        <TextView
+           android:id="@+id/tv_steward_name"
            style="@style/main_activity_top_button"
            android:layout_width="0dp"
            android:layout_weight="1"
            android:text="乘务员"
+           android:visibility="gone"
            />
 
        <TextView
