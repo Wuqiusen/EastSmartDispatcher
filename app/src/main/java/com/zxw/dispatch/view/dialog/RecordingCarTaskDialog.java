@@ -2,6 +2,9 @@ package com.zxw.dispatch.view.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -16,13 +19,13 @@ import com.zxw.data.bean.StopHistory;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MySpinnerAdapter;
+import com.zxw.dispatch.recycler.DividerItemDecoration;
+import com.zxw.dispatch.recycler.RecordingCarAdapter;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.smart_edittext.SmartEditText;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import rx.Subscriber;
@@ -36,7 +39,7 @@ import rx.Subscriber;
 public class RecordingCarTaskDialog extends AlertDialog.Builder {
 
     private Context mContext;
-    private RadioGroup rg_recording_item1;
+    private RecyclerView rv_recording_car;
     private RadioButton rb_normal, rb_operator_empty, rb_operator_not_empty, rb_help, rb_off_duty;
     private LinearLayout containerView1,containerView2,containerView3,containerView4;
     private TextView containerView5;
@@ -45,10 +48,11 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
                      ,et_recording_item2_km,et_recording_item2_remarks;
     private EditText et_recording_item3_start_time,et_recording_item3_end_time,et_recording_item3_run_count
             ,et_recording_item3_km,et_recording_item3_remarks;
-    private SmartEditText smartEt_recording_item2_vehicleId,smartEt_recording_item2_driverId;// 车牌号、驾驶员
+    private SmartEditText smartEt_recording_item1_vehicleId,smartEt_recording_item1_driverId,smartEt_recording_item1_stewardId;
+    private SmartEditText smartEt_recording_item2_vehicleId,smartEt_recording_item2_driverId,smartEt_recording_item_stewardId;// 车牌号、驾驶员
     private SmartEditText smartEt_recording_item3_vehicleId,smartEt_recording_item3_driverId;
-    private HashMap<RadioButton, MissionType.TaskContentBean> normalTaskIdMap;
-    private List<RadioButton> radioButtonList;
+
+    private static MissionType.TaskContentBean mTaskContentBean;
     private SmartEditText seLine;
 
     private List<MissionType.TaskContentBean> emptyTaskContent,notEmptyTaskContent;
@@ -124,10 +128,12 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
                     case R.id.rb_off_duty:
                         currentCategory = 5;
                         showContainerView5();
+                        break;
                 }
             }
         });
-        rg_recording_item1 = (RadioGroup) container.findViewById(R.id.rg_recording_item1);
+
+        rv_recording_car = (RecyclerView) container.findViewById(R.id.rv_recording_car);
         containerView1 = (LinearLayout) container.findViewById(R.id.item1);
         containerView2 = (LinearLayout) container.findViewById(R.id.item2);
         containerView3 = (LinearLayout) container.findViewById(R.id.item3);
@@ -140,7 +146,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
             switch (missionType.getType()) {
                 case 1:
                     // 线路运营
-                    generateNormalView(missionType, rg_recording_item1);
+                    recordingNormalView(missionType, containerView1);
                     break;
                 case 2:
                     // 营运空驶
@@ -165,6 +171,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
                     case 1:
                         if (onClickNormalMission())
                             dialog.dismiss();
+                        dialog.dismiss();
                         break;
                     case 2:
                         // 营运空驶
@@ -181,8 +188,8 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
                             dialog.dismiss();
                         break;
                     case 5:
-                        if (onClickOffDutyMission())
-                            dialog.dismiss();
+                        //if (onClickOffDutyMission())
+                        //    dialog.dismiss();
                         break;
                 }
             }
@@ -202,6 +209,32 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
 
     }
 
+
+    private void recordingNormalView(MissionType missionType,LinearLayout item1) {
+        RecyclerView rv_recording_item1_car = (RecyclerView) item1.findViewById(R.id.item1_rv_recording_car);
+        smartEt_recording_item1_vehicleId = (SmartEditText) item1.findViewById(R.id.smartEt_recording_item1_vehicleId);
+        smartEt_recording_item1_vehicleId.addQueryCarCodeEditTextListener();
+        smartEt_recording_item1_driverId = (SmartEditText) item1.findViewById(R.id.smartEt_recording_item1_driverId);
+        smartEt_recording_item1_driverId.addQueryDriverEditTextListener();
+        smartEt_recording_item1_stewardId = (SmartEditText) item1.findViewById(R.id.smartEt_recording_item1_stewardId);
+        smartEt_recording_item1_driverId.addQueryStewardEditTextListener();
+
+        final List<MissionType.TaskContentBean> taskContents = missionType.getTaskContent();
+        RecordingCarAdapter adapter = new RecordingCarAdapter(taskContents, mLineId + "", mContext
+                , new RecordingCarAdapter.OnSelectMissionListener() {
+            @Override
+            public void onSelectMission(MissionType.TaskContentBean missionType) {
+                mTaskContentBean = missionType;
+            }
+        });
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext,4);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_recording_item1_car.setLayoutManager(layoutManager);
+        rv_recording_item1_car.setAdapter(adapter);
+        rv_recording_item1_car.addItemDecoration(new DividerItemDecoration(mContext,R.color.white,
+                DividerItemDecoration.VERTICAL_LIST));
+    }
+
     private void recordingOperatorEmptyView(List<MissionType> missionTypes, LinearLayout item2) {
         sp_recording_item2_car_task = (Spinner) item2.findViewById(R.id.sp_recording_item_car_task);
         et_recording_item2_start_time = (EditText) item2.findViewById(R.id.et_recording_item_start_time);
@@ -211,7 +244,12 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         et_recording_item2_remarks = (EditText) item2.findViewById(R.id.et_recording_item_remarks);
         et_recording_item2_remarks.setHint(mContext.getResources().getString(R.string.hint_operate_empty_dialog));
         smartEt_recording_item2_vehicleId = (SmartEditText) item2.findViewById(R.id.smartEt_recording_item_vehicleId);
+        smartEt_recording_item2_vehicleId.addQueryCarCodeEditTextListener();
         smartEt_recording_item2_driverId = (SmartEditText) item2.findViewById(R.id.smartEt_recording_item_driverId);
+        smartEt_recording_item2_driverId.addQueryDriverEditTextListener();
+        smartEt_recording_item_stewardId = (SmartEditText) item2.findViewById(R.id.smartEt_recording_item_stewardId);
+        smartEt_recording_item_stewardId.addQueryStewardEditTextListener();
+
         MissionType emptyMissionType = missionTypes.get(1);
         emptyTaskContent= emptyMissionType.getTaskContent();
 
@@ -230,7 +268,9 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         et_recording_item3_remarks = (EditText) item3.findViewById(R.id.et_recording_item_remarks);
         et_recording_item3_remarks.setHint(mContext.getResources().getString(R.string.hint_operate_empty_dialog));
         smartEt_recording_item3_vehicleId = (SmartEditText) item3.findViewById(R.id.smartEt_recording_item_vehicleId);
+        smartEt_recording_item3_vehicleId.addQueryCarCodeEditTextListener();
         smartEt_recording_item3_driverId = (SmartEditText) item3.findViewById(R.id.smartEt_recording_item_driverId);
+        smartEt_recording_item3_driverId.addQueryDriverEditTextListener();
         MissionType noEmptyMissionType = missionTypes.get(2);
         notEmptyTaskContent = noEmptyMissionType.getTaskContent();
 
@@ -242,15 +282,34 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
 
 
     private boolean onClickOperatorEmptyMission() {
-        String vehicleId = smartEt_recording_item2_vehicleId.getText().toString().trim();
-        String driverId = smartEt_recording_item2_driverId.getText().toString().trim();
+        //String vehicleId = smartEt_recording_item2_vehicleId.getText().toString().trim();
+        //String driverId = smartEt_recording_item2_driverId.getText().toString().trim();
         String startTime = et_recording_item2_start_time.getText().toString().trim();
         String endTime = et_recording_item2_end_time.getText().toString().trim();
         String runCount = et_recording_item2_run_count.getText().toString().trim();
         String km = et_recording_item2_km.getText().toString().trim();
         String remarks = et_recording_item2_remarks.getText().toString().trim();
-        if (isEmpty(vehicleId,"请填写车牌号"))return false;
-        if (isEmpty(driverId,"请填写驾驶员"))return false;
+
+        if (smartEt_recording_item2_vehicleId.getVehicleInfo() == null){
+            ToastHelper.showToast("请输入车牌号");
+            return false;
+        }
+        String mVehicleId = String.valueOf(smartEt_recording_item2_vehicleId.getVehicleInfo().getVehicleId());
+        if (TextUtils.isEmpty(mVehicleId)){
+            ToastHelper.showToast("请输入车牌号");
+            return false;
+        }
+
+        if (smartEt_recording_item2_driverId.getPeopleInfo() == null){
+            ToastHelper.showToast("请输入驾驶员");
+            return false;
+        }
+        String mDriverId = String.valueOf(smartEt_recording_item2_driverId.getPeopleInfo().personId);
+        if (TextUtils.isEmpty(mDriverId)){
+            ToastHelper.showToast("请输入驾驶员");
+            return false;
+        }
+
         if (isEmpty(startTime,"请填写预计出发时间")) return false;
         if (isEmpty(endTime,"请填写预计到达时间"))return false;
         if (isEmpty(runCount,"请填写折算单次"))return false;
@@ -262,20 +321,38 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         }
         int selectSpItemPosition = sp_recording_item2_car_task.getSelectedItemPosition();
         int taskId = emptyTaskContent.get(selectSpItemPosition).getTaskId();
-        mListener.onClickOperatorEmptyMissionDoConfirm(currentCategory,taskId,vehicleId,driverId,startTime,endTime,runCount,km,remarks);
+        mListener.onClickOperatorEmptyMissionDoConfirm(currentCategory,taskId,mVehicleId,mDriverId,startTime,endTime,runCount,km,remarks);
         return true;
     }
 
     private boolean onClickOperatorNotEmptyMission() {
-        String vehicleId = smartEt_recording_item3_vehicleId.getText().toString().trim();
-        String driverId = smartEt_recording_item3_driverId.getText().toString().trim();
+        //String vehicleId = smartEt_recording_item3_vehicleId.getText().toString().trim();
+        //String driverId = smartEt_recording_item3_driverId.getText().toString().trim();
         String startTime = et_recording_item3_start_time.getText().toString().trim();
         String endTime = et_recording_item3_end_time.getText().toString().trim();
         String runCount = et_recording_item3_run_count.getText().toString().trim();
         String km = et_recording_item3_km.getText().toString().trim();
         String remarks = et_recording_item3_remarks.getText().toString().trim();
-        if (isEmpty(vehicleId,"请填写车牌号"))return false;
-        if (isEmpty(driverId,"请填写驾驶员"))return false;
+
+        if (smartEt_recording_item3_vehicleId.getVehicleInfo() == null){
+            ToastHelper.showToast("请输入车牌号");
+            return false;
+        }
+        String mVehicleId = String.valueOf(smartEt_recording_item3_vehicleId.getVehicleInfo().getVehicleId());
+        if (TextUtils.isEmpty(mVehicleId)){
+            ToastHelper.showToast("请输入车牌号");
+            return false;
+        }
+
+        if (smartEt_recording_item3_driverId.getPeopleInfo() == null){
+            ToastHelper.showToast("请输入驾驶员");
+            return false;
+        }
+        String mDriverId = String.valueOf(smartEt_recording_item3_driverId.getPeopleInfo().personId);
+        if (TextUtils.isEmpty(mDriverId)){
+            ToastHelper.showToast("请输入驾驶员");
+            return false;
+        }
         if (isEmpty(startTime,"请填写预计出发时间")) return false;
         if (isEmpty(endTime,"请填写预计到达时间"))return false;
         if (isEmpty(runCount,"请填写折算单次"))return false;
@@ -287,34 +364,11 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         }
         int selectSpItemPosition = sp_recording_item3_car_task.getSelectedItemPosition();
         int taskId = notEmptyTaskContent.get(selectSpItemPosition).getTaskId();
-        mListener.onClickOperatorNotEmptyMissionDoConfirm(currentCategory,taskId,vehicleId,driverId,startTime,endTime,runCount,km,remarks);
+        mListener.onClickOperatorNotEmptyMissionDoConfirm(currentCategory,taskId,mVehicleId,mDriverId,startTime,endTime,runCount,km,remarks);
         return true;
     }
 
 
-    private void generateNormalView(MissionType missionType, final RadioGroup rg_stop_car_item1) {
-        if (normalTaskIdMap == null) {
-            normalTaskIdMap = new HashMap<>();
-        } else {
-            normalTaskIdMap.clear();
-        }
-        if (radioButtonList == null) {
-            radioButtonList = new ArrayList<>();
-        } else {
-            radioButtonList.clear();
-        }
-        final List<MissionType.TaskContentBean> taskContents = missionType.getTaskContent();
-        RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-        for (int i = 0; i < taskContents.size(); i++) {
-            RadioButton radioButton = new RadioButton(mContext);
-            radioButton.setText(taskContents.get(i).getTaskName());
-            normalTaskIdMap.put(radioButton, taskContents.get(i));
-            rg_stop_car_item1.addView(radioButton, i, layoutParams);
-            if (mLineId == taskContents.get(i).getTaskId())
-                rg_stop_car_item1.check(radioButton.getId());
-            radioButtonList.add(radioButton);
-        }
-    }
     private boolean isEmpty(String count, String str) {
         if (TextUtils.isEmpty(count)) {
             ToastHelper.showToast(str);
@@ -325,18 +379,12 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
 
 
     private boolean onClickNormalMission() {
-        MissionType.TaskContentBean taskContentBean = null;
-        for (RadioButton radioButton : radioButtonList) {
-            if (radioButton.isChecked()) {
-                taskContentBean = normalTaskIdMap.get(radioButton);
-                break;
-            }
-        }
-        if (taskContentBean == null) {
+        if (mTaskContentBean == null) {
             ToastHelper.showToast("请选择线路");
             return false;
         }
-        mListener.onClickNormalMission(currentCategory, taskContentBean.getTaskId());
+        mListener.onClickNormalMission(currentCategory, mTaskContentBean.getTaskId());
+
         return true;
     }
 

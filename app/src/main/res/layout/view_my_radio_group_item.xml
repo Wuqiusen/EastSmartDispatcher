@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:minHeight="40dp"
+              android:paddingLeft="7dp"
+              android:paddingRight="@dimen/normal_margin10"
+              android:divider="@drawable/line_vertical_gray_style"
+              android:showDividers="beginning"
+              android:gravity="center"
+              android:orientation="horizontal">
+       <!--添加子item: RadioButton-->
+       <!--<RadioButton-->
+         <!--style="@style/rb_not_checked_style"-->
+         <!--android:layout_width="0dp"-->
+         <!--android:layout_weight="1"-->
+         <!--tools:text="M446上行"-->
+        <!--/>-->
+
+</LinearLayout>

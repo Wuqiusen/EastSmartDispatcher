@@ -200,6 +200,8 @@ public class AddRecordingCarTaskDialog extends AlertDialog.Builder implements Vi
                 ToastHelper.showToast("请输入驾驶员");
                 return;
             }
+
+
             String beginTime = et_beginTime.getText().toString().trim();
             if (TextUtils.isEmpty(beginTime)) {
                 ToastHelper.showToast("请输入开始时间");

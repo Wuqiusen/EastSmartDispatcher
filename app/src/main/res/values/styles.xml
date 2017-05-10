@@ -287,6 +287,7 @@
         <item name="android:layout_marginRight">@dimen/dialog_margin20</item>
         <item name="android:background">@color/line_gray2</item>
     </style>
+
     <!--DialogLinearLayout-->
     <style name="ll_hand_station_dialog_style">
         <item name="android:minHeight">50dp</item>
@@ -385,6 +386,8 @@
         <item name="android:layout_marginRight">0dp</item>
     </style>
 
+
+
     <style name="line_task_type_dialog_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
@@ -479,12 +482,6 @@
         <item name="android:background">@color/white</item>
     </style>
 
-    <!--<item name=""></item>-->
-    <!--<item name=""></item>-->
-    <!--<item name=""></item>-->
-    <!--<item name=""></item>-->
-    <!--<item name=""></item>-->
-
     <!--备注弹出框-->
     <style name="tv_start_car_remarks_dialog">
         <item name="android:layout_width">0dp</item>
@@ -514,9 +511,44 @@
         <item name="android:paddingLeft">6dp</item>
         <item name="android:textColor">@color/font_gray</item>
     </style>
-
     <!--#-->
 
+
+    <!--补录-->
+    <style name="tv_recording_car_dialog_item2">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:textColor">@color/font_black</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+    <style name="et_recording_car_dialog_item2">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">6</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">10</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:imeOptions">flagNoExtractUi</item>
+    </style>
+    <style name="et_remarks_recording_car_dialog_item2" parent="et_recording_car_dialog_item2">
+        <item name="android:layout_marginTop">@dimen/normal_margin10</item>
+        <item name="android:layout_marginBottom">@dimen/normal_margin10</item>
+        <item name="android:minHeight">100dp</item>
+        <item name="android:maxLength">100</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:gravity">top</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:background">@drawable/et_add_recoding</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/font_black</item>
+        <item name="android:hint">@string/hint_car_remarks_dialog</item>
+    </style>
  <!--以上新增-->
 
 

@@ -18,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -27,12 +26,10 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
-import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.MyApplication;
@@ -54,8 +51,6 @@ import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
-import com.zxw.dispatch.utils.ClickUtil;
-import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.ChildViewPager;
@@ -82,7 +77,7 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.http.POST;
+
 
 import static com.zxw.dispatch.R.id.tv_steward_show;
 
@@ -1091,9 +1086,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 //                                  presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
 //                               }
 //                    });
-//
 
-                // 新的:
+
+                // 新的1:
                 new RecordingCarTaskDialog(mContext, presenter.getLineId(), new RecordingCarTaskDialog.OnAddRecordingListener(){
                     @Override
                     public void onClickNormalMission(int currentCategory, int taskId) {
@@ -1120,6 +1115,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
                     }
                 });
+
 
                 break;
             // 自动发车

@@ -1,24 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center_horizontal"
+              android:orientation="vertical"
     >
-
     <LinearLayout
-        android:layout_width="1000dp"
+        android:layout_width="900dp"
         android:layout_height="wrap_content"
         android:background="@drawable/ll_car_dialog"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_recording_car"
             style="@style/title_font_dialog_style"
-            android:layout_marginLeft="@dimen/dialog_height36"
-            android:minHeight="@dimen/dialog_height50"
             android:text="补录车辆任务"
-            android:textStyle="bold"
             />
-
-        <View style="@style/line_title_bottom_dialog"/>
+        <View style="@style/line_horizontal_dialog_style"/>
 
         <!--任务类型-->
         <LinearLayout
@@ -68,54 +65,59 @@
                     android:id="@+id/rb_off_duty"
                     style="@style/rb_not_checked_style"
                     android:text="收班"
-                    android:visibility="gone"
                     />
             </RadioGroup>
         </LinearLayout>
+        <View style="@style/line_horizontal_dialog_style"/>
+        <!--以上固有保持-->
 
-        <View style="@style/line_title_bottom_dialog"/>
+        <!--填充五个布局-->
+        <!--线路运营-->
+        <include android:id="@+id/item1"
+                 layout="@layout/item1_recording_car_dialog"
+                 android:visibility="gone"
+                 />
+        <!--营运空驶-->
+        <include android:id="@+id/item2"
+                 layout="@layout/item2_recording_car_dialog"
+                 android:visibility="gone"
+                 />
+        <!--非营运空驶-->
+        <include android:id="@+id/item3"
+                 layout="@layout/item2_recording_car_dialog"
+                 android:visibility="gone"
+                 />
+        <!--支援-->
+        <include android:id="@+id/item4"
+                 layout="@layout/item4_recording_car_dialog"
+                 android:visibility="gone"
+                 />
+        <!--收班-->
+        <TextView
+            android:id="@+id/item5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="温馨提示：请确认是否收班？"
+            android:visibility="gone"
+            />
+
+        <!--以下固有保持-->
+        <View style="@style/line_horizontal_dialog_style"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="440dp"
-            android:orientation="horizontal">
-            <include layout="@layout/item1_recording_car_dialog"
-                     android:visibility="visible"
-                     android:id="@+id/item1"/>
-            <include layout="@layout/item2_recording_car_dialog"
-                     android:visibility="gone"
-                     android:id="@+id/item2"/>
-            <include layout="@layout/item2_recording_car_dialog"
-                     android:visibility="gone"
-                     android:id="@+id/item3"/>
-            <include layout="@layout/item4_recording_car_dialog"
-                     android:visibility="gone"
-                     android:id="@+id/item4"/>
-            <TextView
-                android:id="@+id/item5"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="温馨提示：请确认是否收班？"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_margin20"
-            android:gravity="right|center_vertical"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:layout_marginTop="@dimen/normal_margin20"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/btn_confirm"
                 style="@style/bluebtn_dialog_style"
-                android:text="确定"
+                android:text="保存"
                 />
             <Button
-                android:id="@+id/btn_cancel"
                 style="@style/whitebtn_dialog_style"
                 android:text="取消"
                 />
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>

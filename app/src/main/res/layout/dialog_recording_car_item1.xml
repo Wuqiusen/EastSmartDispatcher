@@ -5,7 +5,6 @@
               android:gravity="center"
               android:orientation="vertical"
               >
-
     <RadioGroup
         android:id="@+id/rg_recording_item1"
         android:layout_width="match_parent"

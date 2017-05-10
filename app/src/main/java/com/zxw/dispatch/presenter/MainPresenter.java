@@ -154,6 +154,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     }
 
+    //
+    /*旧的:*/
     public void addRecordingCarTask(String vehicleId, String driverId, String type, String taskId, String runNum,
                                     String runEmpMileage, String beginTime, String endTime){
      HttpMethods.getInstance().lineMakeup(new Subscriber() {
@@ -174,8 +176,9 @@ public class MainPresenter extends BasePresenter<MainView> {
          }
      },userId(),keyCode(),lineId+"",vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
 
-
     }
+
+
 
     private void loadGoneCarList() {
         loadGoneCarByNormal();

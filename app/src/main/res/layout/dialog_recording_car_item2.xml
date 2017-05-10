@@ -5,14 +5,13 @@
               android:layout_weight="1"
               android:gravity="center"
               android:orientation="vertical">
-
+    <!--请选择任务-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="horizontal"
-
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp">
         <TextView
@@ -104,7 +103,7 @@
         android:orientation="horizontal">
         <TextView
             style="@style/stop_car_dialog_show_tv"
-            android:text="折算单次（次）："/>
+            android:text="折算单次/次："/>
         <EditText
             android:id="@+id/et_recording_item_run_count"
             style="@style/stop_car_dialog_edittext" />
@@ -116,7 +115,7 @@
         android:orientation="horizontal">
         <TextView
             style="@style/stop_car_dialog_show_tv"
-            android:text="空驶里程（km）："/>
+            android:text="空驶里程/km："/>
         <EditText
             android:id="@+id/et_recording_item_km"
             style="@style/stop_car_dialog_edittext" />
