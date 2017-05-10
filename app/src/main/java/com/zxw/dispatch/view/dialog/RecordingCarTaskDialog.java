@@ -143,6 +143,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         containerView4 = (LinearLayout) container.findViewById(R.id.item4);
         containerView5 = (TextView) container.findViewById(R.id.item5);
 
+        recordingHelpView(missionTypes,containerView4);// 支援
         for (MissionType missionType : missionTypes) {
             switch (missionType.getType()) {
                 case 1:
@@ -158,8 +159,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
                     recordingOperatorNotEmptyView(missionTypes, containerView3);
                     break;
                 case 4:
-                    // 支援
-                    recordingHelpView(missionTypes,containerView4);
+
                     break;
             }
         }
@@ -215,8 +215,10 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
     private void recordingHelpView(List<MissionType> missionTypes, LinearLayout item4) {
         smartEt_recording_item4_vehicleId = (SmartEditText) item4.findViewById(R.id.smartEt_recording_item4_vehicleId);
         smartEt_recording_item4_vehicleId.addQueryCarCodeEditTextListener();
+
         smartEt_recording_item4_driverId = (SmartEditText) item4.findViewById(R.id.smartEt_recording_item4_driverId);
         smartEt_recording_item4_driverId.addQueryDriverEditTextListener();
+
         ll_steward_recording_item4 = (LinearLayout) item4.findViewById(R.id.ll_steward_recording_item4);
         smartEt_recording_item4_stewardId = (SmartEditText) item4.findViewById(R.id.smartEt_recording_item4_stewardId);
 

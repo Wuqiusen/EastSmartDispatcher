@@ -82,7 +82,6 @@
         <com.zxw.dispatch.view.smart_edittext.SmartEditText
             android:id="@+id/se_line"
             style="@style/et_recording_car_dialog_item2"
-            android:hint="请输入支援线路编号"
             />
     </LinearLayout>
     <View style="@style/line_title_bottom_dialog"/>
