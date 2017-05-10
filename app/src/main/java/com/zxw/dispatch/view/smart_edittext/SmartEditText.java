@@ -116,12 +116,6 @@ LineAdapter.OnSelectItemListener{
         mEditText.setHint("请输入司机姓名或工号");
     }
 
-    public void addQueryStewardEditTextListener() {
-        initInputType(STEWARD);
-        initEditTextListener(null);
-        mEditText.setHint("请输入乘务员姓名或工号");
-    }
-
     public void addQueryCarCodeEditTextListener() {
         initInputType(CAR_CODE);
         initEditTextListener(null);
@@ -335,6 +329,7 @@ LineAdapter.OnSelectItemListener{
         mEditText.setSelection(mEditText.length());
         popupWindow.dismiss();
     }
+
 
     public int getInfoId() {
         return -1;

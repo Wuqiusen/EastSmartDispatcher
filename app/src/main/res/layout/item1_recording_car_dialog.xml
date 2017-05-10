@@ -45,11 +45,13 @@
 
     <!--乘务员-->
     <LinearLayout
+        android:id="@+id/ll_steward_recording_item1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_small30"
         android:layout_marginRight="@dimen/margin_small30"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
         <TextView
             style="@style/tv_recording_car_dialog_item2"
             android:text="乘务员:"

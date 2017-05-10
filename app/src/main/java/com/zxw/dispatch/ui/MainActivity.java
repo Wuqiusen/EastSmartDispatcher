@@ -1089,7 +1089,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
                 // 新的1:
-                new RecordingCarTaskDialog(mContext, presenter.getLineId(), new RecordingCarTaskDialog.OnAddRecordingListener(){
+                new RecordingCarTaskDialog(mContext, presenter.getLineParams(),presenter.getLineId(), new RecordingCarTaskDialog.OnAddRecordingListener(){
                     @Override
                     public void onClickNormalMission(int currentCategory, int taskId) {
 

@@ -4,45 +4,6 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               >
-    <!--请选择任务-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_small30"
-        android:layout_marginRight="@dimen/margin_small30"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal">
-        <TextView
-            style="@style/tv_recording_car_dialog_item2"
-            android:text="请选择任务:"
-            />
-        <View style="@style/line_dialog_style"/>
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp">
-            <Spinner
-                android:id="@+id/sp_recording_item_car_task"
-                style="@style/sp_style"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:spinnerMode="dropdown"
-                android:overlapAnchor="false"
-                android:layout_centerVertical="true"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/trgion_gray"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/normal_margin10"/>
-        </RelativeLayout>
-    </LinearLayout>
-    <View style="@style/line_title_bottom_dialog"/>
     <!--车牌号-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,14 +46,16 @@
 
     <!--乘务员-->
     <LinearLayout
+        android:id="@+id/ll_steward_recording_item2_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_small30"
         android:layout_marginRight="@dimen/margin_small30"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
         <TextView
             style="@style/tv_recording_car_dialog_item2"
-            android:text="驾驶员:"
+            android:text="乘务员:"
             />
         <View style="@style/line_dialog_style"/>
         <com.zxw.dispatch.view.smart_edittext.SmartEditText
@@ -100,6 +63,46 @@
             style="@style/et_recording_car_dialog_item2"
             android:hint="请输入车牌号"
             />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--请选择任务-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="请选择任务:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+            <Spinner
+                android:id="@+id/sp_recording_item_car_task"
+                style="@style/sp_style"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:spinnerMode="dropdown"
+                android:overlapAnchor="false"
+                android:layout_centerVertical="true"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/trgion_gray"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/normal_margin10"/>
+        </RelativeLayout>
     </LinearLayout>
     <View style="@style/line_title_bottom_dialog"/>
 
