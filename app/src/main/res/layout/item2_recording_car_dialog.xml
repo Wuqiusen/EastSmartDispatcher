@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              >
+    <!--请选择任务-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="请选择任务:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+            <Spinner
+                android:id="@+id/sp_recording_item_car_task"
+                style="@style/sp_style"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:spinnerMode="dropdown"
+                android:overlapAnchor="false"
+                android:layout_centerVertical="true"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/trgion_gray"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/normal_margin10"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+    <!--车牌号-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="车牌号:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
+            android:id="@+id/smartEt_recording_item_vehicleId"
+            style="@style/et_recording_car_dialog_item2"
+            android:hint="请输入车牌号"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--驾驶员-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="驾驶员:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
+            android:id="@+id/smartEt_recording_item_driverId"
+            style="@style/et_recording_car_dialog_item2"
+            android:hint="请输入车牌号"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--乘务员-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="驾驶员:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
+            android:id="@+id/smartEt_recording_item_stewardId"
+            style="@style/et_recording_car_dialog_item2"
+            android:hint="请输入车牌号"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--预计出发时间-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="预计出发时间:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <EditText
+            android:id="@+id/et_recording_item_start_time"
+            style="@style/et_recording_car_dialog_item2"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--预计到达时间-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="预计到达时间:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <EditText
+            android:id="@+id/et_recording_item_end_time"
+            style="@style/et_recording_car_dialog_item2"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--折算单次-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="折算单次(次):"
+            />
+        <View style="@style/line_dialog_style"/>
+        <EditText
+            android:id="@+id/et_recording_item_run_count"
+            style="@style/et_recording_car_dialog_item2"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--空驶里程-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="空驶里程(km)："
+            />
+        <View style="@style/line_dialog_style"/>
+        <EditText
+            android:id="@+id/et_recording_item_km"
+            style="@style/et_recording_car_dialog_item2"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--备注-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="备注:"
+            />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_recording_item_remarks"
+                style="@style/et_remarks_recording_car_dialog_item2"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+</LinearLayout>

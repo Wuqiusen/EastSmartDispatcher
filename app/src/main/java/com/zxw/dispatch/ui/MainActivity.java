@@ -18,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -27,11 +26,10 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zxw.data.bean.Line;
+import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
-import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.MyApplication;
@@ -53,8 +51,6 @@ import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
-import com.zxw.dispatch.utils.ClickUtil;
-import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.ChildViewPager;
@@ -68,6 +64,7 @@ import com.zxw.dispatch.view.dialog.AddRecordingCarTaskDialog;
 import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
+import com.zxw.dispatch.view.dialog.RecordingCarTaskDialog;
 import com.zxw.dispatch.view.dialog.StopCarEndToStayDialog;
 import com.zxw.dispatch.view.dialog.VehicleToScheduleDialog;
 
@@ -80,7 +77,7 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.http.POST;
+
 
 import static com.zxw.dispatch.R.id.tv_steward_show;
 
@@ -145,7 +142,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Bind(R.id.tv_schedule)
     TextView tvSchedule;
 
-    RecyclerView mScheduleRV;
+    private TextView tvPlanStewardName;
+    private RecyclerView mScheduleRV;
 
     // 设置
     @Bind(R.id.img_setting)
@@ -278,6 +276,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private View initSchedulingView() {
         View view = View.inflate(mContext, R.layout.tab_view_scheduling_plan, null);
+        tvPlanStewardName = (TextView) view.findViewById(R.id.tv_steward_name); // 乘务员
         mScheduleRV = (RecyclerView) view.findViewById(R.id.rv_scheduling_plan);
         mScheduleRV.setLayoutManager(new LinearLayoutManager(this));
         mScheduleRV.addItemDecoration(new DividerItemDecoration(this,
@@ -305,7 +304,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvMenuDepart = (TextView) view.findViewById(R.id.tv_menu_depart_car);
         rlMenuBackground = (RelativeLayout) view.findViewById(R.id.rl_menu_background);
         llMenuWaitDepart = (LinearLayout) view.findViewById(R.id.ll_menu_wait_depart);
-        tvAddRecroding = (TextView) view.findViewById(R.id.tv_add_recording);
+        tvAddRecroding = (TextView) view.findViewById(R.id.tv_add_recording);// 补录
         tvMenuAutomatic = (TextView) view.findViewById(R.id.tv_menu_automatic);// 自动发车
         tvMenuManual = (TextView) view.findViewById(R.id.tv_menu_manual);  // 手动发车
         tvMenuWaitCar = (TextView) view.findViewById(R.id.tv_menu_wait_car);
@@ -614,7 +613,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void loadGoneCarByNormal(GoneAdapterForNormal goneAdapter) {
         stab1_size = goneAdapter.getCount();
         setStartCarCount();
-        tv_stab1.setText(showCount(R.string.line_operate,goneAdapter.getCount()));
+        tv_stab1.setText(showCount(R.string.line_operate,goneAdapter.getCount()));  //mGoneRV1
         mGoneRV1.setAdapter(goneAdapter);
 
         mHorStartCarView.setTab1tStartCarCount(goneAdapter);
@@ -794,6 +793,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void loadSchedulePlanList(SchedulePlanListAdapter adapter) {
+        LineParams mLineParams = presenter.getLineParams();
+        if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
+            tvPlanStewardName.setVisibility(View.GONE);
+        }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
+            tvPlanStewardName.setVisibility(View.VISIBLE);
+        }
         mScheduleRV.setAdapter(adapter);
     }
 
@@ -1072,14 +1077,46 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 showStopCarView(1);
                 break;
             case R.id.tv_add_recording:
-                    new AddRecordingCarTaskDialog(mContext,mMissionTypes,
-                            new AddRecordingCarTaskDialog.OnAddRecordingCarTaskListener() {
-                               @Override
-                               public void OnAddRecordingCarTask(String type, String taskId, String vehicleId, String driverId,
-                                                          String beginTime, String endTime, String runNum, String runEmpMileage) {
-                                  presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
-                               }
-                    });
+                // 旧的:
+//                    new AddRecordingCarTaskDialog(mContext,mMissionTypes,
+//                            new AddRecordingCarTaskDialog.OnAddRecordingCarTaskListener() {
+//                               @Override
+//                               public void OnAddRecordingCarTask(String type, String taskId, String vehicleId, String driverId,
+//                                                          String beginTime, String endTime, String runNum, String runEmpMileage) {
+//                                  presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
+//                               }
+//                    });
+
+
+                // 新的1:
+                new RecordingCarTaskDialog(mContext, presenter.getLineId(), new RecordingCarTaskDialog.OnAddRecordingListener(){
+                    @Override
+                    public void onClickNormalMission(int currentCategory, int taskId) {
+
+                    }
+                    @Override
+                    public void onClickOperatorEmptyMissionDoConfirm(int currentCategory, int taskId, String vehicleId, String driverId
+                            , String startTime, String endTime, String runCount, String km, String remarks) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,currentCategory+"",taskId+"",runCount,km,startTime,endTime);
+                    }
+                    @Override
+                    public void onClickOperatorNotEmptyMissionDoConfirm(int currentCategory, int taskId, String vehicleId, String driverId
+                            , String startTime, String endTime, String runCount, String km, String remarks) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,currentCategory+"",taskId+"",runCount,km,startTime,endTime);
+                    }
+
+                    @Override
+                    public void onClickHelpMission(int currentCategory, int lineId) {
+
+                    }
+
+                    @Override
+                    public void onOffDuty() {
+
+                    }
+                });
+
+
                 break;
             // 自动发车
             case R.id.tv_automatic:

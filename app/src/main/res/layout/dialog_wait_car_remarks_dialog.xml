@@ -16,6 +16,7 @@
             />
 
         <TextView
+            android:id="@+id/tv_empty_remarks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_margin30"
@@ -25,7 +26,7 @@
             style="@style/font_dialog_deputy_style"
             android:textSize="@dimen/font_large"
             android:gravity="left|center"
-            android:text="新增备注正在建设中..."
+            android:text=""
             />
 
         <LinearLayout

@@ -41,6 +41,8 @@ LineAdapter.OnSelectItemListener{
     private int inputType = -1;
     public static final int CAR_CODE = 0;
     public static final int DRIVER = 1;
+    public static final int STEWARD = 5;
+
     public static final int TRAINMAN = 2;
     public static final int LINE = 3;
     private OnLoadValueListener listener;
@@ -114,12 +116,20 @@ LineAdapter.OnSelectItemListener{
         mEditText.setHint("请输入司机姓名或工号");
     }
 
+    public void addQueryStewardEditTextListener() {
+        initInputType(STEWARD);
+        initEditTextListener(null);
+        mEditText.setHint("请输入乘务员姓名或工号");
+    }
+
     public void addQueryCarCodeEditTextListener() {
         initInputType(CAR_CODE);
         initEditTextListener(null);
         mEditText.setHint("请输入车牌号");
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
     }
+
+
 
     public void addQueryTrainManEditTextListener() {
         initInputType(TRAINMAN);

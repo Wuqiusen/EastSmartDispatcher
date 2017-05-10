@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal">
 
     <LinearLayout
         android:layout_width="600dp"
@@ -17,6 +17,13 @@
             />
 
         <include layout="@layout/item_radio_group"/>
+
+        <!--新增:选中异常而显示-->
+        <include
+            android:id="@+id/ll_abnormal_content"
+            layout="@layout/item_start_car_remarks"
+            android:visibility="gone"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,6 +47,7 @@
             android:layout_marginRight="@dimen/dialog_margin30"
             android:paddingLeft="@dimen/normal_margin10"
             />
+
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -42,6 +42,7 @@
             android:id="@+id/tv_steward_name"
             style="@style/font_schedule_plan_style"
             tools:text="王二/101"
+            android:visibility="gone"
             />
 
         <TextView
@@ -81,6 +82,7 @@
             android:id="@+id/tv_dul_steward_name"
             style="@style/font_schedule_plan_style"
             tools:text="李四/101"
+            android:visibility="gone"
             />
 
         <TextView

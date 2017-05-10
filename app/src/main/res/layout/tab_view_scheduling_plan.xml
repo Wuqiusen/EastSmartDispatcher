@@ -27,7 +27,7 @@
            style="@style/main_activity_top_button"
            android:layout_width="0dp"
            android:layout_weight="1"
-           android:text="单双班"
+           android:text="单/双班"
            />
 
        <TextView
@@ -38,17 +38,19 @@
            />
 
        <TextView
+           android:id="@+id/tv_steward_name"
            style="@style/main_activity_top_button"
            android:layout_width="0dp"
            android:layout_weight="1"
            android:text="乘务员"
+           android:visibility="gone"
            />
 
        <TextView
            style="@style/main_activity_top_button"
            android:layout_width="0dp"
            android:layout_weight="1"
-           android:text="单次(次)"
+           android:text="单次/次"
            />
    </LinearLayout>
 

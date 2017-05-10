@@ -13,6 +13,8 @@ public class SchedulePlanBean {
     public Integer sortNum;
     public String vehCode;
     public Integer vehId;
+    public String stewardName;
+
 
     public DoubleBill getDoubleBill() {
         return doubleBill;
@@ -69,4 +71,13 @@ public class SchedulePlanBean {
     public void setVehId(Integer vehId) {
         this.vehId = vehId;
     }
+
+    public String getStewardName() {
+        return stewardName;
+    }
+
+    public void setStewardName(String stewardName) {
+        this.stewardName = stewardName;
+    }
+
 }
