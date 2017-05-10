@@ -638,10 +638,21 @@ public class HttpInterfaces {
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/schedule/history/remarks")
         Observable<BaseBean> goneCarRemarks(@Field("userId") String userId,
-                                          @Field("keyCode") String keyCode,
-                                          @Field("objId") int objId,
-                                         @Field("status") int status,
-                                         @Field("remarks") String remarks); //DES PLUS转码
+                                            @Field("keyCode") String keyCode,
+                                            @Field("objId") int objId,
+                                            @Field("status") int status,
+                                            @Field("remarks") String remarks); //DES PLUS转码
+
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/history/remarks")
+        Observable<BaseBean> goneCarAbNormalRemarks(@Field("userId") String userId,
+                                            @Field("keyCode") String keyCode,
+                                            @Field("objId") int objId,
+                                            @Field("status") int status,
+                                            @Field("remarks") String remarks,
+                                            @Field("runNum") int runNum,
+                                            @Field("runMileage") double ruMileage,
+                                            @Field("runEmpMileage") double runEmpMileage);
 
 
         // 24 已发车列表填写备注

@@ -888,16 +888,16 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     /**
-     * 修改已发车辆备注信息
+     * 修改已发车辆备注信息_正常
      * @param objId
      * @param status
      * @param remark
      */
-    public void goneCarRemarks(int objId, int status, String remark){
+    public void goneCarNormalRemarks(int objId, int status, String remark){ // 原方法名：goneCarRemarks
         mvpView.showLoading();
         try {
             String remarkStr = new DESPlus().encrypt(Base64.encode(remark.getBytes("utf-8")));
-            HttpMethods.getInstance().goneCarRemarks(new Subscriber() {
+            HttpMethods.getInstance().goneCarNormalRemarks(new Subscriber() {
                 @Override
                 public void onCompleted() {
                     mvpView.hideLoading();
@@ -920,6 +920,46 @@ public class MainPresenter extends BasePresenter<MainView> {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 修改已发车辆备注信息_异常
+     * @param objId
+     * @param status
+     * @param remarks
+     * @param runOnce
+     * @param operateMileage
+     * @param emptyMileage
+     */
+     public void goneCarAbNormalRemarks(int objId, int status, String remarks, int runOnce, double operateMileage, double emptyMileage) {
+        mvpView.showLoading();
+        try {
+            String remarkStr = new DESPlus().encrypt(Base64.encode(remarks.getBytes("utf-8")));
+            HttpMethods.getInstance().goneCarAbNormalRemarks(new Subscriber() {
+                @Override
+                public void onCompleted() {
+                    mvpView.hideLoading();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    mvpView.disPlay(e.getMessage());
+
+                }
+
+                @Override
+                public void onNext(Object o) {
+                    refreshHistoryData();
+                    loadGoneCarList();
+
+                }
+            }, userId(), keyCode(), objId, status, remarkStr,runOnce,operateMileage,emptyMileage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     public void updateSpaceTime(int objId, String  spaceTime){
         mvpView.showLoading();
@@ -1147,6 +1187,7 @@ public class MainPresenter extends BasePresenter<MainView> {
        },userId(),keyCode(),objId,bean.vehicleId);
 
     }
+
 
 
 }

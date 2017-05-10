@@ -51,7 +51,7 @@ public class StartCarRemarkDialog extends AlertDialog.Builder {
         rbAbnormal = (RadioButton) view.findViewById(R.id.rb_abnormal);
         llAbnormalContent = (LinearLayout) view.findViewById(R.id.ll_abnormal_content);
         etRemarksOnce = (EditText) view.findViewById(R.id.et_remarks_once);//单次
-        etRemarksMileage = (EditText) view.findViewById(R.id.et_remarks_mileage);//里程
+        etRemarksMileage = (EditText) view.findViewById(R.id.et_remarks_mileage);//营运里程
         etRemarksEmptyMileage = (EditText) view.findViewById(R.id.et_remarks_empty_mileage);//空驶里程
         etRemarks = (EditText) view.findViewById(R.id.et_remarks);
         btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
@@ -88,33 +88,40 @@ public class StartCarRemarkDialog extends AlertDialog.Builder {
             public void onClick(View v) {
                 int mStatus = 1;
                 if (rbAbnormal.isChecked()) {
-                    if (TextUtils.isEmpty(etRemarksOnce.getText().toString().trim())){
+                    String runNum = etRemarksOnce.getText().toString().trim();
+                    if (TextUtils.isEmpty(runNum)){
                         ToastHelper.showToast("请输入实跑单次");
                         return;
                     }
-                    if (TextUtils.isEmpty(etRemarksMileage.getText().toString().trim())){
-                        ToastHelper.showToast("请输入里程");
+                    String runMileage = etRemarksMileage.getText().toString().trim();
+                    if (TextUtils.isEmpty(runMileage)){
+                        ToastHelper.showToast("请输入营运里程");
                         return;
                     }
-                    if (TextUtils.isEmpty(etRemarksEmptyMileage.getText().toString().trim())){
+                    String runEmpMileage = etRemarksEmptyMileage.getText().toString().trim();
+                    if (TextUtils.isEmpty(runEmpMileage)){
                         ToastHelper.showToast("请输入空驶里程");
                         return;
                     }
-                    if (TextUtils.isEmpty(etRemarks.getText().toString().trim())){
+                    String remarks = etRemarks.getText().toString().trim();
+                    if (TextUtils.isEmpty(remarks)){
                         ToastHelper.showToast("请备注线路运营的具体情况");
                         return;
                     }
                     mStatus = 2;
-                    mListener.goneCarRemarks(mObjId,mStatus,etRemarks.getText().toString()); // 暂无填单次、里程、空驶里程
+                    // 异常
+                    mListener.goneCarAbNormalRemarks(mObjId,mStatus,remarks,Integer.parseInt(runNum)
+                            ,Double.parseDouble(runMileage),Double.parseDouble(runEmpMileage));
                 }
 
                 if (rbNormal.isChecked()){
                     if (TextUtils.isEmpty(etRemarks.getText().toString().trim())){
-                        ToastHelper.showToast("请备注线路运营的具体情况");
+                        ToastHelper.showToast("请您备注线路运营的具体情况");
                         return;
                     }
                     mStatus = 1;
-                    mListener.goneCarRemarks(mObjId,mStatus,etRemarks.getText().toString());
+                    // 正常
+                    mListener.goneCarNormalRemarks(mObjId,mStatus,etRemarks.getText().toString());
                 }
 
                 mDialog.dismiss();
@@ -135,6 +142,8 @@ public class StartCarRemarkDialog extends AlertDialog.Builder {
     }
 
     public interface OnStartCarRemarkListener{
-        void goneCarRemarks(int objId,int status,String remarks);
+        void goneCarNormalRemarks(int objId,int status,String remarks);
+
+        void goneCarAbNormalRemarks(int mObjId, int mStatus, String remarks, int runNum, double runMileage, double runEmpMileage);
     }
 }

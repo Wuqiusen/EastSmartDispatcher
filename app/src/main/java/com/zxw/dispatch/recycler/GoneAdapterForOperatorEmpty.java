@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
 /**
  * author：CangJie on 2016/9/21 09:53
  * email：cangjie2016@gmail.com
- *
  */
 public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapterForOperatorEmpty.LineHolder> {
     private final LineParams mLineParams;
@@ -103,8 +102,13 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
                 new StartCarRemarkDialog(mContext, mData.get(position).id, mData.get(position).status, mData.get(position).remarks,
                         new StartCarRemarkDialog.OnStartCarRemarkListener() {
                             @Override
-                            public void goneCarRemarks(int objId, int status, String remarks) {
-                                presenter.goneCarRemarks(objId, status, remarks); // 选中"异常"情况，暂无填单次、里程、空驶里程
+                            public void goneCarNormalRemarks(int objId, int status, String remarks) {
+                                presenter.goneCarNormalRemarks(objId, status, remarks);
+                            }
+
+                            @Override
+                            public void goneCarAbNormalRemarks(int objId, int status, String remarks, int runOnce, double runMileage, double runEmpMileage) {
+                                presenter.goneCarAbNormalRemarks(objId,status,remarks,runOnce,runMileage,runEmpMileage);
                             }
                         });
             }
