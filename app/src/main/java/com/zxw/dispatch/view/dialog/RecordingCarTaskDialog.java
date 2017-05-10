@@ -39,7 +39,7 @@ import rx.Subscriber;
 public class RecordingCarTaskDialog extends AlertDialog.Builder {
 
     private Context mContext;
-    private RecyclerView rv_recording_car;
+
     private RadioButton rb_normal, rb_operator_empty, rb_operator_not_empty, rb_help, rb_off_duty;
     private LinearLayout containerView1,containerView2,containerView3,containerView4;
     private TextView containerView5;
@@ -133,7 +133,6 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
             }
         });
 
-        rv_recording_car = (RecyclerView) container.findViewById(R.id.rv_recording_car);
         containerView1 = (LinearLayout) container.findViewById(R.id.item1);
         containerView2 = (LinearLayout) container.findViewById(R.id.item2);
         containerView3 = (LinearLayout) container.findViewById(R.id.item3);
