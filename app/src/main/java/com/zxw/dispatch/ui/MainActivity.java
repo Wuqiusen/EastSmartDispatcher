@@ -60,7 +60,6 @@ import com.zxw.dispatch.view.MyDialog;
 import com.zxw.dispatch.view.StartCarView;
 import com.zxw.dispatch.view.StopCarView;
 import com.zxw.dispatch.view.WaitCarView;
-import com.zxw.dispatch.view.dialog.AddRecordingCarTaskDialog;
 import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
@@ -77,7 +76,6 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 
 import static com.zxw.dispatch.R.id.tv_steward_show;
 
@@ -1087,32 +1085,24 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 //                               }
 //                    });
 
-
                 // 新的1:
                 new RecordingCarTaskDialog(mContext, presenter.getLineParams(),presenter.getLineId(), new RecordingCarTaskDialog.OnAddRecordingListener(){
                     @Override
-                    public void onClickNormalMission(int currentCategory, int taskId) {
-
+                    public void onClickNormalMission(int type, int taskId, String vehicleId, String driverId, String stewardId) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, "1200", "1300");
                     }
                     @Override
-                    public void onClickOperatorEmptyMissionDoConfirm(int currentCategory, int taskId, String vehicleId, String driverId
-                            , String startTime, String endTime, String runCount, String km, String remarks) {
-                        presenter.addRecordingCarTask(vehicleId,driverId,currentCategory+"",taskId+"",runCount,km,startTime,endTime);
+                    public void onClickOperatorEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId, String startTime, String endTime, String runCount, String km, String remarks) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),null, String.valueOf(taskType),runCount,km,startTime,endTime);
                     }
                     @Override
-                    public void onClickOperatorNotEmptyMissionDoConfirm(int currentCategory, int taskId, String vehicleId, String driverId
-                            , String startTime, String endTime, String runCount, String km, String remarks) {
-                        presenter.addRecordingCarTask(vehicleId,driverId,currentCategory+"",taskId+"",runCount,km,startTime,endTime);
+                    public void onClickOperatorNotEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId, String startTime, String endTime, String runCount, String km, String remarks) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),null, String.valueOf(taskType),runCount,km,startTime,endTime);
                     }
 
                     @Override
-                    public void onClickHelpMission(int currentCategory, int lineId) {
-
-                    }
-
-                    @Override
-                    public void onOffDuty() {
-
+                    public void onClickHelpMission(int type, int taskId, String vehicleId, String driverId, String stewardId) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, "1200", "1300");
                     }
                 });
 
