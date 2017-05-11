@@ -35,6 +35,7 @@ import rx.Subscriber;
  * email: 1299242483@qq.com
  */
 public class VehicleToScheduleDialog extends AlertDialog.Builder {
+
     private final int lineId;
     private Context mContext;
     private StopHistory mStopCar;
@@ -47,7 +48,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
     private EditText et_stop_car_item_start_time2, et_stop_car_item_start_time3;
     private EditText et_stop_car_item_end_time2, et_stop_car_item_end_time3;
     private EditText et_stop_car_item_count2, et_stop_car_item_count3;
-    private EditText et_stop_car_item_km2, et_stop_car_item_km3;
+    private EditText et_stop_car_item_km2, et_stop_car_item_km3,et_stop_car_item_remarks2,et_stop_car_item_remarks3;
     private HashMap<RadioButton, MissionType.TaskContentBean> normalTaskIdMap;
     private SmartEditText seLine;
     private List<RadioButton> radioButtonList;
@@ -68,8 +69,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         this.mStopCar = stopCar;
         this.mListener = listener;
         this.lineId = lineId;
-        loadMissionTypeByRemote();////////
-//        init();
+        loadMissionTypeByRemote();
     }
 
     private void loadMissionTypeByRemote() {
@@ -260,17 +260,19 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         String endTime = et_stop_car_item_end_time3.getText().toString().trim();
         String count = et_stop_car_item_count3.getText().toString().trim();
         String km = et_stop_car_item_km3.getText().toString().trim();
+        String remarks = et_stop_car_item_remarks3.getText().toString().trim();
         if (isEmpty(beginTime, "请填写预计开始时间")) return false;
         if (isEmpty(endTime, "请填写预计结束时间")) return false;
         if (isEmpty(count, "请填写折算单次")) return false;
         if (isEmpty(km, "请填写里程")) return false;
+        if (isEmpty(remarks,"请填写备注")) return false;
         if (beginTime.length() != 4 || endTime.length() != 4){
             ToastHelper.showToast("请输入正确的时间");
             return false;
         }
         int selectedItemPosition = sp_stop_car_item2.getSelectedItemPosition();
         int taskId = taskContents2.get(selectedItemPosition).getTaskId();
-        mListener.onClickOperatorNotEmptyMission(currentCategory, taskId, beginTime, endTime, count, km);
+        mListener.onClickOperatorNotEmptyMission(currentCategory, taskId, beginTime, endTime, count, km,remarks);
         return true;
     }
 
@@ -279,17 +281,19 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         String endTime = et_stop_car_item_end_time2.getText().toString().trim();
         String count = et_stop_car_item_count2.getText().toString().trim();
         String km = et_stop_car_item_km2.getText().toString().trim();
+        String remarks = et_stop_car_item_remarks2.getText().toString().trim();
         if (isEmpty(beginTime, "请填写预计开始时间")) return false;
         if (isEmpty(endTime, "请填写预计结束时间")) return false;
         if (isEmpty(count, "请填写折算单次")) return false;
         if (isEmpty(km, "请填写里程")) return false;
+        if (isEmpty(remarks,"请填写备注")) return false;
         if (beginTime.length() != 4 || endTime.length() != 4){
             ToastHelper.showToast("请输入正确的时间");
             return false;
         }
         int selectedItemPosition = sp_stop_car_item2.getSelectedItemPosition();
         int taskId = taskContents2.get(selectedItemPosition).getTaskId();
-        mListener.onClickOperatorEmptyMission(currentCategory, taskId, beginTime, endTime, count, km);
+        mListener.onClickOperatorEmptyMission(currentCategory, taskId, beginTime, endTime, count, km,remarks);
         return true;
     }
 
@@ -323,6 +327,8 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         et_stop_car_item_end_time3 = (EditText) item3.findViewById(R.id.et_stop_car_item_end_time);
         et_stop_car_item_count3 = (EditText) item3.findViewById(R.id.et_stop_car_item_count);
         et_stop_car_item_km3 = (EditText) item3.findViewById(R.id.et_stop_car_item_km);
+        et_stop_car_item_remarks3 = (EditText) item3.findViewById(R.id.et_stop_car_item_remarks);
+        et_stop_car_item_remarks3.setHint(mContext.getResources().getString(R.string.hint_not_operate_empty_dialog));
         taskContents3 = missionType.getTaskContent();
 
         MySpinnerAdapter notOperatorEmptyAdapter = new MySpinnerAdapter(mContext, taskContents3);
@@ -335,6 +341,8 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         et_stop_car_item_end_time2 = (EditText) item2.findViewById(R.id.et_stop_car_item_end_time);
         et_stop_car_item_count2 = (EditText) item2.findViewById(R.id.et_stop_car_item_count);
         et_stop_car_item_km2 = (EditText) item2.findViewById(R.id.et_stop_car_item_km);
+        et_stop_car_item_remarks2 = (EditText) item2.findViewById(R.id.et_stop_car_item_remarks);
+        et_stop_car_item_remarks2.setHint(mContext.getResources().getString(R.string.hint_operate_empty_dialog));
         taskContents2 = missionType.getTaskContent();
 // 建立Adapter并且绑定数据源
 
@@ -369,9 +377,9 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
     public interface OnClickListener {
         void onClickNormalMission(int type, int taskId);
 
-        void onClickOperatorEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage);
+        void onClickOperatorEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks);
 
-        void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage);
+        void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks);
 
         void onClickHelpMission(int type, int taskId);
 

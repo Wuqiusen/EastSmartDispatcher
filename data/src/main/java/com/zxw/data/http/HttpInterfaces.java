@@ -19,6 +19,7 @@ import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
 import com.zxw.data.bean.SpotBean;
+import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.bean.VersionBean;
@@ -432,6 +433,29 @@ public class HttpInterfaces {
     }
 
     public interface Operator {
+        /**
+         * 44.获取停场车辆
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/stop/replace/veh")
+        Observable<BaseBean<List<StopCarCodeBean>>> getStopCarList(@Field("userId") String userId,
+                                                                   @Field("keyCode") String keyCode,
+                                                                   @Field("taskLineId") String taskLineId);
+
+        /**
+         * 45.待发车替换停场车辆
+         * @param userId
+         * @param keyCode
+         * @param objId
+         * @param vehId
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/schedule/replace/veh")
+        Observable<BaseBean> updateWaitCarCode(@Field("userId") String userId,
+                                               @Field("keyCode") String keyCode,
+                                               @Field("objId") int objId,
+                                               @Field("vehId") int vehId);
 
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/stop/class/stop")
@@ -614,10 +638,21 @@ public class HttpInterfaces {
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/schedule/history/remarks")
         Observable<BaseBean> goneCarRemarks(@Field("userId") String userId,
-                                          @Field("keyCode") String keyCode,
-                                          @Field("objId") int objId,
-                                         @Field("status") int status,
-                                         @Field("remarks") String remarks); //DES PLUS转码
+                                            @Field("keyCode") String keyCode,
+                                            @Field("objId") int objId,
+                                            @Field("status") int status,
+                                            @Field("remarks") String remarks); //DES PLUS转码
+
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/history/remarks")
+        Observable<BaseBean> goneCarAbNormalRemarks(@Field("userId") String userId,
+                                            @Field("keyCode") String keyCode,
+                                            @Field("objId") int objId,
+                                            @Field("status") int status,
+                                            @Field("remarks") String remarks,
+                                            @Field("runNum") int runNum,
+                                            @Field("runMileage") double ruMileage,
+                                            @Field("runEmpMileage") double runEmpMileage);
 
 
         // 24 已发车列表填写备注
@@ -669,7 +704,8 @@ public class HttpInterfaces {
                                            @Field("endTime") String endTime,
                                            @Field("runNum") String runNum,
                                            @Field("runEmpMileage") String runEmpMileage,
-                                           @Field("workScheduleType") int workScheduleType);
+                                           @Field("workScheduleType") int workScheduleType,
+                                           @Field("remarks") String remarks) ;
 
         /**
          * 任务补录(新)
@@ -681,7 +717,9 @@ public class HttpInterfaces {
                                             @Field("taskLineId") String taskLineId,
                                             @Field("vehicleId") String vehicleId,
                                             @Field("driverId") String driverId,
+                                            @Field("stewardId") String stewardId,
                                             @Field("type") String type,
+                                            @Field("taskId") String taskId,
                                             @Field("taskType") String taskType,
                                             @Field("runNum") String runNum,
                                             @Field("runEmpMileage") String runEmpMileage,
@@ -708,4 +746,6 @@ public class HttpInterfaces {
                                                       @Field("keyCode") String keyCode,
                                                       @Field("lineId") int lineId);
     }
+
+
 }

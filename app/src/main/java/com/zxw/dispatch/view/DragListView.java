@@ -3,6 +3,8 @@ package com.zxw.dispatch.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
@@ -21,6 +23,7 @@ import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.utils.DebugLog;
+import com.zxw.dispatch.utils.ToastHelper;
 
 /**
  * author：CangJie on 2016/9/21 11:11
@@ -56,6 +59,9 @@ import com.zxw.dispatch.utils.DebugLog;
     private int y;
     private ViewGroup itemView;
 
+
+
+
     private Handler delayHandler = new Handler(){
 
         private Vibrator vibrator;
@@ -84,6 +90,8 @@ import com.zxw.dispatch.utils.DebugLog;
         super(context, attrs);
     }
 
+
+
     /***
      * touch事件拦截 在这里我进行相应拦截，
      */
@@ -92,6 +100,7 @@ import com.zxw.dispatch.utils.DebugLog;
         DebugLog.w("list onInterceptTouchEvent" + Thread.currentThread());
         // 按下
         if (ev.getAction() == MotionEvent.ACTION_DOWN && !isLock) {
+            DebugLog.e("点击: onInterceptTouchEvent");
             int x = (int) ev.getX();// 获取相对与ListView的x坐标
             int y = (int) ev.getY();// 获取相应与ListView的y坐标
             temChangId = dragbeginPosition = dragEndPosition = pointToPosition(x, y);
@@ -99,32 +108,64 @@ import com.zxw.dispatch.utils.DebugLog;
             if (dragEndPosition == AdapterView.INVALID_POSITION) {
                 return super.onInterceptTouchEvent(ev);
             }
+
             // 获取当前位置的item视图(可见状态)
             ViewGroup itemView = (ViewGroup) getChildAt(dragEndPosition
                     - getFirstVisiblePosition());
-
             // 获取到的dragPoint其实就是在你点击指定item项中的高度.
             dragPoint = y - itemView.getTop();
             // 这个值是固定的:其实就是ListView这个控件与屏幕最顶部的距离（一般为标题栏+状态栏.
             dragYOffset = (int) (ev.getRawY() - y);
-
             // 获取可拖拽的图标
             View dragger = itemView.findViewById(R.id.ll_drag_handle);
             View tv_car_sequence = itemView.findViewById(R.id.tv_car_sequence);
+            View tv_car_code = itemView.findViewById(R.id.tv_car_code);
 
-            //点击的x坐标大于移动按钮的x坐标，就当成是按到了iv_move触发了移动
-            if (dragger != null && x < dragger.getRight()) { //如果想点击item的任意位置都能进行拖拽，把x > dragger.getLeft()限定去掉就行
-                this.x = tv_car_sequence.getWidth() - 7;
-                this.y = y;
-                this.itemView = itemView;
-                delayHandler.sendEmptyMessageDelayed(0, RESPONSE_TIME);
-                mDragTime = System.currentTimeMillis();
-                isDrag = true;
-                return true;
+            if (isClickView(itemView,tv_car_code,dragEndPosition,ev)){
+                // 子view消费事件
+                return false;
+            }else{
+
+                 //点击的x坐标大于移动按钮的x坐标，就当成是按到了iv_move触发了移动
+                 if (dragger != null && x < dragger.getRight()) { //如果想点击item的任意位置都能进行拖拽，把x > dragger.getLeft()限定去掉就行
+                      this.x = tv_car_sequence.getWidth() - 7;
+                      this.y = y;
+                      this.itemView = itemView;
+                      delayHandler.sendEmptyMessageDelayed(0, RESPONSE_TIME);
+                      mDragTime = System.currentTimeMillis();
+                      isDrag = true;
+                      return true;
+                 }
+
+
             }
+
+
+
         }
         return super.onInterceptTouchEvent(ev);
     }
+
+
+    public boolean isClickView(View rootView,View btnView,int curPosition,MotionEvent ev) {
+        int firstVisiblePosition = getFirstVisiblePosition();
+        int btnTopHeight = 0;
+        if (firstVisiblePosition == 0){
+            btnTopHeight = rootView.getHeight() * curPosition;
+        }else if (firstVisiblePosition != 0){
+            btnTopHeight = rootView.getHeight()*(curPosition - firstVisiblePosition);
+        }
+        Rect rect = new Rect(
+                btnView.getLeft(),
+                btnView.getTop()+btnTopHeight,
+                btnView.getRight(),
+                btnView.getBottom()+btnTopHeight);
+        boolean isClick = rect.contains((int) ev.getX(),(int) ev.getY());
+        DebugLog.i("isClick:"+isClick);
+        return isClick;
+    }
+
+
 
     private void prepareDrawBitmap(int x, int y, ViewGroup itemView) {
         upScrollBounce = getHeight() / 3;// 取得向上滚动的边际，大概为该控件的1/3
@@ -315,6 +356,9 @@ import com.zxw.dispatch.utils.DebugLog;
             }
         }
     }
+
+
+
 
     //换位成功后的回调接口
     public interface MyDragListener {

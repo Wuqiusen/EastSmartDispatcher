@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+    <!--车牌号-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="车牌号:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
+            android:id="@+id/smartEt_recording_item1_vehicleId"
+            style="@style/et_recording_car_dialog_item2"
+            android:hint="请输入车牌号"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--驾驶员-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="驾驶员:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
+            android:id="@+id/smartEt_recording_item1_driverId"
+            style="@style/et_recording_car_dialog_item2"
+            android:hint="请输入驾驶员"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--乘务员-->
+    <LinearLayout
+        android:id="@+id/ll_steward_recording_item1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="乘务员:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
+            android:id="@+id/smartEt_recording_item1_stewardId"
+            style="@style/et_recording_car_dialog_item2"
+            android:hint="请输入乘务员"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="运营线路:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <RadioGroup
+            android:id="@+id/rg_recording_car_item1"
+            style="@style/et_recording_car_dialog_item2"/>
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+
+
+</LinearLayout>

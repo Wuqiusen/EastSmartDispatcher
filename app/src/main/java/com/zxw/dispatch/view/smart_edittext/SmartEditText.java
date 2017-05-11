@@ -41,6 +41,8 @@ LineAdapter.OnSelectItemListener{
     private int inputType = -1;
     public static final int CAR_CODE = 0;
     public static final int DRIVER = 1;
+    public static final int STEWARD = 5;
+
     public static final int TRAINMAN = 2;
     public static final int LINE = 3;
     private OnLoadValueListener listener;
@@ -120,6 +122,8 @@ LineAdapter.OnSelectItemListener{
         mEditText.setHint("请输入车牌号");
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
     }
+
+
 
     public void addQueryTrainManEditTextListener() {
         initInputType(TRAINMAN);
@@ -325,6 +329,7 @@ LineAdapter.OnSelectItemListener{
         mEditText.setSelection(mEditText.length());
         popupWindow.dismiss();
     }
+
 
     public int getInfoId() {
         return -1;

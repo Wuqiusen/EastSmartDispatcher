@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_weight="1"
-    android:gravity="center"
-    android:layout_height="wrap_content">
-
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:orientation="vertical">
+    <!--请选择任务-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="horizontal"
-
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp">
         <TextView
             style="@style/stop_car_dialog_show_tv"
-            android:text="请选择任务"/>
+            android:text="请选择任务："/>
 
         <RelativeLayout
             android:layout_width="100dp"
@@ -25,7 +24,7 @@
             android:layout_marginRight="12dp"
             android:layout_weight="1">
             <Spinner
-                android:id="@+id/sp_stop_car_item"
+                android:id="@+id/sp_recording_item_car_task"
                 style="@style/sp_style"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -42,49 +41,59 @@
                 android:layout_marginRight="@dimen/normal_margin10"/>
         </RelativeLayout>
     </LinearLayout>
+
+    <!--车牌号-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             style="@style/stop_car_dialog_show_tv"
-            android:text="预计出发时间"/>
+            android:text="车牌号："/>
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
+            android:id="@+id/smartEt_recording_item_vehicleId"
+            style="@style/stop_car_dialog_edittext"
+            android:hint="请输入车牌号"
+            />
+    </LinearLayout>
+
+    <!--驾驶员-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/stop_car_dialog_show_tv"
+            android:text="驾驶员："/>
+        <com.zxw.dispatch.view.smart_edittext.SmartEditText
+            android:id="@+id/smartEt_recording_item_driverId"
+            style="@style/stop_car_dialog_edittext"
+            android:hint="请输入车牌号"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/stop_car_dialog_show_tv"
+            android:text="预计出发时间："/>
         <EditText
-            android:id="@+id/et_stop_car_item_start_time"
+            android:id="@+id/et_recording_item_start_time"
             style="@style/stop_car_dialog_edittext"
             />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             style="@style/stop_car_dialog_show_tv"
-            android:text="预计到达时间"/>
+            android:text="预计到达时间："/>
         <EditText
-            android:id="@+id/et_stop_car_item_end_time"
-            style="@style/stop_car_dialog_edittext" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            style="@style/stop_car_dialog_show_tv"
-            android:text="折算单次（次）"/>
-        <EditText
-            android:id="@+id/et_stop_car_item_count"
-            style="@style/stop_car_dialog_edittext" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-        <TextView
-            style="@style/stop_car_dialog_show_tv"
-            android:text="里程（km）"/>
-        <EditText
-            android:id="@+id/et_stop_car_item_km"
+            android:id="@+id/et_recording_item_end_time"
             style="@style/stop_car_dialog_edittext" />
     </LinearLayout>
 
@@ -93,15 +102,39 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-          style="@style/stop_car_dialog_show_tv"
-          android:text="备注"/>
+            style="@style/stop_car_dialog_show_tv"
+            android:text="折算单次/次："/>
+        <EditText
+            android:id="@+id/et_recording_item_run_count"
+            style="@style/stop_car_dialog_edittext" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/stop_car_dialog_show_tv"
+            android:text="空驶里程/km："/>
+        <EditText
+            android:id="@+id/et_recording_item_km"
+            style="@style/stop_car_dialog_edittext" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/stop_car_dialog_show_tv"
+            android:text="备注："/>
         <LinearLayout
             android:layout_width="100dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <EditText
-                android:id="@+id/et_stop_car_item_remarks"
+                android:id="@+id/et_recording_item_remarks"
                 style="@style/wait_car_dialog_edittext"
                 />
         </LinearLayout>

@@ -2,16 +2,13 @@ package com.zxw.dispatch.recycler;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.zxw.data.bean.LineParams;
@@ -19,6 +16,7 @@ import com.zxw.data.bean.SendHistory;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
+import com.zxw.dispatch.view.dialog.StartCarRemarkDialog;
 
 import java.util.List;
 
@@ -28,7 +26,6 @@ import butterknife.ButterKnife;
 /**
  * author：CangJie on 2016/9/21 09:53
  * email：cangjie2016@gmail.com
- *
  */
 public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNormal.LineHolder> {
     private final LineParams mLineParams;
@@ -102,9 +99,21 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
         holder.tv_send_remark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openRemarkDialog(mData.get(position).id, mData.get(position).status, mData.get(position).remarks);
+                new StartCarRemarkDialog(mContext, mData.get(position).id, mData.get(position).status, mData.get(position).remarks,
+                         new StartCarRemarkDialog.OnStartCarRemarkListener() {
+                             @Override
+                             public void goneCarNormalRemarks(int objId, int status, String remarks) {
+                                 presenter.goneCarNormalRemarks(objId, status, remarks);
+                             }
+
+                             @Override
+                             public void goneCarAbNormalRemarks(int objId, int status, String remarks, int runOnce, double runMileage, double runEmpMileage) {
+                                 presenter.goneCarAbNormalRemarks(objId,status,remarks,runOnce,runMileage,runEmpMileage);
+                             }
+                });
             }
         });
+
         // 查看
 //      holder.tvCheckSendCar.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -204,48 +213,6 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
         mDialog.show();
     }
 
-    /**
-     * 备注
-     */
-    private void openRemarkDialog(final int objId, final int status, String remark) {
-        final Dialog rDialog = new Dialog(mContext,R.style.customDialog);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_start_car_remarks_dialog,null);
-        final RadioButton rbNormal = (RadioButton) view.findViewById(R.id.rb_normal);
-        final RadioButton rbAbnormal = (RadioButton) view.findViewById(R.id.rb_abnormal);
-        final EditText etRemarks = (EditText) view.findViewById(R.id.et_remarks);
-        if (remark != null && !TextUtils.isEmpty(remark)){
-            etRemarks.setText(remark);
-            etRemarks.setSelection(remark.length());
-        }
-        if (status == 1){
-            rbNormal.setChecked(true);
-        }else {
-            rbAbnormal.setChecked(true);
-        }
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int mStatus = 1;
-                if (rbAbnormal.isChecked()) mStatus = 2;
-                if (rbNormal.isChecked()) mStatus = 1;
-                presenter.goneCarRemarks(objId, mStatus, etRemarks.getText().toString());
-                rDialog.dismiss();
-            }
-        });
-        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rDialog.dismiss();
-            }
-        });
-        rDialog.setContentView(view,params);
-        rDialog.setCancelable(true);
-        rDialog.show();
-    }
 
 
     public int getCount() {
