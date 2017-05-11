@@ -34,7 +34,7 @@
             android:orientation="horizontal">
             <TextView
                 style="@style/tv_start_car_remarks_dialog"
-                android:text="里程："
+                android:text="营运里程："
                 />
             <EditText
                 android:id="@+id/et_remarks_mileage"

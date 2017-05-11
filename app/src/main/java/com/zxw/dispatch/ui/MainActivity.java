@@ -1088,8 +1088,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 // 新的1:
                 new RecordingCarTaskDialog(mContext, presenter.getLineParams(),presenter.getLineId(), new RecordingCarTaskDialog.OnAddRecordingListener(){
                     @Override
-                    public void onClickNormalMission(int type, int taskId, String vehicleId, String driverId, String stewardId) {
-                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, "1200", "1300");
+                    public void onClickNormalMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime) {
+
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, startTime, endTime);
                     }
                     @Override
                     public void onClickOperatorEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId, String startTime, String endTime, String runCount, String km, String remarks) {
@@ -1101,8 +1102,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                     }
 
                     @Override
-                    public void onClickHelpMission(int type, int taskId, String vehicleId, String driverId, String stewardId) {
-                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, "1200", "1300");
+                    public void onClickHelpMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null,startTime,endTime);
                     }
                 });
 
