@@ -188,6 +188,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_small30"
         android:layout_marginRight="@dimen/margin_small30"
+        android:visibility="gone"
         android:orientation="horizontal">
         <TextView
             style="@style/tv_recording_car_dialog_item2"
@@ -199,6 +200,7 @@
                 style="@style/et_remarks_recording_car_dialog_item2"
             />
     </LinearLayout>
-    <View style="@style/line_title_bottom_dialog"/>
+    <View style="@style/line_title_bottom_dialog"
+        android:visibility="gone"/>
 
 </LinearLayout>

@@ -39,8 +39,8 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-//    public static final String BASE_URL = "http://192.168.0.50:8081/yd_control_app/";
-    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+    public static final String BASE_URL = "http://192.168.0.50:8081/yd_control_app/";
+//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
 //    public static final String BASE_URL = "http://150970t1u9.51mypc.cn:52222/yd_control_app/";// 测试
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
@@ -397,10 +397,10 @@ public class HttpMethods {
 
     }
 
-    public void lineMakeup(Subscriber subscriber, String userId, String keyCode, String taskLineId, String vehicleId, String driverId,
-                           String type, String taskType, String runNum,  String runEmpMileage, String beginTime, String endTime){
+    public void lineMakeup(Subscriber subscriber, String userId, String keyCode, String taskLineId, String vehicleId, String driverId, String stewardId,
+                           String type, String taskId, String taskType, String runNum,  String runEmpMileage, String beginTime, String endTime){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
-        Observable map = operator.lineMakeup(userId, keyCode, taskLineId, vehicleId, driverId, type, taskType,
+        Observable map = operator.lineMakeup(userId, keyCode, taskLineId, vehicleId, driverId, stewardId, type, taskId, taskType,
                 runNum, runEmpMileage, beginTime, endTime).map(new HttpResultFunc());
         toSubscribe(map, subscriber);
     }

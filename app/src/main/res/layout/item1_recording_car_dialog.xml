@@ -73,16 +73,12 @@
         android:orientation="horizontal">
         <TextView
             style="@style/tv_recording_car_dialog_item2"
-            android:text="线路编号:"
+            android:text="运营线路:"
             />
         <View style="@style/line_dialog_style"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/item1_rv_recording_car"
-            android:layout_width="0dp"
-            android:layout_weight="6"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.RecyclerView>
+        <RadioGroup
+            android:id="@+id/rg_recording_car_item1"
+            style="@style/et_recording_car_dialog_item2"/>
     </LinearLayout>
     <View style="@style/line_title_bottom_dialog"/>
 
