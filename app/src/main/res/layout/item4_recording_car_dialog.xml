@@ -86,5 +86,44 @@
     </LinearLayout>
     <View style="@style/line_title_bottom_dialog"/>
 
+    <!--预计出发时间-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="预计出发时间:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <EditText
+            android:id="@+id/et_recording_item4_start_time"
+            style="@style/et_recording_car_dialog_item2"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+    <!--预计到达时间-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small30"
+        android:layout_marginRight="@dimen/margin_small30"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/tv_recording_car_dialog_item2"
+            android:text="预计到达时间:"
+            />
+        <View style="@style/line_dialog_style"/>
+        <EditText
+            android:id="@+id/et_recording_item4_end_time"
+            style="@style/et_recording_car_dialog_item2"
+            />
+    </LinearLayout>
+    <View style="@style/line_title_bottom_dialog"/>
+
+
 
 </LinearLayout>
