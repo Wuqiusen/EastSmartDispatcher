@@ -72,6 +72,11 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         loadMissionTypeByRemote();
     }
 
+    public AlertDialog getDialog(){
+        return dialog;
+    }
+
+
     private void loadMissionTypeByRemote() {
         HttpMethods.getInstance().missionList(new Subscriber<List<MissionType>>() {
                                                   @Override
