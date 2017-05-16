@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -52,7 +53,6 @@ import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
 import com.zxw.dispatch.utils.SpUtils;
-import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.ChildViewPager;
 import com.zxw.dispatch.view.CustomViewPager;
 import com.zxw.dispatch.view.DragListView;
@@ -69,6 +69,7 @@ import com.zxw.dispatch.view.dialog.VehicleToScheduleDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -76,8 +77,10 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.qqtheme.framework.picker.DatePicker;
 
 import static com.zxw.dispatch.R.id.tv_steward_show;
+import static com.zxw.dispatch.utils.ToastHelper.showToast;
 
 
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
@@ -228,6 +231,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private TextView mSendRV1_tv_steward_show, mSendRV2_tv_steward_show, mSendRV3_tv_steward_show;
     private StopCarView mHorStopCarView;
     private RecyclerView mStopRV1, mStopRV2;
+    private TextView tv_date;
+    private int currentYear;
+    private int currentMonth;
+    private int currentDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,11 +282,43 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private View initSchedulingView() {
         View view = View.inflate(mContext, R.layout.tab_view_scheduling_plan, null);
         tvPlanStewardName = (TextView) view.findViewById(R.id.tv_steward_name); // 乘务员
+        // 排班计划顶部时间
+        tv_date = (TextView) view.findViewById(R.id.tv_date);
+
+        Calendar calendar =  Calendar.getInstance();
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonth = calendar.get(Calendar.MONTH) + 1;
+        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        tv_date.setText(String.valueOf(currentYear) + "-" + String.valueOf(currentMonth) + "-" + String.valueOf(currentDay));
+        tv_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(currentYear, currentMonth, currentDay);
+            }
+        });
         mScheduleRV = (RecyclerView) view.findViewById(R.id.rv_scheduling_plan);
         mScheduleRV.setLayoutManager(new LinearLayoutManager(this));
         mScheduleRV.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
         return view;
+    }
+
+    private void showDatePickerDialog(int currentYear, int currentMonth, int currentDay) {
+        DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH_DAY);
+        picker.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+        picker.setWidth((int) (picker.getScreenWidthPixels() * 0.6));
+        picker.setHeight((int) (picker.getScreenHeightPixels() * 0.5));
+        picker.setRangeStart(2017, 1, 1);
+        picker.setRangeEnd(2116, 1, 1);
+        picker.setSelectedItem(currentYear, currentMonth, currentDay);
+        picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
+            @Override
+            public void onDatePicked(String year, String month, String day) {
+                tv_date.setText(year + "-" + Integer.valueOf(month) + "-" + Integer.valueOf(day));
+                presenter.loadSchedulePlan(year, month, day);
+            }
+        });
+        picker.show();
     }
 
 
@@ -793,9 +832,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void loadSchedulePlanList(SchedulePlanListAdapter adapter) {
         LineParams mLineParams = presenter.getLineParams();
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
-            tvPlanStewardName.setVisibility(View.GONE);
+//            tvPlanStewardName.setVisibility(View.GONE);
         }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
-            tvPlanStewardName.setVisibility(View.VISIBLE);
+//            tvPlanStewardName.setVisibility(View.VISIBLE);
         }
         mScheduleRV.setAdapter(adapter);
     }
@@ -1026,7 +1065,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.tv_schedule:
                 vpMain.setCurrentItem(1);
                 setTabBackground(1);
-                presenter.loadSchedulePlan();
+                presenter.loadSchedulePlan(String.valueOf(currentYear), String.valueOf(currentMonth), String.valueOf(currentDay));
                 break;
             case R.id.img_setting:
                 showPopupWindow();
@@ -1115,7 +1154,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 if ((System.currentTimeMillis() - clickTime) > 1000) {
                     if (!isAuto) {
                         if (!isHaveSendCar) {
-                            ToastHelper.showToast("该线路没有待发车辆", mContext);
+                            showToast("该线路没有待发车辆", mContext);
                             return;
                         }
                         setTvBackground(2);
@@ -1273,10 +1312,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void onPopupListener(int position) {
         switch (position) {
             case 0:
-                ToastHelper.showToast("修改资料", mContext);
+                showToast("修改资料", mContext);
                 break;
             case 1:
-                ToastHelper.showToast("密码修改", mContext);
+                showToast("密码修改", mContext);
                 break;
             case 2:
                 isSureLoginOut();

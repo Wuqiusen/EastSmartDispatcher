@@ -40,9 +40,9 @@
 
         <TextView
             android:id="@+id/tv_steward_name"
+            android:visibility="gone"
             style="@style/font_schedule_plan_style"
             tools:text="王二/101"
-            android:visibility="gone"
             />
 
         <TextView
