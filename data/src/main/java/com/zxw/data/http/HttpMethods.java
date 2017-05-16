@@ -353,9 +353,9 @@ public class HttpMethods {
     }
 
     //排班计划
-    public void schedulePlan(Subscriber<List<SchedulePlanBean>> subscriber,String userId,String keyCode,int lineId){
+    public void schedulePlan(Subscriber<List<SchedulePlanBean>> subscriber,String userId,String keyCode,int lineId, String runDate){
         HttpInterfaces.SchedulePlan schedulePlan = retrofit.create(HttpInterfaces.SchedulePlan.class);
-        Observable<List<SchedulePlanBean>> map = schedulePlan.shedulePlan(userId,keyCode,lineId).map(new HttpResultFunc<List<SchedulePlanBean>>());
+        Observable<List<SchedulePlanBean>> map = schedulePlan.shedulePlan(userId,keyCode,lineId, runDate).map(new HttpResultFunc<List<SchedulePlanBean>>());
         toSubscribe(map,subscriber);
     }
 

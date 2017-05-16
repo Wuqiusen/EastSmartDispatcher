@@ -1139,7 +1139,20 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     }
 
-    public void loadSchedulePlan() {
+    public void loadSchedulePlan(String strYear, String strMonth, String strDay) {
+        if (strMonth.length() == 1){
+            strMonth = "0"+strMonth;
+        }
+        if (strDay.length() == 1){
+            strDay = "0" + strDay;
+        }
+        if (strYear.length() != 4)
+            throw new RuntimeException("year error");
+        if (strMonth.length() != 2)
+            throw new RuntimeException("month error");
+        if (strDay.length() != 2)
+            throw new RuntimeException("day error");
+        String runDate = strYear + strMonth + strDay;
         HttpMethods.getInstance().schedulePlan(new Subscriber<List<SchedulePlanBean>>() {
             @Override
             public void onCompleted() {
@@ -1156,12 +1169,13 @@ public class MainPresenter extends BasePresenter<MainView> {
                 if (schedulePlanBeen != null && !schedulePlanBeen.isEmpty()) {
                     SchedulePlanListAdapter mAdapter = new SchedulePlanListAdapter(mContext, mLineParams, schedulePlanBeen);
                     mvpView.loadSchedulePlanList(mAdapter);
+                    mvpView.showLoading();
                 } else {
                     mvpView.disPlay("排班计划暂时无数据");
                 }
 
             }
-        }, userId(), keyCode(), lineId);
+        }, userId(), keyCode(), lineId, runDate);
 
     }
 

@@ -535,6 +535,7 @@
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
         <item name="android:textSize">@dimen/font_large</item>
         <item name="android:imeOptions">flagNoExtractUi</item>
+        <item name="android:inputType">numberDecimal</item>
     </style>
     <style name="et_remarks_recording_car_dialog_item2" parent="et_recording_car_dialog_item2">
         <item name="android:layout_marginTop">@dimen/normal_margin10</item>
@@ -648,7 +649,7 @@
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginRight">@dimen/normal_margin10</item>
-        <item name="android:inputType">number</item>
+        <item name="android:inputType">numberDecimal</item>
         <item name="android:imeOptions">flagNoExtractUi</item>
     </style>
 
@@ -669,4 +670,28 @@
         <item name="android:textColor">@color/font_black</item>
     </style>
 
+
+    <!--排班计划顶部大块TextView-->
+    <style name="head_plan_style_base">
+        <item name="android:textColor">@color/font_black1</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/plan_backgroud</item>
+    </style>
+    <style name="head_plan_style1" parent="head_plan_style_base">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="head_plan_style2" parent="head_plan_style_base">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="head_plan_style3" parent="head_plan_style_base">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+    </style>
 </resources>

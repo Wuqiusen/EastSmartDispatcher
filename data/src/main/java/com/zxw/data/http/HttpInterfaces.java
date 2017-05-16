@@ -744,7 +744,8 @@ public class HttpInterfaces {
         Observable<BaseBean<List<SchedulePlanBean>>> shedulePlan(
                                                       @Field("userId") String userId,
                                                       @Field("keyCode") String keyCode,
-                                                      @Field("lineId") int lineId);
+                                                      @Field("lineId") int lineId,
+                                                      @Field("runDate") String runDate);
     }
 
 

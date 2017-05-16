@@ -4,70 +4,18 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical" >
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_margin="@dimen/normal_margin10"
-       android:orientation="horizontal">
-       <TextView
-           style="@style/main_activity_top_button"
-           android:layout_width="0dp"
-           android:layout_weight="1"
-           android:text="序号"
-           />
-
-       <TextView
-           style="@style/main_activity_top_button"
-           android:layout_width="0dp"
-           android:layout_weight="1"
-           android:text="车牌号"
-           />
-
-       <TextView
-           style="@style/main_activity_top_button"
-           android:layout_width="0dp"
-           android:layout_weight="1"
-           android:text="单/双班"
-           />
-
-       <TextView
-           style="@style/main_activity_top_button"
-           android:layout_width="0dp"
-           android:layout_weight="1"
-           android:text="驾驶员"
-           />
-
-       <TextView
-           android:id="@+id/tv_steward_name"
-           style="@style/main_activity_top_button"
-           android:layout_width="0dp"
-           android:layout_weight="1"
-           android:text="乘务员"
-           android:visibility="gone"
-           />
-
-       <TextView
-           style="@style/main_activity_top_button"
-           android:layout_width="0dp"
-           android:layout_weight="1"
-           android:text="单次/次"
-           />
-   </LinearLayout>
-
-    <!--分割线-->
-    <View
+    <TextView
+        android:id="@+id/tv_date"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/line_blue"
-        android:layout_marginLeft="@dimen/normal_margin10"
-        android:layout_marginRight="@dimen/normal_margin10"
-        />
+        android:layout_height="50dp"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:text="2017-5-15"/>
+    <include layout="@layout/head_plan_item"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_scheduling_plan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/normal_margin10"
-        android:layout_marginRight="@dimen/normal_margin10"
         />
 </LinearLayout>
