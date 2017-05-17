@@ -128,6 +128,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mCurrentLine = line;
                 lineId = mCurrentLine.lineId;
                 lineName = mCurrentLine.lineCode;
+                mvpView.onSelectLine();
                 refreshList();
             }
         }, userId(), keyCode(), line.lineId);

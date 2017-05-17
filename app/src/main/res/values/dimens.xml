@@ -18,7 +18,6 @@
     <dimen name="margin_small26">26dp</dimen>
 
 
-
     <!-- menu_height-->
     <dimen name="menu_height46">46dp</dimen>
     <dimen name="menu_height50">50dp</dimen>
@@ -63,7 +62,6 @@
     <!-- EditText_height -->
     <dimen name="et_height50">50dp</dimen>
     <!-- EditText_margin -->
-
 
 
     <!-- font_size -->

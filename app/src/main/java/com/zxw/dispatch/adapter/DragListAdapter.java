@@ -195,7 +195,25 @@ public class DragListAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_is_double);
         TextView tv_work_type = (TextView) view
                 .findViewById(R.id.tv_work_type);
-        tv_is_double.setText(mDatas.get(position).getIsDouble() == 0 ?"单班":"双班");
+        String isDouble = "";
+        switch(mDatas.get(position).getIsDouble()){
+            case 1:
+                isDouble = "单班";
+                break;
+            case 2:
+                isDouble = "双班";
+                break;
+            case 3:
+                isDouble = "三班";
+                break;
+            case 4:
+                isDouble = "四班";
+                break;
+            case 5:
+                isDouble = "五班";
+                break;
+        }
+        tv_is_double.setText(isDouble);
         // 任务类型
         tv_work_type.setText(mDatas.get(position).getTypeName());
 

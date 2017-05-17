@@ -40,6 +40,7 @@ import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.adapter.PopupAdapter;
+import com.zxw.dispatch.module.ScheduleModule;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
@@ -84,7 +85,7 @@ import static com.zxw.dispatch.utils.ToastHelper.showToast;
 
 
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
-        PopupAdapter.OnPopupWindowListener, View.OnClickListener {
+        PopupAdapter.OnPopupWindowListener, View.OnClickListener, ScheduleModule.OnLoadingListener {
 
 
     TextView tvMenuDepart;
@@ -235,6 +236,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private int currentYear;
     private int currentMonth;
     private int currentDay;
+    private ScheduleModule scheduleModule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,7 +274,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         // 操控台
         views.add(initControlDeckView());
         // 排班计划
-        views.add(initSchedulingView());
+        scheduleModule = new ScheduleModule(mContext);
+        scheduleModule.setOnLoadingListener(this);
+        views.add(scheduleModule);
+
+//        views.add(initSchedulingView());
         // 线路运行图
         // 显示默认视图
         showContentView(views);
@@ -425,7 +431,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private List<View> inflateVerWaitCarViews() {
         View view_wtab = View.inflate(mContext, R.layout.item_wait_car1,null);
-        viewCover = (View) view_wtab.findViewById(R.id.view_cover); 
+        viewCover = (View) view_wtab.findViewById(R.id.view_cover);
         mSendRV1 = (DragListView) view_wtab.findViewById(R.id.lv_send_car);
         mSendRV1_tv_steward_show = (TextView) view_wtab.findViewById(R.id.tv_steward_show);
         View view_wtab2 = View.inflate(mContext, R.layout.item_wait_car2,null);
@@ -839,6 +845,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mScheduleRV.setAdapter(adapter);
     }
 
+    @Override
+    public void onSelectLine() {
+        scheduleModule.initLineParams(presenter.getLineId(), presenter.getLineParams());
+    }
+
 
     private void isShowStewardName(int isVisible) {
         mGoneRV1_StewardShow.setVisibility(isVisible);
@@ -1065,7 +1076,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.tv_schedule:
                 vpMain.setCurrentItem(1);
                 setTabBackground(1);
-                presenter.loadSchedulePlan(String.valueOf(currentYear), String.valueOf(currentMonth), String.valueOf(currentDay));
+                scheduleModule.loadSchedulePlan();
+//                presenter.loadSchedulePlan(String.valueOf(currentYear), String.valueOf(currentMonth), String.valueOf(currentDay));
                 break;
             case R.id.img_setting:
                 showPopupWindow();
