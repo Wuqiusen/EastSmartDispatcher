@@ -56,11 +56,13 @@
                 <TextView
                     android:id="@+id/tv_manual"
                     style="@style/btn_manual_send_car_style"
+                    android:visibility="gone"
                     android:text="手动发车" />
                 <!--自动发车-->
                 <TextView
                     android:id="@+id/tv_automatic"
                     style="@style/btn_automatic_send_car_style"
+                    android:visibility="gone"
                    android:text="自动发车" />
 
             </LinearLayout>

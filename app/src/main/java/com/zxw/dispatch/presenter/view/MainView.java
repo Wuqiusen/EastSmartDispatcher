@@ -11,7 +11,6 @@ import com.zxw.dispatch.recycler.GoneAdapterForNormal;
 import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
-import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
 
 import java.util.List;
 
@@ -52,9 +51,6 @@ public interface MainView extends BaseView {
     void loadSendCarForOperatorEmpty(DragListAdapterForOperatorEmpty mDragListAdapter);
 
     void loadSendCarForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty mDragListAdapter);
-
-    void loadSchedulePlanList(SchedulePlanListAdapter adapter);
-
 
     void onSelectLine();
 }

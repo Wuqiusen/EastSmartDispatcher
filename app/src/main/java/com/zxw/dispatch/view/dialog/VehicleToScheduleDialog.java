@@ -15,9 +15,7 @@ import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
-import com.zxw.dispatch.adapter.CommonAdapter;
 import com.zxw.dispatch.adapter.MySpinnerAdapter;
-import com.zxw.dispatch.adapter.ViewHolder;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
@@ -385,18 +383,5 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
 
         void onOffDuty();
 
-    }
-
-    public class SpinnerAdapter extends CommonAdapter<MissionType.TaskContentBean> {
-
-        public SpinnerAdapter(Context context, int layoutId, List<MissionType.TaskContentBean> items) {
-            super(context, layoutId, items);
-        }
-
-        @Override
-        protected void convert(ViewHolder holder, int position, MissionType.TaskContentBean item) {
-            TextView tv_item = holder.getView(R.id.tv_item);
-            tv_item.setText(item.getTaskName());
-        }
     }
 }

@@ -2,6 +2,8 @@ package com.zxw.dispatch;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 
@@ -28,8 +30,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         this.mContext = this;
-//        Thread.currentThread().setUncaughtExceptionHandler(
-//                new MyUncaughtExceptionHandler());
+        Thread.currentThread().setUncaughtExceptionHandler(
+                new MyUncaughtExceptionHandler());
         Stetho.initializeWithDefaults(this);
     }
     private class MyUncaughtExceptionHandler implements
@@ -64,11 +66,11 @@ public class MyApplication extends Application {
 
                 sw.close();
                 err.close();
-//                PackageManager pm = getPackageManager();
-//                Intent intent = pm.getLaunchIntentForPackage("com.zxw.dispatch_driver");
-//                startActivity(intent);
-                // 自杀 重生
-//                android.os.Process.killProcess(android.os.Process.myPid());
+                PackageManager pm = getPackageManager();
+                Intent intent = pm.getLaunchIntentForPackage("com.zxw.dispatch");
+                startActivity(intent);
+//                 自杀 重生
+                android.os.Process.killProcess(android.os.Process.myPid());
 
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block

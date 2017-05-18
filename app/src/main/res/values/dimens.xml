@@ -9,18 +9,15 @@
     <!-- layout_margin-->
     <dimen name="margin_tiny">4dp</dimen>
     <dimen name="margin_fit_6">6dp</dimen>
-    <dimen name="margin_fit_10">10dp</dimen>
     <dimen name="margin_fit">12dp</dimen>
     <dimen name="margin_order">14dp</dimen>
     <dimen name="margin_small">16dp</dimen>
     <dimen name="margin_small30">30dp</dimen>
     <dimen name="margin_large">32dp</dimen>
-    <dimen name="margin_small26">26dp</dimen>
 
 
     <!-- menu_height-->
     <dimen name="menu_height46">46dp</dimen>
-    <dimen name="menu_height50">50dp</dimen>
 
     <!--login_height-->
     <dimen name="login_height40">40dp</dimen>
@@ -31,7 +28,6 @@
     <dimen name="main_margin6">6dp</dimen>
     <!-- button_height -->
     <dimen name="btn_height12">12dp</dimen>
-    <dimen name="btn_height20">20dp</dimen>
     <dimen name="btn_height50">50dp</dimen>
     <!-- button_margin -->
     <dimen name="btn_margin30">30dp</dimen>
@@ -50,14 +46,8 @@
     <dimen name="dialog_height50">50dp</dimen>
 
     <!-- RadioButton_height/width -->
-    <dimen name="rb_width14">14dp</dimen>
-    <dimen name="rb_height14">14dp</dimen>
-    <dimen name="rb_height16">16dp</dimen>
 
     <!-- checkbox_height/width -->
-    <dimen name="cb_width20">20dp</dimen>
-    <dimen name="cb_height20">20dp</dimen>
-    <dimen name="cb_margin10">10dp</dimen>
 
     <!-- EditText_height -->
     <dimen name="et_height50">50dp</dimen>

@@ -67,7 +67,7 @@
         android:background="@color/transparent"
         android:layout_toLeftOf="@+id/img_menu_on_off"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
         <TextView
             android:id="@+id/tv_menu_manual"
             style="@style/btn_manual_send_car_style"

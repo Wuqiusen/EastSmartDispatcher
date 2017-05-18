@@ -50,7 +50,7 @@ public class ScheduleModule extends LinearLayout {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.tab_view_scheduling_plan, this);
-        this.mContext = context;
+        this.mContext  = context;
 
         // init
         tv_date = (TextView) findViewById(R.id.tv_date);
@@ -77,10 +77,6 @@ public class ScheduleModule extends LinearLayout {
         this.mLineParams = params;
     }
 
-    public void loadSchedulePlan(){
-        loadSchedulePlan(String.valueOf(currentYear), String.valueOf(currentMonth), String.valueOf(currentDay));}
-
-
     private void showDatePickerDialog(int currentYear, int currentMonth, int currentDay) {
         if (listener == null)
             throw new RuntimeException("loading listener can not be null");
@@ -95,21 +91,29 @@ public class ScheduleModule extends LinearLayout {
             @Override
             public void onDatePicked(String year, String month, String day) {
                 tv_date.setText(year + "-" + Integer.valueOf(month) + "-" + Integer.valueOf(day));
-                loadSchedulePlan(year, month, day);
+                ScheduleModule.this.currentYear = Integer.valueOf(year);
+                ScheduleModule.this.currentMonth = Integer.valueOf(month);
+                ScheduleModule.this.currentDay = Integer.valueOf(day);
+                loadSchedulePlan();
             }
         });
         picker.show();
     }
 
-    public void loadSchedulePlan(String strYear, String strMonth, String strDay) {
-        if (lineId == -1 || mLineParams == null) {
+    public void loadSchedulePlan(){
+        loadSchedulePlan(String.valueOf(currentYear), String.valueOf(currentMonth), String.valueOf(currentDay));
+    }
+
+
+    private void  loadSchedulePlan(String strYear, String strMonth, String strDay) {
+        if(lineId == -1 || mLineParams == null ){
             ToastHelper.showToast("线路参数缺失，请重试！");
             return;
         }
-        if (strMonth.length() == 1) {
-            strMonth = "0" + strMonth;
+        if (strMonth.length() == 1){
+            strMonth = "0"+strMonth;
         }
-        if (strDay.length() == 1) {
+        if (strDay.length() == 1){
             strDay = "0" + strDay;
         }
         if (strYear.length() != 4)
@@ -121,16 +125,14 @@ public class ScheduleModule extends LinearLayout {
         String runDate = strYear + strMonth + strDay;
         String userId = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
         String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
-//        listener.showLoading();
         HttpMethods.getInstance().schedulePlan(new Subscriber<List<SchedulePlanBean>>() {
             @Override
             public void onCompleted() {
-                listener.hideLoading();
+
             }
 
             @Override
             public void onError(Throwable e) {
-//                listener.hideLoading();
                 listener.disPlay(e.getMessage());
             }
 
@@ -139,28 +141,27 @@ public class ScheduleModule extends LinearLayout {
                 if (schedulePlanBeen != null && !schedulePlanBeen.isEmpty()) {
                     SchedulePlanListAdapter mAdapter = new SchedulePlanListAdapter(mContext, mLineParams, schedulePlanBeen);
                     loadSchedulePlanList(mAdapter);
+                    listener.showLoading();
                 } else {
                     listener.disPlay("排班计划暂时无数据");
                     mScheduleRV.setAdapter(null);
                 }
+
             }
         }, userId, keyCode, lineId, runDate);
 
     }
-
     public void loadSchedulePlanList(SchedulePlanListAdapter adapter) {
         mScheduleRV.setAdapter(adapter);
     }
 
-    public void setOnLoadingListener(OnLoadingListener listener) {
+    public void setOnLoadingListener(OnLoadingListener listener){
         this.listener = listener;
     }
 
-    public interface OnLoadingListener {
+    public interface OnLoadingListener{
         void showLoading();
-
         void hideLoading();
-
         void disPlay(String str);
     }
 

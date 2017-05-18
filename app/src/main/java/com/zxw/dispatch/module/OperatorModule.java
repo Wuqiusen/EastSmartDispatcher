@@ -92,7 +92,6 @@ public class OperatorModule extends LinearLayout implements View.OnClickListener
     private boolean isPopbg = true;
     private StartCarView mHorStartCarView;
     private WaitCarView mHorWaitCarView;
-    private TextView tv_steward_gone;
 
     public OperatorModule(Context context) {
         this(context, null);
@@ -325,7 +324,6 @@ public class OperatorModule extends LinearLayout implements View.OnClickListener
         tv_stab1.setOnClickListener(this);
         tv_stab2.setOnClickListener(this);
         tv_stab3.setOnClickListener(this);
-        tv_steward_gone = (TextView) view.findViewById(R.id.tv_steward_gone);
         vp_start_car = (ChildViewPager) view.findViewById(R.id.vp_start_car);
 
         MyPagerAdapter sAdapter = new MyPagerAdapter(inflateVerStartViews(),null);
