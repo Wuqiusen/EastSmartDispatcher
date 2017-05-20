@@ -56,6 +56,8 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
     private LineParams mLineParams;
     private List<DriverWorkloadItem> mDatas;
     private boolean isLoadMore = false;
+    private int mCurrentPage;
+    private String mVehCode, mDriverName;
 
 
     public WorkLoadView(Context context, int resId, OnListener listener) {
@@ -103,14 +105,13 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                    mDriverName = s.toString();
+                refreshWorkloadList();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s.toString())) {
-                    mListener.onEditTextChanged(s.toString(), 1);
-                }
+
             }
         });
 
@@ -122,14 +123,13 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                    mVehCode = s.toString();
+                refreshWorkloadList();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s.toString())) {
-                    mListener.onEditTextChanged(s.toString(), 2);
-                }
+
             }
         });
 
@@ -233,7 +233,8 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
     }
 
     public void refreshWorkloadList() {
-        loadWorkloadList(1, null, null);
+        mCurrentPage = 1;
+        loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
     }
 
 
