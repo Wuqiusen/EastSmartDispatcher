@@ -11,8 +11,8 @@ public class DriverWorkloadItem {
     private String driverName;
     private String outTime;
     private String arrivalTime;
-    private String gps; //0-error  1-normal
-    private String opStatus; //司机操作状态 2-未结束 3-异常终止  4-正常结束
+    private int gpsStatus; //0-error  1-normal
+    private int opStatus; //司机操作状态 2-未结束 3-异常终止  4-正常结束
     private String taskName;
     private String content;
 
@@ -64,19 +64,19 @@ public class DriverWorkloadItem {
         this.arrivalTime = arrivalTime;
     }
 
-    public String getGps() {
-        return gps;
+    public int getGpsStatus() {
+        return gpsStatus;
     }
 
-    public void setGps(String gps) {
-        this.gps = gps;
+    public void setGpsStatus(int gpsStatus) {
+        this.gpsStatus = gpsStatus;
     }
 
-    public String getOpStatus() {
+    public int getOpStatus() {
         return opStatus;
     }
 
-    public void setOpStatus(String opStatus) {
+    public void setOpStatus(int opStatus) {
         this.opStatus = opStatus;
     }
 

@@ -10,8 +10,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.zxw.dispatch.ui.TestActivity">
 
-    <com.zxw.dispatch.module.OperatorModule
-        android:id="@+id/operator_module"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.zxw.dispatch.module.OperatorModule>
 </LinearLayout>

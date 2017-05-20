@@ -51,7 +51,7 @@
             />
 
         <TextView
-            android:id="@+id/tv_start_time"
+            android:id="@+id/tv_veh_time"
             style="@style/font_not_click_operate_tab"
             android:text="开始时间"
             />
@@ -97,32 +97,32 @@
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
-            android:text="出发时间"
+            android:text="班次时间"
             />
 
 
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
-            android:text="出站异常"
+            android:text="出站时间"
             />
 
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
-            android:text="到站异常"
+            android:text="进站时间"
             />
 
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
-            android:text="GPS异常"
+            android:text="GPS"
             />
 
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
-            android:text="司机确认"
+            android:text="司机状态"
             />
     </LinearLayout>
     <View
