@@ -6,7 +6,7 @@
     android:orientation="vertical"
     >
     <!--EditText模糊搜索-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -15,28 +15,42 @@
             android:id="@+id/et_current_date"
             style="@style/et_work_load_verify_calendar_style"
             android:editable="false"
+            android:visibility="gone"
             android:hint="默认今天"
             />
 
         <EditText
             android:id="@+id/et_driver_name"
+            android:layout_alignParentLeft="true"
             style="@style/et_work_load_verify_search_style"
             android:hint="请输入司机姓名"
             />
 
         <EditText
             android:id="@+id/et_vehId"
+            android:layout_toRightOf="@+id/et_driver_name"
             style="@style/et_work_load_verify_search_style"
             android:hint="请输入车牌号"
             />
+
 
         <TextView
             android:id="@+id/tv_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:minWidth="90dp"
+            android:minHeight="40dp"
+            android:layout_gravity="right|center_vertical"
+            android:gravity="center"
+            android:background="@drawable/btn_black_style"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/font_medium"
             android:text="上报"
             />
-    </LinearLayout>
+
+    </RelativeLayout>
     <!--tab选项-->
     <LinearLayout
         android:layout_width="match_parent"
