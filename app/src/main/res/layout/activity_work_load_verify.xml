@@ -45,6 +45,7 @@
             android:background="@drawable/btn_black_style"
             android:textColor="@color/font_white"
             android:textSize="@dimen/font_medium"
+            android:visibility="gone"
             android:text="上报"
             />
 
