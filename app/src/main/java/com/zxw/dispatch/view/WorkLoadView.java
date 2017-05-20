@@ -48,6 +48,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
     private RecyclerView rvWorkLoad;
     private OnListener mListener;
     private final static int LOAD_PAGE_SIZE = 20;
+    private int mPageSize = 45;
 
     private int currentYear;
     private int currentMonth;
@@ -58,6 +59,9 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
     private boolean isLoadMore = false;
     private int mCurrentPage;
     private String mVehCode, mDriverName;
+    private WorkLoadVerifyAdapter adapter;
+    private BaseAdapter mAdapter;
+    public LoadMoreAdapterWrapper.ILoadCallback mLoadCallback;
 
 
     public WorkLoadView(Context context, int resId, OnListener listener) {
@@ -68,6 +72,55 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
         inflater.inflate(resId, this);
         initData();
         initView();
+        initAdapter();
+    }
+
+    private void initAdapter() {
+        if (adapter == null){
+            adapter = new WorkLoadVerifyAdapter(mContext, new WorkLoadVerifyAdapter.OnWorkLoadItemClickListener() {
+                @Override
+                public void onAlertOutTime(long objId, String str) {
+                    updateWorkload(objId, str, null, null, null);
+                }
+
+                @Override
+                public void onAlertArriveTime(long objId, String str) {
+                    updateWorkload(objId, null, str, null, null);
+
+                }
+
+                @Override
+                public void onAlertGpsStatus(long objId, int str) {
+                    updateWorkload(objId, null, null, String.valueOf(str), null);
+
+                }
+
+                @Override
+                public void onAlertDriverStatus(long objId, int str) {
+                    updateWorkload(objId, null, null, null, String.valueOf(str));
+
+                }
+            });
+        }
+
+        //此处模拟做网络操作，2s延迟，将拉取的数据更新到adpter中
+//数据的处理最终还是交给被装饰的adapter来处理
+//模拟加载到没有更多数据的情况，触发onFailure
+        mAdapter = new LoadMoreAdapterWrapper(adapter, new LoadMoreAdapterWrapper.OnLoad() {
+
+            @Override
+            public void load(int pagePosition, int pageSize, final LoadMoreAdapterWrapper.ILoadCallback callback) {
+                //此处模拟做网络操作，2s延迟，将拉取的数据更新到adpter中
+                mLoadCallback = callback;
+                if (mCurrentPage * pageSize >= mPageSize){
+                    callback.onFailure();
+                }else{
+                    mCurrentPage++;
+                    loadWorkloadList(mCurrentPage,  mVehCode, mDriverName);
+                }
+            }
+        });
+        setWorkLoadAdapter(mAdapter);
     }
 
     // 初始化线路信息的时候  加载该线路的第一页数据
@@ -147,7 +200,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
     }
 
-    public void setWorkLoadAdapter(WorkLoadVerifyAdapter adapter) {
+    public void setWorkLoadAdapter(BaseAdapter adapter) {
         rvWorkLoad.setAdapter(adapter);
     }
 
@@ -182,31 +235,9 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
             @Override
             public void onNext(List<DriverWorkloadItem> driverWorkloadItems) {
-                    WorkLoadVerifyAdapter adapter = new WorkLoadVerifyAdapter(mContext,driverWorkloadItems, new WorkLoadVerifyAdapter.OnWorkLoadItemClickListener() {
-                        @Override
-                        public void onAlertOutTime(long objId, String str) {
-                            updateWorkload(objId, str, null, null, null);
-                        }
-
-                        @Override
-                        public void onAlertArriveTime(long objId, String str) {
-                            updateWorkload(objId, null, str, null, null);
-
-                        }
-
-                        @Override
-                        public void onAlertGpsStatus(long objId, int str) {
-                            updateWorkload(objId, null, null, String.valueOf(str), null);
-
-                        }
-
-                        @Override
-                        public void onAlertDriverStatus(long objId, int str) {
-                            updateWorkload(objId, null, null, null, String.valueOf(str));
-
-                        }
-                    });
-                setWorkLoadAdapter(adapter);
+                adapter.appendData(driverWorkloadItems);
+                if (mLoadCallback != null)
+                    mLoadCallback.onSuccess();
             }
         }, userId, keyCode, lineId, pageNo, LOAD_PAGE_SIZE, vehCode, driverName);
     }
@@ -234,6 +265,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
     public void refreshWorkloadList() {
         mCurrentPage = 1;
+        adapter.clearData();
         loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
     }
 

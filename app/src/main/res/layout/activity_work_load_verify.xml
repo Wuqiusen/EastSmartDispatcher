@@ -67,18 +67,18 @@
         <TextView
             android:id="@+id/tv_veh_time"
             style="@style/font_not_click_operate_tab"
-            android:text="开始时间"
+            android:text="出站时间"
             />
         <TextView
             android:id="@+id/tv_end_time"
             style="@style/font_not_click_operate_tab"
-            android:text="结束时间"
+            android:text="到达时间"
             />
 
         <TextView
             android:id="@+id/tv_driver_ok"
             style="@style/font_not_click_operate_tab"
-            android:text="司机确认"
+            android:text="司机状态"
             />
 
     </LinearLayout>
@@ -124,7 +124,7 @@
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
-            android:text="进站时间"
+            android:text="到达时间"
             />
 
         <TextView
