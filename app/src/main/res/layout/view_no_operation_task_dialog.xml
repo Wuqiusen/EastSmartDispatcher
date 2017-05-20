@@ -14,7 +14,6 @@
 
 
         <TextView
-            android:id="@+id/textView2"
             style="@style/title_font_dialog_style"
             android:text="非营运任务" />
 
@@ -32,7 +31,6 @@
             >
 
             <TextView
-                android:id="@+id/textView3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

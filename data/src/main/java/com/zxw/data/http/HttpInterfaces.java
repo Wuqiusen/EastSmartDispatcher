@@ -4,6 +4,7 @@ import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
 import com.zxw.data.bean.DepartCar;
+import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.FuzzyVehicleBean;
 import com.zxw.data.bean.InformContentBean;
 import com.zxw.data.bean.InformDataBean;
@@ -104,6 +105,15 @@ public class HttpInterfaces {
      * 获取数据
      */
     public interface Browse {
+        @FormUrlEncoded
+        @POST("phone/control/manage/work/confirm/list")
+        Observable<BaseBean<List<DriverWorkloadItem>>> workloadList(@Field("userId") String userId,
+                                                                    @Field("keyCode") String keyCode,
+                                                                    @Field("lineId") int lineId,
+                                                                    @Field("pageNo") int pageNo,
+                                                                    @Field("pageSize") int pageSize,
+                                                                    @Field("vehCode") String vehCode,
+                                                                    @Field("driverName") String driverName);
 
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/property")
@@ -433,6 +443,19 @@ public class HttpInterfaces {
     }
 
     public interface Operator {
+
+        /**
+         * 46 修改工作量审核记录
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/work/confirm/record/update")
+        Observable<BaseBean> updateWorkload(@Field("userId") String userId,
+                                                      @Field("keyCode") String keyCode,
+                                                      @Field("objId") long objId,
+                                                      @Field("outTime") String outTime,
+                                                      @Field("arrivalTime") String arrivalTime,
+                                                      @Field("gpsStatus") int gpsStatus,
+                                                      @Field("opStatus") int opStatus);
         /**
          * 44.获取停场车辆
          */

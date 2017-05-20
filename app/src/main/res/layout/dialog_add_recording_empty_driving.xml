@@ -82,9 +82,7 @@
                 android:text="实际发车时间:"
                 />
             <View style="@style/line_dialog_style"/>
-            <EditText
-                android:id="@+id/et_real_depart_time"
-                style="@style/et_dialog_add_recording"
+            <EditText style="@style/et_dialog_add_recording"
                 />
             <View style="@style/line_dialog_style"/>
 
@@ -138,9 +136,7 @@
                 android:text="乘务员:"
                 />
             <View style="@style/line_dialog_style"/>
-            <EditText
-                android:id="@+id/et_stewardId"
-                style="@style/et_dialog_add_recording"
+            <EditText style="@style/et_dialog_add_recording"
                 />
             <View style="@style/line_dialog_style"/>
 
@@ -149,9 +145,7 @@
                 android:text="首发电子围栏名称:"
                 />
             <View style="@style/line_dialog_style"/>
-            <EditText
-                android:id="@+id/et_pen_name"
-                style="@style/et_dialog_add_recording" 
+            <EditText style="@style/et_dialog_add_recording"
                 />
         </LinearLayout>
         <View
@@ -196,9 +190,7 @@
                 android:text="正/异常:"
                 />
             <View style="@style/line_dialog_style"/>
-            <EditText
-                android:id="@+id/et_normal_anomaly"
-                style="@style/et_dialog_add_recording"/>
+            <EditText style="@style/et_dialog_add_recording"/>
             <View style="@style/line_dialog_style"/>
 
             <TextView
@@ -206,9 +198,7 @@
                 android:text="备注:"
                 />
             <View style="@style/line_dialog_style"/>
-            <EditText
-                android:id="@+id/et_remark"
-                style="@style/et_dialog_add_recording" />
+            <EditText style="@style/et_dialog_add_recording" />
         </LinearLayout>
         <View style="@style/line_horizontal_dialog_style"/>
 

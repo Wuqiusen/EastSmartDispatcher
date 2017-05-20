@@ -153,9 +153,7 @@
                 android:text="应跑单次:"
                 />
             <View style="@style/line_dialog_style"/>
-            <EditText
-                android:id="@+id/et_should_runNum"
-                style="@style/et_dialog_add_recording"/>
+            <EditText style="@style/et_dialog_add_recording"/>
             <View style="@style/line_dialog_style"/>
 
             <TextView
@@ -163,9 +161,7 @@
                 android:text="实跑单次:"
                 />
             <View style="@style/line_dialog_style"/>
-            <EditText
-                android:id="@+id/et_real_runNum"
-                style="@style/et_dialog_add_recording" />
+            <EditText style="@style/et_dialog_add_recording" />
         </LinearLayout>
         <View style="@style/line_horizontal_dialog_style"/>
 

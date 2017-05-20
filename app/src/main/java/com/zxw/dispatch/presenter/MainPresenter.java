@@ -9,7 +9,6 @@ import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.NonMissionType;
-import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
@@ -26,7 +25,6 @@ import com.zxw.dispatch.recycler.GoneAdapterForNormal;
 import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
-import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
 import com.zxw.dispatch.service.CarPlanService;
 import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.DESPlus;
@@ -128,6 +126,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mCurrentLine = line;
                 lineId = mCurrentLine.lineId;
                 lineName = mCurrentLine.lineCode;
+                mvpView.onSelectLine();
                 refreshList();
             }
         }, userId(), keyCode(), line.lineId);
@@ -1136,46 +1135,6 @@ public class MainPresenter extends BasePresenter<MainView> {
     private void refreshStopData() {
         endStopHistories.clear();
         mStopHistories.clear();
-
-    }
-
-    public void loadSchedulePlan(String strYear, String strMonth, String strDay) {
-        if (strMonth.length() == 1){
-            strMonth = "0"+strMonth;
-        }
-        if (strDay.length() == 1){
-            strDay = "0" + strDay;
-        }
-        if (strYear.length() != 4)
-            throw new RuntimeException("year error");
-        if (strMonth.length() != 2)
-            throw new RuntimeException("month error");
-        if (strDay.length() != 2)
-            throw new RuntimeException("day error");
-        String runDate = strYear + strMonth + strDay;
-        HttpMethods.getInstance().schedulePlan(new Subscriber<List<SchedulePlanBean>>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mvpView.disPlay(e.getMessage());
-            }
-
-            @Override
-            public void onNext(List<SchedulePlanBean> schedulePlanBeen) {
-                if (schedulePlanBeen != null && !schedulePlanBeen.isEmpty()) {
-                    SchedulePlanListAdapter mAdapter = new SchedulePlanListAdapter(mContext, mLineParams, schedulePlanBeen);
-                    mvpView.loadSchedulePlanList(mAdapter);
-                    mvpView.showLoading();
-                } else {
-                    mvpView.disPlay("排班计划暂时无数据");
-                }
-
-            }
-        }, userId(), keyCode(), lineId, runDate);
 
     }
 

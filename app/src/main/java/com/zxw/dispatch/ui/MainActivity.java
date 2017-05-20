@@ -17,7 +17,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -29,7 +28,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
-import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
@@ -40,6 +38,7 @@ import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.adapter.PopupAdapter;
+import com.zxw.dispatch.module.ScheduleModule;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
@@ -48,7 +47,6 @@ import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
-import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
@@ -69,7 +67,6 @@ import com.zxw.dispatch.view.dialog.VehicleToScheduleDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -77,22 +74,21 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.qqtheme.framework.picker.DatePicker;
 
 import static com.zxw.dispatch.R.id.tv_steward_show;
 import static com.zxw.dispatch.utils.ToastHelper.showToast;
 
 
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
-        PopupAdapter.OnPopupWindowListener, View.OnClickListener {
+        PopupAdapter.OnPopupWindowListener, View.OnClickListener, ScheduleModule.OnLoadingListener {
 
 
     TextView tvMenuDepart;
     RelativeLayout rlMenuBackground;
-    LinearLayout llMenuWaitDepart;
+//    LinearLayout llMenuWaitDepart;
     TextView tvAddRecroding; // 补录
-    TextView tvMenuAutomatic;
-    TextView tvMenuManual;
+//    TextView tvMenuAutomatic;
+//    TextView tvMenuManual;
     TextView tvMenuWaitCar;
     TextView tvMenuGoneCar;
     TextView tvMenuStopCar;
@@ -143,9 +139,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Bind(R.id.tv_schedule)
     TextView tvSchedule;
 
-    private TextView tvPlanStewardName;
-    private RecyclerView mScheduleRV;
-
     // 设置
     @Bind(R.id.img_setting)
     ImageView imgSetting;
@@ -159,15 +152,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     View viewCover;
     @Bind(R.id.vp_main)
     CustomViewPager vpMain;
-    TextView tvAutomatic;
-    TextView tvManual;
+//    TextView tvAutomatic;
+//    TextView tvManual;
     TextView tvVerWaitCar;
     TextView tvVerStopCar;
 
 
     private MainAdapter mLineAdapter;
     private PopupAdapter popupAdapter;
-    private AlertDialog mManualStopDialog, mStopCarDialog;
     private PopupWindow mPopupWindow = null;
     private ListView lv_popup = null;
     private LinearLayout ll_popupwindow;
@@ -176,11 +168,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private List<View> eViews = new ArrayList<View>();
     private boolean isHaveSendCar = false;
     private boolean isShow = false;
-    private boolean isClickWaitCar = true;
     private boolean isPopbg = true;
-    private int startCarCount = 0;
-    private TextView tv_steward_send;
-    private TextView tv_steward_gone;
 
     private static final int REFRESH = 1;
     private static final int AUTO = 2;
@@ -190,9 +178,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private Timer mTimer = null;
     private long clickTime = 0;
     private int spotId;
-    private List<MissionType> mMissionTypes = new ArrayList<>();
-    private boolean isGetMissionTypes = false;
-    private List<VehicleNumberBean> mSendCarNum;
 
     Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -219,7 +204,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                         break;
                     case SEND_CAR_COUNT:
                         Log.w("onReceive---", "更新待发车辆数");
-//                        presenter.timeToSend();
                         presenter.checkVehicleCount(spotId);
                         break;
                 }
@@ -231,10 +215,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private TextView mSendRV1_tv_steward_show, mSendRV2_tv_steward_show, mSendRV3_tv_steward_show;
     private StopCarView mHorStopCarView;
     private RecyclerView mStopRV1, mStopRV2;
-    private TextView tv_date;
-    private int currentYear;
-    private int currentMonth;
-    private int currentDay;
+    private ScheduleModule scheduleModule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,7 +227,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         initView();
         initTabEvent();
         spotId = getIntent().getIntExtra("spotId", -1);
-//        spotId = 1;
         presenter.loadLineList(spotId);
         presenter.checkStopCar();
     }
@@ -272,55 +252,13 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         // 操控台
         views.add(initControlDeckView());
         // 排班计划
-        views.add(initSchedulingView());
+        scheduleModule = new ScheduleModule(mContext);
+        scheduleModule.setOnLoadingListener(this);
+        views.add(scheduleModule);
         // 线路运行图
         // 显示默认视图
         showContentView(views);
-
     }
-
-    private View initSchedulingView() {
-        View view = View.inflate(mContext, R.layout.tab_view_scheduling_plan, null);
-        tvPlanStewardName = (TextView) view.findViewById(R.id.tv_steward_name); // 乘务员
-        // 排班计划顶部时间
-        tv_date = (TextView) view.findViewById(R.id.tv_date);
-
-        Calendar calendar =  Calendar.getInstance();
-        currentYear = calendar.get(Calendar.YEAR);
-        currentMonth = calendar.get(Calendar.MONTH) + 1;
-        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        tv_date.setText(String.valueOf(currentYear) + "-" + String.valueOf(currentMonth) + "-" + String.valueOf(currentDay));
-        tv_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(currentYear, currentMonth, currentDay);
-            }
-        });
-        mScheduleRV = (RecyclerView) view.findViewById(R.id.rv_scheduling_plan);
-        mScheduleRV.setLayoutManager(new LinearLayoutManager(this));
-        mScheduleRV.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL_LIST));
-        return view;
-    }
-
-    private void showDatePickerDialog(int currentYear, int currentMonth, int currentDay) {
-        DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH_DAY);
-        picker.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-        picker.setWidth((int) (picker.getScreenWidthPixels() * 0.6));
-        picker.setHeight((int) (picker.getScreenHeightPixels() * 0.5));
-        picker.setRangeStart(2017, 1, 1);
-        picker.setRangeEnd(2116, 1, 1);
-        picker.setSelectedItem(currentYear, currentMonth, currentDay);
-        picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
-            @Override
-            public void onDatePicked(String year, String month, String day) {
-                tv_date.setText(year + "-" + Integer.valueOf(month) + "-" + Integer.valueOf(day));
-                presenter.loadSchedulePlan(year, month, day);
-            }
-        });
-        picker.show();
-    }
-
 
     private View initControlDeckView(){
         View view = View.inflate(mContext, R.layout.tab_view_control_deck1, null);
@@ -332,7 +270,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         return view;
     }
 
-
     /**
      * 菜单栏
      * @param view
@@ -340,10 +277,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void initMenuView(View view) {
         tvMenuDepart = (TextView) view.findViewById(R.id.tv_menu_depart_car);
         rlMenuBackground = (RelativeLayout) view.findViewById(R.id.rl_menu_background);
-        llMenuWaitDepart = (LinearLayout) view.findViewById(R.id.ll_menu_wait_depart);
         tvAddRecroding = (TextView) view.findViewById(R.id.tv_add_recording);// 补录
-        tvMenuAutomatic = (TextView) view.findViewById(R.id.tv_menu_automatic);// 自动发车
-        tvMenuManual = (TextView) view.findViewById(R.id.tv_menu_manual);  // 手动发车
+//        llMenuWaitDepart = (LinearLayout) view.findViewById(R.id.ll_menu_wait_depart);
+//        tvMenuAutomatic = (TextView) view.findViewById(R.id.tv_menu_automatic);// 自动发车
+//        tvMenuManual = (TextView) view.findViewById(R.id.tv_menu_manual);  // 手动发车
         tvMenuWaitCar = (TextView) view.findViewById(R.id.tv_menu_wait_car);
         tvMenuGoneCar = (TextView) view.findViewById(R.id.tv_menu_gone_car);
         llTabVerStartCat = (LinearLayout) view.findViewById(R.id.ll_tab_ver_start_car);
@@ -355,8 +292,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvMenuGoneCar.setOnClickListener(this);
         tvMenuStopCar.setOnClickListener(this);
 
-        tvMenuAutomatic.setOnClickListener(this);
-        tvMenuManual.setOnClickListener(this);
+//        tvMenuAutomatic.setOnClickListener(this);
+//        tvMenuManual.setOnClickListener(this);
         imgOnOff.setOnClickListener(this);
     }
 
@@ -371,10 +308,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         /*固有操作*/
         tvVerWaitCar = (TextView) view.findViewById(R.id.tv_ver_wait_car);
         tvVerStopCar = (TextView) view.findViewById(R.id.tv_ver_stop_car);
-        tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);
-        tvManual = (TextView) view.findViewById(R.id.tv_manual);
-        tvAutomatic.setOnClickListener(this);
-        tvManual.setOnClickListener(this);
+//        tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);
+//        tvManual = (TextView) view.findViewById(R.id.tv_manual);
+//        tvAutomatic.setOnClickListener(this);
+//        tvManual.setOnClickListener(this);
     }
 
     private void initVerStopCarViewPager(View view) {
@@ -412,7 +349,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tv_wtab1.setOnClickListener(this);
         tv_wtab2.setOnClickListener(this);
         tv_wtab3.setOnClickListener(this);
-//      tv_steward_send = (TextView) view.findViewById(R.id.tv_steward_send);
         vp_wait_car = (ChildViewPager) view.findViewById(R.id.vp_wait_car);
 
         MyPagerAdapter wAdapter = new MyPagerAdapter(inflateVerWaitCarViews(),null);
@@ -425,7 +361,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private List<View> inflateVerWaitCarViews() {
         View view_wtab = View.inflate(mContext, R.layout.item_wait_car1,null);
-        viewCover = (View) view_wtab.findViewById(R.id.view_cover); 
+        viewCover = (View) view_wtab.findViewById(R.id.view_cover);
         mSendRV1 = (DragListView) view_wtab.findViewById(R.id.lv_send_car);
         mSendRV1_tv_steward_show = (TextView) view_wtab.findViewById(R.id.tv_steward_show);
         View view_wtab2 = View.inflate(mContext, R.layout.item_wait_car2,null);
@@ -462,7 +398,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tv_stab1.setOnClickListener(this);
         tv_stab2.setOnClickListener(this);
         tv_stab3.setOnClickListener(this);
-        tv_steward_gone = (TextView) view.findViewById(R.id.tv_steward_gone);
         vp_start_car = (ChildViewPager) view.findViewById(R.id.vp_start_car);
 
         MyPagerAdapter sAdapter = new MyPagerAdapter(inflateVerStartViews(),null);
@@ -549,7 +484,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         vp_horizontal.setPagingEnabled(false);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 10);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        eStopRV.setLayoutManager(layoutManager);
     }
 
     private void initTabEvent() {
@@ -783,7 +717,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void onGetAddRecordingTaskNameList(List<MissionType> missionTypes) {
-        this.mMissionTypes = missionTypes;
     }
 
 
@@ -829,16 +762,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     @Override
-    public void loadSchedulePlanList(SchedulePlanListAdapter adapter) {
-        LineParams mLineParams = presenter.getLineParams();
-        if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
-//            tvPlanStewardName.setVisibility(View.GONE);
-        }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
-//            tvPlanStewardName.setVisibility(View.VISIBLE);
-        }
-        mScheduleRV.setAdapter(adapter);
+    public void onSelectLine() {
+        scheduleModule.initLineParams(presenter.getLineId(), presenter.getLineParams());
     }
-
 
     private void isShowStewardName(int isVisible) {
         mGoneRV1_StewardShow.setVisibility(isVisible);
@@ -847,7 +773,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mSendRV1_tv_steward_show.setVisibility(isVisible);
         mSendRV2_tv_steward_show.setVisibility(isVisible);
         mSendRV3_tv_steward_show.setVisibility(isVisible);
-
         mHorWaitCarView.setStewardSendVisibility(isVisible);
         mHorStartCarView.setStewardGoneVisibility(isVisible);
     }
@@ -1065,7 +990,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.tv_schedule:
                 vpMain.setCurrentItem(1);
                 setTabBackground(1);
-                presenter.loadSchedulePlan(String.valueOf(currentYear), String.valueOf(currentMonth), String.valueOf(currentDay));
+                scheduleModule.loadSchedulePlan();
                 break;
             case R.id.img_setting:
                 showPopupWindow();
@@ -1114,15 +1039,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 showStopCarView(1);
                 break;
             case R.id.tv_add_recording:
-                // 旧的:
-//                    new AddRecordingCarTaskDialog(mContext,mMissionTypes,
-//                            new AddRecordingCarTaskDialog.OnAddRecordingCarTaskListener() {
-//                               @Override
-//                               public void OnAddRecordingCarTask(String type, String taskId, String vehicleId, String driverId,
-//                                                          String beginTime, String endTime, String runNum, String runEmpMileage) {
-//                                  presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
-//                               }
-//                    });
 
                 // 新的1:
                 new RecordingCarTaskDialog(mContext, presenter.getLineParams(),presenter.getLineId(), new RecordingCarTaskDialog.OnAddRecordingListener(){
@@ -1148,38 +1064,38 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
                 break;
-            // 自动发车
-            case R.id.tv_automatic:
-            case R.id.tv_menu_automatic:
-                if ((System.currentTimeMillis() - clickTime) > 1000) {
-                    if (!isAuto) {
-                        if (!isHaveSendCar) {
-                            showToast("该线路没有待发车辆", mContext);
-                            return;
-                        }
-                        setTvBackground(2);
-                        setCoverBackground(View.VISIBLE);
-                        //动态注册广播接收器
-                        createReceiver();
-                        presenter.selectAuto();
-                        clickTime = System.currentTimeMillis();
-                        isAuto = true;
-                    }
-                }
-                break;
-            // 手动发车
-            case R.id.tv_manual:
-            case R.id.tv_menu_manual:
-                if ((System.currentTimeMillis() - clickTime) > 1000) {
-                    if (isAuto) {
-                        setTvBackground(1);
-                        setCoverBackground(View.GONE);
-                        presenter.selectManual();
-                        clickTime = System.currentTimeMillis();
-                        isAuto = false;
-                    }
-                }
-                break;
+//            // 自动发车
+//            case R.id.tv_automatic:
+//            case R.id.tv_menu_automatic:
+//                if ((System.currentTimeMillis() - clickTime) > 1000) {
+//                    if (!isAuto) {
+//                        if (!isHaveSendCar) {
+//                            showToast("该线路没有待发车辆", mContext);
+//                            return;
+//                        }
+//                        setTvBackground(2);
+//                        setCoverBackground(View.VISIBLE);
+//                        //动态注册广播接收器
+//                        createReceiver();
+//                        presenter.selectAuto();
+//                        clickTime = System.currentTimeMillis();
+//                        isAuto = true;
+//                    }
+//                }
+//                break;
+//            // 手动发车
+//            case R.id.tv_manual:
+//            case R.id.tv_menu_manual:
+//                if ((System.currentTimeMillis() - clickTime) > 1000) {
+//                    if (isAuto) {
+//                        setTvBackground(1);
+//                        setCoverBackground(View.GONE);
+//                        presenter.selectManual();
+//                        clickTime = System.currentTimeMillis();
+//                        isAuto = false;
+//                    }
+//                }
+//                break;
         }
     }
 
@@ -1202,8 +1118,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         setVerWaitCarTabScrollBar(i);
         mHorWaitCarView.setWaitCarCurrentItem(i);
         mHorWaitCarView.setWaitCarTabScrollBar(i);
-        showVerAutoDepart(visible);
-        showHorAutoDepart(visible);
+//        showHorAutoDepart(visible);
 
     }
 
@@ -1214,19 +1129,19 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mHorStopCarView.setStopCarTabScrollBar(i);
     }
 
-    private void showVerAutoDepart(int isVisible) {
-        tvManual.setVisibility(isVisible);
-        tvAutomatic.setVisibility(isVisible);
-    }
-
-    // 水平方向的自动/手动发车
-    private void showHorAutoDepart(int isVisible) {
-        if (isPopbg){
-            llMenuWaitDepart.setVisibility(View.GONE);
-        }else{
-            llMenuWaitDepart.setVisibility(isVisible);
-        }
-    }
+//    private void showVerAutoDepart(int isVisible) {
+//        tvManual.setVisibility(isVisible);
+//        tvAutomatic.setVisibility(isVisible);
+//    }
+//
+//    // 水平方向的自动/手动发车
+//    private void showHorAutoDepart(int isVisible) {
+//        if (isPopbg){
+//            llMenuWaitDepart.setVisibility(View.GONE);
+//        }else{
+//            llMenuWaitDepart.setVisibility(isVisible);
+//        }
+//    }
 
     private void setCoverBackground(int isVisible) {
         viewCover.setVisibility(isVisible);
@@ -1275,7 +1190,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     public void showMenuAutoDepart(int isVisible){
-        llMenuWaitDepart.setVisibility(isVisible);
+//        llMenuWaitDepart.setVisibility(isVisible);
     }
 
     private void showPopupWindow() {
@@ -1325,28 +1240,28 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void setTvBackground(int poi) {
-        if (poi == 1) {
-            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
-            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
-            tvManual.setTextColor(getResources().getColor(R.color.white));
-            tvAutomatic.setTextColor(getResources().getColor(R.color.font_black));
-
-            tvMenuManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
-            tvMenuAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
-            tvMenuManual.setTextColor(getResources().getColor(R.color.white));
-            tvMenuAutomatic.setTextColor(getResources().getColor(R.color.font_black));
-
-        } else {
-            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
-            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
-            tvManual.setTextColor(getResources().getColor(R.color.font_black));
-            tvAutomatic.setTextColor(getResources().getColor(R.color.white));
-
-            tvMenuManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
-            tvMenuAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
-            tvMenuManual.setTextColor(getResources().getColor(R.color.font_black));
-            tvMenuAutomatic.setTextColor(getResources().getColor(R.color.white));
-        }
+//        if (poi == 1) {
+//            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
+//            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
+//            tvManual.setTextColor(getResources().getColor(R.color.white));
+//            tvAutomatic.setTextColor(getResources().getColor(R.color.font_black));
+//
+//            tvMenuManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
+//            tvMenuAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
+//            tvMenuManual.setTextColor(getResources().getColor(R.color.white));
+//            tvMenuAutomatic.setTextColor(getResources().getColor(R.color.font_black));
+//
+//        } else {
+//            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
+//            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
+//            tvManual.setTextColor(getResources().getColor(R.color.font_black));
+//            tvAutomatic.setTextColor(getResources().getColor(R.color.white));
+//
+//            tvMenuManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
+//            tvMenuAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
+//            tvMenuManual.setTextColor(getResources().getColor(R.color.font_black));
+//            tvMenuAutomatic.setTextColor(getResources().getColor(R.color.white));
+//        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
 import com.zxw.data.bean.DepartCar;
+import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.FuzzyVehicleBean;
 import com.zxw.data.bean.InformContentBean;
 import com.zxw.data.bean.InformDataBean;
@@ -435,5 +436,16 @@ public class HttpMethods {
         toSubscribe(map,subscriber);
     }
 
-
+    // 获取工作量列表
+    public void workloadList(Subscriber<List<DriverWorkloadItem>> subscriber, String userId, String keyCode, int lineId, int pageNo, int pageSize, String vehCode, String driverName){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<List<DriverWorkloadItem>> map = browse.workloadList(userId, keyCode, lineId, pageNo, pageSize, vehCode, driverName).map(new HttpResultFunc<List<DriverWorkloadItem>>());
+        toSubscribe(map,subscriber);
+    }
+    // 修改工作量审核记录
+    public void updateWorkload(Subscriber subscriber,String userId,String keyCode,long objId,String outTime,String arrivalTime,int gpsStatus,int opStatus){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable map = operator.updateWorkload(userId, keyCode, objId, outTime, arrivalTime, gpsStatus, opStatus);
+        toSubscribe(map,subscriber);
+    }
 }
