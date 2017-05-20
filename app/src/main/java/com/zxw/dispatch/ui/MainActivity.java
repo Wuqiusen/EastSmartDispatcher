@@ -58,6 +58,7 @@ import com.zxw.dispatch.view.MyDialog;
 import com.zxw.dispatch.view.StartCarView;
 import com.zxw.dispatch.view.StopCarView;
 import com.zxw.dispatch.view.WaitCarView;
+import com.zxw.dispatch.view.WorkLoadView;
 import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
@@ -138,6 +139,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     // 排班计划
     @Bind(R.id.tv_schedule)
     TextView tvSchedule;
+    // 工作量审核
+    @Bind(R.id.tv_work_load)
+    TextView tvWorkLoad;
+
 
     // 设置
     @Bind(R.id.img_setting)
@@ -216,6 +221,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private StopCarView mHorStopCarView;
     private RecyclerView mStopRV1, mStopRV2;
     private ScheduleModule scheduleModule;
+    private TextView tv_date;
+    private int currentYear;
+    private int currentMonth;
+    private int currentDay;
+    private WorkLoadView mWorkLoadView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,8 +266,36 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         scheduleModule.setOnLoadingListener(this);
         views.add(scheduleModule);
         // 线路运行图
+        // 工作量审核
+        views.add(initWorkLoadVerifyView());
         // 显示默认视图
         showContentView(views);
+    }
+
+    private View initWorkLoadVerifyView() {
+        mWorkLoadView = new WorkLoadView(mContext, R.layout.activity_work_load_verify, new WorkLoadView.OnListener() {
+            @Override
+            public void onClickCalendar(String date) {
+
+            }
+
+            @Override
+            public void onClickToReport() {
+
+            }
+
+            @Override
+            public void onEditTextChanged(String str, int type) {
+
+            }
+
+            @Override
+            public void onClickToSearchWorkLoad(int type) {
+
+            }
+        });
+
+        return mWorkLoadView;
     }
 
     private View initControlDeckView(){
@@ -492,6 +530,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
          /*排班计划*/
         tvSchedule.setOnClickListener(this);
         /*线路运行图*/
+        tvWorkLoad.setOnClickListener(this);
         /*设置按钮*/
         imgSetting.setOnClickListener(this);
     }
@@ -846,14 +885,24 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 tvController.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
                 tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
                 tvSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+                tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+                tvWorkLoad.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 1:
                 tvSchedule.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
                 tvSchedule.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
                 tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
                 tvController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+                tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+                tvWorkLoad.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 2:
+                tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
+                tvWorkLoad.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
+                tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+                tvSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+                tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+                tvController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 3:
                 break;
@@ -992,6 +1041,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 setTabBackground(1);
                 scheduleModule.loadSchedulePlan();
                 break;
+            case R.id.tv_work_load:
+                vpMain.setCurrentItem(2);
+                setTabBackground(2);
             case R.id.img_setting:
                 showPopupWindow();
                 break;

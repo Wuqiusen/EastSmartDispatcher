@@ -73,6 +73,12 @@
                     android:text="作业计划"
                     />
 
+                <TextView
+                   android:id="@+id/tv_work_load"
+                   style="@style/main_tab_font_style"
+                   android:enabled="false"
+                   android:text="工作量审核"
+                 />
         </LinearLayout>
 
         <ImageView
