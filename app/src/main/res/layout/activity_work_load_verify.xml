@@ -33,6 +33,7 @@
             android:hint="请输入车牌号"
             />
 
+
         <TextView
             android:id="@+id/tv_report"
             android:layout_width="wrap_content"
