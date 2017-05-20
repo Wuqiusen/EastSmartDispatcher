@@ -1,8 +1,6 @@
 package com.zxw.dispatch.view;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -24,6 +22,7 @@ import java.util.List;
  * create at 2017/4/6 15:06
  * email: 1299242483@qq.com
  */
+
 public class WaitCarView extends LinearLayout implements View.OnClickListener {
 
     private Context mContext;

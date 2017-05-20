@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+    <!--EditText模糊搜索-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/et_current_date"
+            style="@style/et_work_load_verify_calendar_style"
+            android:editable="false"
+            android:hint="默认今天"
+            />
+
+        <EditText
+            android:id="@+id/et_driver_name"
+            style="@style/et_work_load_verify_search_style"
+            android:hint="请输入司机姓名"
+            />
+
+        <EditText
+            android:id="@+id/et_vehId"
+            style="@style/et_work_load_verify_search_style"
+            android:hint="请输入车牌号"
+            />
+
+        <TextView
+            android:id="@+id/tv_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上报"
+            />
+    </LinearLayout>
+    <!--tab选项-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/normal_margin10"
+        android:minHeight="40dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_gps"
+            style="@style/font_is_click_operate_tab"
+            android:text="GPS"
+            />
+
+        <TextView
+            android:id="@+id/tv_start_time"
+            style="@style/font_not_click_operate_tab"
+            android:text="开始时间"
+            />
+        <TextView
+            android:id="@+id/tv_end_time"
+            style="@style/font_not_click_operate_tab"
+            android:text="结束时间"
+            />
+
+        <TextView
+            android:id="@+id/tv_driver_ok"
+            style="@style/font_not_click_operate_tab"
+            android:text="司机确认"
+            />
+
+    </LinearLayout>
+
+    <!--副标题-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="3"
+            android:text="序号"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="车牌号"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="3"
+            android:text="司机"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="出发时间"
+            />
+
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="出站异常"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="到站异常"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="GPS异常"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="司机确认"
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2px"
+        android:background="@color/background_gray2"
+        android:layout_alignParentBottom="true"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_work_load_verify"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+</LinearLayout>

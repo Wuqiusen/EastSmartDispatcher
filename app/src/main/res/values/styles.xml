@@ -150,6 +150,30 @@
     <style name="btn_dui_green_station" parent="btn_dui_red_station">
         <item name="android:background">@drawable/ll_stop_car_green_btn_bg</item>
     </style>
+
+    <!--日期控件-->
+    <style name="et_work_load_verify_calendar_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">220dp</item>
+        <item name="android:minHeight">@dimen/btn_height50</item>
+        <item name="android:layout_marginLeft">@dimen/margin_fit_6</item>
+        <item name="android:background">@drawable/et_dialog_white_style</item>
+        <item name="android:drawableRight">@mipmap/img_calendar</item>
+        <item name="android:drawablePadding">@dimen/normal_margin10</item>
+        <item name="android:padding">@dimen/margin_fit_6</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">10</item>
+        <item name="android:textColorHint">@color/font_black</item>
+        <item name="android:textColor">@color/font_black</item>
+        <item name="android:textSize">@dimen/font_xlarge</item>
+        <item name="android:text">@null</item>
+    </style>
+    <style name="et_work_load_verify_search_style" parent="et_work_load_verify_calendar_style">
+        <item name="android:drawableRight">@mipmap/img_search</item>>
+    </style>
+
 <!--#-->
 
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="40dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_no"
+            style="@style/main_activity_top_button"
+            android:layout_weight="3"
+            android:text="序号"
+            />
+
+        <TextView
+            android:id="@+id/tv_vehId"
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="车牌号"
+            />
+
+        <TextView
+            android:id="@+id/tv_driver_name"
+            style="@style/main_activity_top_button"
+            android:layout_weight="3"
+            android:text="司机"
+            />
+
+        <TextView
+            android:id="@+id/tv_start_time"
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="出发时间"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_start_station"
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="出站异常"
+            />
+
+        <TextView
+            android:id="@+id/tv_end_station"
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="到站异常"
+            />
+
+        <TextView
+            android:id="@+id/tv_gps"
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="GPS异常"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:minHeight="36dp"
+            android:layout_weight="4"
+            android:text="司机确认"
+            />
+</LinearLayout>
