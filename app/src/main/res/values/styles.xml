@@ -156,11 +156,12 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">220dp</item>
-        <item name="android:minHeight">@dimen/btn_height50</item>
+        <item name="android:minHeight">46dp</item>
         <item name="android:layout_marginLeft">@dimen/margin_fit_6</item>
+        <item name="android:layout_marginRight">@dimen/margin_fit_6</item>
         <item name="android:background">@drawable/et_dialog_white_style</item>
         <item name="android:drawableRight">@mipmap/img_calendar</item>
-        <item name="android:drawablePadding">@dimen/normal_margin10</item>
+        <item name="android:drawablePadding">10dp</item>
         <item name="android:padding">@dimen/margin_fit_6</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
