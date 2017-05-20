@@ -294,7 +294,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
             }
         });
-
         return mWorkLoadView;
     }
 
@@ -529,7 +528,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvController.setOnClickListener(this);
          /*排班计划*/
         tvSchedule.setOnClickListener(this);
-        /*线路运行图*/
+        /*工作量*/
         tvWorkLoad.setOnClickListener(this);
         /*设置按钮*/
         imgSetting.setOnClickListener(this);
@@ -803,6 +802,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Override
     public void onSelectLine() {
         scheduleModule.initLineParams(presenter.getLineId(), presenter.getLineParams());
+        mWorkLoadView.initLineParams(presenter.getLineId(), presenter.getLineParams());
     }
 
     private void isShowStewardName(int isVisible) {
@@ -1044,6 +1044,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.tv_work_load:
                 vpMain.setCurrentItem(2);
                 setTabBackground(2);
+                break;
             case R.id.img_setting:
                 showPopupWindow();
                 break;
