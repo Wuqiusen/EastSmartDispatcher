@@ -33,7 +33,6 @@
             android:hint="请输入车牌号"
             />
 
-
         <TextView
             android:id="@+id/tv_report"
             android:layout_width="wrap_content"
@@ -42,7 +41,6 @@
             android:layout_centerVertical="true"
             android:minWidth="90dp"
             android:minHeight="40dp"
-            android:layout_gravity="right|center_vertical"
             android:gravity="center"
             android:background="@drawable/btn_black_style"
             android:textColor="@color/font_white"
