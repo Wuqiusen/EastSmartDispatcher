@@ -443,7 +443,7 @@ public class HttpMethods {
         toSubscribe(map,subscriber);
     }
     // 修改工作量审核记录
-    public void updateWorkload(Subscriber subscriber,String userId,String keyCode,long objId,String outTime,String arrivalTime,int gpsStatus,int opStatus){
+    public void updateWorkload(Subscriber subscriber,String userId,String keyCode,long objId,String outTime,String arrivalTime,String gpsStatus,String opStatus){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable map = operator.updateWorkload(userId, keyCode, objId, outTime, arrivalTime, gpsStatus, opStatus);
         toSubscribe(map,subscriber);

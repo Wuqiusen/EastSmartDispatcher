@@ -18,6 +18,7 @@ import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.ToastHelper;
+import com.zxw.dispatch.view.recycle.BaseAdapter;
 
 import java.util.List;
 
@@ -28,11 +29,12 @@ import butterknife.ButterKnife;
  * Created by moxiaoqing on 2017/5/19.
  */
 
-public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAdapter.WorkLoadVerifyViewHolder>{
+public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAdapter.WorkLoadVerifyViewHolder> {
     private Context mContext;
     private List<DriverWorkloadItem> mData;
     private OnWorkLoadItemClickListener mListener;
     private final LayoutInflater mLayoutInflater;
+    private final static int DIALOG_TYPE_OUT_TIME = 1, DIALOG_TYPE_ARRIVE_TIME = 2;
 
     private int mDriverOpTag;
     private int mGpsTag;
@@ -53,13 +55,14 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
 
     @Override
     public void onBindViewHolder(WorkLoadVerifyViewHolder holder, final int position) {
+
         int tag = mData.get(position).getOpStatus();
         if (tag == 2){
             holder.tvDriverOk.setText("待确认");
         }else if(tag == 3){
-            holder.tvDriverOk.setText("不同意");
+            holder.tvDriverOk.setText("异常");
         }else if(tag == 4){
-            holder.tvDriverOk.setText("同意");
+            holder.tvDriverOk.setText("正常");
         }
         holder.tvNo.setText(String.valueOf(position + 1));
         holder.tvVehId.setText(mData.get(position).getVehCode());
@@ -70,10 +73,10 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
         holder.tvArriveTime.setText(mData.get(position).getArrivalTime());
         String gps = "";
         switch (mData.get(position).getGpsStatus()){
-            case 1:
+            case 0:
                 gps = "异常";
                 break;
-            case 2:
+            case 1:
                 gps = "正常";
                 break;
         }
@@ -84,10 +87,10 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
                 driverStatus = "待确认";
                 break;
             case 3:
-                driverStatus = "不同意";
+                driverStatus = "异常";
                 break;
             case 4:
-                driverStatus = "同意";
+                driverStatus = "正常";
                 break;
         }
         holder.tvDriverOk.setText(driverStatus);
@@ -118,10 +121,10 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
     }
 
     private void showOutTimeDialog(final long objId, String outTime) {
-        showTimeDialog(objId, outTime, 1);
+        showTimeDialog(objId, outTime, DIALOG_TYPE_OUT_TIME);
     }
     private void showArriveTimeDialog(final long objId, String ArrivalTime) {
-        showTimeDialog(objId, ArrivalTime, 1);
+        showTimeDialog(objId, ArrivalTime, DIALOG_TYPE_ARRIVE_TIME);
     }
 
 
@@ -143,12 +146,12 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
                     ToastHelper.showToast("请输入正确时间");
                     return;
                 }
-                if (type == 1){
+                if (type == DIALOG_TYPE_OUT_TIME){
                     mListener.onAlertOutTime(objId, time);
                 }else{
                     mListener.onAlertArriveTime(objId, time);
                 }
-//                dialog.dismiss();
+                dialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -170,10 +173,10 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
         RadioGroup rg = (RadioGroup) view.findViewById(R.id.rg);
         final RadioButton rb_ok = (RadioButton) view.findViewById(R.id.rb_ok);
         final RadioButton rb_error = (RadioButton) view.findViewById(R.id.rb_error);
-        if (tag == 1){
+        if (tag == 0){
             rb_ok.setChecked(false);
             rb_error.setChecked(true);
-        }else if(tag == 2){
+        }else if(tag == 1){
             rb_ok.setChecked(true);
             rb_error.setChecked(false);
         }
@@ -183,12 +186,12 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
             public void onCheckedChanged(RadioGroup group,int checkedId){
                 switch (checkedId){
                     case R.id.rb_error:
-                        mGpsTag = 1;
+                        mGpsTag = 0;
                         rb_ok.setChecked(false);
                         rb_error.setChecked(true);
                         break;
                     case R.id.rb_ok:
-                        mGpsTag = 2;
+                        mGpsTag = 1;
                         rb_ok.setChecked(true);
                         rb_error.setChecked(false);
                         break;
@@ -202,7 +205,7 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
             public void onClick(View v) {
 //                DebugLog.w("gps" + mGpsTag);
                 mListener.onAlertGpsStatus(mData.get(position).getObjId(), mGpsTag);
-//                dialog.dismiss();
+                dialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -237,10 +240,6 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
              @Override
              public void onCheckedChanged(RadioGroup group,int checkedId){
                   switch (checkedId){
-                      case R.id.rb_wait_ok:
-                          mDriverOpTag = 2;
-                          setRbsIsChecked(rb_wait_ok,rb_unagree,rb_agree);
-                          break;
                       case R.id.rb_unagree:
                           mDriverOpTag = 3;
                           setRbsIsChecked(rb_unagree,rb_wait_ok,rb_agree);
@@ -259,7 +258,7 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
             public void onClick(View v) {
                 //司机确认
                 mListener.onAlertDriverStatus(mData.get(position).getObjId(), mDriverOpTag);
-//                dialog.dismiss();
+                dialog.dismiss();
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {

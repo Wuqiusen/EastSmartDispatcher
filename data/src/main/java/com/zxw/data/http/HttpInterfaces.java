@@ -454,8 +454,8 @@ public class HttpInterfaces {
                                                       @Field("objId") long objId,
                                                       @Field("outTime") String outTime,
                                                       @Field("arrivalTime") String arrivalTime,
-                                                      @Field("gpsStatus") int gpsStatus,
-                                                      @Field("opStatus") int opStatus);
+                                                      @Field("gpsStatus") String gpsStatus,
+                                                      @Field("opStatus") String opStatus);
         /**
          * 44.获取停场车辆
          */

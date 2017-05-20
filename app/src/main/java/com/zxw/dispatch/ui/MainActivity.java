@@ -293,6 +293,17 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             public void onClickToSearchWorkLoad(int type) {
 
             }
+
+            @Override
+            public void showLoading() {
+                MainActivity.this.showLoading();
+            }
+
+            @Override
+            public void hideLoading() {
+                MainActivity.this.hideLoading();
+            }
+
         });
         return mWorkLoadView;
     }
