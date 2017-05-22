@@ -30,6 +30,7 @@
             android:id="@+id/et_vehId"
             android:layout_toRightOf="@+id/et_driver_name"
             style="@style/et_work_load_verify_search_style"
+            android:inputType="number"
             android:hint="请输入车牌号"
             />
 
@@ -58,27 +59,33 @@
         android:layout_marginBottom="@dimen/normal_margin10"
         android:minHeight="40dp"
         android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tv_gps"
-            style="@style/font_is_click_operate_tab"
-            android:text="GPS"
-            />
 
         <TextView
             android:id="@+id/tv_veh_time"
             style="@style/font_not_click_operate_tab"
-            android:text="开始时间"
+            android:text="出站时间"
             />
         <TextView
             android:id="@+id/tv_end_time"
             style="@style/font_not_click_operate_tab"
-            android:text="结束时间"
+            android:text="到达时间"
+            />
+        <TextView
+            android:id="@+id/tv_gps"
+            style="@style/font_not_click_operate_tab"
+            android:text="GPS"
             />
 
         <TextView
             android:id="@+id/tv_driver_ok"
             style="@style/font_not_click_operate_tab"
-            android:text="司机确认"
+            android:text="司机状态"
+            />
+
+        <TextView
+            android:id="@+id/tv_all"
+            style="@style/font_is_click_operate_tab"
+            android:text="全部"
             />
 
     </LinearLayout>
@@ -124,7 +131,7 @@
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
-            android:text="进站时间"
+            android:text="到达时间"
             />
 
         <TextView

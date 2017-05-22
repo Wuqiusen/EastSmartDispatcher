@@ -29,9 +29,8 @@ import butterknife.ButterKnife;
  * Created by moxiaoqing on 2017/5/19.
  */
 
-public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAdapter.WorkLoadVerifyViewHolder> {
+public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
     private Context mContext;
-    private List<DriverWorkloadItem> mData;
     private OnWorkLoadItemClickListener mListener;
     private final LayoutInflater mLayoutInflater;
     private final static int DIALOG_TYPE_OUT_TIME = 1, DIALOG_TYPE_ARRIVE_TIME = 2;
@@ -39,9 +38,8 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
     private int mDriverOpTag;
     private int mGpsTag;
 
-    public WorkLoadVerifyAdapter(Context context, List<DriverWorkloadItem> data,OnWorkLoadItemClickListener listener){
+    public WorkLoadVerifyAdapter(Context context, OnWorkLoadItemClickListener listener){
          this.mContext = context;
-         this.mData = data;
          this.mListener = listener;
          mLayoutInflater = LayoutInflater.from(context);
     }
@@ -54,9 +52,9 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
     }
 
     @Override
-    public void onBindViewHolder(WorkLoadVerifyViewHolder holder, final int position) {
-
-        int tag = mData.get(position).getOpStatus();
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
+        WorkLoadVerifyViewHolder holder = ((WorkLoadVerifyViewHolder)viewHolder);
+        int tag = getDataSet().get(position).getOpStatus();
         if (tag == 2){
             holder.tvDriverOk.setText("待确认");
         }else if(tag == 3){
@@ -65,14 +63,14 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
             holder.tvDriverOk.setText("正常");
         }
         holder.tvNo.setText(String.valueOf(position + 1));
-        holder.tvVehId.setText(mData.get(position).getVehCode());
-        holder.tvDriverName.setText(mData.get(position).getDriverName());
-        holder.tvVehTime.setText(mData.get(position).getVehTime());
+        holder.tvVehId.setText(getDataSet().get(position).getVehCode());
+        holder.tvDriverName.setText(getDataSet().get(position).getDriverName());
+        holder.tvVehTime.setText(getDataSet().get(position).getVehTime());
         // 后期:正常_打勾、异常_打叉；是否需呀设置监听
-        holder.tvOutTime.setText(mData.get(position).getOutTime());
-        holder.tvArriveTime.setText(mData.get(position).getArrivalTime());
+        holder.tvOutTime.setText(getDataSet().get(position).getOutTime());
+        holder.tvArriveTime.setText(getDataSet().get(position).getArrivalTime());
         String gps = "";
-        switch (mData.get(position).getGpsStatus()){
+        switch (getDataSet().get(position).getGpsStatus()){
             case 0:
                 gps = "异常";
                 break;
@@ -82,7 +80,7 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
         }
         holder.tvGps.setText(gps);
         String driverStatus = "";
-        switch (mData.get(position).getOpStatus()){
+        switch (getDataSet().get(position).getOpStatus()){
             case 2:
                 driverStatus = "待确认";
                 break;
@@ -97,25 +95,25 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
         holder.tvDriverOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDriverOkDialog(position, mData.get(position).getOpStatus());
+                showDriverOkDialog(position, getDataSet().get(position).getOpStatus());
             }
         });
         holder.tvGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showGpsDialog(position, mData.get(position).getGpsStatus());
+                showGpsDialog(position, getDataSet().get(position).getGpsStatus());
             }
         });
         holder.tvOutTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOutTimeDialog(mData.get(position).getObjId(), mData.get(position).getOutTime());
+                showOutTimeDialog(getDataSet().get(position).getObjId(), getDataSet().get(position).getOutTime());
             }
         });
         holder.tvArriveTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showArriveTimeDialog(mData.get(position).getObjId(), mData.get(position).getArrivalTime());
+                showArriveTimeDialog(getDataSet().get(position).getObjId(), getDataSet().get(position).getArrivalTime());
             }
         });
     }
@@ -204,7 +202,7 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
             @Override
             public void onClick(View v) {
 //                DebugLog.w("gps" + mGpsTag);
-                mListener.onAlertGpsStatus(mData.get(position).getObjId(), mGpsTag);
+                mListener.onAlertGpsStatus(getDataSet().get(position).getObjId(), mGpsTag);
                 dialog.dismiss();
             }
         });
@@ -257,7 +255,7 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
             @Override
             public void onClick(View v) {
                 //司机确认
-                mListener.onAlertDriverStatus(mData.get(position).getObjId(), mDriverOpTag);
+                mListener.onAlertDriverStatus(getDataSet().get(position).getObjId(), mDriverOpTag);
                 dialog.dismiss();
             }
         });
@@ -280,7 +278,7 @@ public class WorkLoadVerifyAdapter extends RecyclerView.Adapter<WorkLoadVerifyAd
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return getDataSet().size();
     }
 
 

@@ -50,6 +50,7 @@ import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
+import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.view.ChildViewPager;
 import com.zxw.dispatch.view.CustomViewPager;
@@ -273,7 +274,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private View initWorkLoadVerifyView() {
-        mWorkLoadView = new WorkLoadView(mContext, R.layout.activity_work_load_verify, new WorkLoadView.OnListener() {
+        mWorkLoadView = new WorkLoadView(mContext, new WorkLoadView.OnListener() {
             @Override
             public void onClickCalendar(String date) {
 
@@ -288,14 +289,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             public void onEditTextChanged(String str, int type) {
 
             }
-
-            @Override
-            public void onClickToSearchWorkLoad(int type) {
-
-            }
-
             @Override
             public void showLoading() {
+                DebugLog.w("showloading");
                 MainActivity.this.showLoading();
             }
 

@@ -113,7 +113,8 @@
     <TextView
         android:id="@+id/tv_send_car"
         style="@style/font_operate_style"
-        android:text="发车"
+        android:text="人到发车"
+        android:layout_weight="2"
         />
     <TextView
         android:id="@+id/tv_withdraw"
