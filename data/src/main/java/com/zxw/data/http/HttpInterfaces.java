@@ -113,7 +113,9 @@ public class HttpInterfaces {
                                                                     @Field("pageNo") int pageNo,
                                                                     @Field("pageSize") int pageSize,
                                                                     @Field("vehCode") String vehCode,
-                                                                    @Field("driverName") String driverName);
+                                                                    @Field("driverName") String driverName,
+                                                                    @Field("exceptionType") String exceptionType
+                                                                    );
 
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/property")

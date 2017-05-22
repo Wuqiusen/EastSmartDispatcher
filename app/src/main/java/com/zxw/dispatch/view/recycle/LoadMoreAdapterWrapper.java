@@ -20,6 +20,23 @@ public class LoadMoreAdapterWrapper extends BaseAdapter<String> {
     private int mPagePosition = 1;
     private boolean hasMoreData = true;
     private OnLoad mOnLoad;
+    private ILoadCallback mCallback = new ILoadCallback() {
+        @Override
+        public void onSuccess() {
+            notifyDataSetChanged();
+            mPagePosition = mPagePosition + 1;
+            hasMoreData = true;
+        }
+
+        @Override
+        public void onFailure() {
+            hasMoreData = false;
+        }
+    };
+
+    public ILoadCallback getILoadCallback (){
+        return mCallback;
+    }
 
     public LoadMoreAdapterWrapper(BaseAdapter adapter, OnLoad onLoad) {
         mAdapter = adapter;
@@ -56,19 +73,7 @@ public class LoadMoreAdapterWrapper extends BaseAdapter<String> {
         //如果没有数据了，则hasMoreData为false，然后通知变化，更新recylerview
 
         if (mOnLoad != null) {
-            mOnLoad.load(pagePosition, pageSize, new ILoadCallback() {
-                @Override
-                public void onSuccess() {
-                    notifyDataSetChanged();
-                    mPagePosition = mPagePosition + 1;
-                    hasMoreData = true;
-                }
-
-                @Override
-                public void onFailure() {
-                    hasMoreData = false;
-                }
-            });
+            mOnLoad.load(pagePosition, pageSize, mCallback);
         }
     }
 

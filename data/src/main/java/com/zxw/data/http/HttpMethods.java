@@ -437,9 +437,9 @@ public class HttpMethods {
     }
 
     // 获取工作量列表
-    public void workloadList(Subscriber<List<DriverWorkloadItem>> subscriber, String userId, String keyCode, int lineId, int pageNo, int pageSize, String vehCode, String driverName){
+    public void workloadList(Subscriber<BaseBean<List<DriverWorkloadItem>>> subscriber, String userId, String keyCode, int lineId, int pageNo, int pageSize, String vehCode, String driverName, String exceptionType){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<List<DriverWorkloadItem>> map = browse.workloadList(userId, keyCode, lineId, pageNo, pageSize, vehCode, driverName).map(new HttpResultFunc<List<DriverWorkloadItem>>());
+        Observable<BaseBean<List<DriverWorkloadItem>>> map = browse.workloadList(userId, keyCode, lineId, pageNo, pageSize, vehCode, driverName, exceptionType);
         toSubscribe(map,subscriber);
     }
     // 修改工作量审核记录

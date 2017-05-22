@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.http.HttpMethods;
@@ -44,11 +47,11 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
     private Context mContext;
     private EditText etCurrentDate, etDriverName, etVehId;
-    private TextView tvStartTime, tvEndTime, tvGps, tvDriverOk, tvReport;
+    private TextView tvStartTime, tvEndTime, tvGps, tvDriverOk, tvReport, tvAll;
     private RecyclerView rvWorkLoad;
     private OnListener mListener;
     private final static int LOAD_PAGE_SIZE = 20;
-    private int mPageSize = 45;
+    private int mPageSize;
 
     private int currentYear;
     private int currentMonth;
@@ -62,21 +65,47 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
     private WorkLoadVerifyAdapter adapter;
     private BaseAdapter mAdapter;
     public LoadMoreAdapterWrapper.ILoadCallback mLoadCallback;
+    private String mExceptionType;
+    private final static int EXCEPTION_TYPE_OUT_TIME = 1, EXCEPTION_TYPE_ARRIVE_TIME = 2, EXCEPTION_TYPE_GPS = 3, EXCEPTION_TYPE_DRIVER_OPERATOR = 4;
 
+    private InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            for (int i = start; i < end; i++) {
+                if (!isChinese(source.charAt(i))) {
+                    return "";
+                }
+            }
+            return null;
+        }
+    };
 
-    public WorkLoadView(Context context, int resId, OnListener listener) {
+    private boolean isChinese(char c) {
+        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+        if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+                || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+                || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+                || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+                || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+                || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+            return true;
+        }
+        return false;
+    }
+
+    public WorkLoadView(Context context, OnListener listener) {
         super(context);
         this.mContext = context;
         this.mListener = listener;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(resId, this);
+        inflater.inflate(R.layout.activity_work_load_verify, this);
         initData();
         initView();
         initAdapter();
     }
 
     private void initAdapter() {
-        if (adapter == null){
+        if (adapter == null) {
             adapter = new WorkLoadVerifyAdapter(mContext, new WorkLoadVerifyAdapter.OnWorkLoadItemClickListener() {
                 @Override
                 public void onAlertOutTime(long objId, String str) {
@@ -112,11 +141,14 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
             public void load(int pagePosition, int pageSize, final LoadMoreAdapterWrapper.ILoadCallback callback) {
                 //此处模拟做网络操作，2s延迟，将拉取的数据更新到adpter中
                 mLoadCallback = callback;
-                if (mCurrentPage * pageSize >= mPageSize){
+                DebugLog.w("mCurrentPage" + mCurrentPage);
+                DebugLog.w("pageSize" + pageSize);
+                DebugLog.w("mPageSize" + mPageSize);
+                if (mCurrentPage * pageSize >= mPageSize) {
                     callback.onFailure();
-                }else{
+                } else {
                     mCurrentPage++;
-                    loadWorkloadList(mCurrentPage,  mVehCode, mDriverName);
+                    loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
                 }
             }
         });
@@ -141,12 +173,14 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
         etCurrentDate = (EditText) findViewById(R.id.et_current_date); // 日期
         etDriverName = (EditText) findViewById(R.id.et_driver_name); //驾驶员
         etVehId = (EditText) findViewById(R.id.et_vehId); //车牌号
+        etDriverName.setFilters(new InputFilter[]{filter});
         tvReport = (TextView) findViewById(R.id.tv_report); //上报
 
         tvGps = (TextView) findViewById(R.id.tv_gps);
         tvStartTime = (TextView) findViewById(R.id.tv_veh_time);
         tvEndTime = (TextView) findViewById(R.id.tv_end_time);
         tvDriverOk = (TextView) findViewById(R.id.tv_driver_ok);
+        tvAll = (TextView) findViewById(R.id.tv_all);
 
         etCurrentDate.setText(String.valueOf(currentYear) + "-" + disPlayNum(currentMonth) + "-" + disPlayNum(currentDay));
         etCurrentDate.setOnClickListener(this);
@@ -158,7 +192,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mDriverName = s.toString();
+                mDriverName = s.toString();
                 refreshWorkloadList();
             }
 
@@ -176,7 +210,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mVehCode = s.toString();
+                mVehCode = s.toString();
                 refreshWorkloadList();
             }
 
@@ -192,6 +226,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
         tvStartTime.setOnClickListener(this);
         tvEndTime.setOnClickListener(this);
         tvDriverOk.setOnClickListener(this);
+        tvAll.setOnClickListener(this);
 
         rvWorkLoad = (RecyclerView) findViewById(R.id.rv_work_load_verify);
         rvWorkLoad.setLayoutManager(new LinearLayoutManager(mContext));
@@ -199,6 +234,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
                 DividerItemDecoration.VERTICAL_LIST));
 
     }
+
 
     public void setWorkLoadAdapter(BaseAdapter adapter) {
         rvWorkLoad.setAdapter(adapter);
@@ -220,7 +256,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
             vehCode = null;
             driverName = null;
         }
-        HttpMethods.getInstance().workloadList(new Subscriber<List<DriverWorkloadItem>>() {
+        HttpMethods.getInstance().workloadList(new Subscriber<BaseBean<List<DriverWorkloadItem>>>() {
 
             @Override
             public void onCompleted() {
@@ -234,12 +270,16 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
             }
 
             @Override
-            public void onNext(List<DriverWorkloadItem> driverWorkloadItems) {
-                adapter.appendData(driverWorkloadItems);
-                if (mLoadCallback != null)
-                    mLoadCallback.onSuccess();
+            public void onNext(BaseBean<List<DriverWorkloadItem>> basedriverWorkloadItems) {
+                mPageSize = basedriverWorkloadItems.returnSize;
+                adapter.appendData(basedriverWorkloadItems.returnData);
+                if (mLoadCallback == null) {
+                    mLoadCallback = ((LoadMoreAdapterWrapper) mAdapter).getILoadCallback();
+                }
+                mLoadCallback.onSuccess();
+
             }
-        }, userId, keyCode, lineId, pageNo, LOAD_PAGE_SIZE, vehCode, driverName);
+        }, userId, keyCode, lineId, pageNo, LOAD_PAGE_SIZE, vehCode, driverName, mExceptionType);
     }
 
     public void updateWorkload(long objId, String outTime, String arrivalTime, String gpsStatus, String opStatus) {
@@ -264,6 +304,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
     }
 
     public void refreshWorkloadList() {
+        rvWorkLoad.scrollToPosition(0);
         mCurrentPage = 1;
         adapter.clearData();
         loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
@@ -281,22 +322,40 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
                 break;
             case R.id.tv_gps:
                 updateTabBackground(0);
-                mListener.onClickToSearchWorkLoad(0);
+                filterWorkload(EXCEPTION_TYPE_GPS);
                 break;
             case R.id.tv_veh_time:
                 updateTabBackground(1);
-                mListener.onClickToSearchWorkLoad(1);
+                filterWorkload(EXCEPTION_TYPE_OUT_TIME);
                 break;
             case R.id.tv_end_time:
                 updateTabBackground(2);
-                mListener.onClickToSearchWorkLoad(2);
+                filterWorkload(EXCEPTION_TYPE_ARRIVE_TIME);
                 break;
             case R.id.tv_driver_ok:
                 updateTabBackground(3);
-                mListener.onClickToSearchWorkLoad(3);
+                filterWorkload(EXCEPTION_TYPE_DRIVER_OPERATOR);
                 break;
-
+            case R.id.tv_all:
+                updateTabBackground(4);
+                filterWorkload();
+                break;
         }
+    }
+
+    private void filterWorkload() {
+        if (TextUtils.isEmpty(mExceptionType))
+            return;
+        mExceptionType = null;
+        refreshWorkloadList();
+    }
+
+    private void filterWorkload(int exceptionType) {
+        String tempType = String.valueOf(exceptionType);
+        if (!tempType.equals(mExceptionType)) {
+            mExceptionType = tempType;
+        }
+        refreshWorkloadList();
     }
 
     private void updateTabBackground(int tag) {
@@ -308,6 +367,8 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
                 tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvDriverOk.setTextColor(mContext.getResources().getColor(R.color.font_black1));
                 tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvGps.setTextColor(mContext.getResources().getColor(R.color.font_white));
                 tvGps.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 break;
@@ -320,6 +381,8 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
                 tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvStartTime.setTextColor(mContext.getResources().getColor(R.color.font_white));
                 tvStartTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 break;
             case 2:
                 tvGps.setTextColor(mContext.getResources().getColor(R.color.font_black1));
@@ -330,6 +393,8 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
                 tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvEndTime.setTextColor(mContext.getResources().getColor(R.color.font_white));
                 tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 break;
             case 3:
                 tvGps.setTextColor(mContext.getResources().getColor(R.color.font_black1));
@@ -340,6 +405,20 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
                 tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvDriverOk.setTextColor(mContext.getResources().getColor(R.color.font_white));
                 tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
+                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+                break;
+            case 4:
+                tvGps.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+                tvGps.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+                tvStartTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+                tvStartTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+                tvEndTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+                tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+                tvDriverOk.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+                tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_white));
+                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 break;
         }
     }
@@ -373,8 +452,6 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
         void onClickToReport();
 
         void onEditTextChanged(String str, int type);
-
-        void onClickToSearchWorkLoad(int type);
 
         void showLoading();
 
