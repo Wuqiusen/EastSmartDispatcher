@@ -886,30 +886,19 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void setTabBackground(int tabPosition) {
+        setNormalTabStyle();
         switch (tabPosition) {
             case 0:
                 tvController.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
                 tvController.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
-                tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                tvSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
-                tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                tvWorkLoad.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 1:
                 tvSchedule.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
                 tvSchedule.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
-                tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                tvController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
-                tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                tvWorkLoad.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 2:
                 tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
                 tvWorkLoad.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
-                tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                tvSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
-                tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                tvController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 3:
                 break;
@@ -919,18 +908,15 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void setScrollBarBackground(int pos){
+        setScrollBarNormalStyle();
         switch (pos){
             case 0:
                 tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 showMenuAutoDepart(View.GONE);
                 showAddRecordingBtn(View.VISIBLE);
                 break;
             case 1:
                 tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 if (isPopbg) {
                     showMenuAutoDepart(View.GONE);
                     showAddRecordingBtn(View.VISIBLE);
@@ -941,39 +927,27 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 break;
             case 2:
                 tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 showMenuAutoDepart(View.GONE);
                 showAddRecordingBtn(View.GONE);
                 break;
         }
     }
 
+
     private void setVerStartCarTabScrollBar(int pos){
+        setStartCarTabNormalStyle();
         switch (pos){
             case 0:
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 2:
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
 
         }
@@ -981,50 +955,82 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     private void setVerWaitCarTabScrollBar(int pos){
+        setWaitCarTabNormalStyle();
         switch (pos){
             case 0:
                 tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
                 tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 2:
                 tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
-
         }
     }
+
     private void setVerStopCarTabScrollBar(int pos){
+        setTopCarTabNormalStyle();
         switch (pos){
             case 0:
                 tv_ver_stop_tab1.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_ver_stop_tab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_ver_stop_tab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_ver_stop_tab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
                 tv_ver_stop_tab2.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_ver_stop_tab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_ver_stop_tab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_ver_stop_tab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
         }
     }
+
+
+    private void setScrollBarNormalStyle() {
+        tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+        tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+        tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+    }
+
+    private void setTopCarTabNormalStyle() {
+        tv_ver_stop_tab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_ver_stop_tab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_ver_stop_tab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_ver_stop_tab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+    }
+
+
+    private void setNormalTabStyle() {
+        tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        tvController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+        tvSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+        tvWorkLoad.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+    }
+
+
+    private void setStartCarTabNormalStyle() {
+        tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+    }
+
+
+    private void setWaitCarTabNormalStyle() {
+        tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+    }
+
+
 
 
     private Drawable getDrawable(boolean isTab) {

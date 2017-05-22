@@ -144,35 +144,32 @@ public class WaitCarView extends LinearLayout implements View.OnClickListener {
 
 
     public void setWaitCarTabScrollBar(int pos){
+        setNormalTabBackground();
         switch (pos){
             case 0:
                 tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
                 tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 2:
                 tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
 
         }
     }
 
+    private void setNormalTabBackground() {
+        tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+    }
 
 
     public interface OnWaitCarTabListener{

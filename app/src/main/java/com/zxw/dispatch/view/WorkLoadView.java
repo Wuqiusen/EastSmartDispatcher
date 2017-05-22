@@ -2,7 +2,6 @@ package com.zxw.dispatch.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -33,7 +32,6 @@ import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.recycle.BaseAdapter;
 import com.zxw.dispatch.view.recycle.LoadMoreAdapterWrapper;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -359,68 +357,43 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
     }
 
     private void updateTabBackground(int tag) {
+        setWorkLoadNormalTabStyle();
         switch (tag) {
             case 0:
-                tvStartTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvStartTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvEndTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvDriverOk.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvGps.setTextColor(mContext.getResources().getColor(R.color.font_white));
                 tvGps.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 break;
             case 1:
-                tvGps.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvGps.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvEndTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvDriverOk.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvStartTime.setTextColor(mContext.getResources().getColor(R.color.font_white));
                 tvStartTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 break;
             case 2:
-                tvGps.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvGps.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvStartTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvStartTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvDriverOk.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvEndTime.setTextColor(mContext.getResources().getColor(R.color.font_white));
                 tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 break;
             case 3:
-                tvGps.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvGps.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvStartTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvStartTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvEndTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvDriverOk.setTextColor(mContext.getResources().getColor(R.color.font_white));
                 tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 break;
             case 4:
-                tvGps.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvGps.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvStartTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvStartTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvEndTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
-                tvDriverOk.setTextColor(mContext.getResources().getColor(R.color.font_black1));
-                tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
                 tvAll.setTextColor(mContext.getResources().getColor(R.color.font_white));
                 tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
                 break;
         }
+    }
+
+    private void setWorkLoadNormalTabStyle() {
+        tvGps.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+        tvStartTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+        tvEndTime.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+        tvDriverOk.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+        tvAll.setTextColor(mContext.getResources().getColor(R.color.font_black1));
+
+        tvGps.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+        tvStartTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+        tvEndTime.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+        tvDriverOk.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
+        tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_style));
     }
 
     public void openCalendarDialog() {
