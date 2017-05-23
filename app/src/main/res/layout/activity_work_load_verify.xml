@@ -143,7 +143,7 @@
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
-            android:text="司机状态"
+            android:text="终端操作状态"
             />
     </LinearLayout>
     <View
