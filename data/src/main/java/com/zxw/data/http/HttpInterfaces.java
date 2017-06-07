@@ -773,5 +773,10 @@ public class HttpInterfaces {
                                                       @Field("runDate") String runDate);
     }
 
+    // 排班计划
+    public interface GPS{
+        @GET
+        Observable<HttpGPsRequest.GpsBaseBean> gps(@Url String url);
+    }
 
 }
