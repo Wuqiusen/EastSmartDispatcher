@@ -1,5 +1,7 @@
 package com.zxw.data;
 
+import android.os.Debug;
+
 import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.FuzzyVehicleBean;
@@ -8,6 +10,7 @@ import com.zxw.data.bean.Person;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.WaitVehicle;
+import com.zxw.data.http.HttpGPsRequest;
 import com.zxw.data.http.HttpMethods;
 
 import junit.framework.Assert;
@@ -50,7 +53,26 @@ public class BrowseTest {
     }
 
     @Test
-    public void testLines(){
+    public void testGps(){
+        HttpGPsRequest.getInstance().gpsByVehCode(new Subscriber<HttpGPsRequest.GpsBaseBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+                result = e.getMessage();
+            }
+
+            @Override
+            public void onNext(HttpGPsRequest.GpsBaseBean gpsBaseBean) {
+
+                result = gpsBaseBean.toString();
+            }
+        },"粤B04317D");
+        Assert.assertEquals("1", result);
     }
 
     @Test
