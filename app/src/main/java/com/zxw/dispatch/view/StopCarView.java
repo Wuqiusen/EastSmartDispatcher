@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
-import com.zxw.dispatch.recycler.GoneAdapterForNormal;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 
@@ -105,20 +104,24 @@ public class StopCarView extends LinearLayout implements View.OnClickListener {
     }
 
     public void setStopCarTabScrollBar(int pos){
+        setStopCarNormalTabStyle();
         switch (pos){
             case 0:
                 tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
                 tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
         }
+    }
+
+    private void setStopCarNormalTabStyle() {
+        tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
     }
 
     private Drawable getDrawable(boolean isTab) {
