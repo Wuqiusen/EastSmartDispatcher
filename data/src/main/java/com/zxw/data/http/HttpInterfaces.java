@@ -16,6 +16,7 @@ import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
+import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
@@ -410,7 +411,7 @@ public class HttpInterfaces {
                                                                  @Field("typeId") String typeId);
 
         /**
-         * 31.	根据线路id获取待发车计划列表(新)
+         * 31.	根据线路id获取待发车计划列表(改)
          */
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/schedule/list1")
@@ -703,7 +704,8 @@ public class HttpInterfaces {
                                          @Field("keyCode") String keyCode,
                                          @Field("vehicleId") String vehicleId,
                                          @Field("noticeInfo") String noticeInfo,
-                                         @Field("noticeType") String noticeType);
+                                         @Field("noticeType") String noticeType,
+                                         @Field("driverCode") String driverCode);
 
         /**
          * 33.	停场车辆拉进待发车计划操作列表(新)
@@ -777,6 +779,19 @@ public class HttpInterfaces {
     public interface GPS{
         @GET
         Observable<HttpGPsRequest.GpsBaseBean> gps(@Url String url);
+    }
+
+    // 线路运行图
+    public interface LineRunMap{
+        /**
+         * 47.根据任务线路id获取当前在跑的所有车辆(新)
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/run/line/map")
+        Observable<BaseBean<List<RunningCarBean>>> runningCarList(@Field("userId") String userId,
+                                                                  @Field("keyCode") String keyCode,
+                                                                  @Field("taskLineId") String taskLineId);
+
     }
 
 }

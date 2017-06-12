@@ -227,7 +227,7 @@ public class DragListAdapterForNotOperatorEmpty extends BaseAdapter {
         tv_inform.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openInformDialog(mDatas.get(position).getId() + "");
+                openInformDialog(mDatas.get(position).getId() + "",mDatas.get(position).getDriverCode());
             }
         });
         return view;
@@ -301,7 +301,7 @@ public class DragListAdapterForNotOperatorEmpty extends BaseAdapter {
     /**
      * 通知
      */
-    private void openInformDialog(final String objId){
+    private void openInformDialog(final String objId,final String driverCode){
         HttpMethods.getInstance().getInformData(new Subscriber<List<InformDataBean>>() {
             @Override
             public void onCompleted() {
@@ -340,7 +340,7 @@ public class DragListAdapterForNotOperatorEmpty extends BaseAdapter {
                 btn_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        presenter.confirmInform(vehicleId, etInformContent.getText().toString(), typeId);
+                        presenter.confirmInform(vehicleId, etInformContent.getText().toString(), typeId, driverCode);// 新增字段: 驾驶员id
                         informDialog.dismiss();
                     }
                 });

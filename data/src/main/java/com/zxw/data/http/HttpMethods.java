@@ -16,6 +16,7 @@ import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
+import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
@@ -40,8 +41,9 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-    public static final String BASE_URL = "http://192.168.0.50:8080/yd_control_app/";
-//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+//    public static final String BASE_URL = "http://192.168.0.50:8081/yd_control_app/";
+//    public static final String BASE_URL = "http://192.168.0.50:8080/yd_control_app/";
+    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
 //    public static final String BASE_URL = "http://150970t1u9.51mypc.cn:52222/yd_control_app/";// 测试
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
@@ -372,9 +374,9 @@ public class HttpMethods {
         toSubscribe(map, subscriber);
     }
 
-    public void confrimInform(Subscriber subscriber, String userId, String keyCode, String vehicleId, String noticeInfo, String noticeType){
+    public void confrimInform(Subscriber subscriber, String userId, String keyCode, String vehicleId, String noticeInfo, String noticeType,String driverCode){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
-        Observable map = operator.confirmInform(userId, keyCode, vehicleId, noticeInfo, noticeType).map(new HttpResultFunc());
+        Observable map = operator.confirmInform(userId, keyCode, vehicleId, noticeInfo, noticeType,driverCode).map(new HttpResultFunc());
         toSubscribe(map, subscriber);
     }
 
@@ -446,6 +448,12 @@ public class HttpMethods {
     public void updateWorkload(Subscriber subscriber,String userId,String keyCode,long objId,String outTime,String arrivalTime,String gpsStatus,String opStatus){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable map = operator.updateWorkload(userId, keyCode, objId, outTime, arrivalTime, gpsStatus, opStatus);
+        toSubscribe(map,subscriber);
+    }
+    // 根据任务线路id获取当前在跑的所有车辆(新)
+    public void runningCarsAtMap(Subscriber<BaseBean<List<RunningCarBean>>> subscriber, String userId, String keyCode, String taskLineId){
+        HttpInterfaces.LineRunMap operator = retrofit.create(HttpInterfaces.LineRunMap.class);
+        Observable<BaseBean<List<RunningCarBean>>> map = operator.runningCarList(userId, keyCode, taskLineId);
         toSubscribe(map,subscriber);
     }
 }

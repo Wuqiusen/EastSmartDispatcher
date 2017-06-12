@@ -248,7 +248,8 @@ public class DragListAdapter extends BaseAdapter {
         tv_inform.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openInformDialog(mDatas.get(position).getId() + "");
+                // 通知,新增字段
+                openInformDialog(mDatas.get(position).getId() + "",mDatas.get(position).getDriverCode());
             }
         });
         //首发电子围栏场站
@@ -307,7 +308,7 @@ public class DragListAdapter extends BaseAdapter {
     /**
      * 通知
      */
-    private void openInformDialog(final String objId){
+    private void openInformDialog(final String objId,final String driverCode){
         HttpMethods.getInstance().getInformData(new Subscriber<List<InformDataBean>>() {
             @Override
             public void onCompleted() {
@@ -346,7 +347,7 @@ public class DragListAdapter extends BaseAdapter {
                 btn_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        presenter.confirmInform(vehicleId, etInformContent.getText().toString(), typeId);
+                        presenter.confirmInform(vehicleId, etInformContent.getText().toString(),typeId,driverCode);// driverCode
                         informDialog.dismiss();
                     }
                 });

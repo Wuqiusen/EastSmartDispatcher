@@ -11,6 +11,7 @@ public class DepartCar implements Serializable {
     /**
      * arriveTime : 0535
      * code : 粤B074KN
+     * driverCoed:007
      * driverName : 刘铁光
      * electronRailName : 淘金地停车场
      * id : 2
@@ -25,6 +26,7 @@ public class DepartCar implements Serializable {
 
     private String arriveTime;
     private String code;
+    private String driverCode;
     private String driverName;
     private String stewardName;
     private String electronRailName;
@@ -47,6 +49,14 @@ public class DepartCar implements Serializable {
     private int runNumReal;
     private int runEmpMileage;
     private int isNotice;  //1 未通知 2 已通知
+
+    public String getDriverCode() {
+        return driverCode;
+    }
+
+    public void setDriverCode(String driverCode) {
+        this.driverCode = driverCode;
+    }
 
     public int getIsNotice() {
         return isNotice;

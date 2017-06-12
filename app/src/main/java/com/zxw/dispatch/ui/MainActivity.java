@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.MissionType;
+import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.MyApplication;
@@ -55,6 +56,7 @@ import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.view.ChildViewPager;
 import com.zxw.dispatch.view.CustomViewPager;
 import com.zxw.dispatch.view.DragListView;
+import com.zxw.dispatch.view.LineRunMapView;
 import com.zxw.dispatch.view.MyDialog;
 import com.zxw.dispatch.view.StartCarView;
 import com.zxw.dispatch.view.StopCarView;
@@ -143,6 +145,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     // 工作量审核
     @Bind(R.id.tv_work_load)
     TextView tvWorkLoad;
+    // 线路运行图
+    @Bind(R.id.tv_line_run_map)
+    TextView tvLineRunMap;
 
 
     // 设置
@@ -222,16 +227,20 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private StopCarView mHorStopCarView;
     private RecyclerView mStopRV1, mStopRV2;
     private ScheduleModule scheduleModule;
-    private TextView tv_date;
-    private int currentYear;
-    private int currentMonth;
-    private int currentDay;
+//    private TextView tv_date;
+//    private int currentYear;
+//    private int currentMonth;
+//    private int currentDay;
     private WorkLoadView mWorkLoadView;
+    private LineRunMapView mLineRunMapView;
+    private Bundle mSavedInstanceState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.mSavedInstanceState = savedInstanceState;
         ButterKnife.bind(this);
         createReceiver();
         initData();
@@ -266,11 +275,17 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         scheduleModule = new ScheduleModule(mContext);
         scheduleModule.setOnLoadingListener(this);
         views.add(scheduleModule);
-        // 线路运行图
         // 工作量审核
         views.add(initWorkLoadVerifyView());
+        // 线路运行图（新）
+        views.add(initLineRunMapView());
         // 显示默认视图
         showContentView(views);
+    }
+
+    private View initLineRunMapView() {
+        mLineRunMapView = new LineRunMapView(mContext,mSavedInstanceState);
+        return  mLineRunMapView;
     }
 
     private View initWorkLoadVerifyView() {
@@ -531,12 +546,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void initTabEvent() {
-        /*控制台*/
+         /*控制台*/
         tvController.setOnClickListener(this);
          /*排班计划*/
         tvSchedule.setOnClickListener(this);
         /*工作量*/
         tvWorkLoad.setOnClickListener(this);
+        /*线路运行图*/
+        tvLineRunMap.setOnClickListener(this);
         /*设置按钮*/
         imgSetting.setOnClickListener(this);
     }
@@ -808,8 +825,19 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void onSelectLine() {
+        // 排班计划
         scheduleModule.initLineParams(presenter.getLineId(), presenter.getLineParams());
+        // 工作量审核
         mWorkLoadView.initLineParams(presenter.getLineId(), presenter.getLineParams());
+        // 线路运行图
+        mLineRunMapView.initLineParams(presenter.getRunningCarList());///新增: 未测试
+
+    }
+
+    @Override
+    public void drawRunningCarAtMap(List<RunningCarBean> runCarList) {
+        DebugLog.e("start draw:"+"---");
+        mLineRunMapView.initLineParams(runCarList);///新增
     }
 
     private void isShowStewardName(int isVisible) {
@@ -883,6 +911,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         sendBroadcast(intent);
         presenter.onSelectLine(line);
         presenter.onAddRecordingCarTaskNameList(line.lineId);
+
     }
 
     private void setTabBackground(int tabPosition) {
@@ -901,6 +930,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 tvWorkLoad.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
                 break;
             case 3:
+                tvLineRunMap.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
+                tvLineRunMap.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
                 break;
             case 4:
                 break;
@@ -1005,9 +1036,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
         tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
         tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        tvLineRunMap.setTextColor(mContext.getResources().getColor(R.color.font_gray));
         tvController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
         tvSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
         tvWorkLoad.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+        tvLineRunMap.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+
     }
 
 
@@ -1057,6 +1091,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.tv_work_load:
                 vpMain.setCurrentItem(2);
                 setTabBackground(2);
+                break;
+            case R.id.tv_line_run_map:
+                vpMain.setCurrentItem(3);
+                setTabBackground(3);
+                presenter.loadRunCarsAtMap();// 新增
                 break;
             case R.id.img_setting:
                 showPopupWindow();
@@ -1338,8 +1377,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             mTimer = null;
         }
         presenter.closeTimer();
+        presenter.unSubscribe();///
         super.onDestroy();
     }
+
 
     private void isSureLoginOut() {
         final MyDialog outDialog = new MyDialog(MainActivity.this, "提示", "确定要退出系统？", MyDialog.HAVEBUTTON);
