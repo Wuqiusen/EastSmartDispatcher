@@ -2,6 +2,7 @@ package com.zxw.dispatch.presenter.view;
 
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.MissionType;
+import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.adapter.DragListAdapter;
@@ -53,4 +54,6 @@ public interface MainView extends BaseView {
     void loadSendCarForNotOperatorEmpty(DragListAdapterForNotOperatorEmpty mDragListAdapter);
 
     void onSelectLine();
+
+    void drawRunningCarAtMap(List<RunningCarBean> runCarList);///
 }

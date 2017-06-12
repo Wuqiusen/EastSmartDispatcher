@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+    <com.amap.api.maps2d.MapView
+        android:id="@+id/mv_map2d"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <SlidingDrawer
+        android:id="@+id/slidingDrawer"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_item_always"
+        android:animateOnClick="true"
+        android:content="@+id/content_layout"
+        android:handle="@+id/handle_layout"
+        android:orientation="horizontal"
+        android:rotation="180">
+
+        <LinearLayout
+            android:id="@+id/handle_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_handle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:rotation="180"
+                android:src="@mipmap/img_open_station" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:rotation="180">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_vehicleCode_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:scrollbars="none" />
+        </LinearLayout>
+    </SlidingDrawer>
+</FrameLayout>

@@ -42,6 +42,8 @@
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <permission android:name="android.permission.WRITE_APN_SETTINGS" />
+
 
     <application
         android:name=".MyApplication"
@@ -50,6 +52,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Light.NoTitleBar">
+
+        <!--高德地图：2.开发者申请的key-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="3c2616ee632be8da88797b9b64eb847a">
+        </meta-data>
+        <service android:name="com.amap.api.location.APSService"></service>
+
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="landscape"
@@ -90,6 +100,17 @@
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.zxw.dispatch.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>

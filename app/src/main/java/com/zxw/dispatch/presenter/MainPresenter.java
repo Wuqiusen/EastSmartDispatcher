@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.NonMissionType;
+import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
@@ -35,8 +37,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * author：CangJie on 2016/9/20 17:26
@@ -70,6 +78,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private List<StopHistory> mStopHistories = new ArrayList<>();
     private List<StopHistory> endStopHistories = new ArrayList<>();
     private List<VehicleNumberBean> mVehicleNumberBeen = new ArrayList<>();
+    private List<RunningCarBean> mRunningCarBean = new ArrayList<>();
 
 
     public MainPresenter(Context context, MainView mvpView) {
@@ -153,7 +162,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     }
 
-    //
+
     /*旧的:*/
     public void addRecordingCarTask(String vehicleId, String driverId, String stewardId, String type, String taskId, String taskType, String runNum,
                                     String runEmpMileage, String beginTime, String endTime) {
@@ -1040,7 +1049,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), objId, supportLineId);
     }
 
-    public void confirmInform(String vehicleId, String content, String typeId) {
+    public void confirmInform(String vehicleId, String content, String typeId,String driverCode) {
         mvpView.showLoading();
         try {
             String remarkStr = new DESPlus().encrypt(Base64.encode(content.getBytes("utf-8")));
@@ -1060,7 +1069,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                     mvpView.disPlay("操作成功");
                     refreshList();
                 }
-            }, userId(), keyCode(), vehicleId, remarkStr, typeId);
+            }, userId(), keyCode(), vehicleId, remarkStr, typeId, driverCode);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1168,5 +1177,61 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     }
 
+
+
+    private Subscription runCarSubscription;
+    public void loadRunCarsAtMap() {
+        runCarSubscription = Observable.interval(0, 30, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        refreshRunningCars(lineId);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+
+                    }
+                });
+    }
+
+
+    // 47.根据任务线路id获取当前在跑的所有车辆(新)
+    private void refreshRunningCars(final int lineId) {
+        HttpMethods.getInstance().runningCarsAtMap(new Subscriber<BaseBean<List<RunningCarBean>>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(BaseBean<List<RunningCarBean>> runCarListBean) {
+                if (mRunningCarBean != null){
+                    mRunningCarBean.clear();
+                }
+                mRunningCarBean.addAll(runCarListBean.returnData);
+
+                mvpView.drawRunningCarAtMap(runCarListBean.returnData);
+                DebugLog.e("查询lineId:"+lineId+"---");
+            }
+        }, userId(),keyCode(),lineId + "");
+    }
+
+    public List<RunningCarBean> getRunningCarList(){
+        return mRunningCarBean;
+    }
+
+    public void unSubscribe(){
+        if(runCarSubscription != null)
+            runCarSubscription.unsubscribe();
+    }
 
 }

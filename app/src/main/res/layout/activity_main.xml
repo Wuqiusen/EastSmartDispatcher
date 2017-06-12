@@ -62,8 +62,9 @@
                 android:text="工作量审核"
                 />
                 <TextView
+                    android:id="@+id/tv_line_run_map"
                     style="@style/main_tab_font_style"
-                    android:enabled="false"
+                    android:enabled="true"
                     android:text="线路运行图"
                     />
 

@@ -1,38 +1,9 @@
 package com.zxw.data.http;
 
-import com.zxw.data.bean.BackHistory;
-import com.zxw.data.bean.BaseBean;
-import com.zxw.data.bean.ChangePwdBean;
-import com.zxw.data.bean.DepartCar;
-import com.zxw.data.bean.DriverWorkloadItem;
-import com.zxw.data.bean.FuzzyVehicleBean;
-import com.zxw.data.bean.InformContentBean;
-import com.zxw.data.bean.InformDataBean;
-import com.zxw.data.bean.Line;
-import com.zxw.data.bean.LineParams;
-import com.zxw.data.bean.LoginBean;
-import com.zxw.data.bean.MissionType;
-import com.zxw.data.bean.MoreHistory;
-import com.zxw.data.bean.NonMissionType;
-import com.zxw.data.bean.Person;
-import com.zxw.data.bean.PersonInfo;
-import com.zxw.data.bean.SchedulePlanBean;
-import com.zxw.data.bean.SendHistory;
-import com.zxw.data.bean.SmsCodeBean;
-import com.zxw.data.bean.SpotBean;
-import com.zxw.data.bean.StopCarCodeBean;
-import com.zxw.data.bean.StopHistory;
-import com.zxw.data.bean.VehicleNumberBean;
-import com.zxw.data.bean.VersionBean;
-import com.zxw.data.bean.WaitVehicle;
-
-import java.util.List;
-
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -65,14 +36,14 @@ public class HttpGPsRequest {
     }
 
     public class GpsBaseBean{
-        public boolean success;
+        public boolean success; // 成功，或 失败
         public String message;
         public String errCode;
         public Gps gps;
 
         public class Gps{
-            public float latitude;
-            public float longitude;
+            public double latitude;
+            public double longitude;
             public Integer dateInt;
             public Integer timeInt;
         }

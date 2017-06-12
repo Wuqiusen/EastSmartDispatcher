@@ -1,7 +1,5 @@
 package com.zxw.data;
 
-import android.os.Debug;
-
 import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.FuzzyVehicleBean;
@@ -53,7 +51,7 @@ public class BrowseTest {
     }
 
     @Test
-    public void testGps(){
+    public void testGps(){  // 获取经纬度
         HttpGPsRequest.getInstance().gpsByVehCode(new Subscriber<HttpGPsRequest.GpsBaseBean>() {
             @Override
             public void onCompleted() {
