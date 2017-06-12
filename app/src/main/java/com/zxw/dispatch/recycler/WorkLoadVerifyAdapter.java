@@ -54,14 +54,6 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         WorkLoadVerifyViewHolder holder = ((WorkLoadVerifyViewHolder)viewHolder);
-        int tag = getDataSet().get(position).getOpStatus();
-        if (tag == 2){
-            holder.tvDriverOk.setText("待确认");
-        }else if(tag == 3){
-            holder.tvDriverOk.setText("异常");
-        }else if(tag == 4){
-            holder.tvDriverOk.setText("正常");
-        }
         holder.tvNo.setText(String.valueOf(position + 1));
         holder.tvVehId.setText(getDataSet().get(position).getVehCode());
         holder.tvDriverName.setText(getDataSet().get(position).getDriverName());
@@ -81,6 +73,9 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
         holder.tvGps.setText(gps);
         String driverStatus = "";
         switch (getDataSet().get(position).getOpStatus()){
+            case 1:
+                driverStatus = "待开始";
+                break;
             case 2:
                 driverStatus = "待确认";
                 break;

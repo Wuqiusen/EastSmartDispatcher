@@ -56,7 +56,7 @@
         <!--高德地图：2.开发者申请的key-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="3c2616ee632be8da88797b9b64eb847a">
+            android:value="c9601b8c71d9ce08a3140b5bf57fe97b">
         </meta-data>
         <service android:name="com.amap.api.location.APSService"></service>
 
