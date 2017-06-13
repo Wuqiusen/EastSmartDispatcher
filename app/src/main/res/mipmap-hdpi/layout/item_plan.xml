@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/ll_container1"
+        layout="@layout/item_plan_element"/>
+    <include
+        android:id="@+id/ll_container2"
+        layout="@layout/item_plan_element"
+        android:visibility="gone"/>
+    <include
+        android:id="@+id/ll_container3"
+        layout="@layout/item_plan_element"
+        android:visibility="gone"/>
+    <include
+        android:id="@+id/ll_container4"
+        layout="@layout/item_plan_element"
+        android:visibility="gone"/>
+    <include
+        android:id="@+id/ll_container5"
+        layout="@layout/item_plan_element"
+        android:visibility="gone"/>
+</LinearLayout>

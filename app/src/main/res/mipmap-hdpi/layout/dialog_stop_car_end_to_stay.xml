@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <LinearLayout
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ll_car_dialog"
+        android:orientation="vertical">
+        <!--请确认是否将粤B12312添加到待发车辆列表中?-->
+        <TextView
+            style="@style/title_font_dialog_style"
+            android:layout_marginLeft="@dimen/dialog_height36"
+            android:minHeight="@dimen/dialog_height50"
+            android:text="信息确认"
+            android:textStyle="bold"
+            />
+
+        <View style="@style/line_title_bottom_dialog"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/font_content_car_detail_dialog_style"
+            android:textStyle="bold"
+            android:text="您确定取消该车辆的收班状态？"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_margin20"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_confirm"
+                style="@style/bluebtn_dialog_style"
+                android:text="确定"
+                />
+            <Button
+                android:id="@+id/btn_cancel"
+                style="@style/whitebtn_dialog_style"
+                android:text="取消"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
