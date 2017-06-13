@@ -51,7 +51,7 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
     @Override
     public void onBindViewHolder(final LineHolder holder, final int position) {
         SendHistory history = mData.get(position);
-        holder.tvCarSequence.setText(String.valueOf(position + 1));
+        holder.tvCarSequence.setText(String.valueOf(mData.size() - (position)));
         holder.tvCarCode.setText(history.code);
         holder.tv_mission_name.setText(history.typeName);
         holder.tv_station_name.setText(history.electronRailName);

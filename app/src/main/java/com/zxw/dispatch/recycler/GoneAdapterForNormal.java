@@ -51,7 +51,7 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
     @Override
     public void onBindViewHolder(final LineHolder holder, final int position) {
         SendHistory history = mData.get(position);
-        holder.tvCarSequence.setText(String.valueOf(position + 1));
+        holder.tvCarSequence.setText(String.valueOf(mData.size() - (position)));
         holder.tvCarCode.setText(history.code);
         if (history.taskEditBelongId == history.taskEditRunId){
             holder.tvCarCode.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
