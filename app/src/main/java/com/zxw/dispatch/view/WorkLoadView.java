@@ -127,6 +127,11 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
                     updateWorkload(objId, null, null, null, String.valueOf(str));
 
                 }
+
+                @Override
+                public void onDelete(long objId) {
+                    deleteWorkload(objId);
+                }
             });
         }
 
@@ -151,6 +156,30 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
             }
         });
         setWorkLoadAdapter(mAdapter);
+    }
+
+    private void deleteWorkload(long objId) {
+        mListener.showLoading();
+        String userId = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
+        String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
+        HttpMethods.getInstance().deleteWorkload(new Subscriber<BaseBean>() {
+            @Override
+            public void onCompleted() {
+                mListener.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastHelper.showToast(e.getMessage());
+
+            }
+
+            @Override
+            public void onNext(BaseBean o) {
+                ToastHelper.showToast(o.returnInfo);
+                refreshWorkloadList();
+            }
+        }, userId, keyCode, objId);
     }
 
     // 初始化线路信息的时候  加载该线路的第一页数据

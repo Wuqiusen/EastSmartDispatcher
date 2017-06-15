@@ -15,6 +15,7 @@ public class SendHistory {
     public String runNumReal;
     public String spaceTime;
     public Integer type;
+    public Integer opStatus;
     public Integer status;
     public Integer isMakeup;
     public Integer unRunTaskStatus;

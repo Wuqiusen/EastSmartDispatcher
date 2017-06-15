@@ -21,4 +21,9 @@
         style="@style/font_not_click_operate_tab"
         android:text="非营运空驶"
         />
+    <Button
+        android:id="@+id/btn_group_message"
+        style="@style/normal_btn"
+        android:layout_marginLeft="50dp"
+        android:text="群发消息"/>
 </LinearLayout>

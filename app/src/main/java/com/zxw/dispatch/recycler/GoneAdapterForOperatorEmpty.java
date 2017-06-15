@@ -86,10 +86,6 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
         else
             holder.tv_end_time.setText("");
 
-
-//      holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
-//      holder.tvStationStatus.setText(String.valueOf(history.vehTime));
-        holder.tv_send_remark.setText(history.remarks);
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
             holder.tvTrainman.setVisibility(View.GONE);
         }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
@@ -113,13 +109,6 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
                         });
             }
         });
-        // 查看
-//      holder.tvCheckSendCar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                   openCarMsgDialog();
-//            }
-//      });
         // 撤回
         // 如果已有实际发车时间, 则因此撤回按钮
         if(TextUtils.isEmpty(mData.get(position).vehTimeReal)){
@@ -134,6 +123,12 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
             }
         });
 
+        //1正常、2异常
+        if (mData.get(position).status == 1){
+            holder.tv_send_remark.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
+        }else{
+            holder.tv_send_remark.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        }
         try{
             if(mData.get(position).isMakeup == 2){
                 holder.ll_container.setBackgroundColor(mContext.getResources().getColor(R.color.background_gone_car));
@@ -143,11 +138,23 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
         }catch (Exception e){
 
         }
-        try{
-            holder.tvStatus.setText(history.status == 1 ? "正常":"异常");
-        }catch (Exception e){
-            holder.tvStatus.setText("");
+
+        String driverStatus = "";
+        switch (mData.get(position).opStatus){
+            case 1:
+                driverStatus = "待开始";
+                break;
+            case 2:
+                driverStatus = "进行中";
+                break;
+            case 3:
+                driverStatus = "异常终止";
+                break;
+            case 4:
+                driverStatus = "正常结束";
+                break;
         }
+        holder.tv_driver_ok.setText(driverStatus);
     }
 
     private String setStopCarMinute(SendHistory history){
@@ -253,14 +260,6 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
         TextView tvDriver;
         @Bind(R.id.tv_trainman)
         TextView tvTrainman;
-//        @Bind(R.id.tv_schedule_status)
-//        TextView tvScheduleStatus;
-        @Bind(R.id.tv_status)
-        TextView tvStatus;
-//        @Bind(R.id.tv_no_work_status)
-//        TextView tvNoWorkStatus;
-        @Bind(R.id.tv_check_send_car)
-        TextView tvCheckSendCar;
         @Bind(R.id.tv_send_remark)
         TextView tv_send_remark;
         @Bind(R.id.tv_send_withdraw)
@@ -275,6 +274,8 @@ public class GoneAdapterForOperatorEmpty extends RecyclerView.Adapter<GoneAdapte
         TextView tv_empty_km;
         @Bind(R.id.tv_end_time)
         TextView tv_end_time;
+        @Bind(R.id.tv_driver_ok)
+        TextView tv_driver_ok;
         LineHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

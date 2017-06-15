@@ -20,6 +20,7 @@ import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
+import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
@@ -238,11 +239,10 @@ public class DragListAdapter extends BaseAdapter {
 
         // 通知
         TextView tv_inform = (TextView) view.findViewById(R.id.tv_inform);
+        DebugLog.w(position + " isNotice " + mDatas.get(position).getIsNotice());
         if (mDatas.get(position).getIsNotice() == 1){
-            tv_inform.setEnabled(true);
             tv_inform.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
         }else if(mDatas.get(position).getIsNotice() == 2){
-            tv_inform.setEnabled(false);
             tv_inform.setTextColor(mContext.getResources().getColor(R.color.font_gray));
         }
         tv_inform.setOnClickListener(new View.OnClickListener() {
@@ -261,8 +261,6 @@ public class DragListAdapter extends BaseAdapter {
         //首发电子围栏场站
         TextView tv_real_run_count = (TextView) view.findViewById(R.id.tv_real_run_count);
         tv_real_run_count.setText(String.valueOf(mDatas.get(position).getRunNumReal()));
-
-
         return view;
     }
 

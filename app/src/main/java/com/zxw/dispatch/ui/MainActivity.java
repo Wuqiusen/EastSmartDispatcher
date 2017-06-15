@@ -66,6 +66,7 @@ import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.RecordingCarTaskDialog;
+import com.zxw.dispatch.view.dialog.SendGroupMessageDialog;
 import com.zxw.dispatch.view.dialog.StopCarEndToStayDialog;
 import com.zxw.dispatch.view.dialog.VehicleToScheduleDialog;
 
@@ -405,6 +406,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tv_wtab1 = (TextView) view.findViewById(R.id.tv_wtab1);
         tv_wtab2 = (TextView) view.findViewById(R.id.tv_wtab2);
         tv_wtab3 = (TextView) view.findViewById(R.id.tv_wtab3);
+        view.findViewById(R.id.btn_group_message).setOnClickListener(this);
         tv_wtab1.setOnClickListener(this);
         tv_wtab2.setOnClickListener(this);
         tv_wtab3.setOnClickListener(this);
@@ -1167,41 +1169,20 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                     }
                 });
 
-
                 break;
-//            // 自动发车
-//            case R.id.tv_automatic:
-//            case R.id.tv_menu_automatic:
-//                if ((System.currentTimeMillis() - clickTime) > 1000) {
-//                    if (!isAuto) {
-//                        if (!isHaveSendCar) {
-//                            showToast("该线路没有待发车辆", mContext);
-//                            return;
-//                        }
-//                        setTvBackground(2);
-//                        setCoverBackground(View.VISIBLE);
-//                        //动态注册广播接收器
-//                        createReceiver();
-//                        presenter.selectAuto();
-//                        clickTime = System.currentTimeMillis();
-//                        isAuto = true;
-//                    }
-//                }
-//                break;
-//            // 手动发车
-//            case R.id.tv_manual:
-//            case R.id.tv_menu_manual:
-//                if ((System.currentTimeMillis() - clickTime) > 1000) {
-//                    if (isAuto) {
-//                        setTvBackground(1);
-//                        setCoverBackground(View.GONE);
-//                        presenter.selectManual();
-//                        clickTime = System.currentTimeMillis();
-//                        isAuto = false;
-//                    }
-//                }
-//                break;
+            case R.id.btn_group_message:
+                showSendGroupMessageDialog();
+                break;
         }
+    }
+
+    private void showSendGroupMessageDialog() {
+        new SendGroupMessageDialog(mContext, new SendGroupMessageDialog.OnSendGroupMessageDialogListener() {
+            @Override
+            public void sendGroupMessage(String message) {
+                presenter.sendGroupMessage(message);
+            }
+        });
     }
 
 

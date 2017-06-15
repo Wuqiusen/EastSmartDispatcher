@@ -189,7 +189,7 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
                     ToastHelper.showToast("当前没有备注");
                     return;
                 }
-                openEmptyRemarksDialog(position);
+                openEmptyRemarksDialog(mDatas.get(position).getRemarks());
             }
         });
 
@@ -237,18 +237,18 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
     }
 
     //备注
-    private void openEmptyRemarksDialog(final int position) {
+    private void openEmptyRemarksDialog(final String remarks) {
         final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext,R.layout.dialog_wait_car_remarks_dialog,null);
-        final TextView tv_empty_remarks = (TextView) view.findViewById(R.id.tv_empty_remarks);
+        TextView tv_empty_remarks = (TextView) view.findViewById(R.id.tv_empty_remarks);
+        tv_empty_remarks.setText(remarks);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tv_empty_remarks.setText(mDatas.get(position).getRemarks());
                 sDialog.dismiss();
             }
         });
@@ -262,16 +262,6 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
         sDialog.setCancelable(true);
         sDialog.show();
     }
-
-    private String noOperationStatus(int status){
-        if (status == 1)
-            return "无";
-        else if (status == 2)
-            return "已完成";
-        else
-            return "未完成";
-    }
-
 
     private void queryLine(final int poistion){
         final Dialog sDialog = new Dialog(mContext,R.style.customDialog);

@@ -338,7 +338,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                 if (mWaitVehicles != null && mWaitVehicles.size() == waitVehicles.size()) {
                     for (int i = 0; i < waitVehicles.size(); i++) {
-                        if (mWaitVehicles.get(i).getId() != waitVehicles.get(i).getId()) {
+                        if (mWaitVehicles.get(i).getId() != waitVehicles.get(i).getId() || mWaitVehicles.get(i).getIsNotice() != waitVehicles.get(i).getIsNotice()) {
                             DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
                             mvpView.loadSendCarList(mDragListAdapter);
                             mWaitVehicles.clear();
@@ -1234,4 +1234,30 @@ public class MainPresenter extends BasePresenter<MainView> {
             runCarSubscription.unsubscribe();
     }
 
+    public void sendGroupMessage(String message) {
+
+        if (!TextUtils.isEmpty(message))
+            try {
+                message = new DESPlus().encrypt(Base64.encode(message.getBytes("utf-8")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mvpView.showLoading();
+        HttpMethods.getInstance().sendGroupMessage(new Subscriber<BaseBean>() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(BaseBean baseBean) {
+                    mvpView.disPlay(baseBean.returnInfo);
+            }
+        }, userId(), keyCode(), lineId, message);
+    }
 }

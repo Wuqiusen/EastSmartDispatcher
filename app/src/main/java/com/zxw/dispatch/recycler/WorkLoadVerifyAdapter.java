@@ -25,6 +25,13 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static android.R.attr.tag;
+import static com.zxw.dispatch.R.id.btn_cancel;
+import static com.zxw.dispatch.R.id.rb_error;
+import static com.zxw.dispatch.R.id.rb_ok;
+import static com.zxw.dispatch.R.id.rg;
+import static com.zxw.dispatch.R.id.tv_inform;
+
 /**
  * Created by moxiaoqing on 2017/5/19.
  */
@@ -77,13 +84,13 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
                 driverStatus = "待开始";
                 break;
             case 2:
-                driverStatus = "待确认";
+                driverStatus = "进行中";
                 break;
             case 3:
-                driverStatus = "异常";
+                driverStatus = "异常终止";
                 break;
             case 4:
-                driverStatus = "正常";
+                driverStatus = "正常结束";
                 break;
         }
         holder.tvDriverOk.setText(driverStatus);
@@ -111,6 +118,76 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
                 showArriveTimeDialog(getDataSet().get(position).getObjId(), getDataSet().get(position).getArrivalTime());
             }
         });
+        if (getDataSet().get(position).getOpStatus() != 4 || getDataSet().get(position).getGpsStatus() != 1 || TextUtils.isEmpty(getDataSet().get(position).getOutTime()) || TextUtils.isEmpty(getDataSet().get(position).getArrivalTime())){
+            holder.tv_delete.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
+            holder.tv_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDeleteDialog(position);
+                }
+            });
+        }else{
+            holder.tv_delete.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+            holder.tv_delete.setOnClickListener(null);
+        }
+        //备注
+        final String remarks = getDataSet().get(position).getRemarks();
+        holder.tv_remarks.setText(remarks);
+        if(TextUtils.isEmpty(remarks)){
+            holder.tv_remarks.setOnClickListener(null);
+        }else{
+            holder.tv_remarks.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showRemarksDialog(remarks);
+                }
+            });
+        }
+    }
+
+    private void showRemarksDialog(String remarks) {
+        final Dialog dialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext,R.layout.dialog_work_load_remark,null);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        TextView tv_remarks  = (TextView) view.findViewById(R.id.tv_remarks);
+        tv_remarks.setText(remarks);
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setContentView(view,params);
+        dialog.setCancelable(true);
+        dialog.show();
+    }
+
+    private void showDeleteDialog(final int position) {
+        final Dialog dialog = new Dialog(mContext,R.style.customDialog);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        View view = View.inflate(mContext,R.layout.dialog_work_load_delete,null);
+        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                DebugLog.w("gps" + mGpsTag);
+                mListener.onDelete(getDataSet().get(position).getObjId());
+                dialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setContentView(view,params);
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
     private void showOutTimeDialog(final long objId, String outTime) {
@@ -294,6 +371,10 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
         TextView tvGps;
         @Bind(R.id.tv_driver_ok)
         TextView tvDriverOk;
+        @Bind(R.id.tv_delete)
+        TextView tv_delete;
+        @Bind(R.id.tv_remarks)
+        TextView tv_remarks;
         public WorkLoadVerifyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -305,5 +386,6 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
         void onAlertArriveTime(long objId, String str);
         void onAlertGpsStatus(long objId, int str);
         void onAlertDriverStatus(long objId, int str);
+        void onDelete(long objId);
     }
 }
