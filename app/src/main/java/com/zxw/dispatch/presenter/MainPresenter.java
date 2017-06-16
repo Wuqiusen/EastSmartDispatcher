@@ -338,7 +338,9 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                 if (mWaitVehicles != null && mWaitVehicles.size() == waitVehicles.size()) {
                     for (int i = 0; i < waitVehicles.size(); i++) {
-                        if (mWaitVehicles.get(i).getId() != waitVehicles.get(i).getId()) {
+                        if (mWaitVehicles.get(i).getId() != waitVehicles.get(i).getId() ||
+                                !TextUtils.equals(mWaitVehicles.get(i).getCode(), waitVehicles.get(i).getCode())
+                                ){
                             DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
                             mvpView.loadSendCarList(mDragListAdapter);
                             mWaitVehicles.clear();

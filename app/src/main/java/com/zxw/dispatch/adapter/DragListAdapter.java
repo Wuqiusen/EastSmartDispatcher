@@ -65,6 +65,7 @@ public class DragListAdapter extends BaseAdapter {
     private View viewDialog;
     private LinearLayout.LayoutParams params;
     private List<StopCarCodeBean> mStopCarCodeList = new ArrayList<StopCarCodeBean>();
+    private boolean isCanClick = true;
 
     public DragListAdapter(Context context, MainPresenter presenter, List<DepartCar> waitVehicles, LineParams mLineParams, int lineId) {
         this.mContext = context;
@@ -101,6 +102,9 @@ public class DragListAdapter extends BaseAdapter {
         tv_car_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isCanClick){
+                    return;
+                }
                  new UpdateWaitCarCodeDialog(mContext,presenter.getLineId(),new UpdateWaitCarCodeDialog.OnListener() {
                      @Override
                      public void onConfirmChangeCarCode(StopCarCodeBean bean) {
@@ -117,6 +121,9 @@ public class DragListAdapter extends BaseAdapter {
         tv_driver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isCanClick){
+                    return;
+                }
                 AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
                 alertNameDialog.showDriverDialog(mDatas.get(position).getId(), mDatas.get(position).getDriverName(),new AlertNameDialog.OnAlertDriverListener() {
                     @Override
@@ -139,6 +146,9 @@ public class DragListAdapter extends BaseAdapter {
             tv_trainman.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (!isCanClick){
+                        return;
+                    }
                     AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
                     alertNameDialog.showStewardDialog(mDatas.get(position).getId(), mDatas.get(position).getStewardName(),new AlertNameDialog.OnAlertStewardListener() {
                         @Override
@@ -158,6 +168,9 @@ public class DragListAdapter extends BaseAdapter {
         tv_plan_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isCanClick){
+                    return;
+                }
                 new TimePlanPickerDialog(mContext,mDatas.get(position).getVehTime(),new TimePlanPickerDialog.OnTimePickerListener() {
                     @Override
                     public void onTimePicker(String sHour, String sMinute) {
@@ -173,6 +186,9 @@ public class DragListAdapter extends BaseAdapter {
         tv_interval_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isCanClick){
+                    return;
+                }
                 final int mCurrentMinute = mDatas.get(position).getSpaceTime();
                 new UpdateIntervalPickerDialog(mContext, mCurrentMinute, new UpdateIntervalPickerDialog.OnTimePickerListener() {
                     @Override
@@ -220,6 +236,9 @@ public class DragListAdapter extends BaseAdapter {
         tv_send_car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isCanClick){
+                    return;
+                }
                 if (TextUtils.isEmpty(tv_plan_time.getText().toString())){
                     ToastHelper.showToast("请先填写发车时间");
                     return;
@@ -232,6 +251,9 @@ public class DragListAdapter extends BaseAdapter {
         tv_withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isCanClick){
+                    return;
+                }
                     openWithdrawCarDialog(mDatas.get(position).getId());
             }
         });
@@ -248,8 +270,10 @@ public class DragListAdapter extends BaseAdapter {
         tv_inform.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // 通知,新增字段
                 openInformDialog(mDatas.get(position).getId() + "",mDatas.get(position).getDriverCode());
+
             }
         });
         //首发电子围栏场站
@@ -478,3 +502,4 @@ public class DragListAdapter extends BaseAdapter {
     }
 
 }
+

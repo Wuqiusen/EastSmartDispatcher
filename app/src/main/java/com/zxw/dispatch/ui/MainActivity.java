@@ -190,6 +190,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private long clickTime = 0;
     private int spotId;
 
+
+
     Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -205,6 +207,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                         isAuto = true;
                         setTvBackground(2);
                         setCoverBackground(View.VISIBLE);
+                        mDragListAdapter.setClickAble(false);
+                        mSendRV1.setLock(true);
 
                         break;
                     case HANDLE:
@@ -212,6 +216,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                         isAuto = false;
                         setTvBackground(1);
                         setCoverBackground(View.GONE);
+                        mDragListAdapter.setClickAble(true);
+                        mSendRV1.setLock(false);
                         break;
                     case SEND_CAR_COUNT:
                         Log.w("onReceive---", "更新待发车辆数");
@@ -615,6 +621,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void loadSendCarList(DragListAdapter mDragListAdapter) {
+        if (mSendRV1.getAdapter() != null){
+            mDragListAdapter.setClickAble(((DragListAdapter)mSendRV1.getAdapter()).getClickAble());
+        }
+        this.mDragListAdapter = mDragListAdapter;
+        if (isAuto) mDragListAdapter.setClickAble(false);
         isHaveSendCar = false;
         wtab1_size = mDragListAdapter.getCount();
         setWaitCarCount();
@@ -655,6 +666,19 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void loadStopStayCarList(List<StopHistory> stopHistories) {
+        if (vehicleToScheduleDialog != null){
+            if (vehicleToScheduleDialog.getDialog().isShowing()){
+                addCarDialogIsShowing = true;
+            }else {
+                addCarDialogIsShowing = false;
+            }
+        }
+        if (!addCarDialogIsShowing){
+            refreshStopStayCar(stopHistories);
+        }
+    }
+
+    private void refreshStopStayCar(List<StopHistory> stopHistories){
         ptab1_size = stopHistories.size()-1;
         setStopCarCount();
         tv_ver_stop_tab1.setText(showCount(R.string.stop_stay,ptab1_size));
@@ -663,7 +687,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
         mHorStopCarView.setTab1tStopCarCount(mAdapter);
         mHorStopCarView.setAdapterForStay(mAdapter);
-//      eStopRV.setAdapter(mAdapter);
+        //      eStopRV.setAdapter(mAdapter);
     }
 
     private String showCount(int stringRes,int carCount){
@@ -852,17 +876,18 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
 
-    private AlertDialog mDialog = null;
+    private VehicleToScheduleDialog vehicleToScheduleDialog;
     private void showVehicleToScheduleDialog(final StopHistory stopCar) {
-       if (mDialog != null && mDialog.isShowing()){
-           return;
+       if (vehicleToScheduleDialog != null){
+           if (vehicleToScheduleDialog.getDialog().isShowing()){
+               return;
+           }
        }
         createVehicleToScheduleDialog(stopCar);
-        mDialog = VehicleToScheduleDialog.dialog;
     }
 
     private void createVehicleToScheduleDialog(final StopHistory stopCar) {
-        new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
+        vehicleToScheduleDialog = new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
             @Override
             public void onClickNormalMission(int type, int taskId) {
                 presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null);
@@ -1169,38 +1194,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
                 break;
-//            // 自动发车
-//            case R.id.tv_automatic:
-//            case R.id.tv_menu_automatic:
-//                if ((System.currentTimeMillis() - clickTime) > 1000) {
-//                    if (!isAuto) {
-//                        if (!isHaveSendCar) {
-//                            showToast("该线路没有待发车辆", mContext);
-//                            return;
-//                        }
-//                        setTvBackground(2);
-//                        setCoverBackground(View.VISIBLE);
-//                        //动态注册广播接收器
-//                        createReceiver();
-//                        presenter.selectAuto();
-//                        clickTime = System.currentTimeMillis();
-//                        isAuto = true;
-//                    }
-//                }
-//                break;
-//            // 手动发车
-//            case R.id.tv_manual:
-//            case R.id.tv_menu_manual:
-//                if ((System.currentTimeMillis() - clickTime) > 1000) {
-//                    if (isAuto) {
-//                        setTvBackground(1);
-//                        setCoverBackground(View.GONE);
-//                        presenter.selectManual();
-//                        clickTime = System.currentTimeMillis();
-//                        isAuto = false;
-//                    }
-//                }
-//                break;
+
         }
     }
 
