@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/transparent"
+              android:orientation="horizontal">
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:orientation="horizontal">
+       <RadioButton
+           android:id="@+id/rb_normal"
+           style="@style/rb_huge_margin_right_style"
+           android:text="正常"
+           />
+
+        <RadioButton
+            android:id="@+id/rb_abnormal"
+            style="@style/rb_huge_margin_left_style"
+            android:text="异常"
+            />
+    </RadioGroup>
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/margin_tiny"
+    android:layout_marginRight="@dimen/margin_tiny"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+    <!--StartCar_Tab-->
+    <include
+        layout="@layout/ll_tab_ver_start_car"
+        android:visibility="visible"/>
+    <!--已发车辆-ViewPager-->
+    <com.zxw.dispatch.view.ChildViewPager
+        android:id="@+id/vp_start_car"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+     />
+
+</LinearLayout>
