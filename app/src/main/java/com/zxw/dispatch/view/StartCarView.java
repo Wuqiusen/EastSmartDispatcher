@@ -5,13 +5,11 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxw.dispatch.R;
-import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.recycler.GoneAdapterForNormal;
@@ -140,34 +138,32 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
     }
 
     public void setStartCarTabScrollBar(int pos){
+        setStartCarNormalTabStyle();
         switch (pos){
             case 0:
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 2:
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
-
         }
     }
+
+    private void setStartCarNormalTabStyle() {
+        tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+    }
+
 
     private Drawable getDrawable(boolean isTab) {
         if (isTab) {

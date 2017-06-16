@@ -211,7 +211,25 @@ public class DragListAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_is_double);
         TextView tv_work_type = (TextView) view
                 .findViewById(R.id.tv_work_type);
-        tv_is_double.setText(mDatas.get(position).getIsDouble() == 0 ?"单班":"双班");
+        String isDouble = "";
+        switch(mDatas.get(position).getIsDouble()){
+            case 1:
+                isDouble = "单班";
+                break;
+            case 2:
+                isDouble = "双班";
+                break;
+            case 3:
+                isDouble = "三班";
+                break;
+            case 4:
+                isDouble = "四班";
+                break;
+            case 5:
+                isDouble = "五班";
+                break;
+        }
+        tv_is_double.setText(isDouble);
         // 任务类型
         tv_work_type.setText(mDatas.get(position).getTypeName());
 
@@ -252,10 +270,10 @@ public class DragListAdapter extends BaseAdapter {
         tv_inform.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isCanClick){
-                    return;
-                }
-                openInformDialog(mDatas.get(position).getId() + "");
+
+                // 通知,新增字段
+                openInformDialog(mDatas.get(position).getId() + "",mDatas.get(position).getDriverCode());
+
             }
         });
         //首发电子围栏场站
@@ -314,7 +332,7 @@ public class DragListAdapter extends BaseAdapter {
     /**
      * 通知
      */
-    private void openInformDialog(final String objId){
+    private void openInformDialog(final String objId,final String driverCode){
         HttpMethods.getInstance().getInformData(new Subscriber<List<InformDataBean>>() {
             @Override
             public void onCompleted() {
@@ -353,7 +371,7 @@ public class DragListAdapter extends BaseAdapter {
                 btn_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        presenter.confirmInform(vehicleId, etInformContent.getText().toString(), typeId);
+                        presenter.confirmInform(vehicleId, etInformContent.getText().toString(),typeId,driverCode);// driverCode
                         informDialog.dismiss();
                     }
                 });
@@ -483,11 +501,5 @@ public class DragListAdapter extends BaseAdapter {
         return position;
     }
 
-    public void setClickAble(boolean clickAble){
-        isCanClick = clickAble;
-    }
-
-    public boolean getClickAble(){
-        return isCanClick;
-    }
 }
+

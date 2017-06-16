@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_no"
+        style="@style/head_plan_style3"
+        tools:text="序号" />
+
+    <TextView
+        android:id="@+id/tv_send_time"
+        style="@style/head_plan_style3"
+        tools:text="发车时间" />
+
+    <TextView
+        android:id="@+id/tv_veh_code"
+        style="@style/head_plan_style3"
+        tools:text="车牌号" />
+
+    <TextView
+        android:id="@+id/tv_single_class_name"
+        style="@style/head_plan_style3"
+        tools:text="单双班" />
+
+    <TextView
+        android:id="@+id/tv_duty_time"
+        style="@style/head_plan_style3"
+        tools:text="上班时间" />
+
+    <TextView
+        android:id="@+id/tv_driver_name"
+        style="@style/head_plan_style3"
+        tools:text="驾驶员" />
+
+    <TextView
+        android:id="@+id/tv_steward_name"
+        style="@style/head_plan_style3"
+        tools:text="乘务员" />
+
+    <TextView
+        android:id="@+id/tv_run_num"
+        style="@style/head_plan_style3"
+        tools:text="单次" />
+
+    <TextView
+        android:id="@+id/tv_change_veh_code"
+        style="@style/head_plan_style3"
+        tools:text="车牌号" />
+
+    <TextView
+        android:id="@+id/tv_change_veh_num"
+        style="@style/head_plan_style3"
+        tools:text="单次" />
+</LinearLayout>

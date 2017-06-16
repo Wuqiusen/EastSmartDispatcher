@@ -20,13 +20,6 @@
         <item name="android:textColor">@color/font_black</item>
     </style>
 
-    <style name="scroll_bar_select_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">4dp</item>
-        <item name="android:background">@color/background_bg_blue</item>
-        <item name="android:layout_alignParentBottom">true</item>
-    </style>
-
     <style name="myEdt_style">
         <item name="android:background">@drawable/et_background</item>
         <item name="android:paddingLeft">@dimen/margin_fit</item>
@@ -157,6 +150,31 @@
     <style name="btn_dui_green_station" parent="btn_dui_red_station">
         <item name="android:background">@drawable/ll_stop_car_green_btn_bg</item>
     </style>
+
+    <!--日期控件-->
+    <style name="et_work_load_verify_calendar_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">220dp</item>
+        <item name="android:minHeight">46dp</item>
+        <item name="android:layout_marginLeft">@dimen/margin_fit_6</item>
+        <item name="android:layout_marginRight">@dimen/margin_fit_6</item>
+        <item name="android:background">@drawable/et_dialog_white_style</item>
+        <item name="android:drawableRight">@mipmap/img_calendar</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:padding">@dimen/margin_fit_6</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">10</item>
+        <item name="android:textColorHint">@color/font_black</item>
+        <item name="android:textColor">@color/font_black</item>
+        <item name="android:textSize">@dimen/font_xlarge</item>
+        <item name="android:text">@null</item>
+    </style>
+    <style name="et_work_load_verify_search_style" parent="et_work_load_verify_calendar_style">
+        <item name="android:drawableRight">@mipmap/img_search</item>>
+    </style>
+
 <!--#-->
 
 
@@ -431,15 +449,6 @@
 
 <!--排班计划-->
     <!--标题类字体-->
-    <style name="titleHead_scheduling_style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/normal_margin10</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/font_large</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
     <!--信息类字体-->
     <style name="font_scheduling_body_style">
         <item name="android:layout_width">wrap_content</item>
@@ -476,11 +485,6 @@
     </style>
 
     <!--竖线样式-->
-    <style name="titleVerticalLine_scheduling_style">
-        <item name="android:layout_width">1dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/white</item>
-    </style>
 
     <!--备注弹出框-->
     <style name="tv_start_car_remarks_dialog">
@@ -535,6 +539,7 @@
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
         <item name="android:textSize">@dimen/font_large</item>
         <item name="android:imeOptions">flagNoExtractUi</item>
+        <item name="android:inputType">numberDecimal</item>
     </style>
     <style name="et_remarks_recording_car_dialog_item2" parent="et_recording_car_dialog_item2">
         <item name="android:layout_marginTop">@dimen/normal_margin10</item>
@@ -648,7 +653,7 @@
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginRight">@dimen/normal_margin10</item>
-        <item name="android:inputType">number</item>
+        <item name="android:inputType">numberDecimal</item>
         <item name="android:imeOptions">flagNoExtractUi</item>
     </style>
 
@@ -669,4 +674,28 @@
         <item name="android:textColor">@color/font_black</item>
     </style>
 
+
+    <!--排班计划顶部大块TextView-->
+    <style name="head_plan_style_base">
+        <item name="android:textColor">@color/font_black1</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/plan_backgroud</item>
+    </style>
+    <style name="head_plan_style1" parent="head_plan_style_base">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="head_plan_style2" parent="head_plan_style_base">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="head_plan_style3" parent="head_plan_style_base">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+    </style>
 </resources>

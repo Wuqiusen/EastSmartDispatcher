@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_reuse"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:background="@drawable/ll_stop_car_white_btn_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_layer_reuse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/normal_margin10"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <TextView
+            android:id="@+id/tv_car_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="24dp"
+            android:minWidth="100dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/font_small"
+            android:visibility="visible"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

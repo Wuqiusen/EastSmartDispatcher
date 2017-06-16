@@ -4,6 +4,7 @@ import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
 import com.zxw.data.bean.DepartCar;
+import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.FuzzyVehicleBean;
 import com.zxw.data.bean.InformContentBean;
 import com.zxw.data.bean.InformDataBean;
@@ -15,6 +16,7 @@ import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
+import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.SmsCodeBean;
@@ -104,6 +106,17 @@ public class HttpInterfaces {
      * 获取数据
      */
     public interface Browse {
+        @FormUrlEncoded
+        @POST("phone/control/manage/work/confirm/list")
+        Observable<BaseBean<List<DriverWorkloadItem>>> workloadList(@Field("userId") String userId,
+                                                                    @Field("keyCode") String keyCode,
+                                                                    @Field("lineId") int lineId,
+                                                                    @Field("pageNo") int pageNo,
+                                                                    @Field("pageSize") int pageSize,
+                                                                    @Field("vehCode") String vehCode,
+                                                                    @Field("driverName") String driverName,
+                                                                    @Field("exceptionType") String exceptionType
+                                                                    );
 
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/property")
@@ -398,7 +411,7 @@ public class HttpInterfaces {
                                                                  @Field("typeId") String typeId);
 
         /**
-         * 31.	根据线路id获取待发车计划列表(新)
+         * 31.	根据线路id获取待发车计划列表(改)
          */
         @FormUrlEncoded
         @POST("phone/control/manage/task/line/schedule/list1")
@@ -433,6 +446,19 @@ public class HttpInterfaces {
     }
 
     public interface Operator {
+
+        /**
+         * 46 修改工作量审核记录
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/work/confirm/record/update")
+        Observable<BaseBean> updateWorkload(@Field("userId") String userId,
+                                                      @Field("keyCode") String keyCode,
+                                                      @Field("objId") long objId,
+                                                      @Field("outTime") String outTime,
+                                                      @Field("arrivalTime") String arrivalTime,
+                                                      @Field("gpsStatus") String gpsStatus,
+                                                      @Field("opStatus") String opStatus);
         /**
          * 44.获取停场车辆
          */
@@ -678,7 +704,8 @@ public class HttpInterfaces {
                                          @Field("keyCode") String keyCode,
                                          @Field("vehicleId") String vehicleId,
                                          @Field("noticeInfo") String noticeInfo,
-                                         @Field("noticeType") String noticeType);
+                                         @Field("noticeType") String noticeType,
+                                         @Field("driverCode") String driverCode);
 
         /**
          * 33.	停场车辆拉进待发车计划操作列表(新)
@@ -744,8 +771,27 @@ public class HttpInterfaces {
         Observable<BaseBean<List<SchedulePlanBean>>> shedulePlan(
                                                       @Field("userId") String userId,
                                                       @Field("keyCode") String keyCode,
-                                                      @Field("lineId") int lineId);
+                                                      @Field("lineId") int lineId,
+                                                      @Field("runDate") String runDate);
     }
 
+    // 排班计划
+    public interface GPS{
+        @GET
+        Observable<HttpGPsRequest.GpsBaseBean> gps(@Url String url);
+    }
+
+    // 线路运行图
+    public interface LineRunMap{
+        /**
+         * 47.根据任务线路id获取当前在跑的所有车辆(新)
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/run/line/map")
+        Observable<BaseBean<List<RunningCarBean>>> runningCarList(@Field("userId") String userId,
+                                                                  @Field("keyCode") String keyCode,
+                                                                  @Field("taskLineId") String taskLineId);
+
+    }
 
 }

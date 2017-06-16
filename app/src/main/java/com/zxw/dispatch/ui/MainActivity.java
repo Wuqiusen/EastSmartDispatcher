@@ -28,8 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
-import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
+import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.MyApplication;
@@ -39,6 +39,7 @@ import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.adapter.PopupAdapter;
+import com.zxw.dispatch.module.ScheduleModule;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
@@ -47,19 +48,20 @@ import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
-import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
+import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
-import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.ChildViewPager;
 import com.zxw.dispatch.view.CustomViewPager;
 import com.zxw.dispatch.view.DragListView;
+import com.zxw.dispatch.view.LineRunMapView;
 import com.zxw.dispatch.view.MyDialog;
 import com.zxw.dispatch.view.StartCarView;
 import com.zxw.dispatch.view.StopCarView;
 import com.zxw.dispatch.view.WaitCarView;
+import com.zxw.dispatch.view.WorkLoadView;
 import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
@@ -78,18 +80,19 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import static com.zxw.dispatch.R.id.tv_steward_show;
+import static com.zxw.dispatch.utils.ToastHelper.showToast;
 
 
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
-        PopupAdapter.OnPopupWindowListener, View.OnClickListener {
+        PopupAdapter.OnPopupWindowListener, View.OnClickListener, ScheduleModule.OnLoadingListener {
 
 
     TextView tvMenuDepart;
     RelativeLayout rlMenuBackground;
-    LinearLayout llMenuWaitDepart;
+//    LinearLayout llMenuWaitDepart;
     TextView tvAddRecroding; // 补录
-    TextView tvMenuAutomatic;
-    TextView tvMenuManual;
+//    TextView tvMenuAutomatic;
+//    TextView tvMenuManual;
     TextView tvMenuWaitCar;
     TextView tvMenuGoneCar;
     TextView tvMenuStopCar;
@@ -139,9 +142,13 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     // 排班计划
     @Bind(R.id.tv_schedule)
     TextView tvSchedule;
+    // 工作量审核
+    @Bind(R.id.tv_work_load)
+    TextView tvWorkLoad;
+    // 线路运行图
+    @Bind(R.id.tv_line_run_map)
+    TextView tvLineRunMap;
 
-    private TextView tvPlanStewardName;
-    private RecyclerView mScheduleRV;
 
     // 设置
     @Bind(R.id.img_setting)
@@ -156,15 +163,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     View viewCover;
     @Bind(R.id.vp_main)
     CustomViewPager vpMain;
-    TextView tvAutomatic;
-    TextView tvManual;
+//    TextView tvAutomatic;
+//    TextView tvManual;
     TextView tvVerWaitCar;
     TextView tvVerStopCar;
 
 
     private MainAdapter mLineAdapter;
     private PopupAdapter popupAdapter;
-    private AlertDialog mManualStopDialog, mStopCarDialog;
     private PopupWindow mPopupWindow = null;
     private ListView lv_popup = null;
     private LinearLayout ll_popupwindow;
@@ -173,11 +179,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private List<View> eViews = new ArrayList<View>();
     private boolean isHaveSendCar = false;
     private boolean isShow = false;
-    private boolean isClickWaitCar = true;
     private boolean isPopbg = true;
-    private int startCarCount = 0;
-    private TextView tv_steward_send;
-    private TextView tv_steward_gone;
 
     private static final int REFRESH = 1;
     private static final int AUTO = 2;
@@ -187,11 +189,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private Timer mTimer = null;
     private long clickTime = 0;
     private int spotId;
-    private List<MissionType> mMissionTypes = new ArrayList<>();
-    private boolean isGetMissionTypes = false;
-    private List<VehicleNumberBean> mSendCarNum;
-    private boolean addCarDialogIsShowing = false;
-    private DragListAdapter mDragListAdapter;
+
+
 
     Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -222,7 +221,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                         break;
                     case SEND_CAR_COUNT:
                         Log.w("onReceive---", "更新待发车辆数");
-//                        presenter.timeToSend();
                         presenter.checkVehicleCount(spotId);
                         break;
                 }
@@ -234,18 +232,27 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private TextView mSendRV1_tv_steward_show, mSendRV2_tv_steward_show, mSendRV3_tv_steward_show;
     private StopCarView mHorStopCarView;
     private RecyclerView mStopRV1, mStopRV2;
+    private ScheduleModule scheduleModule;
+//    private TextView tv_date;
+//    private int currentYear;
+//    private int currentMonth;
+//    private int currentDay;
+    private WorkLoadView mWorkLoadView;
+    private LineRunMapView mLineRunMapView;
+    private Bundle mSavedInstanceState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.mSavedInstanceState = savedInstanceState;
         ButterKnife.bind(this);
         createReceiver();
         initData();
         initView();
         initTabEvent();
         spotId = getIntent().getIntExtra("spotId", -1);
-//        spotId = 1;
         presenter.loadLineList(spotId);
         presenter.checkStopCar();
     }
@@ -271,23 +278,52 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         // 操控台
         views.add(initControlDeckView());
         // 排班计划
-        views.add(initSchedulingView());
-        // 线路运行图
+        scheduleModule = new ScheduleModule(mContext);
+        scheduleModule.setOnLoadingListener(this);
+        views.add(scheduleModule);
+        // 工作量审核
+        views.add(initWorkLoadVerifyView());
+        // 线路运行图（新）
+        views.add(initLineRunMapView());
         // 显示默认视图
         showContentView(views);
-
     }
 
-    private View initSchedulingView() {
-        View view = View.inflate(mContext, R.layout.tab_view_scheduling_plan, null);
-        tvPlanStewardName = (TextView) view.findViewById(R.id.tv_steward_name); // 乘务员
-        mScheduleRV = (RecyclerView) view.findViewById(R.id.rv_scheduling_plan);
-        mScheduleRV.setLayoutManager(new LinearLayoutManager(this));
-        mScheduleRV.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL_LIST));
-        return view;
+    private View initLineRunMapView() {
+        mLineRunMapView = new LineRunMapView(mContext,mSavedInstanceState);
+        return  mLineRunMapView;
     }
 
+    private View initWorkLoadVerifyView() {
+        mWorkLoadView = new WorkLoadView(mContext, new WorkLoadView.OnListener() {
+            @Override
+            public void onClickCalendar(String date) {
+
+            }
+
+            @Override
+            public void onClickToReport() {
+
+            }
+
+            @Override
+            public void onEditTextChanged(String str, int type) {
+
+            }
+            @Override
+            public void showLoading() {
+                DebugLog.w("showloading");
+                MainActivity.this.showLoading();
+            }
+
+            @Override
+            public void hideLoading() {
+                MainActivity.this.hideLoading();
+            }
+
+        });
+        return mWorkLoadView;
+    }
 
     private View initControlDeckView(){
         View view = View.inflate(mContext, R.layout.tab_view_control_deck1, null);
@@ -299,7 +335,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         return view;
     }
 
-
     /**
      * 菜单栏
      * @param view
@@ -307,10 +342,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void initMenuView(View view) {
         tvMenuDepart = (TextView) view.findViewById(R.id.tv_menu_depart_car);
         rlMenuBackground = (RelativeLayout) view.findViewById(R.id.rl_menu_background);
-        llMenuWaitDepart = (LinearLayout) view.findViewById(R.id.ll_menu_wait_depart);
         tvAddRecroding = (TextView) view.findViewById(R.id.tv_add_recording);// 补录
-        tvMenuAutomatic = (TextView) view.findViewById(R.id.tv_menu_automatic);// 自动发车
-        tvMenuManual = (TextView) view.findViewById(R.id.tv_menu_manual);  // 手动发车
+//        llMenuWaitDepart = (LinearLayout) view.findViewById(R.id.ll_menu_wait_depart);
+//        tvMenuAutomatic = (TextView) view.findViewById(R.id.tv_menu_automatic);// 自动发车
+//        tvMenuManual = (TextView) view.findViewById(R.id.tv_menu_manual);  // 手动发车
         tvMenuWaitCar = (TextView) view.findViewById(R.id.tv_menu_wait_car);
         tvMenuGoneCar = (TextView) view.findViewById(R.id.tv_menu_gone_car);
         llTabVerStartCat = (LinearLayout) view.findViewById(R.id.ll_tab_ver_start_car);
@@ -322,8 +357,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tvMenuGoneCar.setOnClickListener(this);
         tvMenuStopCar.setOnClickListener(this);
 
-        tvMenuAutomatic.setOnClickListener(this);
-        tvMenuManual.setOnClickListener(this);
+//        tvMenuAutomatic.setOnClickListener(this);
+//        tvMenuManual.setOnClickListener(this);
         imgOnOff.setOnClickListener(this);
     }
 
@@ -338,10 +373,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         /*固有操作*/
         tvVerWaitCar = (TextView) view.findViewById(R.id.tv_ver_wait_car);
         tvVerStopCar = (TextView) view.findViewById(R.id.tv_ver_stop_car);
-        tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);
-        tvManual = (TextView) view.findViewById(R.id.tv_manual);
-        tvAutomatic.setOnClickListener(this);
-        tvManual.setOnClickListener(this);
+//        tvAutomatic = (TextView) view.findViewById(R.id.tv_automatic);
+//        tvManual = (TextView) view.findViewById(R.id.tv_manual);
+//        tvAutomatic.setOnClickListener(this);
+//        tvManual.setOnClickListener(this);
     }
 
     private void initVerStopCarViewPager(View view) {
@@ -379,7 +414,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tv_wtab1.setOnClickListener(this);
         tv_wtab2.setOnClickListener(this);
         tv_wtab3.setOnClickListener(this);
-//      tv_steward_send = (TextView) view.findViewById(R.id.tv_steward_send);
         vp_wait_car = (ChildViewPager) view.findViewById(R.id.vp_wait_car);
 
         MyPagerAdapter wAdapter = new MyPagerAdapter(inflateVerWaitCarViews(),null);
@@ -392,7 +426,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private List<View> inflateVerWaitCarViews() {
         View view_wtab = View.inflate(mContext, R.layout.item_wait_car1,null);
-        viewCover = (View) view_wtab.findViewById(R.id.view_cover); 
+        viewCover = (View) view_wtab.findViewById(R.id.view_cover);
         mSendRV1 = (DragListView) view_wtab.findViewById(R.id.lv_send_car);
         mSendRV1_tv_steward_show = (TextView) view_wtab.findViewById(R.id.tv_steward_show);
         View view_wtab2 = View.inflate(mContext, R.layout.item_wait_car2,null);
@@ -429,7 +463,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tv_stab1.setOnClickListener(this);
         tv_stab2.setOnClickListener(this);
         tv_stab3.setOnClickListener(this);
-        tv_steward_gone = (TextView) view.findViewById(R.id.tv_steward_gone);
         vp_start_car = (ChildViewPager) view.findViewById(R.id.vp_start_car);
 
         MyPagerAdapter sAdapter = new MyPagerAdapter(inflateVerStartViews(),null);
@@ -516,15 +549,17 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         vp_horizontal.setPagingEnabled(false);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 10);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        eStopRV.setLayoutManager(layoutManager);
     }
 
     private void initTabEvent() {
-        /*控制台*/
+         /*控制台*/
         tvController.setOnClickListener(this);
          /*排班计划*/
         tvSchedule.setOnClickListener(this);
+        /*工作量*/
+        tvWorkLoad.setOnClickListener(this);
         /*线路运行图*/
+        tvLineRunMap.setOnClickListener(this);
         /*设置按钮*/
         imgSetting.setOnClickListener(this);
     }
@@ -768,7 +803,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void onGetAddRecordingTaskNameList(List<MissionType> missionTypes) {
-        this.mMissionTypes = missionTypes;
     }
 
 
@@ -814,16 +848,21 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     @Override
-    public void loadSchedulePlanList(SchedulePlanListAdapter adapter) {
-        LineParams mLineParams = presenter.getLineParams();
-        if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
-            tvPlanStewardName.setVisibility(View.GONE);
-        }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
-            tvPlanStewardName.setVisibility(View.VISIBLE);
-        }
-        mScheduleRV.setAdapter(adapter);
+    public void onSelectLine() {
+        // 排班计划
+        scheduleModule.initLineParams(presenter.getLineId(), presenter.getLineParams());
+        // 工作量审核
+        mWorkLoadView.initLineParams(presenter.getLineId(), presenter.getLineParams());
+        // 线路运行图
+        mLineRunMapView.initLineParams(presenter.getRunningCarList());///新增: 未测试
+
     }
 
+    @Override
+    public void drawRunningCarAtMap(List<RunningCarBean> runCarList) {
+        DebugLog.e("start draw:"+"---");
+        mLineRunMapView.initLineParams(runCarList);///新增
+    }
 
     private void isShowStewardName(int isVisible) {
         mGoneRV1_StewardShow.setVisibility(isVisible);
@@ -832,7 +871,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mSendRV1_tv_steward_show.setVisibility(isVisible);
         mSendRV2_tv_steward_show.setVisibility(isVisible);
         mSendRV3_tv_steward_show.setVisibility(isVisible);
-
         mHorWaitCarView.setStewardSendVisibility(isVisible);
         mHorStartCarView.setStewardGoneVisibility(isVisible);
     }
@@ -898,25 +936,27 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         sendBroadcast(intent);
         presenter.onSelectLine(line);
         presenter.onAddRecordingCarTaskNameList(line.lineId);
+
     }
 
     private void setTabBackground(int tabPosition) {
+        setNormalTabStyle();
         switch (tabPosition) {
             case 0:
                 tvController.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
                 tvController.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
-                tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                tvSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 1:
                 tvSchedule.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
                 tvSchedule.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
-                tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-                tvController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
                 break;
             case 2:
+                tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
+                tvWorkLoad.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
                 break;
             case 3:
+                tvLineRunMap.setTextColor(mContext.getResources().getColor(R.color.background_bg_blue));
+                tvLineRunMap.setBackground(mContext.getResources().getDrawable(R.drawable.tab_white_rectangle));
                 break;
             case 4:
                 break;
@@ -924,18 +964,15 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void setScrollBarBackground(int pos){
+        setScrollBarNormalStyle();
         switch (pos){
             case 0:
                 tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 showMenuAutoDepart(View.GONE);
                 showAddRecordingBtn(View.VISIBLE);
                 break;
             case 1:
                 tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 if (isPopbg) {
                     showMenuAutoDepart(View.GONE);
                     showAddRecordingBtn(View.VISIBLE);
@@ -946,39 +983,27 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 break;
             case 2:
                 tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,getDrawable(false));
-                tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
-                tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 showMenuAutoDepart(View.GONE);
                 showAddRecordingBtn(View.GONE);
                 break;
         }
     }
 
+
     private void setVerStartCarTabScrollBar(int pos){
+        setStartCarTabNormalStyle();
         switch (pos){
             case 0:
                 tv_stab1.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
                 tv_stab2.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 2:
                 tv_stab3.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
 
         }
@@ -986,50 +1011,85 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     private void setVerWaitCarTabScrollBar(int pos){
+        setWaitCarTabNormalStyle();
         switch (pos){
             case 0:
                 tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
                 tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 2:
                 tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
-                tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
-                tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
-
         }
     }
+
     private void setVerStopCarTabScrollBar(int pos){
+        setTopCarTabNormalStyle();
         switch (pos){
             case 0:
                 tv_ver_stop_tab1.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_ver_stop_tab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_ver_stop_tab1.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_ver_stop_tab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
             case 1:
                 tv_ver_stop_tab2.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_ver_stop_tab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 tv_ver_stop_tab2.setBackground(mContext.getResources().getDrawable(R.drawable.btn_login_style));
-                tv_ver_stop_tab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
                 break;
         }
     }
+
+
+    private void setScrollBarNormalStyle() {
+        tvMenuGoneCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+        tvMenuWaitCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+        tvMenuStopCar.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+    }
+
+    private void setTopCarTabNormalStyle() {
+        tv_ver_stop_tab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_ver_stop_tab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_ver_stop_tab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_ver_stop_tab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+    }
+
+
+    private void setNormalTabStyle() {
+        tvController.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        tvSchedule.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        tvWorkLoad.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        tvLineRunMap.setTextColor(mContext.getResources().getColor(R.color.font_gray));
+        tvController.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+        tvSchedule.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+        tvWorkLoad.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+        tvLineRunMap.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
+
+    }
+
+
+    private void setStartCarTabNormalStyle() {
+        tv_stab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_stab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_stab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_stab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_stab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_stab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+    }
+
+
+    private void setWaitCarTabNormalStyle() {
+        tv_wtab1.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab2.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab3.setTextColor(mContext.getResources().getColor(R.color.font_black));
+        tv_wtab1.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_wtab2.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+        tv_wtab3.setBackground(mContext.getResources().getDrawable(R.drawable.whitebtn_dialog_deep_style));
+    }
+
+
 
 
     private Drawable getDrawable(boolean isTab) {
@@ -1051,7 +1111,16 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.tv_schedule:
                 vpMain.setCurrentItem(1);
                 setTabBackground(1);
-                presenter.loadSchedulePlan();
+                scheduleModule.loadSchedulePlan();
+                break;
+            case R.id.tv_work_load:
+                vpMain.setCurrentItem(2);
+                setTabBackground(2);
+                break;
+            case R.id.tv_line_run_map:
+                vpMain.setCurrentItem(3);
+                setTabBackground(3);
+                presenter.loadRunCarsAtMap();// 新增
                 break;
             case R.id.img_setting:
                 showPopupWindow();
@@ -1100,21 +1169,13 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 showStopCarView(1);
                 break;
             case R.id.tv_add_recording:
-                // 旧的:
-//                    new AddRecordingCarTaskDialog(mContext,mMissionTypes,
-//                            new AddRecordingCarTaskDialog.OnAddRecordingCarTaskListener() {
-//                               @Override
-//                               public void OnAddRecordingCarTask(String type, String taskId, String vehicleId, String driverId,
-//                                                          String beginTime, String endTime, String runNum, String runEmpMileage) {
-//                                  presenter.addRecordingCarTask(vehicleId,driverId,type,taskId,runNum,runEmpMileage,beginTime,endTime);
-//                               }
-//                    });
 
                 // 新的1:
                 new RecordingCarTaskDialog(mContext, presenter.getLineParams(),presenter.getLineId(), new RecordingCarTaskDialog.OnAddRecordingListener(){
                     @Override
-                    public void onClickNormalMission(int type, int taskId, String vehicleId, String driverId, String stewardId) {
-                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, "1200", "1300");
+                    public void onClickNormalMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime) {
+
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, startTime, endTime);
                     }
                     @Override
                     public void onClickOperatorEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId, String startTime, String endTime, String runCount, String km, String remarks) {
@@ -1126,49 +1187,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                     }
 
                     @Override
-                    public void onClickHelpMission(int type, int taskId, String vehicleId, String driverId, String stewardId) {
-                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, "1200", "1300");
+                    public void onClickHelpMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null,startTime,endTime);
                     }
                 });
 
 
                 break;
-            // 自动发车
-            case R.id.tv_automatic:
-            case R.id.tv_menu_automatic:
-                if ((System.currentTimeMillis() - clickTime) > 1000) {
-                    if (!isAuto) {
-                        if (!isHaveSendCar) {
-                            ToastHelper.showToast("该线路没有待发车辆", mContext);
-                            return;
-                        }
-                        setTvBackground(2);
-                        setCoverBackground(View.VISIBLE);
-                        //动态注册广播接收器
-                        createReceiver();
-                        presenter.selectAuto();
-                        clickTime = System.currentTimeMillis();
-                        isAuto = true;
-                        mDragListAdapter.setClickAble(false);
-                        mSendRV1.setLock(true);
-                    }
-                }
-                break;
-            // 手动发车
-            case R.id.tv_manual:
-            case R.id.tv_menu_manual:
-                if ((System.currentTimeMillis() - clickTime) > 1000) {
-                    if (isAuto) {
-                        setTvBackground(1);
-                        setCoverBackground(View.GONE);
-                        presenter.selectManual();
-                        clickTime = System.currentTimeMillis();
-                        isAuto = false;
-                        mDragListAdapter.setClickAble(true);
-                        mSendRV1.setLock(false);
-                    }
-                }
-                break;
+
         }
     }
 
@@ -1191,8 +1217,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         setVerWaitCarTabScrollBar(i);
         mHorWaitCarView.setWaitCarCurrentItem(i);
         mHorWaitCarView.setWaitCarTabScrollBar(i);
-        showVerAutoDepart(visible);
-        showHorAutoDepart(visible);
+//        showHorAutoDepart(visible);
 
     }
 
@@ -1203,19 +1228,19 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mHorStopCarView.setStopCarTabScrollBar(i);
     }
 
-    private void showVerAutoDepart(int isVisible) {
-        tvManual.setVisibility(isVisible);
-        tvAutomatic.setVisibility(isVisible);
-    }
-
-    // 水平方向的自动/手动发车
-    private void showHorAutoDepart(int isVisible) {
-        if (isPopbg){
-            llMenuWaitDepart.setVisibility(View.GONE);
-        }else{
-            llMenuWaitDepart.setVisibility(isVisible);
-        }
-    }
+//    private void showVerAutoDepart(int isVisible) {
+//        tvManual.setVisibility(isVisible);
+//        tvAutomatic.setVisibility(isVisible);
+//    }
+//
+//    // 水平方向的自动/手动发车
+//    private void showHorAutoDepart(int isVisible) {
+//        if (isPopbg){
+//            llMenuWaitDepart.setVisibility(View.GONE);
+//        }else{
+//            llMenuWaitDepart.setVisibility(isVisible);
+//        }
+//    }
 
     private void setCoverBackground(int isVisible) {
         viewCover.setVisibility(isVisible);
@@ -1264,7 +1289,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     public void showMenuAutoDepart(int isVisible){
-        llMenuWaitDepart.setVisibility(isVisible);
+//        llMenuWaitDepart.setVisibility(isVisible);
     }
 
     private void showPopupWindow() {
@@ -1301,10 +1326,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void onPopupListener(int position) {
         switch (position) {
             case 0:
-                ToastHelper.showToast("修改资料", mContext);
+                showToast("修改资料", mContext);
                 break;
             case 1:
-                ToastHelper.showToast("密码修改", mContext);
+                showToast("密码修改", mContext);
                 break;
             case 2:
                 isSureLoginOut();
@@ -1314,28 +1339,28 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void setTvBackground(int poi) {
-        if (poi == 1) {
-            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
-            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
-            tvManual.setTextColor(getResources().getColor(R.color.white));
-            tvAutomatic.setTextColor(getResources().getColor(R.color.font_black));
-
-            tvMenuManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
-            tvMenuAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
-            tvMenuManual.setTextColor(getResources().getColor(R.color.white));
-            tvMenuAutomatic.setTextColor(getResources().getColor(R.color.font_black));
-
-        } else {
-            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
-            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
-            tvManual.setTextColor(getResources().getColor(R.color.font_black));
-            tvAutomatic.setTextColor(getResources().getColor(R.color.white));
-
-            tvMenuManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
-            tvMenuAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
-            tvMenuManual.setTextColor(getResources().getColor(R.color.font_black));
-            tvMenuAutomatic.setTextColor(getResources().getColor(R.color.white));
-        }
+//        if (poi == 1) {
+//            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
+//            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
+//            tvManual.setTextColor(getResources().getColor(R.color.white));
+//            tvAutomatic.setTextColor(getResources().getColor(R.color.font_black));
+//
+//            tvMenuManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_select_style));
+//            tvMenuAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_normal_style));
+//            tvMenuManual.setTextColor(getResources().getColor(R.color.white));
+//            tvMenuAutomatic.setTextColor(getResources().getColor(R.color.font_black));
+//
+//        } else {
+//            tvManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
+//            tvAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
+//            tvManual.setTextColor(getResources().getColor(R.color.font_black));
+//            tvAutomatic.setTextColor(getResources().getColor(R.color.white));
+//
+//            tvMenuManual.setBackground(getResources().getDrawable(R.drawable.tv_manual_normal_style));
+//            tvMenuAutomatic.setBackground(getResources().getDrawable(R.drawable.tv_automatic_select_style));
+//            tvMenuManual.setTextColor(getResources().getColor(R.color.font_black));
+//            tvMenuAutomatic.setTextColor(getResources().getColor(R.color.white));
+//        }
     }
 
     @Override
@@ -1346,8 +1371,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             mTimer = null;
         }
         presenter.closeTimer();
+        presenter.unSubscribe();///
         super.onDestroy();
     }
+
 
     private void isSureLoginOut() {
         final MyDialog outDialog = new MyDialog(MainActivity.this, "提示", "确定要退出系统？", MyDialog.HAVEBUTTON);

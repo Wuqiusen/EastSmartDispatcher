@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+    <LinearLayout
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ll_car_dialog"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="vertical">
+        <TextView
+            style="@style/title_font_dialog_style"
+            android:text="请填写手动添加发车列表的车辆"
+            />
+        <View style="@style/line_title_bottom_dialog"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_hand_station_dialog_style"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_deputy_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/dialog_margin10"
+                android:text="车牌号: "
+                />
+            <com.zxw.dispatch.view.smart_edittext.SmartEditText
+                android:id="@+id/et_car_code"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:visibility="visible"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_hand_station_dialog_style"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_deputy_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/dialog_margin10"
+                android:text="驾驶员: "
+                />
+            <com.zxw.dispatch.view.smart_edittext.SmartEditText
+                android:id="@+id/et_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:visibility="visible"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_steward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_hand_station_dialog_style"
+            android:visibility="gone"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_deputy_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/dialog_margin10"
+                android:text="乘务员: "
+                />
+            <com.zxw.dispatch.view.smart_edittext.SmartEditText
+                android:id="@+id/et_steward"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:hint="请输入乘务员姓名或工号"
+                android:visibility="visible"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin20"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_confirm"
+                style="@style/bluebtn_dialog_style"
+                android:text="确定"
+                />
+            <Button
+                android:id="@+id/btn_cancel"
+                style="@style/whitebtn_dialog_style"
+                android:text="取消"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>
