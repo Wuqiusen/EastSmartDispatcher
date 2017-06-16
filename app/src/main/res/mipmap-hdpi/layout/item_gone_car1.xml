@@ -6,104 +6,108 @@
     android:orientation="vertical"
     >
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="40dp"
         >
-        <!--Title_待发车辆/线路营运-->
+        <!--Title_已发车辆/线路运营(对比一致)-->
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="2"
             android:text="序号"
             />
+
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
             android:text="车号"
             />
+
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="3"
             android:text="到站时刻"
             />
+
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="3"
             android:text="计划时刻"
             />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="实际发车时刻"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="3"
+            android:text="停场时间"
+            />
+
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="3"
             android:text="发车间隔"
             />
+
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="2"
-            android:text="单/双班"
-            />
-        <TextView
-            style="@style/main_activity_top_button"
-            android:layout_weight="3"
             android:text="驾驶员"
             />
+
         <TextView
             android:id="@+id/tv_steward_show"
             style="@style/main_activity_top_button"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:text="乘务员"
             />
+
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="3"
-            android:text="应跑单次"
+            android:text="指令内容"
             />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="2"
+            android:text="正/异常"
+            />
+
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="3"
-            android:text="实跑单次"
+            android:text="备注"
             />
-        <TextView
-            style="@style/main_activity_top_button"
-            android:layout_weight="5"
-            android:text="归属站"
-            />
+
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="3"
-            android:text="任务类型"
-            />
-        <TextView
-            style="@style/main_activity_top_button"
-            android:layout_weight="6"
             android:text="操作"
             />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="3"
+            android:text="指令反馈"
+            />
+
     </LinearLayout>
     <!--分割线-->
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/line_blue" />
-    <!--待发车辆列表-->
-    <RelativeLayout
+    <!--已发车辆列表-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_gone_car"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <com.zxw.dispatch.view.DragListView
-            android:id="@+id/lv_send_car"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:descendantFocusability="blocksDescendants"
-           />
-
-        <View
-          android:id="@+id/view_cover"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:background="#55e1dada"
-          android:visibility="gone"
+        android:layout_height="match_parent"
         />
-    </RelativeLayout>
-
 </LinearLayout>

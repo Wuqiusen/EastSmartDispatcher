@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/normal_margin10"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_spot_name"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tv_background"
+        android:padding="@dimen/normal_margin10"
+        android:minHeight="160dp"
+        android:minWidth="160dp"
+        android:gravity="center"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="上塘地铁站"
+        android:text=""
+        android:textSize="@dimen/font_huge"
+        android:textStyle="bold"
+        android:textColor="@color/background_deep_blue"/>
+</LinearLayout>

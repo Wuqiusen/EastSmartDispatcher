@@ -1,0 +1,147 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="700dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ll_car_dialog"
+        android:layout_marginLeft="@dimen/normal_margin20"
+        android:layout_marginRight="@dimen/normal_margin20"
+        android:orientation="vertical">
+        <TextView
+            style="@style/title_font_dialog_style"
+            android:text="任务类型"
+            />
+        <View style="@style/line_title_bottom_dialog"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/dialog_margin20"
+            android:layout_marginRight="@dimen/normal_margin20"
+            android:layout_marginBottom="@dimen/normal_margin20"
+            android:background="@color/transparent"
+            android:orientation="horizontal">
+      <!--正线运营-->
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="300dp"
+              android:layout_marginRight="@dimen/normal_margin10"
+              android:background="@color/btn_app_theme5"
+              android:layout_weight="1"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+               <!--<LinearLayout-->
+                   <!--android:id="@+id/ll_line_work"-->
+                   <!--android:layout_width="match_parent"-->
+                   <!--android:layout_height="wrap_content"-->
+                   <!--android:minHeight="40dp"-->
+                   <!--android:gravity="center"-->
+                   <!--android:orientation="horizontal">-->
+                   <RadioButton
+                       android:id="@+id/rb_line_work"
+                       style="@style/rb_task_type_dialog_style"
+                       android:text="正线运营"
+                       />
+                   <!--<TextView-->
+                       <!--android:id="@+id/tv_line_name"-->
+                       <!--android:layout_width="wrap_content"-->
+                       <!--android:layout_height="wrap_content"-->
+                       <!--style="@style/font_rb_cb_style"-->
+                       <!--android:text="正线运营"-->
+                       <!--/>-->
+               <!--</LinearLayout>-->
+               <View style="@style/line_task_type_dialog_style"/>
+
+          </LinearLayout>
+
+       <!--营运任务-->
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="300dp"
+              android:layout_marginRight="@dimen/normal_margin10"
+              android:background="@color/btn_app_theme5"
+              android:layout_weight="1"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+              <!--<LinearLayout-->
+                  <!--android:id="@+id/ll_work_mission"-->
+                  <!--android:layout_width="match_parent"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:minHeight="40dp"-->
+                  <!--android:gravity="center"-->
+                  <!--android:orientation="horizontal">-->
+                  <RadioButton
+                      android:id="@+id/rb_work_mission"
+                      style="@style/rb_task_type_dialog_style"
+                      android:text="营运任务"
+                      />
+              <!--</LinearLayout>-->
+              <View style="@style/line_task_type_dialog_style"/>
+
+              <android.support.v7.widget.RecyclerView
+                  android:id="@+id/rv_work_mission"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+              </android.support.v7.widget.RecyclerView>
+          </LinearLayout>
+      <!--非营运任务-->
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="300dp"
+              android:layout_marginRight="@dimen/normal_margin10"
+              android:background="@color/btn_app_theme5"
+              android:layout_weight="1"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+              <!--<LinearLayout-->
+                  <!--android:id="@+id/ll_no_work_mission"-->
+                  <!--android:layout_width="match_parent"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:minHeight="40dp"-->
+                  <!--android:gravity="center"-->
+                  <!--android:orientation="horizontal">-->
+                  <RadioButton
+                      android:id="@+id/rb_no_work_mission"
+                      style="@style/rb_task_type_dialog_style"
+                      android:text="非营运任务"
+                      />
+
+              <!--</LinearLayout>-->
+              <View style="@style/line_task_type_dialog_style"/>
+
+              <android.support.v7.widget.RecyclerView
+                  android:id="@+id/rv_no_work_mission"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+              </android.support.v7.widget.RecyclerView>
+          </LinearLayout>
+
+      </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_confirm"
+                style="@style/bluebtn_dialog_style"
+                android:text="确定"
+                />
+            <Button
+                android:id="@+id/btn_cancel"
+                style="@style/whitebtn_dialog_style"
+                android:text="取消"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

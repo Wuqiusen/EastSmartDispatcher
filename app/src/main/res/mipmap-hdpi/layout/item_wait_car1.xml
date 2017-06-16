@@ -102,6 +102,7 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:background="#55e1dada"
+          android:clickable="true"
           android:visibility="gone"
         />
     </RelativeLayout>

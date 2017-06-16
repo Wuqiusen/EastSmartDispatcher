@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ll_car_dialog"
+        android:orientation="vertical">
+        <TextView
+            style="@style/title_font_dialog_style"
+            android:text="补录车辆任务"
+            />
+        <View style="@style/line_horizontal_dialog_style"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_dialog_add_recording"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="车牌号:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_vehicleId"
+                style="@style/et_dialog_add_recording"
+                />
+            <View style="@style/line_dialog_style"/>
+
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="所属线路:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_taskLineId"
+                style="@style/et_dialog_add_recording"
+                />
+        </LinearLayout>
+        <View style="@style/line_horizontal_dialog_style"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_dialog_add_recording"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="到站时刻:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_arrive_time"
+                style="@style/et_dialog_add_recording"
+                />
+            <View style="@style/line_dialog_style"/>
+
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="计划发车时间:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_beginTime"
+                style="@style/et_dialog_add_recording" 
+                />
+        </LinearLayout>
+        <View style="@style/line_horizontal_dialog_style"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_dialog_add_recording"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="实际发车时间:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText style="@style/et_dialog_add_recording"
+                />
+            <View style="@style/line_dialog_style"/>
+
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="计划结束时间:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_endTime"
+                style="@style/et_dialog_add_recording"
+                />
+        </LinearLayout>
+        <View style="@style/line_horizontal_dialog_style"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_dialog_add_recording"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="任务名称:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_task_type"
+                style="@style/et_dialog_add_recording"
+                />
+            <View style="@style/line_dialog_style"/>
+
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="驾驶员:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_driverId"
+                style="@style/et_dialog_add_recording" 
+                />
+        </LinearLayout>
+        <View style="@style/line_horizontal_dialog_style"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_dialog_add_recording"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="乘务员:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText style="@style/et_dialog_add_recording"
+                />
+            <View style="@style/line_dialog_style"/>
+
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="首发电子围栏名称:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText style="@style/et_dialog_add_recording"
+                />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_gray7"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_dialog_add_recording"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="折算单次:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_runNum"
+                style="@style/et_dialog_add_recording"/>
+            <View style="@style/line_dialog_style"/>
+
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="空驶里程:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText
+                android:id="@+id/et_runEmpMileage"
+                style="@style/et_dialog_add_recording" 
+                />
+        </LinearLayout>
+        <View style="@style/line_horizontal_dialog_style"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ll_dialog_add_recording"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="正/异常:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText style="@style/et_dialog_add_recording"/>
+            <View style="@style/line_dialog_style"/>
+
+            <TextView
+                style="@style/font_dialog_add_recording"
+                android:text="备注:"
+                />
+            <View style="@style/line_dialog_style"/>
+            <EditText style="@style/et_dialog_add_recording" />
+        </LinearLayout>
+        <View style="@style/line_horizontal_dialog_style"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin20"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_save"
+                style="@style/bluebtn_dialog_style"
+                android:visibility="gone"
+                android:text="保存"
+                />
+            <Button
+                android:id="@+id/btn_cancel"
+                style="@style/whitebtn_dialog_style"
+                android:visibility="gone"
+                android:text="取消"
+                />
+            <Button
+                android:id="@+id/btn_close"
+                style="@style/whitebtn_dialog_style"
+                android:visibility="visible"
+                android:text="关闭"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
