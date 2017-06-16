@@ -164,7 +164,7 @@
         android:layout_alignParentBottom="true"
         />
 
-    <android.support.v7.widget.RecyclerView
+    <com.jude.easyrecyclerview.EasyRecyclerView
         android:id="@+id/rv_work_load_verify"
         android:layout_width="match_parent"
         android:layout_height="0dp"
