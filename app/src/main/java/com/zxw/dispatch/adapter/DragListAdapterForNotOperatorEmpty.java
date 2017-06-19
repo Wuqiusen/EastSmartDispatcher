@@ -365,8 +365,7 @@ public class DragListAdapterForNotOperatorEmpty extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 // 确定发车
-                presenter.sendVehicle(mDatas.get(position).getId());
-                sDialog.dismiss();
+                presenter.sendVehicle(mDatas.get(position).getId(), sDialog);
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {

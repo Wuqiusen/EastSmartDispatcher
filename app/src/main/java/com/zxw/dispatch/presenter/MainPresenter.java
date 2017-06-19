@@ -1,5 +1,6 @@
 package com.zxw.dispatch.presenter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -462,11 +463,11 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
     }
 
-    public void sendVehicle(int opId) {
+    public void sendVehicle(int opId, final Dialog sDialog) {
         mDepartSource.sendCar(new Subscriber() {
             @Override
             public void onCompleted() {
-
+                sDialog.dismiss();
             }
 
             @Override
