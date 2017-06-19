@@ -16,6 +16,7 @@
     <color name="background_bg_green">#349E63</color>
     <color name="background_bg_blue">#73B9EC</color>
     <color name="background_deep_blue">#4E6682</color>
+    <color name="main">#4E6682</color>
 
     <!-- 按钮-->
     <color name="btn_app_theme1">#29b216</color>

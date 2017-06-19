@@ -2,8 +2,7 @@ package com.zxw.dispatch.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -12,24 +11,26 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jude.easyrecyclerview.EasyRecyclerView;
+import com.jude.easyrecyclerview.adapter.BaseViewHolder;
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
-import com.zxw.dispatch.recycler.DividerItemDecoration;
-import com.zxw.dispatch.recycler.WorkLoadVerifyAdapter;
+import com.zxw.dispatch.adapter.WorkLoadVerifyViewHolder;
 import com.zxw.dispatch.utils.Base64;
+import com.zxw.dispatch.utils.CreateRecyclerView;
 import com.zxw.dispatch.utils.DESPlus;
-import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
-import com.zxw.dispatch.view.recycle.BaseAdapter;
 import com.zxw.dispatch.view.recycle.LoadMoreAdapterWrapper;
 
 import java.util.Calendar;
@@ -41,12 +42,12 @@ import rx.Subscriber;
  * Created by moxiaoqing on 2017/5/19.
  */
 
-public class WorkLoadView extends LinearLayout implements View.OnClickListener {
+public class WorkLoadView extends LinearLayout implements View.OnClickListener, RecyclerArrayAdapter.OnLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
     private Context mContext;
     private EditText etCurrentDate, etDriverName, etVehId;
     private TextView tvStartTime, tvEndTime, tvGps, tvDriverOk, tvReport, tvAll;
-    private RecyclerView rvWorkLoad;
+    private EasyRecyclerView rvWorkLoad;
     private OnListener mListener;
     private final static int LOAD_PAGE_SIZE = 20;
     private int mPageSize;
@@ -60,8 +61,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
     private boolean isLoadMore = false;
     private int mCurrentPage;
     private String mVehCode, mDriverName;
-    private WorkLoadVerifyAdapter adapter;
-    private BaseAdapter mAdapter;
+    private RecyclerArrayAdapter arrayAdapter;
     public LoadMoreAdapterWrapper.ILoadCallback mLoadCallback;
     private String mExceptionType;
     private final static int EXCEPTION_TYPE_OUT_TIME = 1, EXCEPTION_TYPE_ARRIVE_TIME = 2, EXCEPTION_TYPE_GPS = 3, EXCEPTION_TYPE_DRIVER_OPERATOR = 4;
@@ -99,63 +99,14 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
         inflater.inflate(R.layout.activity_work_load_verify, this);
         initData();
         initView();
-        initAdapter();
+        loadData();
     }
 
-    private void initAdapter() {
-        if (adapter == null) {
-            adapter = new WorkLoadVerifyAdapter(mContext, new WorkLoadVerifyAdapter.OnWorkLoadItemClickListener() {
-                @Override
-                public void onAlertOutTime(long objId, String str) {
-                    updateWorkload(objId, str, null, null, null);
-                }
 
-                @Override
-                public void onAlertArriveTime(long objId, String str) {
-                    updateWorkload(objId, null, str, null, null);
-
-                }
-
-                @Override
-                public void onAlertGpsStatus(long objId, int str) {
-                    updateWorkload(objId, null, null, String.valueOf(str), null);
-
-                }
-
-                @Override
-                public void onAlertDriverStatus(long objId, int str) {
-                    updateWorkload(objId, null, null, null, String.valueOf(str));
-
-                }
-
-                @Override
-                public void onDelete(long objId) {
-                    deleteWorkload(objId);
-                }
-            });
-        }
-
-        //此处模拟做网络操作，2s延迟，将拉取的数据更新到adpter中
-//数据的处理最终还是交给被装饰的adapter来处理
-//模拟加载到没有更多数据的情况，触发onFailure
-        mAdapter = new LoadMoreAdapterWrapper(adapter, new LoadMoreAdapterWrapper.OnLoad() {
-
-            @Override
-            public void load(int pagePosition, int pageSize, final LoadMoreAdapterWrapper.ILoadCallback callback) {
-                //此处模拟做网络操作，2s延迟，将拉取的数据更新到adpter中
-                mLoadCallback = callback;
-                DebugLog.w("mCurrentPage" + mCurrentPage);
-                DebugLog.w("pageSize" + pageSize);
-                DebugLog.w("mPageSize" + mPageSize);
-                if (mCurrentPage * pageSize >= mPageSize) {
-                    callback.onFailure();
-                } else {
-                    mCurrentPage++;
-                    loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
-                }
-            }
-        });
-        setWorkLoadAdapter(mAdapter);
+    private void loadData() {
+        arrayAdapter.clear();
+        mCurrentPage = 1;
+        loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
     }
 
     private void deleteWorkload(long objId) {
@@ -177,7 +128,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
             @Override
             public void onNext(BaseBean o) {
                 ToastHelper.showToast(o.returnInfo);
-                refreshWorkloadList();
+                loadData();
             }
         }, userId, keyCode, objId);
     }
@@ -186,7 +137,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
     public void initLineParams(int lineId, LineParams params) {
         this.lineId = lineId;
         this.mLineParams = params;
-        refreshWorkloadList();
+        loadData();
     }
 
     private void initData() {
@@ -220,7 +171,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mDriverName = s.toString();
-                refreshWorkloadList();
+                loadData();
             }
 
             @Override
@@ -238,7 +189,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mVehCode = s.toString();
-                refreshWorkloadList();
+                loadData();
             }
 
             @Override
@@ -255,20 +206,52 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
         tvDriverOk.setOnClickListener(this);
         tvAll.setOnClickListener(this);
 
-        rvWorkLoad = (RecyclerView) findViewById(R.id.rv_work_load_verify);
-        rvWorkLoad.setLayoutManager(new LinearLayoutManager(mContext));
-        rvWorkLoad.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.VERTICAL_LIST));
+        initRecyclerView();
 
     }
 
+    private void initRecyclerView() {
+        rvWorkLoad = (EasyRecyclerView) findViewById(R.id.rv_work_load_verify);
+        arrayAdapter = new RecyclerArrayAdapter(mContext) {
+            @Override
+            public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
+                return new WorkLoadVerifyViewHolder(parent, new WorkLoadVerifyViewHolder.OnWorkLoadItemClickListener() {
+                    @Override
+                    public void onAlertOutTime(long objId, String str) {
+                        updateWorkload(objId, str, null, null, null);
+                    }
 
-    public void setWorkLoadAdapter(BaseAdapter adapter) {
-        rvWorkLoad.setAdapter(adapter);
+                    @Override
+                    public void onAlertArriveTime(long objId, String str) {
+                        updateWorkload(objId, null, str, null, null);
+
+                    }
+
+                    @Override
+                    public void onAlertGpsStatus(long objId, int str) {
+                        updateWorkload(objId, null, null, String.valueOf(str), null);
+
+                    }
+
+                    @Override
+                    public void onAlertDriverStatus(long objId, int str) {
+                        updateWorkload(objId, null, null, null, String.valueOf(str));
+
+                    }
+
+                    @Override
+                    public void onDelete(long objId) {
+                        deleteWorkload(objId);
+                    }
+                });
+            }
+
+        };
+        new CreateRecyclerView().CreateRecyclerView(mContext, rvWorkLoad, arrayAdapter, this);
+        rvWorkLoad.setRefreshListener(this);
     }
 
     private void loadWorkloadList(int pageNo, String vehCode, String driverName) {
-        mListener.showLoading();
         String userId = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
         String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
         try {
@@ -287,23 +270,17 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
             @Override
             public void onCompleted() {
-                mListener.hideLoading();
             }
 
             @Override
             public void onError(Throwable e) {
                 ToastHelper.showToast(e.getMessage());
-                mListener.hideLoading();
             }
 
             @Override
             public void onNext(BaseBean<List<DriverWorkloadItem>> basedriverWorkloadItems) {
+                arrayAdapter.addAll(basedriverWorkloadItems.returnData);
                 mPageSize = basedriverWorkloadItems.returnSize;
-                adapter.appendData(basedriverWorkloadItems.returnData);
-                if (mLoadCallback == null) {
-                    mLoadCallback = ((LoadMoreAdapterWrapper) mAdapter).getILoadCallback();
-                }
-                mLoadCallback.onSuccess();
 
             }
         }, userId, keyCode, lineId, pageNo, LOAD_PAGE_SIZE, vehCode, driverName, mExceptionType);
@@ -325,17 +302,11 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
             @Override
             public void onNext(Object o) {
-                refreshWorkloadList();
+                loadData();
             }
         }, userId, keyCode, objId, outTime, arrivalTime, gpsStatus, opStatus);
     }
 
-    public void refreshWorkloadList() {
-        rvWorkLoad.scrollToPosition(0);
-        mCurrentPage = 1;
-        adapter.clearData();
-        loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
-    }
 
 
     @Override
@@ -374,7 +345,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
         if (TextUtils.isEmpty(mExceptionType))
             return;
         mExceptionType = null;
-        refreshWorkloadList();
+        loadData();
     }
 
     private void filterWorkload(int exceptionType) {
@@ -382,7 +353,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
         if (!tempType.equals(mExceptionType)) {
             mExceptionType = tempType;
         }
-        refreshWorkloadList();
+        loadData();
     }
 
     private void updateTabBackground(int tag) {
@@ -446,6 +417,21 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener {
 
     public String disPlayNum(int num) {
         return num < 10 ? "0" + num : "" + num;
+    }
+
+    @Override
+    public void onLoadMore() {
+        if (mCurrentPage * LOAD_PAGE_SIZE >= mPageSize) {
+            arrayAdapter.stopMore();
+        } else {
+            mCurrentPage++;
+            loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        loadData();
     }
 
     public interface OnListener {

@@ -45,10 +45,10 @@ public class LoadMoreAdapterWrapper extends BaseAdapter<String> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == R.layout.list_item_no_more) {
+        if (viewType == R.layout.list_item_load_more) {
             View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
             return new NoMoreItemVH(view);
-        } else if (viewType == R.layout.list_item_loading) {
+        } else if (viewType == R.layout.list_item_no_more) {
             View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
             return new LoadingItemVH(view);
         } else {
@@ -81,9 +81,9 @@ public class LoadMoreAdapterWrapper extends BaseAdapter<String> {
     public int getItemViewType(int position) {
         if (position == getItemCount() - 1) {
             if (hasMoreData) {
-                return R.layout.list_item_loading;
-            } else {
                 return R.layout.list_item_no_more;
+            } else {
+                return R.layout.list_item_load_more;
             }
         } else {
             return mAdapter.getItemViewType(position);
