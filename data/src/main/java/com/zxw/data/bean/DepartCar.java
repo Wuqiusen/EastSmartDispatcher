@@ -32,7 +32,7 @@ public class DepartCar implements Serializable {
     private String electronRailName;
     private int id;
     private int isDouble;
-    private int spaceTime;
+    private String spaceTime;
     private int type;
     private int unRunTaskStatus;
     private String taskId;
@@ -182,11 +182,11 @@ public class DepartCar implements Serializable {
         this.isDouble = isDouble;
     }
 
-    public int getSpaceTime() {
+    public String getSpaceTime() {
         return spaceTime;
     }
 
-    public void setSpaceTime(int spaceTime) {
+    public void setSpaceTime(String spaceTime) {
         this.spaceTime = spaceTime;
     }
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.InformContentBean;
 import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.Constants;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.utils.SpUtils;
@@ -91,6 +92,7 @@ public class InformDataAdapter extends BaseAdapter {
 
             @Override
             public void onError(Throwable e) {
+                LogUtil.loadRemoteError("getInformContent " + e.getMessage());
 
             }
 

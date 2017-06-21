@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.http.HttpInterfaces;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
@@ -77,6 +78,7 @@ public class UpdateWaitCarCodeDialog extends AlertDialog.Builder implements View
             @Override
             public void onError(Throwable e) {
                 ToastHelper.showToast(e.getMessage());
+                LogUtil.loadRemoteError("getStopCarList " + e.getMessage());
             }
 
             @Override

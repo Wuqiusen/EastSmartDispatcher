@@ -23,6 +23,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.zxw.dispatch.R.id.tv_interval_time;
+
 /**
  * author：CangJie on 2016/9/21 09:53
  * email：cangjie2016@gmail.com
@@ -65,8 +67,13 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
         else
             holder.tvTrainman.setText("");
 
-//      holder.tvStopTime.setText(String.valueOf(history.vehTime));
-        holder.tvIntervalTime.setText(String.valueOf(history.spaceTime));
+        String spaceTime = history.spaceTime;
+        if (TextUtils.isEmpty(spaceTime)){
+            holder.tvIntervalTime.setText("首班");
+        }else{
+            holder.tvIntervalTime.setText(spaceTime);
+        }
+
         holder.tvPlanTime.setText(DisplayTimeUtil.substring(history.vehTime));
         // 到站时刻
         if (history.arriveTime != null && !TextUtils.isEmpty(history.arriveTime))
@@ -247,7 +254,7 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
         TextView tvArriveTime;
 //        @Bind(R.id.tv_stop_time)
 //        TextView tvStopTime;
-        @Bind(R.id.tv_interval_time)
+        @Bind(tv_interval_time)
         TextView tvIntervalTime;
         @Bind(R.id.tv_send_time)
         TextView tvSendTime;

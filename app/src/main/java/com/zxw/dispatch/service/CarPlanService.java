@@ -15,6 +15,7 @@ import android.util.Log;
 
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.source.DepartSource;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SendCarUtils;
 import com.zxw.dispatch.utils.SpUtils;
@@ -128,6 +129,7 @@ public class CarPlanService extends Service {
 
             @Override
             public void onError(Throwable e) {
+                LogUtil.loadRemoteError("departListByLine " + e.getMessage());
                 failSleep(lineId);
             }
 

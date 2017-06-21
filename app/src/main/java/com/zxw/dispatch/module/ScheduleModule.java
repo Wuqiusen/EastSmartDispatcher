@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
@@ -134,6 +135,7 @@ public class ScheduleModule extends LinearLayout {
             @Override
             public void onError(Throwable e) {
                 listener.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("schedulePlan " + e.getMessage());
             }
 
             @Override

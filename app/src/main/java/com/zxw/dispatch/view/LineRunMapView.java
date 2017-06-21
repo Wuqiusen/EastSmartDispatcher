@@ -30,6 +30,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.http.HttpGPsRequest;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.recycler.VehicleCodeListAdapter;
 import com.zxw.dispatch.utils.DebugLog;
@@ -151,6 +152,7 @@ public class LineRunMapView extends LinearLayout implements LocationSource, AMap
                             setAdapter(sendList);
                         }
                     }
+                    LogUtil.loadRemoteError("gpsByVehCode " + e.getMessage());
                 }
 
                 @Override

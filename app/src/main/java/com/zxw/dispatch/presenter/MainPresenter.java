@@ -20,6 +20,7 @@ import com.zxw.data.http.HttpMethods;
 import com.zxw.data.source.DepartSource;
 import com.zxw.data.source.LineSource;
 import com.zxw.data.source.StopSource;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
@@ -98,6 +99,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
+                LogUtil.loadRemoteError("loadLine " + e.getMessage());
                 mvpView.hideLoading();
                 mvpView.disPlay(e.getMessage());
                 mvpView.reLogin();
@@ -121,7 +123,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-
+                LogUtil.loadRemoteError("lineParams " + e.getMessage());
             }
 
             @Override
@@ -153,6 +155,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("missionList " + e.getMessage());
             }
 
             @Override
@@ -176,6 +179,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("lineMakeup " + e.getMessage());
             }
 
             @Override
@@ -203,6 +207,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("goneListByLine " + e.getMessage());
             }
 
             @Override
@@ -242,6 +247,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("goneListByOperation " + e.getMessage());
             }
 
             @Override
@@ -281,6 +287,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("goneListByOther " + e.getMessage());
             }
 
             @Override
@@ -327,6 +334,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("departListByLine " + e.getMessage());
             }
 
             @Override
@@ -369,6 +377,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("departListByOperation " + e.getMessage());
             }
 
             @Override
@@ -411,6 +420,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("departListByOther " + e.getMessage());
             }
 
             @Override
@@ -443,26 +453,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), lineId);
     }
 
-    public void updateVehicle(int opId, int vehId, int sjId, String scId, String projectTime, int spaceMin, String inTime2) {
-        mDepartSource.updateVehicle(new Subscriber() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mvpView.disPlay(e.getMessage());
-                mvpView.hideLoading();
-            }
-
-            @Override
-            public void onNext(Object o) {
-                refreshList();
-            }
-        }, userId(), keyCode(), opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
-    }
-
     public void sendVehicle(int opId, final Dialog sDialog) {
         mDepartSource.sendCar(new Subscriber() {
             @Override
@@ -474,6 +464,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
                 mvpView.hideLoading();
+                LogUtil.loadRemoteError("sendCar " + e.getMessage());
             }
 
             @Override
@@ -493,6 +484,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
+                LogUtil.loadRemoteError("sortVehicle " + e.getMessage());
                 mvpView.disPlay(e.getMessage());
                 mvpView.hideLoading();
             }
@@ -525,7 +517,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-
+                LogUtil.loadRemoteError("loadStopByEnd " + e.getMessage());
             }
 
             @Override
@@ -565,7 +557,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-
+                LogUtil.loadRemoteError("loadStopByStay " + e.getMessage());
             }
 
             @Override
@@ -634,6 +626,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("vehicleStopCtrl " + e.getMessage());
             }
 
             @Override
@@ -657,6 +650,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 @Override
                 public void onError(Throwable e) {
                     mvpView.disPlay(e.getMessage());
+                    LogUtil.loadRemoteError("stopToSchedule " + e.getMessage());
                 }
 
                 @Override
@@ -681,6 +675,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("changePersonInfo " + e.getMessage());
             }
 
             @Override
@@ -706,7 +701,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-
+                LogUtil.loadRemoteError("alertVehTime " + e.getMessage());
             }
 
             @Override
@@ -733,7 +728,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                 @Override
                 public void onError(Throwable e) {
-
+                    LogUtil.loadRemoteError("missionList " + e.getMessage());
                 }
 
                 @Override
@@ -760,6 +755,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("missionType " + e.getMessage());
             }
 
             @Override
@@ -809,7 +805,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             @Override
             public void onError(Throwable e) {
-
+                LogUtil.loadRemoteError("getVehicleNumber " + e.getMessage());
             }
 
             @Override
@@ -863,7 +859,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
-
+                LogUtil.loadRemoteError("callBackScheduleCar " + e.getMessage());
             }
 
             @Override
@@ -890,7 +886,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
-
+                LogUtil.loadRemoteError("callBackGoneCar " + e.getMessage());
             }
 
             @Override
@@ -921,7 +917,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 @Override
                 public void onError(Throwable e) {
                     mvpView.disPlay(e.getMessage());
-
+                    LogUtil.loadRemoteError("goneCarNormalRemarks " + e.getMessage());
                 }
 
                 @Override
@@ -938,6 +934,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     /**
      * 修改已发车辆备注信息_异常
+     *
      * @param objId
      * @param status
      * @param remarks
@@ -958,7 +955,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 @Override
                 public void onError(Throwable e) {
                     mvpView.disPlay(e.getMessage());
-
+                    LogUtil.loadRemoteError("goneCarAbNormalRemarks " + e.getMessage());
                 }
 
                 @Override
@@ -967,62 +964,10 @@ public class MainPresenter extends BasePresenter<MainView> {
                     loadGoneCarList();
 
                 }
-            }, userId(), keyCode(), objId, status, remarkStr,runOnce,operateMileage,emptyMileage);
+            }, userId(), keyCode(), objId, status, remarkStr, runOnce, operateMileage, emptyMileage);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    public void updateSpaceTime(int objId, String spaceTime) {
-        mvpView.showLoading();
-        HttpMethods.getInstance().updateSpaceTime(new Subscriber() {
-            @Override
-            public void onCompleted() {
-                mvpView.hideLoading();
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mvpView.disPlay(e.getMessage());
-
-            }
-
-            @Override
-            public void onNext(Object o) {
-                refreshPlanData();
-                loadSendCarList();
-            }
-        }, userId(), keyCode(), objId, spaceTime);
-    }
-
-    public void nonMissionType(String vehicleId) {
-        mvpView.showLoading();
-        HttpMethods.getInstance().nonMissionList(new Subscriber<List<NonMissionType>>() {
-            @Override
-            public void onCompleted() {
-                mvpView.hideLoading();
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mvpView.disPlay(e.getMessage());
-
-            }
-
-            @Override
-            public void onNext(List<NonMissionType> nonMissionTypes) {
-                if (nonMissionTypes != null && !nonMissionTypes.isEmpty()) {
-                    NonMissionTypeAdapter nonMissionTypeAdapter = new NonMissionTypeAdapter(nonMissionTypes, mContext);
-                    mvpView.nonMissionTypeDialog(nonMissionTypeAdapter);
-                } else {
-                    mvpView.disPlay("无非运营任务");
-                }
-
-            }
-        }, userId(), keyCode(), vehicleId);
     }
 
     public void lineSupport(int objId, int supportLineId) {
@@ -1036,7 +981,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
-
+                LogUtil.loadRemoteError("lineSupport " + e.getMessage());
             }
 
             @Override
@@ -1050,7 +995,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), objId, supportLineId);
     }
 
-    public void confirmInform(String vehicleId, String content, String typeId,String driverCode) {
+    public void confirmInform(String vehicleId, String content, String typeId, String driverCode) {
         mvpView.showLoading();
         try {
             String remarkStr = new DESPlus().encrypt(Base64.encode(content.getBytes("utf-8")));
@@ -1063,6 +1008,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 @Override
                 public void onError(Throwable e) {
                     mvpView.disPlay(e.getMessage());
+                    LogUtil.loadRemoteError("confrimInform " + e.getMessage());
                 }
 
                 @Override
@@ -1091,6 +1037,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                                          @Override
                                          public void onError(Throwable e) {
                                              mvpView.disPlay(e.getMessage());
+                                             LogUtil.loadRemoteError("stopCarEndToStay " + e.getMessage());
                                          }
 
                                          @Override
@@ -1113,6 +1060,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                                          @Override
                                          public void onError(Throwable e) {
                                              mvpView.disPlay(e.getMessage());
+                                             LogUtil.loadRemoteError("stopCarStayToEnd " + e.getMessage());
                                          }
 
                                          @Override
@@ -1161,7 +1109,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             public void onError(Throwable e) {
                 mvpView.hideLoading();
                 mvpView.disPlay(e.getMessage());
-
+                LogUtil.loadRemoteError("updateWaitCarCode " + e.getMessage());
             }
 
             @Override
@@ -1179,8 +1127,8 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
 
-
     private Subscription runCarSubscription;
+
     public void loadRunCarsAtMap() {
         runCarSubscription = Observable.interval(0, 30, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
@@ -1211,27 +1159,28 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("runningCarsAtMap " + e.getMessage());
             }
 
             @Override
             public void onNext(BaseBean<List<RunningCarBean>> runCarListBean) {
-                if (mRunningCarBean != null){
+                if (mRunningCarBean != null) {
                     mRunningCarBean.clear();
                 }
                 mRunningCarBean.addAll(runCarListBean.returnData);
 
                 mvpView.drawRunningCarAtMap(runCarListBean.returnData);
-                DebugLog.e("查询lineId:"+lineId+"---");
+                DebugLog.e("查询lineId:" + lineId + "---");
             }
-        }, userId(),keyCode(),lineId + "");
+        }, userId(), keyCode(), lineId + "");
     }
 
-    public List<RunningCarBean> getRunningCarList(){
+    public List<RunningCarBean> getRunningCarList() {
         return mRunningCarBean;
     }
 
-    public void unSubscribe(){
-        if(runCarSubscription != null)
+    public void unSubscribe() {
+        if (runCarSubscription != null)
             runCarSubscription.unsubscribe();
     }
 
@@ -1243,7 +1192,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            mvpView.showLoading();
+        mvpView.showLoading();
         HttpMethods.getInstance().sendGroupMessage(new Subscriber<BaseBean>() {
             @Override
             public void onCompleted() {
@@ -1253,11 +1202,12 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("sendGroupMessage " + e.getMessage());
             }
 
             @Override
             public void onNext(BaseBean baseBean) {
-                    mvpView.disPlay(baseBean.returnInfo);
+                mvpView.disPlay(baseBean.returnInfo);
             }
         }, userId(), keyCode(), lineId, message);
     }

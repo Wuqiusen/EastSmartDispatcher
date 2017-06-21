@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.recycler.DialogDoublePeopleAdapter;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
@@ -164,6 +165,7 @@ public class AlertNameDialog extends AlertDialog.Builder {
 
             @Override
             public void onError(Throwable e) {
+                LogUtil.loadRemoteError("getPersonDoubleList " + e.getMessage());
 
             }
 

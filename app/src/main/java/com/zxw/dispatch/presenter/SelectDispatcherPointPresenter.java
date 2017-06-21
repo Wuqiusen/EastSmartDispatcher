@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.zxw.data.bean.SpotBean;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.presenter.view.SelectDispatcherPointView;
 import com.zxw.dispatch.recycler.SpotAdapter;
 import com.zxw.dispatch.ui.LoginActivity;
@@ -32,6 +33,7 @@ public class SelectDispatcherPointPresenter extends BasePresenter<SelectDispatch
 
             @Override
             public void onError(Throwable e) {
+                LogUtil.loadRemoteError("dispatcherSpotList " + e.getMessage());
                 DebugLog.w(e.getMessage());
                 if (e.getMessage().equals("重复登录")){
                     receiverIntent.putExtra("order", "close");

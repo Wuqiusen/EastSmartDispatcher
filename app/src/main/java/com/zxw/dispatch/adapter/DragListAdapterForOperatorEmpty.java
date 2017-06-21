@@ -17,6 +17,7 @@ import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
@@ -302,7 +303,7 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
 
             @Override
             public void onError(Throwable e) {
-
+                LogUtil.loadRemoteError("getInformData " + e.getMessage());
             }
 
             @Override

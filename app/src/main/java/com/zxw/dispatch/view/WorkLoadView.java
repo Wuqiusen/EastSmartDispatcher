@@ -23,6 +23,7 @@ import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.WorkLoadVerifyViewHolder;
@@ -122,7 +123,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
             @Override
             public void onError(Throwable e) {
                 ToastHelper.showToast(e.getMessage());
-
+                LogUtil.loadRemoteError("deleteWorkload " + e.getMessage());
             }
 
             @Override
@@ -275,6 +276,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
             @Override
             public void onError(Throwable e) {
                 ToastHelper.showToast(e.getMessage());
+                LogUtil.loadRemoteError("workloadList " + e.getMessage());
             }
 
             @Override
@@ -297,7 +299,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
 
             @Override
             public void onError(Throwable e) {
-
+                LogUtil.loadRemoteError("updateWorkload " + e.getMessage());
             }
 
             @Override
