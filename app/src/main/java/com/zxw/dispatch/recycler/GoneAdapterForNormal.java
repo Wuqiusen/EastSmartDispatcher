@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.view.dialog.StartCarRemarkDialog;
@@ -110,32 +111,35 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
                 new StartCarRemarkDialog(mContext, mData.get(position).id, mData.get(position).status, mData.get(position).remarks,
                          new StartCarRemarkDialog.OnStartCarRemarkListener() {
                              @Override
-                             public void goneCarNormalRemarks(int objId, int status, String remarks) {
-                                 presenter.goneCarNormalRemarks(objId, status, remarks);
+                             public void goneCarNormalRemarks(int objId, int status, String remarks, BasePresenter.LoadDataStatus loadDataStatus) {
+                                 presenter.goneCarNormalRemarks(objId, status, remarks, loadDataStatus);
                              }
 
                              @Override
-                             public void goneCarAbNormalRemarks(int objId, int status, String remarks, int runOnce, double runMileage, double runEmpMileage) {
-                                 presenter.goneCarAbNormalRemarks(objId,status,remarks,runOnce,runMileage,runEmpMileage);
+                             public void goneCarAbNormalRemarks(int objId, int status, String remarks,
+                                                                int runOnce, double runMileage, double runEmpMileage, BasePresenter.LoadDataStatus loadDataStatus) {
+                                 presenter.goneCarAbNormalRemarks(objId,status,remarks,runOnce,runMileage,runEmpMileage, loadDataStatus);
                              }
                 });
             }
         });
 
         String driverStatus = "";
-        switch (mData.get(position).opStatus){
-            case 1:
-                driverStatus = "待开始";
-                break;
-            case 2:
-                driverStatus = "进行中";
-                break;
-            case 3:
-                driverStatus = "异常终止";
-                break;
-            case 4:
-                driverStatus = "正常结束";
-                break;
+        if (mData.get(position).opStatus !=null){
+            switch (mData.get(position).opStatus){
+                case 1:
+                    driverStatus = "待开始";
+                    break;
+                case 2:
+                    driverStatus = "进行中";
+                    break;
+                case 3:
+                    driverStatus = "异常终止";
+                    break;
+                case 4:
+                    driverStatus = "正常结束";
+                    break;
+            }
         }
         holder.tv_driver_ok.setText(driverStatus);
 
@@ -211,13 +215,19 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
         View view = View.inflate(mContext,R.layout.view_withdraw_dialog,null);
         TextView tv_prompt = (TextView) view.findViewById(R.id.tv_prompt);
         tv_prompt.setText("您确定把车辆撤回到待发车辆列表？");
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.callBackGoneCar(objId);
-                mDialog.dismiss();
+                btn_confirm.setClickable(false);
+                presenter.callBackGoneCar(objId, new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        mDialog.dismiss();
+                    }
+                });
+
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {

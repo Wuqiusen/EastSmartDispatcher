@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.zxw.data.bean.LineParams;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.smart_edittext.SmartEditText;
@@ -27,6 +28,7 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
     private SmartEditText et_steward;
     private LinearLayout ll_steward;
     private AlertDialog dialog;
+    private BasePresenter.LoadDataStatus loadDataStatus;
 
     public ManualAddStopCarDialog(Context context, LineParams lineParams, OnManualAddStopCarListener listener) {
         super(context, R.style.alder_dialog);
@@ -46,7 +48,7 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
 
         initSmartEditText();
 
-        Button btn_confirm = (Button) container.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) container.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) container.findViewById(R.id.btn_cancel);
 
         // 是否需要显示乘务员输入框
@@ -92,7 +94,14 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
                             return;
                         }
                     }
-                    mListener.manualAddStopCar(carId, driverId, stewardId);
+                    btn_confirm.setClickable(false);
+                    loadDataStatus = new BasePresenter.LoadDataStatus() {
+                        @Override
+                        public void OnLoadDataFinish() {
+                            btn_confirm.setClickable(true);
+                        }
+                    };
+                    mListener.manualAddStopCar(carId, driverId, stewardId, loadDataStatus);
                     dialog.dismiss();
                 }
             }
@@ -115,6 +124,6 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
     }
 
     public interface OnManualAddStopCarListener {
-        void manualAddStopCar(String carId, String driverId, String stewardId);
+        void manualAddStopCar(String carId, String driverId, String stewardId, BasePresenter.LoadDataStatus loadDataStatus);
     }
 }

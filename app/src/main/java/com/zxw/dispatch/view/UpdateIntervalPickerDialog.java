@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 
 /**
  * author MXQ
@@ -23,6 +24,7 @@ public class UpdateIntervalPickerDialog  extends AlertDialog {
     private String sMinute = null;
     private OnTimePickerListener mListener;
     private int mCurMinute;
+    private BasePresenter.LoadDataStatus loadDataStatus;
 
 
     public UpdateIntervalPickerDialog(Context context, int curMinute, OnTimePickerListener mListener) {
@@ -63,10 +65,17 @@ public class UpdateIntervalPickerDialog  extends AlertDialog {
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_confirm.setClickable(false);
                 if (TextUtils.isEmpty(sMinute)) {
                     sMinute = String.valueOf(mCurMinute);
                 }
-                mListener.onTimePicker(sMinute);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
+                mListener.onTimePicker(sMinute, loadDataStatus);
                 dismiss();
             }
         });
@@ -74,7 +83,7 @@ public class UpdateIntervalPickerDialog  extends AlertDialog {
 
 
     public interface OnTimePickerListener {
-        void onTimePicker(String sMinute);
+        void onTimePicker(String sMinute, BasePresenter.LoadDataStatus loadDataStatus);
     }
 }
 
