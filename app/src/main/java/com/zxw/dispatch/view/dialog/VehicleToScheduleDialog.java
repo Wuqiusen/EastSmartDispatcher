@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -16,6 +17,7 @@ import com.zxw.data.bean.StopHistory;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MySpinnerAdapter;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
@@ -24,6 +26,7 @@ import com.zxw.dispatch.view.smart_edittext.SmartEditText;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.FileHandler;
 
 import rx.Subscriber;
 
@@ -60,6 +63,8 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
     private Spinner sp_stop_car_item2;
     private Spinner sp_stop_car_item3;
     private TextView containerView5;
+    private BasePresenter.LoadDataStatus loadDataStatus;
+    private Button btn_confirm;
 
     public VehicleToScheduleDialog(Context context, StopHistory stopCar, OnClickListener listener, int lineId) {
         super(context, R.style.alder_dialog);
@@ -107,6 +112,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         rb_operator_not_empty = (RadioButton) container.findViewById(R.id.rb_operator_not_empty);
         rb_help = (RadioButton) container.findViewById(R.id.rb_help);
         rb_off_duty = (RadioButton) container.findViewById(R.id.rb_off_duty);
+        btn_confirm = (Button) container.findViewById(R.id.btn_confirm);
         rg_category.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -160,31 +166,49 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
                     break;
             }
         }
-        container.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (dialog == null || !dialog.isShowing())
                     return;
+
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
                 switch (currentCategory) {
                     case 1:
                         if (onClickNormalMission())
                             dialog.dismiss();
+                        else
+                            btn_confirm.setClickable(true);
                         break;
                     case 2:
                         if (onClickOperatorEmptyMission())
                             dialog.dismiss();
+                        else
+                            btn_confirm.setClickable(true);
                         break;
                     case 3:
                         if (onClickOperatorNotEmptyMission())
                             dialog.dismiss();
+                        else
+                            btn_confirm.setClickable(true);
                         break;
                     case 4:
                         if (onClickHelpMission())
                             dialog.dismiss();
+                        else
+                            btn_confirm.setClickable(true);
                         break;
                     case 5:
                         if (onClickOffDutyMission())
                             dialog.dismiss();
+                        else
+                            btn_confirm.setClickable(true);
                         break;
                 }
             }
@@ -210,7 +234,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
 
     private boolean onClickOffDutyMission() {
         if (dialog != null && dialog.isShowing()) {
-            mListener.onOffDuty();
+            mListener.onOffDuty(loadDataStatus);
             return true;
         }
         return false;
@@ -250,7 +274,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
             if (lineId == 0) {
                 return false;
             }
-            mListener.onClickHelpMission(currentCategory, lineId);
+            mListener.onClickHelpMission(currentCategory, lineId, loadDataStatus);
         } catch (Exception e) {
             ToastHelper.showToast(e.getMessage());
             return false;
@@ -275,7 +299,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         }
         int selectedItemPosition = sp_stop_car_item2.getSelectedItemPosition();
         int taskId = taskContents2.get(selectedItemPosition).getTaskId();
-        mListener.onClickOperatorNotEmptyMission(currentCategory, taskId, beginTime, endTime, count, km,remarks);
+        mListener.onClickOperatorNotEmptyMission(currentCategory, taskId, beginTime, endTime, count, km,remarks, loadDataStatus);
         return true;
     }
 
@@ -296,7 +320,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         }
         int selectedItemPosition = sp_stop_car_item2.getSelectedItemPosition();
         int taskId = taskContents2.get(selectedItemPosition).getTaskId();
-        mListener.onClickOperatorEmptyMission(currentCategory, taskId, beginTime, endTime, count, km,remarks);
+        mListener.onClickOperatorEmptyMission(currentCategory, taskId, beginTime, endTime, count, km,remarks, loadDataStatus);
         return true;
     }
 
@@ -320,7 +344,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
             ToastHelper.showToast("请选择线路");
             return false;
         }
-        mListener.onClickNormalMission(currentCategory, taskContentBean.getTaskId());
+        mListener.onClickNormalMission(currentCategory, taskContentBean.getTaskId(), loadDataStatus);
         return true;
     }
 
@@ -378,15 +402,15 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
     }
 
     public interface OnClickListener {
-        void onClickNormalMission(int type, int taskId);
+        void onClickNormalMission(int type, int taskId, BasePresenter.LoadDataStatus loadDataStatus);
 
-        void onClickOperatorEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks);
+        void onClickOperatorEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks, BasePresenter.LoadDataStatus loadDataStatus);
 
-        void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks);
+        void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks, BasePresenter.LoadDataStatus loadDataStatus);
 
-        void onClickHelpMission(int type, int taskId);
+        void onClickHelpMission(int type, int taskId, BasePresenter.LoadDataStatus loadDataStatus);
 
-        void onOffDuty();
+        void onOffDuty(BasePresenter.LoadDataStatus loadDataStatus);
 
     }
 }

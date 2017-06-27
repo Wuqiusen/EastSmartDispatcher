@@ -14,6 +14,7 @@ import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.http.HttpInterfaces;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.recycler.WaitCarCodeUpdateAdapter;
@@ -39,6 +40,7 @@ public class UpdateWaitCarCodeDialog extends AlertDialog.Builder implements View
     private OnListener mListener;
     private StopCarCodeBean mStopCarCodeBean;
     private int mLineId;
+    private BasePresenter.LoadDataStatus loadDataStatus;
 
 
     public UpdateWaitCarCodeDialog(Context context,int lineId,OnListener listener) {
@@ -110,7 +112,14 @@ public class UpdateWaitCarCodeDialog extends AlertDialog.Builder implements View
                     ToastHelper.showToast("请选择更改的车辆号!");
                     return;
                 }
-                mListener.onConfirmChangeCarCode(mStopCarCodeBean);
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
+                mListener.onConfirmChangeCarCode(mStopCarCodeBean, loadDataStatus);
                 dialog.dismiss();
                 break;
             case R.id.btn_cancel:
@@ -123,6 +132,6 @@ public class UpdateWaitCarCodeDialog extends AlertDialog.Builder implements View
 
 
     public interface OnListener{
-        void onConfirmChangeCarCode(StopCarCodeBean bean);
+        void onConfirmChangeCarCode(StopCarCodeBean bean, BasePresenter.LoadDataStatus loadDataStatus);
     }
 }

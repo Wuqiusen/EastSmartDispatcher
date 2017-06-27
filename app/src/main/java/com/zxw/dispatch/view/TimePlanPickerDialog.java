@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
+import com.zxw.dispatch.utils.DebugLog;
 
 
 /**
@@ -25,6 +27,7 @@ public class TimePlanPickerDialog extends AlertDialog {
     private String sMinute = null;
     private OnTimePickerListener mListener;
     private String mVehTime;
+    private BasePresenter.LoadDataStatus loadDataStatus;
 
 
 
@@ -80,6 +83,8 @@ public class TimePlanPickerDialog extends AlertDialog {
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DebugLog.e("按钮不可按-------");
+                btn_confirm.setClickable(false);
                 if (TextUtils.isEmpty(sHour)) {
                     sHour = String.valueOf(Integer.parseInt(mVehTime.substring(0,2)));
                 }
@@ -92,14 +97,21 @@ public class TimePlanPickerDialog extends AlertDialog {
                 if (sMinute.trim().length() == 1) {
                     sMinute = "0"+ sMinute;
                 }
-                mListener.onTimePicker(sHour,sMinute);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                        DebugLog.e("按钮可以使用---------");
+                    }
+                };
+                mListener.onTimePicker(sHour,sMinute, loadDataStatus);
                 dismiss();
             }
         });
     }
 
     public interface OnTimePickerListener{
-        void onTimePicker(String sHour,String sMinute);
+        void onTimePicker(String sHour, String sMinute, BasePresenter.LoadDataStatus loadDataStatus);
     }
 
 

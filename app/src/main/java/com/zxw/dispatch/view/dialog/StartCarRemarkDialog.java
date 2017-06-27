@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.utils.ToastHelper;
 
 /**
@@ -31,6 +32,7 @@ public class StartCarRemarkDialog extends AlertDialog.Builder {
     private String mRemark;
     private AlertDialog mDialog;
     private OnStartCarRemarkListener mListener;
+    private BasePresenter.LoadDataStatus loadDataStatus;
 
     public StartCarRemarkDialog(Context context, int objId, int status, String remark, OnStartCarRemarkListener listener) {
         super(context, R.style.alder_dialog);
@@ -81,10 +83,18 @@ public class StartCarRemarkDialog extends AlertDialog.Builder {
                     return;
                 }
 
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
+
                     int mStatus = 2;
                     // 异常
                     mListener.goneCarAbNormalRemarks(mObjId,mStatus,remarks,Integer.parseInt(runNum)
-                            ,Double.parseDouble(runMileage),Double.parseDouble(runEmpMileage));
+                            ,Double.parseDouble(runMileage),Double.parseDouble(runEmpMileage), loadDataStatus);
                 mDialog.dismiss();
             }
         });
@@ -103,8 +113,9 @@ public class StartCarRemarkDialog extends AlertDialog.Builder {
     }
 
     public interface OnStartCarRemarkListener{
-        void goneCarNormalRemarks(int objId,int status,String remarks);
+        void goneCarNormalRemarks(int objId,int status,String remarks, BasePresenter.LoadDataStatus loadDataStatus);
 
-        void goneCarAbNormalRemarks(int mObjId, int mStatus, String remarks, int runNum, double runMileage, double runEmpMileage);
+        void goneCarAbNormalRemarks(int mObjId, int mStatus, String remarks, int runNum,
+                                    double runMileage, double runEmpMileage, BasePresenter.LoadDataStatus loadDataStatus);
     }
 }

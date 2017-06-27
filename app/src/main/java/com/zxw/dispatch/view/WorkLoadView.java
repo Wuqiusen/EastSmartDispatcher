@@ -26,6 +26,7 @@ import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.WorkLoadVerifyViewHolder;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.CreateRecyclerView;
 import com.zxw.dispatch.utils.DESPlus;
@@ -109,13 +110,14 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
         loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
     }
 
-    private void deleteWorkload(long objId) {
+    private void deleteWorkload(long objId, final BasePresenter.LoadDataStatus loadDataStatus) {
         mListener.showLoading();
         String userId = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
         String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
         HttpMethods.getInstance().deleteWorkload(new Subscriber<BaseBean>() {
             @Override
             public void onCompleted() {
+                loadDataStatus.OnLoadDataFinish();
                 mListener.hideLoading();
             }
 
@@ -217,31 +219,31 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
             public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
                 return new WorkLoadVerifyViewHolder(parent, new WorkLoadVerifyViewHolder.OnWorkLoadItemClickListener() {
                     @Override
-                    public void onAlertOutTime(long objId, String str) {
-                        updateWorkload(objId, str, null, null, null);
+                    public void onAlertOutTime(long objId, String str, BasePresenter.LoadDataStatus loadDataStatus) {
+                        updateWorkload(objId, str, null, null, null, loadDataStatus);
                     }
 
                     @Override
-                    public void onAlertArriveTime(long objId, String str) {
-                        updateWorkload(objId, null, str, null, null);
-
-                    }
-
-                    @Override
-                    public void onAlertGpsStatus(long objId, int str) {
-                        updateWorkload(objId, null, null, String.valueOf(str), null);
+                    public void onAlertArriveTime(long objId, String str, BasePresenter.LoadDataStatus loadDataStatus) {
+                        updateWorkload(objId, null, str, null, null, loadDataStatus);
 
                     }
 
                     @Override
-                    public void onAlertDriverStatus(long objId, int str) {
-                        updateWorkload(objId, null, null, null, String.valueOf(str));
+                    public void onAlertGpsStatus(long objId, int str, BasePresenter.LoadDataStatus loadDataStatus) {
+                        updateWorkload(objId, null, null, String.valueOf(str), null, loadDataStatus);
 
                     }
 
                     @Override
-                    public void onDelete(long objId) {
-                        deleteWorkload(objId);
+                    public void onAlertDriverStatus(long objId, int str, BasePresenter.LoadDataStatus loadDataStatus) {
+                        updateWorkload(objId, null, null, null, String.valueOf(str), loadDataStatus);
+
+                    }
+
+                    @Override
+                    public void onDelete(long objId, BasePresenter.LoadDataStatus loadDataStatus) {
+                        deleteWorkload(objId, loadDataStatus);
                     }
                 });
             }
@@ -286,12 +288,14 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
         }, userId, keyCode, lineId, pageNo, LOAD_PAGE_SIZE, vehCode, driverName, mExceptionType);
     }
 
-    public void updateWorkload(long objId, String outTime, String arrivalTime, String gpsStatus, String opStatus) {
+    public void updateWorkload(long objId, String outTime, String arrivalTime, String gpsStatus,
+                               String opStatus, final BasePresenter.LoadDataStatus loadDataStatus) {
         String userId = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
         String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
         HttpMethods.getInstance().updateWorkload(new Subscriber() {
             @Override
             public void onCompleted() {
+                loadDataStatus.OnLoadDataFinish();
 
             }
 

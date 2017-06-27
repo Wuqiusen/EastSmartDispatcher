@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.utils.ToastHelper;
 
 
@@ -37,6 +38,7 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
     private final static int DIALOG_TYPE_OUT_TIME = 1, DIALOG_TYPE_ARRIVE_TIME = 2;
     private int mDriverOpTag;
     private int mGpsTag;
+    private BasePresenter.LoadDataStatus loadDataStatus;
     
     public WorkLoadVerifyViewHolder(ViewGroup parent, OnWorkLoadItemClickListener listener) {
         super(parent, R.layout.item_work_load_verify);
@@ -164,13 +166,20 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(getContext(),R.layout.dialog_work_load_delete,null);
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                DebugLog.w("gps" + mGpsTag);
-                mListener.onDelete(data.getObjId());
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
+                mListener.onDelete(data.getObjId(), loadDataStatus);
                 dialog.dismiss();
             }
         });
@@ -200,7 +209,7 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
         View view = View.inflate(getContext(),R.layout.dialog_work_load_time,null);
         final EditText et_time = (EditText) view.findViewById(R.id.et_time);
         et_time.setText(time);
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,10 +220,17 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
                     ToastHelper.showToast("请输入正确时间");
                     return;
                 }
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
+                btn_confirm.setClickable(false);
                 if (type == DIALOG_TYPE_OUT_TIME){
-                    mListener.onAlertOutTime(objId, time);
+                    mListener.onAlertOutTime(objId, time, loadDataStatus);
                 }else{
-                    mListener.onAlertArriveTime(objId, time);
+                    mListener.onAlertArriveTime(objId, time, loadDataStatus);
                 }
                 dialog.dismiss();
             }
@@ -263,13 +279,20 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
                 }
             }
         });
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
-        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
 //                DebugLog.w("gps" + mGpsTag);
-                mListener.onAlertGpsStatus(data.getObjId(), mGpsTag);
+                mListener.onAlertGpsStatus(data.getObjId(), mGpsTag, loadDataStatus);
                 dialog.dismiss();
             }
         });
@@ -316,13 +339,20 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
                 }
             }
         });
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
                 //司机确认
-                mListener.onAlertDriverStatus(data.getObjId(), mDriverOpTag);
+                mListener.onAlertDriverStatus(data.getObjId(), mDriverOpTag, loadDataStatus);
                 dialog.dismiss();
             }
         });
@@ -344,10 +374,10 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
     }
 
     public interface OnWorkLoadItemClickListener {
-        void onAlertOutTime(long objId, String str);
-        void onAlertArriveTime(long objId, String str);
-        void onAlertGpsStatus(long objId, int str);
-        void onAlertDriverStatus(long objId, int str);
-        void onDelete(long objId);
+        void onAlertOutTime(long objId, String str, BasePresenter.LoadDataStatus loadDataStatus);
+        void onAlertArriveTime(long objId, String str, BasePresenter.LoadDataStatus loadDataStatus);
+        void onAlertGpsStatus(long objId, int str, BasePresenter.LoadDataStatus loadDataStatus);
+        void onAlertDriverStatus(long objId, int str, BasePresenter.LoadDataStatus loadDataStatus);
+        void onDelete(long objId, BasePresenter.LoadDataStatus loadDataStatus);
     }
 }
