@@ -11,6 +11,7 @@ import com.zxw.dispatch.utils.SpUtils;
 public class BasePresenter<V extends BaseView> {
     public V mvpView;
     protected int httpCount;
+    protected LoadDataStatus mLoadDataStatus;
 
     public BasePresenter(V mvpView) {
         this.mvpView = mvpView;
@@ -36,4 +37,10 @@ public class BasePresenter<V extends BaseView> {
 //    protected String md5(String str){
 //        return MD5.MD5Encode(str);
 //    }
+
+
+    public interface LoadDataStatus{
+        void OnLoadDataFinish();
+    }
+
 }

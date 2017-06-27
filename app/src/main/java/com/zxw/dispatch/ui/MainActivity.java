@@ -40,6 +40,7 @@ import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.adapter.PopupAdapter;
 import com.zxw.dispatch.module.ScheduleModule;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
@@ -866,28 +867,30 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void createVehicleToScheduleDialog(final StopHistory stopCar) {
         new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
             @Override
-            public void onClickNormalMission(int type, int taskId) {
-                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null);
+            public void onClickNormalMission(int type, int taskId, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null, loadDataStatus);
             }
 
             @Override
-            public void onClickOperatorEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks) {
-                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks);
+            public void onClickOperatorEmptyMission(int type, int taskType, String beginTime,
+                                                    String endTime, String runNum, String runEmpMileage,String remarks, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks, loadDataStatus);
             }
 
             @Override
-            public void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks) {
-                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks);
+            public void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime,
+                                                       String endTime, String runNum, String runEmpMileage,String remarks, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks, loadDataStatus);
             }
 
             @Override
-            public void onClickHelpMission(int type, int taskId) {
-                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null);
+            public void onClickHelpMission(int type, int taskId, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null, loadDataStatus);
             }
 
             @Override
-            public void onOffDuty() {
-                presenter.stopCarStayToEnd(stopCar.id);
+            public void onOffDuty(BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarStayToEnd(stopCar.id, loadDataStatus);
             }
 
 
@@ -898,8 +901,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void showManualAddStopCarDialog() {
         new ManualAddStopCarDialog(mContext, presenter.getLineParams(), new ManualAddStopCarDialog.OnManualAddStopCarListener() {
             @Override
-            public void manualAddStopCar(String carId, String driverId, String stewardId) {
-                presenter.manualAddStopCar(carId, driverId, stewardId);
+            public void manualAddStopCar(String carId, String driverId, String stewardId, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.manualAddStopCar(carId, driverId, stewardId, loadDataStatus);
             }
         });
     }
