@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.view.dialog.StartCarRemarkDialog;
@@ -36,6 +37,7 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
 
     public GoneAdapterForNormal(List<SendHistory> mData, Context mContext, LineParams mLineParams, MainPresenter presenter) {
         this.mData = mData;
+        this.mData = mData;
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
         this.mLineParams = mLineParams;
@@ -51,7 +53,7 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
     @Override
     public void onBindViewHolder(final LineHolder holder, final int position) {
         SendHistory history = mData.get(position);
-        holder.tvCarSequence.setText(String.valueOf(position + 1));
+        holder.tvCarSequence.setText(String.valueOf(mData.size() - (position)));
         holder.tvCarCode.setText(history.code);
         if (history.taskEditBelongId == history.taskEditRunId){
             holder.tvCarCode.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
@@ -83,17 +85,17 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
 
 //      holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
 //      holder.tvStationStatus.setText(String.valueOf(history.vehTime));
-        try{
-            holder.tvStatus.setText(history.status == 1 ? "正常":"异常");
-        }catch (Exception e){
-            holder.tvStatus.setText("");
-        }
-        holder.tv_send_remark.setText(history.remarks);
         holder.tvWorkStatus.setText(history.typeName);
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
             holder.tvTrainman.setVisibility(View.GONE);
         }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
             holder.tvTrainman.setVisibility(View.VISIBLE);
+        }
+        //1正常、2异常
+        if (mData.get(position).status == 1){
+            holder.tv_send_remark.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
+        }else{
+            holder.tv_send_remark.setTextColor(mContext.getResources().getColor(R.color.font_gray));
         }
         // 备注
         holder.tv_send_remark.setOnClickListener(new View.OnClickListener() {
@@ -102,25 +104,38 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
                 new StartCarRemarkDialog(mContext, mData.get(position).id, mData.get(position).status, mData.get(position).remarks,
                          new StartCarRemarkDialog.OnStartCarRemarkListener() {
                              @Override
-                             public void goneCarNormalRemarks(int objId, int status, String remarks) {
-                                 presenter.goneCarNormalRemarks(objId, status, remarks);
+                             public void goneCarNormalRemarks(int objId, int status, String remarks, BasePresenter.LoadDataStatus loadDataStatus) {
+                                 presenter.goneCarNormalRemarks(objId, status, remarks, loadDataStatus);
                              }
 
                              @Override
-                             public void goneCarAbNormalRemarks(int objId, int status, String remarks, int runOnce, double runMileage, double runEmpMileage) {
-                                 presenter.goneCarAbNormalRemarks(objId,status,remarks,runOnce,runMileage,runEmpMileage);
+                             public void goneCarAbNormalRemarks(int objId, int status, String remarks,
+                                                                int runOnce, double runMileage, double runEmpMileage, BasePresenter.LoadDataStatus loadDataStatus) {
+                                 presenter.goneCarAbNormalRemarks(objId,status,remarks,runOnce,runMileage,runEmpMileage, loadDataStatus);
                              }
                 });
             }
         });
 
-        // 查看
-//      holder.tvCheckSendCar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                   openCarMsgDialog();
-//            }
-//      });
+        String driverStatus = "";
+        if (mData.get(position).opStatus !=null){
+            switch (mData.get(position).opStatus){
+                case 1:
+                    driverStatus = "待开始";
+                    break;
+                case 2:
+                    driverStatus = "进行中";
+                    break;
+                case 3:
+                    driverStatus = "异常终止";
+                    break;
+                case 4:
+                    driverStatus = "正常结束";
+                    break;
+            }
+        }
+        holder.tv_driver_ok.setText(driverStatus);
+
         // 撤回
         // 如果已有实际发车时间, 则因此撤回按钮
         if(TextUtils.isEmpty(mData.get(position).vehTimeReal)){
@@ -193,13 +208,19 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
         View view = View.inflate(mContext,R.layout.view_withdraw_dialog,null);
         TextView tv_prompt = (TextView) view.findViewById(R.id.tv_prompt);
         tv_prompt.setText("您确定把车辆撤回到待发车辆列表？");
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.callBackGoneCar(objId);
-                mDialog.dismiss();
+                btn_confirm.setClickable(false);
+                presenter.callBackGoneCar(objId, new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        mDialog.dismiss();
+                    }
+                });
+
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -246,14 +267,10 @@ public class GoneAdapterForNormal extends RecyclerView.Adapter<GoneAdapterForNor
         TextView tvTrainman;
 //        @Bind(R.id.tv_schedule_status)
 //        TextView tvScheduleStatus;
-        @Bind(R.id.tv_status)
-        TextView tvStatus;
         @Bind(R.id.tv_work_status)
         TextView tvWorkStatus;
-//        @Bind(R.id.tv_no_work_status)
-//        TextView tvNoWorkStatus;
-        @Bind(R.id.tv_check_send_car)
-        TextView tvCheckSendCar;
+        @Bind(R.id.tv_driver_ok)
+        TextView tv_driver_ok;
         @Bind(R.id.tv_send_remark)
         TextView tv_send_remark;
         @Bind(R.id.tv_send_withdraw)

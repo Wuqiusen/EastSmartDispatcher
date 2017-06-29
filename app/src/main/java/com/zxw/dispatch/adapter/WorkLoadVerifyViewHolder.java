@@ -1,10 +1,7 @@
-package com.zxw.dispatch.recycler;
+package com.zxw.dispatch.adapter;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,62 +11,62 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.dispatch.R;
-import com.zxw.dispatch.utils.DebugLog;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.utils.ToastHelper;
-import com.zxw.dispatch.view.recycle.BaseAdapter;
 
-import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
-import static android.R.attr.tag;
-import static com.zxw.dispatch.R.id.btn_cancel;
-import static com.zxw.dispatch.R.id.rb_error;
-import static com.zxw.dispatch.R.id.rb_ok;
-import static com.zxw.dispatch.R.id.rg;
-import static com.zxw.dispatch.R.id.tv_inform;
 
 /**
- * Created by moxiaoqing on 2017/5/19.
+ * Created by wuqiusen on 2017/6/16.
  */
 
-public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
-    private Context mContext;
-    private OnWorkLoadItemClickListener mListener;
-    private final LayoutInflater mLayoutInflater;
-    private final static int DIALOG_TYPE_OUT_TIME = 1, DIALOG_TYPE_ARRIVE_TIME = 2;
+public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem> {
+    TextView tvNo;
+    TextView tvVehId;
+    TextView tvDriverName;
+    TextView tvVehTime;
+    TextView tvOutTime;
+    TextView tvArriveTime;
+    TextView tvGps;
+    TextView tvDriverOk;
+    TextView tv_delete;
+    TextView tv_remarks;
 
+    private OnWorkLoadItemClickListener mListener;
+    private final static int DIALOG_TYPE_OUT_TIME = 1, DIALOG_TYPE_ARRIVE_TIME = 2;
     private int mDriverOpTag;
     private int mGpsTag;
-
-    public WorkLoadVerifyAdapter(Context context, OnWorkLoadItemClickListener listener){
-         this.mContext = context;
-         this.mListener = listener;
-         mLayoutInflater = LayoutInflater.from(context);
+    private BasePresenter.LoadDataStatus loadDataStatus;
+    
+    public WorkLoadVerifyViewHolder(ViewGroup parent, OnWorkLoadItemClickListener listener) {
+        super(parent, R.layout.item_work_load_verify);
+        tvNo = $(R.id.tv_no);
+        tvVehId = $(R.id.tv_vehId);
+        tvDriverName = $(R.id.tv_driver_name);
+        tvVehTime = $(R.id.tv_veh_time);
+        tvOutTime = $(R.id.tv_out_time);
+        tvArriveTime = $(R.id.tv_arrive_time);
+        tvGps = $(R.id.tv_gps);
+        tvDriverOk = $(R.id.tv_driver_ok);
+        tv_delete = $(R.id.tv_delete);
+        tv_remarks = $(R.id.tv_remarks);
+        this.mListener = listener;
     }
 
-
     @Override
-    public WorkLoadVerifyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mLayoutInflater.inflate(R.layout.item_work_load_verify,parent,false);
-        return new WorkLoadVerifyViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        WorkLoadVerifyViewHolder holder = ((WorkLoadVerifyViewHolder)viewHolder);
-        holder.tvNo.setText(String.valueOf(position + 1));
-        holder.tvVehId.setText(getDataSet().get(position).getVehCode());
-        holder.tvDriverName.setText(getDataSet().get(position).getDriverName());
-        holder.tvVehTime.setText(getDataSet().get(position).getVehTime());
+    public void setData(final DriverWorkloadItem data) {
+        super.setData(data);
+        tvNo.setText(String.valueOf(getDataPosition() + 1));
+        tvVehId.setText(data.getVehCode());
+        tvDriverName.setText(data.getDriverName());
+        tvVehTime.setText(data.getVehTime());
         // 后期:正常_打勾、异常_打叉；是否需呀设置监听
-        holder.tvOutTime.setText(getDataSet().get(position).getOutTime());
-        holder.tvArriveTime.setText(getDataSet().get(position).getArrivalTime());
+        tvOutTime.setText(data.getOutTime());
+        tvArriveTime.setText(data.getArrivalTime());
         String gps = "";
-        switch (getDataSet().get(position).getGpsStatus()){
+        switch (data.getGpsStatus()){
             case 0:
                 gps = "异常";
                 break;
@@ -77,9 +74,9 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
                 gps = "正常";
                 break;
         }
-        holder.tvGps.setText(gps);
+        tvGps.setText(gps);
         String driverStatus = "";
-        switch (getDataSet().get(position).getOpStatus()){
+        switch (data.getOpStatus()){
             case 1:
                 driverStatus = "待开始";
                 break;
@@ -93,50 +90,50 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
                 driverStatus = "正常结束";
                 break;
         }
-        holder.tvDriverOk.setText(driverStatus);
-        holder.tvDriverOk.setOnClickListener(new View.OnClickListener() {
+        tvDriverOk.setText(driverStatus);
+        tvDriverOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDriverOkDialog(position, getDataSet().get(position).getOpStatus());
+                showDriverOkDialog(data);
             }
         });
-        holder.tvGps.setOnClickListener(new View.OnClickListener() {
+        tvGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showGpsDialog(position, getDataSet().get(position).getGpsStatus());
+                showGpsDialog(data);
             }
         });
-        holder.tvOutTime.setOnClickListener(new View.OnClickListener() {
+        tvOutTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOutTimeDialog(getDataSet().get(position).getObjId(), getDataSet().get(position).getOutTime());
+                showOutTimeDialog(data.getObjId(), data.getOutTime());
             }
         });
-        holder.tvArriveTime.setOnClickListener(new View.OnClickListener() {
+        tvArriveTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showArriveTimeDialog(getDataSet().get(position).getObjId(), getDataSet().get(position).getArrivalTime());
+                showArriveTimeDialog(data.getObjId(), data.getArrivalTime());
             }
         });
-        if (getDataSet().get(position).getOpStatus() != 4 || getDataSet().get(position).getGpsStatus() != 1 || TextUtils.isEmpty(getDataSet().get(position).getOutTime()) || TextUtils.isEmpty(getDataSet().get(position).getArrivalTime())){
-            holder.tv_delete.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
-            holder.tv_delete.setOnClickListener(new View.OnClickListener() {
+        if (data.getOpStatus() != 4 || data.getGpsStatus() != 1 || TextUtils.isEmpty(data.getOutTime()) || TextUtils.isEmpty(data.getArrivalTime())){
+            tv_delete.setTextColor(getContext().getResources().getColor(R.color.font_blue2));
+            tv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showDeleteDialog(position);
+                    showDeleteDialog(data);
                 }
             });
         }else{
-            holder.tv_delete.setTextColor(mContext.getResources().getColor(R.color.font_gray));
-            holder.tv_delete.setOnClickListener(null);
+            tv_delete.setTextColor(getContext().getResources().getColor(R.color.font_gray));
+            tv_delete.setOnClickListener(null);
         }
         //备注
-        final String remarks = getDataSet().get(position).getRemarks();
-        holder.tv_remarks.setText(remarks);
+        final String remarks = data.getRemarks();
+        tv_remarks.setText(remarks);
         if(TextUtils.isEmpty(remarks)){
-            holder.tv_remarks.setOnClickListener(null);
+            tv_remarks.setOnClickListener(null);
         }else{
-            holder.tv_remarks.setOnClickListener(new View.OnClickListener() {
+            tv_remarks.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showRemarksDialog(remarks);
@@ -146,10 +143,10 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
     }
 
     private void showRemarksDialog(String remarks) {
-        final Dialog dialog = new Dialog(mContext,R.style.customDialog);
+        final Dialog dialog = new Dialog(getContext(),R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.dialog_work_load_remark,null);
+        View view = View.inflate(getContext(),R.layout.dialog_work_load_remark,null);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         TextView tv_remarks  = (TextView) view.findViewById(R.id.tv_remarks);
         tv_remarks.setText(remarks);
@@ -164,18 +161,25 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
         dialog.show();
     }
 
-    private void showDeleteDialog(final int position) {
-        final Dialog dialog = new Dialog(mContext,R.style.customDialog);
+    private void showDeleteDialog(final DriverWorkloadItem data) {
+        final Dialog dialog = new Dialog(getContext(),R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.dialog_work_load_delete,null);
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        View view = View.inflate(getContext(),R.layout.dialog_work_load_delete,null);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                DebugLog.w("gps" + mGpsTag);
-                mListener.onDelete(getDataSet().get(position).getObjId());
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
+                mListener.onDelete(data.getObjId(), loadDataStatus);
                 dialog.dismiss();
             }
         });
@@ -199,13 +203,13 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
 
 
     private void showTimeDialog(final long objId, String time,final int type) {
-        final Dialog dialog = new Dialog(mContext,R.style.customDialog);
+        final Dialog dialog = new Dialog(getContext(),R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.dialog_work_load_time,null);
+        View view = View.inflate(getContext(),R.layout.dialog_work_load_time,null);
         final EditText et_time = (EditText) view.findViewById(R.id.et_time);
         et_time.setText(time);
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,10 +220,17 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
                     ToastHelper.showToast("请输入正确时间");
                     return;
                 }
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
+                btn_confirm.setClickable(false);
                 if (type == DIALOG_TYPE_OUT_TIME){
-                    mListener.onAlertOutTime(objId, time);
+                    mListener.onAlertOutTime(objId, time, loadDataStatus);
                 }else{
-                    mListener.onAlertArriveTime(objId, time);
+                    mListener.onAlertArriveTime(objId, time, loadDataStatus);
                 }
                 dialog.dismiss();
             }
@@ -235,22 +246,22 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
         dialog.show();
     }
 
-    private void showGpsDialog(final int position,int tag){
-        final Dialog dialog = new Dialog(mContext,R.style.customDialog);
+    private void showGpsDialog(final DriverWorkloadItem data){
+        final Dialog dialog = new Dialog(getContext(),R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.dialog_work_load_gps,null);
+        View view = View.inflate(getContext(),R.layout.dialog_work_load_gps,null);
         RadioGroup rg = (RadioGroup) view.findViewById(R.id.rg);
         final RadioButton rb_ok = (RadioButton) view.findViewById(R.id.rb_ok);
         final RadioButton rb_error = (RadioButton) view.findViewById(R.id.rb_error);
-        if (tag == 0){
+        if (data.getGpsStatus() == 0){
             rb_ok.setChecked(false);
             rb_error.setChecked(true);
-        }else if(tag == 1){
+        }else if(data.getGpsStatus() == 1){
             rb_ok.setChecked(true);
             rb_error.setChecked(false);
         }
-        mGpsTag = tag;
+        mGpsTag = data.getGpsStatus();
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(RadioGroup group,int checkedId){
@@ -268,13 +279,20 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
                 }
             }
         });
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
-        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
 //                DebugLog.w("gps" + mGpsTag);
-                mListener.onAlertGpsStatus(getDataSet().get(position).getObjId(), mGpsTag);
+                mListener.onAlertGpsStatus(data.getObjId(), mGpsTag, loadDataStatus);
                 dialog.dismiss();
             }
         });
@@ -289,45 +307,52 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
         dialog.show();
     }
 
-    private void showDriverOkDialog(final int position, int tag){
-        final Dialog dialog = new Dialog(mContext,R.style.customDialog);
+    private void showDriverOkDialog(final DriverWorkloadItem data){
+        final Dialog dialog = new Dialog(getContext(),R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.dialog_work_load_driver_ok,null);
+        View view = View.inflate(getContext(),R.layout.dialog_work_load_driver_ok,null);
         RadioGroup rg = (RadioGroup) view.findViewById(R.id.rg);
         final RadioButton rb_wait_ok = (RadioButton) view.findViewById(R.id.rb_wait_ok);
         final RadioButton rb_unagree = (RadioButton) view.findViewById(R.id.rb_unagree);
         final RadioButton rb_agree = (RadioButton) view.findViewById(R.id.rb_agree);
-        if (tag == 2){
+        if (data.getOpStatus() == 2){
             setRbsIsChecked(rb_wait_ok,rb_unagree,rb_agree);
-        }else if(tag == 3){
+        }else if(data.getOpStatus() == 3){
             setRbsIsChecked(rb_unagree,rb_wait_ok,rb_agree);
-        }else if (tag == 4){
+        }else if (data.getOpStatus() == 4){
             setRbsIsChecked(rb_agree,rb_wait_ok,rb_unagree);
         }
-        mDriverOpTag = tag;
+        mDriverOpTag = data.getOpStatus();
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
-             @Override
-             public void onCheckedChanged(RadioGroup group,int checkedId){
-                  switch (checkedId){
-                      case R.id.rb_unagree:
-                          mDriverOpTag = 3;
-                          setRbsIsChecked(rb_unagree,rb_wait_ok,rb_agree);
-                          break;
-                      case R.id.rb_agree:
-                          mDriverOpTag = 4;
-                          setRbsIsChecked(rb_agree,rb_wait_ok,rb_unagree);
-                          break;
-                  }
-             }
+            @Override
+            public void onCheckedChanged(RadioGroup group,int checkedId){
+                switch (checkedId){
+                    case R.id.rb_unagree:
+                        mDriverOpTag = 3;
+                        setRbsIsChecked(rb_unagree,rb_wait_ok,rb_agree);
+                        break;
+                    case R.id.rb_agree:
+                        mDriverOpTag = 4;
+                        setRbsIsChecked(rb_agree,rb_wait_ok,rb_unagree);
+                        break;
+                }
+            }
         });
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
                 //司机确认
-                mListener.onAlertDriverStatus(getDataSet().get(position).getObjId(), mDriverOpTag);
+                mListener.onAlertDriverStatus(data.getObjId(), mDriverOpTag, loadDataStatus);
                 dialog.dismiss();
             }
         });
@@ -342,50 +367,17 @@ public class WorkLoadVerifyAdapter extends BaseAdapter<DriverWorkloadItem> {
         dialog.show();
     }
 
-    private void setRbsIsChecked(RadioButton rb0,RadioButton rb1,RadioButton rb2){
-           rb0.setChecked(true);
-           rb1.setChecked(false);
-           rb2.setChecked(false);
-    }
-
-    @Override
-    public int getItemCount() {
-        return getDataSet().size();
-    }
-
-
-    public class WorkLoadVerifyViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_no)
-        TextView tvNo;
-        @Bind(R.id.tv_vehId)
-        TextView tvVehId;
-        @Bind(R.id.tv_driver_name)
-        TextView tvDriverName;
-        @Bind(R.id.tv_veh_time)
-        TextView tvVehTime;
-        @Bind(R.id.tv_out_time)
-        TextView tvOutTime;
-        @Bind(R.id.tv_arrive_time)
-        TextView tvArriveTime;
-        @Bind(R.id.tv_gps)
-        TextView tvGps;
-        @Bind(R.id.tv_driver_ok)
-        TextView tvDriverOk;
-        @Bind(R.id.tv_delete)
-        TextView tv_delete;
-        @Bind(R.id.tv_remarks)
-        TextView tv_remarks;
-        public WorkLoadVerifyViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this,itemView);
-        }
+    private void setRbsIsChecked(RadioButton rb0, RadioButton rb1, RadioButton rb2){
+        rb0.setChecked(true);
+        rb1.setChecked(false);
+        rb2.setChecked(false);
     }
 
     public interface OnWorkLoadItemClickListener {
-        void onAlertOutTime(long objId, String str);
-        void onAlertArriveTime(long objId, String str);
-        void onAlertGpsStatus(long objId, int str);
-        void onAlertDriverStatus(long objId, int str);
-        void onDelete(long objId);
+        void onAlertOutTime(long objId, String str, BasePresenter.LoadDataStatus loadDataStatus);
+        void onAlertArriveTime(long objId, String str, BasePresenter.LoadDataStatus loadDataStatus);
+        void onAlertGpsStatus(long objId, int str, BasePresenter.LoadDataStatus loadDataStatus);
+        void onAlertDriverStatus(long objId, int str, BasePresenter.LoadDataStatus loadDataStatus);
+        void onDelete(long objId, BasePresenter.LoadDataStatus loadDataStatus);
     }
 }

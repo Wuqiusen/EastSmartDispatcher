@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.view.dialog.StartCarRemarkDialog;
@@ -52,7 +53,7 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
     @Override
     public void onBindViewHolder(final LineHolder holder, final int position) {
         SendHistory history = mData.get(position);
-        holder.tvCarSequence.setText(String.valueOf(position + 1));
+        holder.tvCarSequence.setText(String.valueOf(mData.size() - (position)));
         holder.tvCarCode.setText(history.code);
         holder.tv_mission_name.setText(history.typeName);
         holder.tv_station_name.setText(history.electronRailName);
@@ -83,15 +84,17 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
         else
             holder.tvSendTime.setText("");
         // 停场时间
-
-
-//      holder.tvScheduleStatus.setText(history.isDouble == 0 ? "双班":"单班");
-//      holder.tvStationStatus.setText(String.valueOf(history.vehTime));
-        holder.tv_send_remark.setText(history.remarks);
         if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO) {
             holder.tvTrainman.setVisibility(View.GONE);
         } else if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL) {
             holder.tvTrainman.setVisibility(View.VISIBLE);
+        }
+
+        //1正常、2异常
+        if (mData.get(position).status == 1){
+            holder.tv_send_remark.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
+        }else{
+            holder.tv_send_remark.setTextColor(mContext.getResources().getColor(R.color.font_gray));
         }
         // 备注
         holder.tv_send_remark.setOnClickListener(new View.OnClickListener() {
@@ -100,25 +103,19 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
                 new StartCarRemarkDialog(mContext, mData.get(position).id, mData.get(position).status, mData.get(position).remarks,
                         new StartCarRemarkDialog.OnStartCarRemarkListener() {
                             @Override
-                            public void goneCarNormalRemarks(int objId, int status, String remarks) {
-                                presenter.goneCarNormalRemarks(objId, status, remarks);
+                            public void goneCarNormalRemarks(int objId, int status, String remarks, BasePresenter.LoadDataStatus loadDataStatus) {
+                                presenter.goneCarNormalRemarks(objId, status, remarks, loadDataStatus);
                             }
 
                             @Override
-                            public void goneCarAbNormalRemarks(int objId, int status, String remarks, int runNum, double runMileage, double runEmpMileage) {
-                                presenter.goneCarAbNormalRemarks(objId,status,remarks,runNum,runMileage,runEmpMileage);
+                            public void goneCarAbNormalRemarks(int objId, int status, String remarks,
+                                                               int runNum, double runMileage, double runEmpMileage, BasePresenter.LoadDataStatus loadDataStatus) {
+                                presenter.goneCarAbNormalRemarks(objId,status,remarks,runNum,runMileage,runEmpMileage, loadDataStatus);
                             }
 
                         });
             }
         });
-        // 查看
-//      holder.tvCheckSendCar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                   openCarMsgDialog();
-//            }
-//      });
         // 撤回
         // 如果已有实际发车时间, 则因此撤回按钮
         if (TextUtils.isEmpty(mData.get(position).vehTimeReal)) {
@@ -143,11 +140,22 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
 
         }
 
-        try{
-            holder.tvStatus.setText(history.status == 1 ? "正常":"异常");
-        }catch (Exception e){
-            holder.tvStatus.setText("");
+        String driverStatus = "";
+        switch (mData.get(position).opStatus){
+            case 1:
+                driverStatus = "待开始";
+                break;
+            case 2:
+                driverStatus = "进行中";
+                break;
+            case 3:
+                driverStatus = "异常终止";
+                break;
+            case 4:
+                driverStatus = "正常结束";
+                break;
         }
+        holder.tv_driver_ok.setText(driverStatus);
     }
 
     private String setStopCarMinute(SendHistory history) {
@@ -205,13 +213,19 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
         View view = View.inflate(mContext, R.layout.view_withdraw_dialog, null);
         TextView tv_prompt = (TextView) view.findViewById(R.id.tv_prompt);
         tv_prompt.setText("您确定把车辆撤回到待发车辆列表？");
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.callBackGoneCar(objId);
-                mDialog.dismiss();
+                btn_confirm.setClickable(false);
+                presenter.callBackGoneCar(objId, new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        mDialog.dismiss();
+                    }
+                });
+
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -255,14 +269,6 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
         TextView tvDriver;
         @Bind(R.id.tv_trainman)
         TextView tvTrainman;
-        //        @Bind(R.id.tv_schedule_status)
-//        TextView tvScheduleStatus;
-        @Bind(R.id.tv_status)
-        TextView tvStatus;
-        //        @Bind(R.id.tv_no_work_status)
-//        TextView tvNoWorkStatus;
-        @Bind(R.id.tv_check_send_car)
-        TextView tvCheckSendCar;
         @Bind(R.id.tv_send_remark)
         TextView tv_send_remark;
         @Bind(R.id.tv_send_withdraw)
@@ -277,6 +283,8 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
         TextView tv_empty_km;
         @Bind(R.id.tv_end_time)
         TextView tv_end_time;
+        @Bind(R.id.tv_driver_ok)
+        TextView tv_driver_ok;
 
         LineHolder(View view) {
             super(view);

@@ -40,6 +40,7 @@ import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
 import com.zxw.dispatch.adapter.PopupAdapter;
 import com.zxw.dispatch.module.ScheduleModule;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
@@ -66,6 +67,7 @@ import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.RecordingCarTaskDialog;
+import com.zxw.dispatch.view.dialog.SendGroupMessageDialog;
 import com.zxw.dispatch.view.dialog.StopCarEndToStayDialog;
 import com.zxw.dispatch.view.dialog.VehicleToScheduleDialog;
 
@@ -405,6 +407,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         tv_wtab1 = (TextView) view.findViewById(R.id.tv_wtab1);
         tv_wtab2 = (TextView) view.findViewById(R.id.tv_wtab2);
         tv_wtab3 = (TextView) view.findViewById(R.id.tv_wtab3);
+        view.findViewById(R.id.btn_group_message).setOnClickListener(this);
         tv_wtab1.setOnClickListener(this);
         tv_wtab2.setOnClickListener(this);
         tv_wtab3.setOnClickListener(this);
@@ -864,28 +867,30 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void createVehicleToScheduleDialog(final StopHistory stopCar) {
         new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
             @Override
-            public void onClickNormalMission(int type, int taskId) {
-                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null);
+            public void onClickNormalMission(int type, int taskId, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null, loadDataStatus);
             }
 
             @Override
-            public void onClickOperatorEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks) {
-                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks);
+            public void onClickOperatorEmptyMission(int type, int taskType, String beginTime,
+                                                    String endTime, String runNum, String runEmpMileage,String remarks, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks, loadDataStatus);
             }
 
             @Override
-            public void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime, String endTime, String runNum, String runEmpMileage,String remarks) {
-                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks);
+            public void onClickOperatorNotEmptyMission(int type, int taskType, String beginTime,
+                                                       String endTime, String runNum, String runEmpMileage,String remarks, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarMission(stopCar, type, null, String.valueOf(taskType), beginTime, endTime, runNum, runEmpMileage,remarks, loadDataStatus);
             }
 
             @Override
-            public void onClickHelpMission(int type, int taskId) {
-                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null);
+            public void onClickHelpMission(int type, int taskId, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null, loadDataStatus);
             }
 
             @Override
-            public void onOffDuty() {
-                presenter.stopCarStayToEnd(stopCar.id);
+            public void onOffDuty(BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.stopCarStayToEnd(stopCar.id, loadDataStatus);
             }
 
 
@@ -896,8 +901,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private void showManualAddStopCarDialog() {
         new ManualAddStopCarDialog(mContext, presenter.getLineParams(), new ManualAddStopCarDialog.OnManualAddStopCarListener() {
             @Override
-            public void manualAddStopCar(String carId, String driverId, String stewardId) {
-                presenter.manualAddStopCar(carId, driverId, stewardId);
+            public void manualAddStopCar(String carId, String driverId, String stewardId, BasePresenter.LoadDataStatus loadDataStatus) {
+                presenter.manualAddStopCar(carId, driverId, stewardId, loadDataStatus);
             }
         });
     }
@@ -1167,41 +1172,20 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                     }
                 });
 
-
                 break;
-//            // 自动发车
-//            case R.id.tv_automatic:
-//            case R.id.tv_menu_automatic:
-//                if ((System.currentTimeMillis() - clickTime) > 1000) {
-//                    if (!isAuto) {
-//                        if (!isHaveSendCar) {
-//                            showToast("该线路没有待发车辆", mContext);
-//                            return;
-//                        }
-//                        setTvBackground(2);
-//                        setCoverBackground(View.VISIBLE);
-//                        //动态注册广播接收器
-//                        createReceiver();
-//                        presenter.selectAuto();
-//                        clickTime = System.currentTimeMillis();
-//                        isAuto = true;
-//                    }
-//                }
-//                break;
-//            // 手动发车
-//            case R.id.tv_manual:
-//            case R.id.tv_menu_manual:
-//                if ((System.currentTimeMillis() - clickTime) > 1000) {
-//                    if (isAuto) {
-//                        setTvBackground(1);
-//                        setCoverBackground(View.GONE);
-//                        presenter.selectManual();
-//                        clickTime = System.currentTimeMillis();
-//                        isAuto = false;
-//                    }
-//                }
-//                break;
+            case R.id.btn_group_message:
+                showSendGroupMessageDialog();
+                break;
         }
+    }
+
+    private void showSendGroupMessageDialog() {
+        new SendGroupMessageDialog(mContext, new SendGroupMessageDialog.OnSendGroupMessageDialogListener() {
+            @Override
+            public void sendGroupMessage(String message) {
+                presenter.sendGroupMessage(message);
+            }
+        });
     }
 
 

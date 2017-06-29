@@ -18,6 +18,7 @@ import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.utils.SpUtils;
@@ -103,9 +104,9 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
                 AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
                 alertNameDialog.showDriverDialog(mDatas.get(position).getId(), mDatas.get(position).getDriverName(),new AlertNameDialog.OnAlertDriverListener() {
                     @Override
-                    public void onAlertDriverListener(int driverId) {
+                    public void onAlertDriverListener(int driverId, BasePresenter.LoadDataStatus loadDataStatus) {
 
-                        presenter.alertPeople(mDatas.get(position).getId(), driverId, AlertNameDialog.TYPE_DRIVER);
+                        presenter.alertPeople(mDatas.get(position).getId(), driverId, AlertNameDialog.TYPE_DRIVER, loadDataStatus);
                     }
                 });
             }
@@ -125,9 +126,9 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
                     AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
                     alertNameDialog.showStewardDialog(mDatas.get(position).getId(), mDatas.get(position).getStewardName(),new AlertNameDialog.OnAlertStewardListener() {
                         @Override
-                        public void onAlertStewardListener(int stewardId) {
+                        public void onAlertStewardListener(int stewardId, BasePresenter.LoadDataStatus loadDataStatus) {
                             // "确定"监听
-                            presenter.alertPeople(mDatas.get(position).getId(), stewardId, AlertNameDialog.TYPE_DRIVER);
+                            presenter.alertPeople(mDatas.get(position).getId(), stewardId, AlertNameDialog.TYPE_DRIVER, loadDataStatus);
                         }
                     });
                 }
@@ -143,8 +144,8 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
             public void onClick(View v) {
                 new TimePlanPickerDialog(mContext,mDatas.get(position).getVehTime(),new TimePlanPickerDialog.OnTimePickerListener() {
                     @Override
-                    public void onTimePicker(String sHour, String sMinute) {
-                        presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute);
+                    public void onTimePicker(String sHour, String sMinute, BasePresenter.LoadDataStatus loadDataStatus) {
+                        presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute, loadDataStatus);
                     }
                 }).show();
             }
@@ -189,7 +190,7 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
                     ToastHelper.showToast("当前没有备注");
                     return;
                 }
-                openEmptyRemarksDialog(position);
+                openEmptyRemarksDialog(mDatas.get(position).getRemarks());
             }
         });
 
@@ -237,18 +238,18 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
     }
 
     //备注
-    private void openEmptyRemarksDialog(final int position) {
+    private void openEmptyRemarksDialog(final String remarks) {
         final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext,R.layout.dialog_wait_car_remarks_dialog,null);
-        final TextView tv_empty_remarks = (TextView) view.findViewById(R.id.tv_empty_remarks);
+        TextView tv_empty_remarks = (TextView) view.findViewById(R.id.tv_empty_remarks);
+        tv_empty_remarks.setText(remarks);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tv_empty_remarks.setText(mDatas.get(position).getRemarks());
                 sDialog.dismiss();
             }
         });
@@ -262,16 +263,6 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
         sDialog.setCancelable(true);
         sDialog.show();
     }
-
-    private String noOperationStatus(int status){
-        if (status == 1)
-            return "无";
-        else if (status == 2)
-            return "已完成";
-        else
-            return "未完成";
-    }
-
 
     private void queryLine(final int poistion){
         final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
@@ -342,7 +333,13 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
                 btn_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        presenter.confirmInform(vehicleId, etInformContent.getText().toString(), typeId, driverCode);// driverCode
+                        btn_confirm.setClickable(false);
+                        presenter.confirmInform(vehicleId, etInformContent.getText().toString(), typeId, driverCode, new BasePresenter.LoadDataStatus() {
+                            @Override
+                            public void OnLoadDataFinish() {
+                                btn_confirm.setClickable(true);
+                            }
+                        });// driverCode
                         informDialog.dismiss();
                     }
                 });
@@ -371,14 +368,19 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext,R.layout.view_message_confirm_dialog,null);
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_confirm.setClickable(false);
                 // 确定发车
-                presenter.sendVehicle(mDatas.get(position).getId());
-                sDialog.dismiss();
+                presenter.sendVehicle(mDatas.get(position).getId(), new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        sDialog.dismiss();
+                    }
+                });
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -402,13 +404,18 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
         View view = View.inflate(mContext,R.layout.view_withdraw_dialog,null);
         TextView tv_prompt = (TextView) view.findViewById(R.id.tv_prompt);
         tv_prompt.setText("您确定把车辆撤回到停场车辆列表？");
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.callBackScheduleCar(objId);
-                mDialog.dismiss();
+                btn_confirm.setClickable(false);
+                presenter.callBackScheduleCar(objId, new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        mDialog.dismiss();
+                    }
+                });
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -435,15 +442,21 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         View view = View.inflate(mContext,R.layout.view_message_confirm_dialog,null);
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         TextView tv_message = (TextView) view.findViewById(R.id.tv_message);
         tv_message.setText("确定更换序号为" + (start + 1) + "和" + (end + 1) + "的车辆位置？");
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.sortVehicle(startVehicle.getId(), endVehicle.getId());
-                sDialog.dismiss();
+                btn_confirm.setClickable(false);
+                presenter.sortVehicle(startVehicle.getId(), endVehicle.getId(), new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        sDialog.dismiss();
+                    }
+                });
+
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {

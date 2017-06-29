@@ -80,30 +80,16 @@
         android:layout_weight="3"
         tools:text="正在运营" />
 
-    <TextView
-        android:id="@+id/tv_status"
-        style="@style/font_random_weight_style"
-        android:layout_weight="2"
-        tools:text="正常"
-        />
-    <!--备注-->
-    <TextView
-        android:id="@+id/tv_send_remark"
-        style="@style/font_random_weight_style"
-        android:layout_weight="3"
-        tools:text="驾驶员中途"
-        />
-
     <!--操作-->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
+        android:layout_weight="4"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/tv_check_send_car"
+            android:id="@+id/tv_send_remark"
             style="@style/font_operate_style"
-            android:text="查看"
+            android:text="异常处理"
 
             />
         <TextView
@@ -114,11 +100,11 @@
     </LinearLayout>
 
     <!--指令反馈-->
-    <ImageView
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/tv_driver_ok"
+        style="@style/font_random_weight_style"
         android:layout_weight="3"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/feedback_icon"
+        tools:text="进行中"
         />
 
 </LinearLayout>

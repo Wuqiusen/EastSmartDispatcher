@@ -63,4 +63,20 @@
             android:layout_weight="4"
             android:text="司机状态"
             />
+
+        <TextView
+            android:id="@+id/tv_remarks"
+            style="@style/main_activity_top_button"
+            android:minHeight="36dp"
+            android:layout_weight="4"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            style="@style/font_operate_style"
+            android:minHeight="36dp"
+            android:layout_weight="2"
+            android:text="删除"
+            />
 </LinearLayout>

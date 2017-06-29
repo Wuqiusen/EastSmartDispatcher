@@ -447,6 +447,27 @@ public class HttpInterfaces {
 
     public interface Operator {
 
+
+
+        /**
+         * 49.温馨提示(群发)[新]
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/notice/all/push")
+        Observable<BaseBean> sendGroupMessage(@Field("userId") String userId,
+                                                      @Field("keyCode") String keyCode,
+                                                      @Field("taskLineId") long taskLineId,
+                                                      @Field("noticeInfo") String noticeInfo
+                                              );
+        /**
+         * 48 删除工作量审核记录
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/work/confirm/record/delete")
+        Observable<BaseBean> deleteWorkload(@Field("userId") String userId,
+                                                      @Field("keyCode") String keyCode,
+                                                      @Field("id") long objId);
+
         /**
          * 46 修改工作量审核记录
          */

@@ -30,6 +30,7 @@ import com.zxw.data.bean.WaitVehicle;
 import java.util.List;
 
 import retrofit2.Retrofit;
+import retrofit2.http.Field;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -453,6 +454,18 @@ public class HttpMethods {
     public void runningCarsAtMap(Subscriber<BaseBean<List<RunningCarBean>>> subscriber, String userId, String keyCode, String taskLineId){
         HttpInterfaces.LineRunMap operator = retrofit.create(HttpInterfaces.LineRunMap.class);
         Observable<BaseBean<List<RunningCarBean>>> map = operator.runningCarList(userId, keyCode, taskLineId);
+        toSubscribe(map,subscriber);
+    }
+    // 删除工作量审核记录
+    public void deleteWorkload(Subscriber<BaseBean> subscriber,String userId,String keyCode,long objId){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable<BaseBean> map = operator.deleteWorkload(userId, keyCode, objId);
+        toSubscribe(map,subscriber);
+    }
+    // 修改工作量审核记录
+    public void sendGroupMessage(Subscriber<BaseBean> subscriber,String userId,String keyCode,long taskLineId, String noticeInfo){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable<BaseBean> map = operator.sendGroupMessage(userId, keyCode, taskLineId, noticeInfo);
         toSubscribe(map,subscriber);
     }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.recycler.DialogDoublePeopleAdapter;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.utils.DebugLog;
@@ -44,6 +45,7 @@ public class AlertNameDialog extends AlertDialog.Builder {
     private OnAlertStewardListener onAlertStewardListener;
     private AlertDialog dialog;
     private int mIsSingleClass;
+    private BasePresenter.LoadDataStatus loadDataStatus;
 
     public AlertNameDialog(Context context,int isSingleClass) {
         super(context, R.style.alder_dialog);
@@ -91,12 +93,19 @@ public class AlertNameDialog extends AlertDialog.Builder {
                     ToastHelper.showToast("请确定修改信息");
                     return;
                 }
+                btn_confirm.setClickable(false);
+                loadDataStatus = new BasePresenter.LoadDataStatus() {
+                    @Override
+                    public void OnLoadDataFinish() {
+                        btn_confirm.setClickable(true);
+                    }
+                };
                 if (et_fuzzy_query.getPeopleInfo() != null)
                     mPersonInfo = et_fuzzy_query.getPeopleInfo();
                 if (currentType == TYPE_DRIVER) {
-                    onAlertDriverListener.onAlertDriverListener(mPersonInfo.personId);
+                    onAlertDriverListener.onAlertDriverListener(mPersonInfo.personId, loadDataStatus);
                 } else if (currentType == TYPE_STEWARD) {
-                    onAlertStewardListener.onAlertStewardListener(mPersonInfo.personId);
+                    onAlertStewardListener.onAlertStewardListener(mPersonInfo.personId, loadDataStatus);
                 }
                 dialog.dismiss();
             }
@@ -148,11 +157,11 @@ public class AlertNameDialog extends AlertDialog.Builder {
     }
 
     public interface OnAlertDriverListener {
-        void onAlertDriverListener(int driverId);
+        void onAlertDriverListener(int driverId, BasePresenter.LoadDataStatus loadDataStatus);
     }
 
     public interface OnAlertStewardListener {
-        void onAlertStewardListener(int stewardId);
+        void onAlertStewardListener(int stewardId, BasePresenter.LoadDataStatus loadDataStatus);
     }
 
     private void loadDoublePeople(String userId, String keyCode, int objId) {

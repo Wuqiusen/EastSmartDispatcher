@@ -1,5 +1,6 @@
 package com.zxw.dispatch.presenter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -338,7 +339,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                 if (mWaitVehicles != null && mWaitVehicles.size() == waitVehicles.size()) {
                     for (int i = 0; i < waitVehicles.size(); i++) {
-                        if (mWaitVehicles.get(i).getId() != waitVehicles.get(i).getId()) {
+                        if (mWaitVehicles.get(i).getId() != waitVehicles.get(i).getId() || mWaitVehicles.get(i).getIsNotice() != waitVehicles.get(i).getIsNotice()) {
                             DragListAdapter mDragListAdapter = new DragListAdapter(mContext, MainPresenter.this, waitVehicles, mLineParams, lineId);
                             mvpView.loadSendCarList(mDragListAdapter);
                             mWaitVehicles.clear();
@@ -462,11 +463,12 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
     }
 
-    public void sendVehicle(int opId) {
+    public void sendVehicle(int opId, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mDepartSource.sendCar(new Subscriber() {
             @Override
             public void onCompleted() {
-
+                mLoadDataStatus.OnLoadDataFinish();
             }
 
             @Override
@@ -483,7 +485,8 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), opId);
     }
 
-    public void sortVehicle(int opId, int replaceId) {
+    public void sortVehicle(int opId, int replaceId, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mDepartSource.sortVehicle(new Subscriber() {
             @Override
             public void onCompleted() {
@@ -623,10 +626,12 @@ public class MainPresenter extends BasePresenter<MainView> {
         mContext.sendBroadcast(receiverIntent);
     }
 
-    public void manualAddStopCar(String carId, String driverId, String stewardId) {
+    public void manualAddStopCar(String carId, String driverId, String stewardId, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mDepartSource.vehicleStopCtrl(new Subscriber() {
             @Override
             public void onCompleted() {
+                mLoadDataStatus.OnLoadDataFinish();
 
             }
 
@@ -643,13 +648,15 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void stopCarMission(StopHistory stopCar, int type, String taskId, String taskType,
-                               String beginTime, String endTime, String runNum, String runEmpMileage, String remarks) {
+                               String beginTime, String endTime, String runNum, String runEmpMileage, String remarks, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         try {
             if (!TextUtils.isEmpty(remarks))
                 remarks = new DESPlus().encrypt(Base64.encode(remarks.getBytes("utf-8")));
             mDepartSource.stopToSchedule(new Subscriber() {
                 @Override
                 public void onCompleted() {
+                    mLoadDataStatus.OnLoadDataFinish();
 
                 }
 
@@ -670,10 +677,12 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     }
 
-    public void alertPeople(int id, int peopleId, int type) {
+    public void alertPeople(int id, int peopleId, int type, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mDepartSource.changePersonInfo(new Subscriber() {
             @Override
             public void onCompleted() {
+                mLoadDataStatus.OnLoadDataFinish();
 
             }
 
@@ -696,11 +705,12 @@ public class MainPresenter extends BasePresenter<MainView> {
      * @param id
      * @param vehTime
      */
-    public void alertVehTime(int id, String vehTime) {
+    public void alertVehTime(int id, String vehTime, BasePresenter.LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         HttpMethods.getInstance().alertVehTime(new Subscriber() {
             @Override
             public void onCompleted() {
-
+                mLoadDataStatus.OnLoadDataFinish();
             }
 
             @Override
@@ -851,11 +861,13 @@ public class MainPresenter extends BasePresenter<MainView> {
      *
      * @param objId
      */
-    public void callBackScheduleCar(int objId) {
+    public void callBackScheduleCar(int objId, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mvpView.showLoading();
         HttpMethods.getInstance().callBackScheduleCar(new Subscriber() {
             @Override
             public void onCompleted() {
+                mLoadDataStatus.OnLoadDataFinish();
                 mvpView.hideLoading();
             }
 
@@ -878,11 +890,13 @@ public class MainPresenter extends BasePresenter<MainView> {
      *
      * @param objId
      */
-    public void callBackGoneCar(int objId) {
+    public void callBackGoneCar(int objId, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mvpView.showLoading();
         HttpMethods.getInstance().callBackGoneCar(new Subscriber() {
             @Override
             public void onCompleted() {
+                mLoadDataStatus.OnLoadDataFinish();
                 mvpView.hideLoading();
             }
 
@@ -907,13 +921,15 @@ public class MainPresenter extends BasePresenter<MainView> {
      * @param status
      * @param remark
      */
-    public void goneCarNormalRemarks(int objId, int status, String remark) {
+    public void goneCarNormalRemarks(int objId, int status, String remark, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mvpView.showLoading();
         try {
             String remarkStr = new DESPlus().encrypt(Base64.encode(remark.getBytes("utf-8")));
             HttpMethods.getInstance().goneCarNormalRemarks(new Subscriber() {
                 @Override
                 public void onCompleted() {
+                    mLoadDataStatus.OnLoadDataFinish();
                     mvpView.hideLoading();
                 }
 
@@ -944,13 +960,16 @@ public class MainPresenter extends BasePresenter<MainView> {
      * @param operateMileage
      * @param emptyMileage
      */
-    public void goneCarAbNormalRemarks(int objId, int status, String remarks, int runOnce, double operateMileage, double emptyMileage) {
+    public void goneCarAbNormalRemarks(int objId, int status, String remarks, int runOnce,
+                                       double operateMileage, double emptyMileage, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mvpView.showLoading();
         try {
             String remarkStr = new DESPlus().encrypt(Base64.encode(remarks.getBytes("utf-8")));
             HttpMethods.getInstance().goneCarAbNormalRemarks(new Subscriber() {
                 @Override
                 public void onCompleted() {
+                    mLoadDataStatus.OnLoadDataFinish();
                     mvpView.hideLoading();
                 }
 
@@ -973,11 +992,13 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
 
-    public void updateSpaceTime(int objId, String spaceTime) {
+    public void updateSpaceTime(int objId, String spaceTime, BasePresenter.LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mvpView.showLoading();
         HttpMethods.getInstance().updateSpaceTime(new Subscriber() {
             @Override
             public void onCompleted() {
+                mLoadDataStatus.OnLoadDataFinish();
                 mvpView.hideLoading();
 
             }
@@ -1049,13 +1070,15 @@ public class MainPresenter extends BasePresenter<MainView> {
         }, userId(), keyCode(), objId, supportLineId);
     }
 
-    public void confirmInform(String vehicleId, String content, String typeId,String driverCode) {
+    public void confirmInform(String vehicleId, String content, String typeId,String driverCode, BasePresenter.LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mvpView.showLoading();
         try {
             String remarkStr = new DESPlus().encrypt(Base64.encode(content.getBytes("utf-8")));
             HttpMethods.getInstance().confrimInform(new Subscriber() {
                 @Override
                 public void onCompleted() {
+                    mLoadDataStatus.OnLoadDataFinish();
                     mvpView.hideLoading();
                 }
 
@@ -1101,11 +1124,13 @@ public class MainPresenter extends BasePresenter<MainView> {
                 userId(), keyCode(), id);
     }
 
-    public void stopCarStayToEnd(int id) {
+    public void stopCarStayToEnd(int id, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mvpView.showLoading();
         mStopSource.stopCarStayToEnd(new Subscriber() {
                                          @Override
                                          public void onCompleted() {
+                                             mLoadDataStatus.OnLoadDataFinish();
                                              mvpView.hideLoading();
                                          }
 
@@ -1148,11 +1173,13 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     // 待发车辆替换停场车辆
-    public void updateWaitCarCode(int objId, final StopCarCodeBean bean) {
+    public void updateWaitCarCode(int objId, final StopCarCodeBean bean, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         mvpView.showLoading();
         HttpMethods.getInstance().updateWaitCarCode(new Subscriber() {
             @Override
             public void onCompleted() {
+                mLoadDataStatus.OnLoadDataFinish();
                 mvpView.hideLoading();
             }
 
@@ -1234,4 +1261,30 @@ public class MainPresenter extends BasePresenter<MainView> {
             runCarSubscription.unsubscribe();
     }
 
+    public void sendGroupMessage(String message) {
+
+        if (!TextUtils.isEmpty(message))
+            try {
+                message = new DESPlus().encrypt(Base64.encode(message.getBytes("utf-8")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mvpView.showLoading();
+        HttpMethods.getInstance().sendGroupMessage(new Subscriber<BaseBean>() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+            }
+
+            @Override
+            public void onNext(BaseBean baseBean) {
+                    mvpView.disPlay(baseBean.returnInfo);
+            }
+        }, userId(), keyCode(), lineId, message);
+    }
 }
