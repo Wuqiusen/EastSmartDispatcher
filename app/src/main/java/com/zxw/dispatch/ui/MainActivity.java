@@ -1386,8 +1386,32 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         }
         presenter.closeTimer();
         super.onDestroy();
+        mLineRunMapView.onMapDestroy();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mLineRunMapView.mMapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mLineRunMapView.mMapView.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mLineRunMapView.mLocationClient.stopLocation();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mLineRunMapView.mMapView.onSaveInstanceState(outState);
+    }
 
     private void isSureLoginOut() {
         final MyDialog outDialog = new MyDialog(MainActivity.this, "提示", "确定要退出系统？", MyDialog.HAVEBUTTON);
