@@ -15,29 +15,43 @@
         >
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             >
 
             <ImageView
-                android:id="@+id/id_index_gallery_item_image"
+                android:id="@+id/img_line"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/img_vehicle_code_green"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                />
 
             <TextView
                 android:id="@+id/tv_vehicleCode"
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 tools:text="粤BD14525"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/id_index_gallery_item_image"
+                android:layout_toRightOf="@+id/img_line"
                 android:layout_marginLeft="4dp"
                 android:singleLine="true"
                 android:ellipsize="end"
 
+                />
+
+            <TextView
+                android:id="@+id/tv_car_run_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                tools:text="静止2小时24分"
+                android:gravity="right|center_vertical"
+                android:singleLine="true"
+                android:ellipsize="end"
                 />
 
             <TextView

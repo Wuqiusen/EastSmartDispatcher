@@ -19,7 +19,7 @@
                 android:layout_height="match_parent" >
             </RelativeLayout>
         </RelativeLayout>
-		<!-- 页面加载时显示的等待动画 -->
+		 <!--页面加载时显示的等待动画 -->
         <RelativeLayout
             android:id="@+id/rel_base_loading"
             android:layout_width="match_parent"

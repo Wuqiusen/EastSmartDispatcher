@@ -1,3 +1,4 @@
+
 package com.zxw.dispatch.ui;
 
 import android.app.AlertDialog;
@@ -19,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -241,6 +243,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
         this.mSavedInstanceState = savedInstanceState;
         ButterKnife.bind(this);
@@ -286,7 +289,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private View initLineRunMapView() {
-        mLineRunMapView = new LineRunMapView(mContext,mSavedInstanceState);
+        mLineRunMapView = new LineRunMapView(mContext,presenter, mSavedInstanceState);
         return  mLineRunMapView;
     }
 
@@ -740,6 +743,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     }
 
+
     @Override
     public void nonMissionTypeDialog(NonMissionTypeAdapter adapter) {
         new NoMissionTypeWaitCarDialog(mContext,adapter);
@@ -832,16 +836,23 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         scheduleModule.initLineParams(presenter.getLineId(), presenter.getLineParams());
         // 工作量审核
         mWorkLoadView.initLineParams(presenter.getLineId(), presenter.getLineParams());
-        // 线路运行图
-        mLineRunMapView.initLineParams(presenter.getRunningCarList());///新增: 未测试
+
+        // 2).切换线路id，重新访问车辆列表
+        mLineRunMapView.initLineParams(presenter.getLineId());
 
     }
 
     @Override
-    public void drawRunningCarAtMap(List<RunningCarBean> runCarList) {
-        DebugLog.e("start draw:"+"---");
-        mLineRunMapView.initLineParams(runCarList);///新增
+    public void sendSuccessRunCarCodeList(List<RunningCarBean> runCarList) {
+        DebugLog.e("start draw markers at map:"+"---");
+        mLineRunMapView.refreshRunMapView(runCarList);
     }
+
+    @Override
+    public void sendFailedRunCarCodeList() {
+        mLineRunMapView.noRefreshRunMapView();
+    }
+
 
     private void isShowStewardName(int isVisible) {
         mGoneRV1_StewardShow.setVisibility(isVisible);
@@ -916,7 +927,20 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         sendBroadcast(intent);
         presenter.onSelectLine(line);
         presenter.onAddRecordingCarTaskNameList(line.lineId);
+    }
 
+    /**
+     * 监听Back键按下事件
+     * 注意:
+     * super.onBackPressed()会自动调用finish()方法,关闭当前Activity.
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mLineRunMapView.clearSubscribe();
+        mLineRunMapView.clearMap();
+        mLineRunMapView.clearSelectVehicleCode();
+        DebugLog.e("super.onBackPressed()会自动调用finish()方法,关闭当前Activity.-----");
     }
 
     private void setTabBackground(int tabPosition) {
@@ -1100,7 +1124,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             case R.id.tv_line_run_map:
                 vpMain.setCurrentItem(3);
                 setTabBackground(3);
-                presenter.loadRunCarsAtMap();// 新增
+                ///presenter.loadRunningCarCodeList();////
                 break;
             case R.id.img_setting:
                 showPopupWindow();
@@ -1361,7 +1385,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             mTimer = null;
         }
         presenter.closeTimer();
-        presenter.unSubscribe();///
         super.onDestroy();
     }
 

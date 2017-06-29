@@ -1,3 +1,4 @@
+
 package com.zxw.dispatch.view;
 
 import android.content.Context;
@@ -5,10 +6,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
@@ -30,36 +36,71 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.http.HttpGPsRequest;
-import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.recycler.VehicleCodeListAdapter;
 import com.zxw.dispatch.utils.DebugLog;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
+import static java.util.Collections.swap;
 
 
-public class LineRunMapView extends LinearLayout implements LocationSource, AMapLocationListener
+public class LineRunMapView extends LinearLayout implements View.OnClickListener, LocationSource, AMapLocationListener
         , AMap.OnMapClickListener, AMap.OnMapLoadedListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter {
 
     private Context mContext;
+    private MainPresenter mPresenter;
     private AMap mMap;
     private MapView mMapView;
     private SlidingDrawer mSlidingDrawer;
     private ImageView mImgHandle;
+    private TextView mRefreshBtn;
+    private EditText mEtVehicleCode;
     private RecyclerView mRv;
+    private LinearLayout llQueryTab;
+    private TextView tvAll;
+    private TextView tvOnLine;
+    private TextView tvNoOnLine;
+    private TextView tvLoadMsg;
+    private RelativeLayout relAnimationLoading;
+    private LinearLayout llCarList;
     private Marker mCurrentMarker;
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
     private OnLocationChangedListener mListener;
-    private static List<Marker> mMarkers = new ArrayList<>();
+    private Subscription runCarSubscription;
+    private VehicleCodeListAdapter mRvAdapter;
+    private List<Marker> mMarkerList = new ArrayList<>();
+    private LatLngBounds.Builder mBuilder = new LatLngBounds.Builder();
+    private List<RunningCarBean> mList = new ArrayList<>();
+    private List<RunningCarBean> mOnAllList = new ArrayList<>();
+    private List<RunningCarBean> mOnLineList = new ArrayList<>();
+    private List<RunningCarBean> mOnNoLineList = new ArrayList<>();
+    private static boolean isDrawFinish = false;
+    public static String mSelectedVehicleCode = null;
+    private String mCurrentMarkerTitle = null;
+    private String isClickTab = "0";
+    private static int mI = 0;
 
 
-    public LineRunMapView(Context context, Bundle savedInstanceState) {
+    public LineRunMapView(Context context, MainPresenter presenter, Bundle savedInstanceState) {
         super(context);
         this.mContext = context;
+        this.mPresenter = presenter;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.activity_line_run_map_new, this);
         initView();
@@ -71,11 +112,27 @@ public class LineRunMapView extends LinearLayout implements LocationSource, AMap
     private void initView() {
         mSlidingDrawer = (SlidingDrawer) findViewById(R.id.slidingDrawer);
         mImgHandle = (ImageView) findViewById(R.id.iv_handle);
+        llCarList = (LinearLayout) findViewById(R.id.ll_car_list);
+        llQueryTab = (LinearLayout) findViewById(R.id.ll_query_tab);
+        tvAll = (TextView) findViewById(R.id.tv_query_all);
+        tvOnLine = (TextView) findViewById(R.id.tv_on_line);
+        tvNoOnLine = (TextView) findViewById(R.id.tv_no_on_line);
+        relAnimationLoading = (RelativeLayout) findViewById(R.id.rel_run_map_loading);
+        tvLoadMsg = (TextView) findViewById(R.id.tv_load_msg);
+
+        mRefreshBtn = (TextView) findViewById(R.id.tv_refresh_vehicleCode);
+        mEtVehicleCode = (EditText) findViewById(R.id.et_query_vehicleCode);
         mRv = (RecyclerView) findViewById(R.id.rv_vehicleCode_list);
+        relAnimationLoading.getBackground().setAlpha(230);
+        llCarList.getBackground().setAlpha(230);
+        llQueryTab.getBackground().setAlpha(230);
+        mEtVehicleCode.getBackground().setAlpha(230);
+        mRefreshBtn.getBackground().setAlpha(230);
         mRv.getBackground().setAlpha(230);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRv.setLayoutManager(layoutManager);
+
     }
 
 
@@ -96,11 +153,11 @@ public class LineRunMapView extends LinearLayout implements LocationSource, AMap
 
     }
 
-
     private void initMap(Bundle savedInstanceState) {
         mMapView = (MapView) findViewById(R.id.mv_map2d);
         mMapView.onCreate(savedInstanceState);
         mMap = mMapView.getMap();
+        mMap.setTrafficEnabled(true);
         // 自定义系统定位小蓝点
         MyLocationStyle myLocationStyle = new MyLocationStyle();
         myLocationStyle.myLocationIcon(BitmapDescriptorFactory
@@ -119,112 +176,520 @@ public class LineRunMapView extends LinearLayout implements LocationSource, AMap
     }
 
 
-    public void initLineParams(final List<RunningCarBean> list) {
-        drawMarkersAtMap(list);
-        setMarkerListener();
+    private void setNormalTabBg(int c1, int c2) {
+        int white = mContext.getResources().getColor(c1);
+        int black = mContext.getResources().getColor(c2);
+        tvAll.setTextColor(black);
+        tvOnLine.setTextColor(black);
+        tvNoOnLine.setTextColor(black);
+        tvAll.setBackgroundColor(white);
+        tvOnLine.setBackgroundColor(white);
+        tvNoOnLine.setBackgroundColor(white);
     }
 
-
-    private void drawMarkersAtMap(final List<RunningCarBean> list) {
-        final LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        final List<RunningCarBean> sendList = new ArrayList<>();
-        if (mMarkers != null) {
-            mMap.clear();
-            mMarkers.clear();
-        }
-        // 转Gps坐标系
-        final CoordinateConverter converter = new CoordinateConverter(mContext);
-        for (int i = 0; i < list.size(); i++) {
-            DebugLog.e("在跑车辆总数:" + list.size() + "---");
-            DebugLog.e(String.valueOf(i) + "___:司机名称:__" + list.get(i).getDriverName() + "__车牌号:___" + list.get(i).getVehicleCode() + "---");
-            final int index = i;
-            final RunningCarBean runCarBean = list.get(i);
-            HttpGPsRequest.getInstance().gpsByVehCode(new Subscriber<HttpGPsRequest.GpsBaseBean>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    if (index == list.size() - 1) {
-                        if (sendList != null && sendList.size() > 0) {
-                            setAdapter(sendList);
-                        }
-                    }
-                    LogUtil.loadRemoteError("gpsByVehCode " + e.getMessage());
-                }
-
-                @Override
-                public void onNext(HttpGPsRequest.GpsBaseBean gpsBean) {
-                    try {
-                        if (gpsBean.success) {
-                            DebugLog.e("gps:success:__" + String.valueOf(index) + "+:__纬度___" + gpsBean.gps.latitude + "__经度__" + gpsBean.gps.longitude + "---");
-                            // CoordType.GPS 待转换坐标类型
-                            converter.from(CoordinateConverter.CoordType.GPS);
-                            // sourceLatLng待转换坐标点 LatLng类型
-                            DPoint dPoint = new DPoint(gpsBean.gps.latitude,gpsBean.gps.longitude);
-                            converter.coord(dPoint);
-                            // 执行转换操作
-                            DPoint desLatLng = converter.convert();
-                            LatLng latLng = new LatLng(desLatLng.getLatitude(), desLatLng.getLongitude());
-
-                            runCarBean.setLatitude(desLatLng.getLatitude());
-                            runCarBean.setLongitude(desLatLng.getLongitude());
-                            builder.include(latLng);
-                            Marker marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-                                    .position(latLng)
-                                    .title(runCarBean.getDriverName() + "," + runCarBean.getVehicleCode())
-                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.car_real_time_position))
-                                    .draggable(true)
-                            );
-
-                            mMarkers.add(marker);
-                            sendList.add(runCarBean);
-
-                            if (index == list.size() - 1) {
-                                if (sendList != null && sendList.size() > 0) {
-                                    setAdapter(sendList);
-                                }
-                            }
-
-                        } else {
-                            DebugLog.e("gps:failed:" + String.valueOf(index) + runCarBean.getDriverName() + ":" + runCarBean.getVehicleCode() + "---");
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, runCarBean.getVehicleCode());
+    private void setTabBackground(int tabPosition) {
+        setNormalTabBg(R.color.font_white, R.color.font_black);
+        llQueryTab.setVisibility(View.VISIBLE);
+        switch (tabPosition) {
+            case 0:
+                tvAll.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
+                tvAll.setBackground(mContext.getResources().getDrawable(R.drawable.tab_blue_rectangle));
+                break;
+            case 1:
+                tvNoOnLine.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
+                tvNoOnLine.setBackground(mContext.getResources().getDrawable(R.drawable.tab_blue_rectangle));
+                break;
+            case 2:
+                tvOnLine.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
+                tvOnLine.setBackground(mContext.getResources().getDrawable(R.drawable.tab_blue_rectangle));
+                break;
         }
     }
 
 
-    private void setAdapter(List<RunningCarBean> list) {
-        VehicleCodeListAdapter adapter = new VehicleCodeListAdapter(mContext, list,
-                new VehicleCodeListAdapter.OnItemClickListener() {
+    private void clearEtVehicle() {
+        String etStr = mEtVehicleCode.getText().toString().trim();
+        if (!TextUtils.isEmpty(etStr)) {
+            mEtVehicleCode.setText(null);
+        }
+    }
+
+    public void initLineParams(int lineId) {
+        setOnRefreshListener(lineId);
+        mPresenter.loadRunningCarCodeList(lineId);
+    }
+
+
+    public void setOnRefreshListener(final int lineId) {
+        mRefreshBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearEtVehicle();
+                showLoading(View.VISIBLE, View.GONE, View.GONE);
+                mPresenter.loadRunningCarCodeList(lineId);
+            }
+        });
+    }
+
+
+    public void noRefreshRunMapView() {
+          showLoading(View.GONE, View.VISIBLE, View.GONE);
+          initBaseView(View.VISIBLE, false);
+    }
+
+    public void refreshRunMapView(List<RunningCarBean> list) {
+          clearSubscribe();
+          drawMarkerList(list);
+    }
+
+
+    private void drawMarkerList(final List<RunningCarBean> list) {
+        if (mList != null && mList.size() > 0) {
+            mList.clear();
+        }
+        mList.addAll(list);
+        mCurrentMarkerTitle = null;
+        mSelectedVehicleCode = null;
+        setTabListener();
+        runCarSubscription = Observable.interval(0, 30, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Long>() {
                     @Override
-                    public void onClick(RunningCarBean bean, int position) {
-                        double latitude = bean.getLatitude();
-                        double longitude = bean.getLongitude();
-                        LatLng marker1 = new LatLng(latitude, longitude);
-                        mMap.moveCamera(CameraUpdateFactory.changeLatLng(marker1));
-                        mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
-                        mMarkers.get(position).showInfoWindow();
-                        mCurrentMarker = mMarkers.get(position);
+                    public void call(Long aLong) {
+
+                        showLoading(View.VISIBLE, View.GONE, View.GONE);
+
+                        clearAdapter();
+
+                        clearList();
+
+                        clearMap();
+
+                        clearEtVehicle();
+
+                        initBaseView(View.VISIBLE, false);
+
+                        mI = 0;
+                        isDrawFinish = false;
+                        for (int i = 0; i < mList.size(); i++) {
+                            refreshMarkerLocation(i, mList.get(i));
+                        }
+
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
 
                     }
                 });
-        mRv.setAdapter(adapter);
+
+    }
+
+
+    public void clearSelectVehicleCode() {
+        mSelectedVehicleCode = null;
+    }
+
+    public void clearMap() {
+        if (mMarkerList != null && mMarkerList.size() > 0) {
+            mMarkerList.clear();
+            mMap.clear();
+        }
+        if (mBuilder != null) {
+            mBuilder = null;
+        }
+
+        mBuilder = new LatLngBounds.Builder();
+    }
+
+    private void clearAdapter() {
+        if (mRvAdapter != null) {
+            mRvAdapter.clearListener();
+            mRvAdapter = null;
+        }
+    }
+
+    private void clearList() {
+        if (mOnAllList != null && mOnAllList.size() > 0) {
+            mOnAllList.clear();
+        }
+        if (mOnLineList != null && mOnLineList.size() > 0) {
+            mOnLineList.clear();
+        }
+        if (mOnNoLineList != null && mOnNoLineList.size() > 0) {
+            mOnNoLineList.clear();
+        }
+
+    }
+
+    private void initBaseView(int visible, boolean enabled) {
+        showEtVehicleCode(visible);
+        showRefreshBtn(visible);
+        setTabStyle(enabled);
+    }
+
+    private void setTabStyle(boolean enabled) {
+        setTabEnabled(enabled);
+        setTabSize();
+        setTabBackground(0);
+    }
+
+    private void showLoading(int v1, int v2, int v3) {
+        relAnimationLoading.setVisibility(v1);
+        tvLoadMsg.setVisibility(v2);
+        mRv.setVisibility(v3);
+    }
+
+    private void setTabEnabled(boolean enabled) {
+        tvAll.setEnabled(enabled);
+        tvOnLine.setEnabled(enabled);
+        tvNoOnLine.setEnabled(enabled);
+    }
+
+    private void showEtVehicleCode(int visible) {
+        mEtVehicleCode.setVisibility(visible);
+    }
+
+    private void showRefreshBtn(int visible) {
+        mRefreshBtn.setVisibility(visible);
+    }
+
+
+    private LatLng converterGps(HttpGPsRequest.GpsBaseBean gpsBean) {
+        LatLng latLng = null;
+        try {
+            // 转Gps坐标系
+            CoordinateConverter converter = new CoordinateConverter(mContext);
+            // CoordType.GPS 待转换坐标类型
+            converter.from(CoordinateConverter.CoordType.GPS);
+            // sourceLatLng待转换坐标点 LatLng类型
+            DPoint dPoint = new DPoint(gpsBean.gps.latitude, gpsBean.gps.longitude);
+            converter.coord(dPoint);
+            // 执行转换操作
+            DPoint desLatLng = converter.convert();
+            latLng = new LatLng(desLatLng.getLatitude(), desLatLng.getLongitude());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return latLng;
+    }
+
+
+    private void refreshMarkerLocation(final int i, final RunningCarBean bean) {
+        final String vehicleCode = bean.getVehicleCode();
+        HttpGPsRequest.getInstance().gpsByVehCode(new Subscriber<HttpGPsRequest.GpsBaseBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                refreshMarkerLocation(i, bean);
+            }
+
+            @Override
+            public void onNext(HttpGPsRequest.GpsBaseBean gpsBean) {
+                try {
+                    if (gpsBean.success) {
+                        LatLng latLng = converterGps(gpsBean);
+                        Marker marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
+                                .position(latLng)
+                                .title(bean.getDriverName() + "," + bean.getVehicleCode())
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.car_real_time_position))
+                                .draggable(true)
+                        );
+                        marker.setVisible(false);
+                        marker.hideInfoWindow();
+                        setMarkerListener();
+
+                        if (TextUtils.isEmpty(mCurrentMarkerTitle)) {
+                            marker.setVisible(true);
+                            mMap.moveCamera(CameraUpdateFactory.zoomTo(12));
+                            if (mCenterLatLngAtMap != null) {
+                                mMap.moveCamera(CameraUpdateFactory.changeLatLng(mCenterLatLngAtMap));
+                            }
+                        } else {
+                            if (mCurrentMarkerTitle.equals(marker.getTitle())) {
+                                marker.setVisible(true);
+                                marker.showInfoWindow();
+                                mMap.moveCamera(CameraUpdateFactory.changeLatLng(marker.getPosition()));
+                                mMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+                            }
+                        }
+
+                        mMarkerList.add(marker);
+                        mBuilder.include(latLng);
+
+                        bean.setPoi(mI);
+
+                        long mit = getMilliMinute(gpsBean);
+                        String type = getRunCarBeanType(mit);
+                        bean.setMilliMinute(mit);
+                        bean.setType(type);
+
+                        splitIntoDiffList(type, bean);
+
+                        mOnAllList.add(bean);
+
+                        mI++;
+                        if (mI > 0 && mI == mList.size()) {
+
+                            changeToDiffDescList();
+
+                            if (mList != null && mList.size() > 0) {
+                                mList.clear();
+                            }
+
+                            mList.addAll(mOnAllList);
+
+                            setAdapter(mOnAllList);
+
+                            isDrawFinish = true;
+
+                            initBaseView(View.VISIBLE, true);
+
+                            setEtVehicleListener();
+
+                            showLoading(View.GONE, View.GONE, View.VISIBLE);
+
+                            shownSlidingDrawer();
+
+                        }
+                    } else {
+                        DebugLog.e("gps:failed:" + i + "___" + "---");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, vehicleCode);
+    }
+
+    private void changeToDiffDescList() {
+        mOnAllList = changeIntoDescList(mOnAllList, "desc");
+        mOnLineList = changeIntoDescList(mOnLineList, "desc");
+        mOnNoLineList = changeIntoDescList(mOnNoLineList, "desc");
+    }
+
+
+    private void setTabSize() {
+        if (mOnAllList.size() > 0) {
+            tvAll.setText("全部(" + mOnAllList.size() + ")");
+        } else {
+            tvAll.setText("全部(0)");
+        }
+        if (mOnLineList.size() > 0) {
+            tvOnLine.setText("在线(" + mOnLineList.size() + ")");
+        } else {
+            tvOnLine.setText("在线(0)");
+        }
+        if (mOnNoLineList.size() > 0) {
+            tvNoOnLine.setText("离线(" + mOnNoLineList.size() + ")");
+        } else {
+            tvNoOnLine.setText("离线(0)");
+        }
+    }
+
+    private void splitIntoDiffList(String type, final RunningCarBean bean) {
+        if (!TextUtils.isEmpty(type)) {
+            if (type.equals("1")) {
+                mOnNoLineList.add(bean);
+            } else if (type.equals("2")) {
+                mOnLineList.add(bean);
+            }
+        }
+    }
+
+
+    private String getRunCarBeanType(long mit) {
+        long min = mit / 1000 / 60;
+        if (min <= 15) {
+            return "2";
+        } else {
+            return "1";
+        }
+    }
+
+    private List<RunningCarBean> changeIntoDescList(List<RunningCarBean> list, String sortType) {
+        if (sortType.equals("asc")) {
+            for (int i = 1; i < list.size(); i++) {
+                for (int j = 0; j < list.size() - i; j++) {
+                    if (list.get(j).getMilliMinute() > list.get(j + 1).getMilliMinute()) {
+                        swap(list, j, j + 1);
+                    }
+                }
+            }
+
+        } else if (sortType.equals("desc")) {
+            for (int i = 1; i < list.size(); i++) {
+                for (int j = 0; j < list.size() - i; j++) {
+                    if (list.get(j).getMilliMinute() < list.get(j + 1).getMilliMinute()) {
+                        swap(list, j, j + 1);
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+
+    private long getMilliMinute(HttpGPsRequest.GpsBaseBean gpsBean) {
+        return setGpsMilliMinute(gpsBean.gps.dateInt, gpsBean.gps.timeInt);
+    }
+
+
+    /**
+     * @param dateInt 日期: 20170615
+     * @param timeInt 时分秒: 165206
+     * @return
+     */
+    private long setGpsMilliMinute(int dateInt, int timeInt) {
+        long milliSecond = 0;
+        try {
+            Date curDate = null;
+            Date date = null;
+            String t1, t2,hor1, min, sec;
+
+            final SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA);
+            String curTime = df.format(new Date());
+            curDate = df.parse(curTime);// 当前系统时间
+
+            t1 = String.valueOf(timeInt);
+            if (t1 != null && t1.length() == 5) {
+                hor1 = t1.substring(0, 1);
+                min = t1.substring(1, 3);
+                sec = t1.substring(3);
+            } else {
+                hor1 = t1.substring(0, 2);
+                min = t1.substring(2, 4);
+                sec = t1.substring(4);
+            }
+            String hor2 = Integer.valueOf(hor1) < 10 ? "0" + hor1 : hor1;
+            t2 = hor2 + min + sec;
+            String dateStr = String.valueOf(dateInt) + t2;
+            date = df.parse(dateStr.toString().trim());
+
+            milliSecond = curDate.getTime() - date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return Math.abs(milliSecond);
+    }
+
+
+    private void setTabListener() {
+        tvAll.setOnClickListener(this);
+        tvOnLine.setOnClickListener(this);
+        tvNoOnLine.setOnClickListener(this);
+    }
+
+    private void shownSlidingDrawer() {
         mSlidingDrawer.setVisibility(View.VISIBLE);
         mSlidingDrawer.open();
     }
 
+
+    private void setEtVehicleListener() {
+        mEtVehicleCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String inputStr = s.toString().trim().toUpperCase();
+                if (!TextUtils.isEmpty(isClickTab)) {
+                    if (isClickTab.equals("0")) {
+                        queryVehicleCode(inputStr, mList);
+                    } else if (isClickTab.equals("1")) {
+                        queryVehicleCode(inputStr, mOnNoLineList);
+                    } else if (isClickTab.equals("2")) {
+                        queryVehicleCode(inputStr, mOnLineList);
+                    }
+                }
+            }
+        });
+    }
+
+
+    private void queryVehicleCode(String inputStr, List<RunningCarBean> list) {
+        if (list.size() == 0) {
+            return;
+        }
+        List<RunningCarBean> mSendList = new ArrayList<>();
+        if (TextUtils.isEmpty(inputStr)) {
+            mSendList.addAll(list);
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                String veh = list.get(i).getVehicleCode().trim();
+                if (!TextUtils.isEmpty(veh) && veh.contains(inputStr)) {
+                    mSendList.add(list.get(i));
+                }
+            }
+        }
+
+        setAdapter(mSendList);
+    }
+
+
+    public void clearSubscribe() {
+        if (runCarSubscription != null) {
+            runCarSubscription.unsubscribe();
+            runCarSubscription = null;
+        }
+    }
+
+
     private void setMarkerListener() {
         mMap.setOnMarkerClickListener(this);
         mMap.setInfoWindowAdapter(this);
+    }
+
+
+
+
+    private void setAdapter(List<RunningCarBean> list) {
+        if (mRvAdapter != null) {
+            mRvAdapter = null;
+        }
+        List<RunningCarBean> sendList = new ArrayList<>();
+        sendList.addAll(list);
+        mRvAdapter = new VehicleCodeListAdapter(mContext, sendList,
+                new VehicleCodeListAdapter.OnRunItemClickListener() {
+                    @Override
+                    public void onItemClick(String vehicleCode) {
+                        for (int i = 0; i < mMarkerList.size(); i++) {
+                            Marker marker = mMarkerList.get(i);
+                            String title = marker.getTitle();
+                            String[] temp = title.split(",");
+                            if (!TextUtils.isEmpty(vehicleCode) && vehicleCode.equals(temp[1])) {
+                                mMap.moveCamera(CameraUpdateFactory.changeLatLng(marker.getPosition()));
+                                mMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+
+                                marker.setVisible(true);
+                                marker.showInfoWindow();
+                                mCurrentMarker = marker;
+                                mCurrentMarkerTitle = marker.getTitle();
+                            } else {
+                                marker.setVisible(false);
+                                marker.hideInfoWindow();
+                            }
+                        }
+                    }
+                });
+        mRv.setAdapter(mRvAdapter);
     }
 
     @Override
@@ -258,15 +723,16 @@ public class LineRunMapView extends LinearLayout implements LocationSource, AMap
     }
 
 
+    private LatLng mCenterLatLngAtMap = null;
+
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
-            if (amapLocation != null
-                    && amapLocation.getErrorCode() == 0) {
+            if (amapLocation != null && amapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
+                mCenterLatLngAtMap = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
             } else {
                 String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
-                DebugLog.e(errText);
             }
         }
     }
@@ -301,7 +767,7 @@ public class LineRunMapView extends LinearLayout implements LocationSource, AMap
         return null;
     }
 
-    // 点击infoWindow事件
+
     @Override
     public void onInfoWindowClick(Marker marker) {
 
@@ -309,9 +775,9 @@ public class LineRunMapView extends LinearLayout implements LocationSource, AMap
 
     @Override
     public void onMapClick(LatLng latLng) {
-        if (mCurrentMarker != null) {
-            mCurrentMarker.hideInfoWindow();
-        }
+//        if (mCurrentMarker != null) {
+//            mCurrentMarker.hideInfoWindow();
+//        }
     }
 
     // 点击Marker事件
@@ -319,6 +785,31 @@ public class LineRunMapView extends LinearLayout implements LocationSource, AMap
     public boolean onMarkerClick(Marker marker) {
         mCurrentMarker = marker;
         return false;
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_query_all:
+                clearEtVehicle();
+                setTabBackground(0);
+                setAdapter(mOnAllList);
+                isClickTab = "0";
+                break;
+            case R.id.tv_no_on_line:
+                clearEtVehicle();
+                setTabBackground(1);
+                setAdapter(mOnNoLineList);
+                isClickTab = "1";
+                break;
+            case R.id.tv_on_line:
+                clearEtVehicle();
+                setTabBackground(2);
+                setAdapter(mOnLineList);
+                isClickTab = "2";
+                break;
+        }
     }
 
 
