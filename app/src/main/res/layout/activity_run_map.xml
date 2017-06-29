@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+    <com.amap.api.maps2d.MapView
+        android:id="@+id/mv_map2d"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <SlidingDrawer
+        android:id="@+id/slidingDrawer"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_item_always"
+        android:animateOnClick="true"
+        android:content="@+id/content_layout"
+        android:handle="@+id/handle_layout"
+        android:orientation="horizontal"
+        android:rotation="180">
+
+        <LinearLayout
+            android:id="@+id/handle_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_handle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:rotation="180"
+                android:src="@mipmap/img_open_station" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="180"
+            android:orientation="vertical"
+            >
+            <!--页面加载时显示的等待动画 -->
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/rel_run_map_loading"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@color/white"-->
+            <!--android:visibility="gone"-->
+            <!--&gt;-->
+            <!--<ProgressBar-->
+            <!--style="@style/myProgressBarStyleLarge"-->
+            <!--android:layout_width="63dp"-->
+            <!--android:layout_height="63dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:indeterminateDuration="700"-->
+            <!--android:background="@drawable/tool_pb_bg"-->
+            <!--/>-->
+            <!--</RelativeLayout>-->
+
+            <!--新增: 刷新车辆按钮-->
+            <TextView
+                android:id="@+id/tv_refresh_vehicleCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/login_height55"
+                android:background="@drawable/btn_map_style1"
+                android:gravity="center"
+                android:text="刷新车辆按钮"
+                android:textSize="@dimen/font_medium"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_gray3"
+                />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_vehicleCode_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:scrollbars="none"
+                />
+        </LinearLayout>
+    </SlidingDrawer>
+</FrameLayout>

@@ -12,24 +12,34 @@ public class RunningCarBean {
     private String stewartId;
     private String stewartName;
 
-    // 建立经度和纬度标识
-    private double latitude;
-    private double longitude;
+    private int poi;
 
-    public double getLatitude() {
-        return latitude;
+    //gps时间差
+    private long second;
+    private String type;
+
+    public String getType() {
+        return type;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public long getMilliMinute() {
+        return second;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setMilliMinute(long second) {
+        this.second = second;
+    }
+
+    public int getPoi() {
+        return poi;
+    }
+
+    public void setPoi(int poi) {
+        this.poi = poi;
     }
 
     public String getVehicleCode() {
