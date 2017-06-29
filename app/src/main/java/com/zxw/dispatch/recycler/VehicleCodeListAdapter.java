@@ -56,30 +56,8 @@ public class VehicleCodeListAdapter extends RecyclerView.Adapter<VehicleCodeList
         String vehicleCode = mData.get(position).getVehicleCode();
         long mit = mData.get(position).getMilliMinute();
         String type = mData.get(position).getType();
-        String[] strTime = new String[]{};
-        strTime = TimeUtil.shiftMilliSecond(mit);
-        if (strTime != null && strTime.length > 0 && !TextUtils.isEmpty(type)) {
-            String hour = null;
-            String minute = null;
-            String second = null;
-            if (strTime[0].equals("00")){
-                hour = "";
-            }else {
-                hour = strTime[0]+"时";
-            }
-            if (strTime[1].equals("00")){
-                minute = "";
-            }else {
-                minute = strTime[1]+"分";
-            }
-            if (strTime[2].equals("00")){
-                second = "";
-            }else {
-                String sec = Integer.valueOf(strTime[2]) < 10 ?  strTime[2].substring(0,1): strTime[2];
-//                sec = Integer.valueOf(sec) == 0 ? "" : sec+"秒";
-                second = sec+"秒";
-            }
-
+        String time = TimeUtil.formatTime(mit);
+        if (!TextUtils.isEmpty(type)) {
             if (type.equals("1")) {
                 if (!TextUtils.isEmpty(mSelectedVehicleCode) &&  mSelectedVehicleCode.equals(vehicleCode)){
                     holder.ll.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
@@ -90,7 +68,7 @@ public class VehicleCodeListAdapter extends RecyclerView.Adapter<VehicleCodeList
                     holder.tvTime.setTextColor(mContext.getResources().getColor(R.color.font_black));
                     holder.tv.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 }
-                holder.tvTime.setText("静止 " + hour + minute + second);
+                holder.tvTime.setText("静止" + time);
                 holder.imgLine.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.img_vehicle_code_gray));
 
             } else if (type.equals("2")) {
@@ -103,7 +81,7 @@ public class VehicleCodeListAdapter extends RecyclerView.Adapter<VehicleCodeList
                     holder.tvTime.setTextColor(mContext.getResources().getColor(R.color.font_green));
                     holder.tv.setTextColor(mContext.getResources().getColor(R.color.font_black));
                 }
-                holder.tvTime.setText(hour + minute + second);
+                holder.tvTime.setText(time);
                 holder.imgLine.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.img_vehicle_code_green));
             }
         }

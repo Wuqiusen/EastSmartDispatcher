@@ -7,23 +7,33 @@ package com.zxw.dispatch.utils;
 
 public class TimeUtil {
 
-    public static String[] shiftMilliSecond(Long ms) {
-        String[] str = new String[10];
-        int ss = 1000;
-        int mi = ss * 60;
-        int hh = mi * 60;
-        int dd = hh * 24;
+    public static String formatTime(Long ms) {
+        Integer ss = 1000;
+        Integer mi = ss * 60;
+        Integer hh = mi * 60;
+        Integer dd = hh * 24;
 
+        Long day = ms / dd;
+        Long hour = (ms - day * dd) / hh;
+        Long minute = (ms - day * dd - hour * hh) / mi;
+        Long second = (ms - day * dd - hour * hh - minute * mi) / ss;
 
-        long hour = ms / hh;
-        long minute = (ms - hour * hh) / mi;
-        long second = (ms - hour * hh - minute * mi) / ss;
+        StringBuffer sb = new StringBuffer();
+        if(day > 0) {
+            sb.append(day+"天");
+        }
+        if(hour > 0) {
+            sb.append(hour+"时");
+        }
+        if(minute > 0) {
+            sb.append(minute+"分");
+        }
+        if(second > 0) {
+            sb.append(second+"秒");
+        }else {
+            sb.append("0秒");
+        }
 
-
-        str[0] = hour < 10 ? "0" + hour : "" + hour;//小时
-        str[1] = minute < 10 ? "0" + minute : "" + minute;//分钟
-        str[2] = second < 10 ? "0" + second : "" + second;//秒
-
-        return str;
+        return sb.toString();
     }
 }
