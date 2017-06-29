@@ -1,6 +1,5 @@
 package com.zxw.dispatch.presenter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -38,14 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * author：CangJie on 2016/9/20 17:26
@@ -79,7 +72,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private List<StopHistory> mStopHistories = new ArrayList<>();
     private List<StopHistory> endStopHistories = new ArrayList<>();
     private List<VehicleNumberBean> mVehicleNumberBeen = new ArrayList<>();
-    private List<RunningCarBean> mRunningCarBean = new ArrayList<>();
+//    private List<RunningCarBean> mRunningCarBean = new ArrayList<>();
 
 
     public MainPresenter(Context context, MainView mvpView) {
@@ -1206,28 +1199,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
 
 
-    private Subscription runCarSubscription;
-    public void loadRunCarsAtMap() {
-        runCarSubscription = Observable.interval(0, 30, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Long>() {
-                    @Override
-                    public void call(Long aLong) {
-                        refreshRunningCars(lineId);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-
-                    }
-                });
-    }
-
-
     // 47.根据任务线路id获取当前在跑的所有车辆(新)
-    private void refreshRunningCars(final int lineId) {
+    public void loadRunningCarCodeList(final int lineId) {
         HttpMethods.getInstance().runningCarsAtMap(new Subscriber<BaseBean<List<RunningCarBean>>>() {
             @Override
             public void onCompleted() {
@@ -1240,26 +1213,19 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
 
             @Override
-            public void onNext(BaseBean<List<RunningCarBean>> runCarListBean) {
-                if (mRunningCarBean != null){
-                    mRunningCarBean.clear();
+            public void onNext(BaseBean<List<RunningCarBean>> runCarBeanList) {
+                int size = runCarBeanList.returnData.size();
+                if(size == 0){
+                    mvpView.sendFailedRunCarCodeList();
+                }else {
+                    mvpView.sendSuccessRunCarCodeList(runCarBeanList.returnData);
+                    DebugLog.e("查询lineId:"+lineId+"---");
                 }
-                mRunningCarBean.addAll(runCarListBean.returnData);
-
-                mvpView.drawRunningCarAtMap(runCarListBean.returnData);
-                DebugLog.e("查询lineId:"+lineId+"---");
             }
         }, userId(),keyCode(),lineId + "");
     }
 
-    public List<RunningCarBean> getRunningCarList(){
-        return mRunningCarBean;
-    }
 
-    public void unSubscribe(){
-        if(runCarSubscription != null)
-            runCarSubscription.unsubscribe();
-    }
 
     public void sendGroupMessage(String message) {
 

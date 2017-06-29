@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/phone_user_icon"
         android:hint="请输入工号"
+        android:text="000000"
         android:maxLines="1"
         android:singleLine="true"
         />
@@ -27,6 +28,7 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/password_user_icon"
         android:hint="请输入密码"
+        android:text="123456"
         android:inputType="textPassword"
         android:maxLines="1"
         android:singleLine="true"
