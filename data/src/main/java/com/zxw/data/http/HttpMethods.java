@@ -30,6 +30,7 @@ import com.zxw.data.bean.WaitVehicle;
 import java.util.List;
 
 import retrofit2.Retrofit;
+import retrofit2.http.Field;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

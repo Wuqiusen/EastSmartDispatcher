@@ -1153,27 +1153,9 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     private Subscription runCarSubscription;
 
-    public void loadRunCarsAtMap() {
-        runCarSubscription = Observable.interval(0, 30, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Long>() {
-                    @Override
-                    public void call(Long aLong) {
-                        refreshRunningCars(lineId);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-
-                    }
-                });
-    }
-
 
     // 47.根据任务线路id获取当前在跑的所有车辆(新)
-    private void refreshRunningCars(final int lineId) {
+    public void loadRunningCarCodeList(final int lineId) {
         HttpMethods.getInstance().runningCarsAtMap(new Subscriber<BaseBean<List<RunningCarBean>>>() {
             @Override
             public void onCompleted() {
@@ -1183,21 +1165,21 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
-                LogUtil.loadRemoteError("runningCarsAtMap " + e.getMessage());
             }
 
             @Override
-            public void onNext(BaseBean<List<RunningCarBean>> runCarListBean) {
-                if (mRunningCarBean != null) {
-                    mRunningCarBean.clear();
+            public void onNext(BaseBean<List<RunningCarBean>> runCarBeanList) {
+                int size = runCarBeanList.returnData.size();
+                if(size == 0){
+                    mvpView.sendFailedRunCarCodeList();
+                }else {
+                    mvpView.sendSuccessRunCarCodeList(runCarBeanList.returnData);
+                    DebugLog.e("查询lineId:"+lineId+"---");
                 }
-                mRunningCarBean.addAll(runCarListBean.returnData);
-
-                mvpView.drawRunningCarAtMap(runCarListBean.returnData);
-                DebugLog.e("查询lineId:" + lineId + "---");
             }
-        }, userId(), keyCode(), lineId + "");
+        }, userId(),keyCode(),lineId + "");
     }
+
 
     public List<RunningCarBean> getRunningCarList() {
         return mRunningCarBean;
