@@ -65,7 +65,7 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
     private Context mContext;
     private MainPresenter mPresenter;
     private AMap mMap;
-    private MapView mMapView;
+    public MapView mMapView;
     private SlidingDrawer mSlidingDrawer;
     private ImageView mImgHandle;
     private TextView mRefreshBtn;
@@ -79,7 +79,7 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
     private RelativeLayout relAnimationLoading;
     private LinearLayout llCarList;
     private Marker mCurrentMarker;
-    private AMapLocationClient mLocationClient;
+    public AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
     private OnLocationChangedListener mListener;
     private Subscription runCarSubscription;
@@ -95,17 +95,19 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
     private String mCurrentMarkerTitle = null;
     private String isClickTab = "0";
     private static int mI = 0;
+    private  Bundle mSavedInstanceState;
 
 
     public LineRunMapView(Context context, MainPresenter presenter, Bundle savedInstanceState) {
         super(context);
         this.mContext = context;
+        this.mSavedInstanceState = savedInstanceState;
         this.mPresenter = presenter;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.activity_line_run_map_new, this);
         initView();
         initEvent();
-        initMap(savedInstanceState);
+        initMap();
     }
 
 
@@ -153,9 +155,11 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
 
     }
 
-    private void initMap(Bundle savedInstanceState) {
+
+
+    private void initMap() {
         mMapView = (MapView) findViewById(R.id.mv_map2d);
-        mMapView.onCreate(savedInstanceState);
+        mMapView.onCreate(mSavedInstanceState);
         mMap = mMapView.getMap();
         mMap.setTrafficEnabled(true);
         // 自定义系统定位小蓝点
@@ -174,7 +178,6 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
             mMap.setOnMapClickListener(this);
         }
     }
-
 
     private void setNormalTabBg(int c1, int c2) {
         int white = mContext.getResources().getColor(c1);
@@ -224,6 +227,7 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
         mRefreshBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearMap();
                 clearEtVehicle();
                 showLoading(View.VISIBLE, View.GONE, View.GONE);
                 mPresenter.loadRunningCarCodeList(lineId);
@@ -233,13 +237,13 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
 
 
     public void noRefreshRunMapView() {
-          showLoading(View.GONE, View.VISIBLE, View.GONE);
-          initBaseView(View.VISIBLE, false);
+        showLoading(View.GONE, View.VISIBLE, View.GONE);
+        initBaseView(View.VISIBLE, false);
     }
 
     public void refreshRunMapView(List<RunningCarBean> list) {
-          clearSubscribe();
-          drawMarkerList(list);
+        clearSubscribe();
+        drawMarkerList(list);
     }
 
 
@@ -290,6 +294,7 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
 
     public void clearSelectVehicleCode() {
         mSelectedVehicleCode = null;
+        mCurrentMarkerTitle = null;
     }
 
     public void clearMap() {
@@ -406,11 +411,12 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
                         setMarkerListener();
 
                         if (TextUtils.isEmpty(mCurrentMarkerTitle)) {
-                            marker.setVisible(true);
-                            mMap.moveCamera(CameraUpdateFactory.zoomTo(12));
-                            if (mCenterLatLngAtMap != null) {
-                                mMap.moveCamera(CameraUpdateFactory.changeLatLng(mCenterLatLngAtMap));
+                            if (i == 0){
+                                // 若定位始终失败，重新刷新车辆列表的时候，以为i=0为中心
+                                mMap.moveCamera(CameraUpdateFactory.changeLatLng(marker.getPosition()));
+                                mMap.moveCamera(CameraUpdateFactory.zoomTo(12));
                             }
+                            marker.setVisible(true);
                         } else {
                             if (mCurrentMarkerTitle.equals(marker.getTitle())) {
                                 marker.setVisible(true);
@@ -553,12 +559,11 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
         try {
             Date curDate = null;
             Date date = null;
-            String t1, t2,hor1, min, sec;
+            String t1, t2, hor1, min, sec;
 
             final SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA);
             String curTime = df.format(new Date());
             curDate = df.parse(curTime);// 当前系统时间
-
             t1 = String.valueOf(timeInt);
             if (t1 != null && t1.length() == 5) {
                 hor1 = t1.substring(0, 1);
@@ -658,8 +663,6 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
     }
 
 
-
-
     private void setAdapter(List<RunningCarBean> list) {
         if (mRvAdapter != null) {
             mRvAdapter = null;
@@ -692,11 +695,16 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
         mRv.setAdapter(mRvAdapter);
     }
 
+   public void onMapDestroy(){
+       mMapView.onDestroy();
+       mLocationClient.onDestroy();
+   }
+
     @Override
     public void onMapLoaded() {
-        LatLng marker1 = new LatLng(22.6024400000, 114.1201800000);
+        LatLng latLng = new LatLng(22.5428750360,114.0595699327);
         if (mMap != null) {
-            mMap.moveCamera(CameraUpdateFactory.changeLatLng(marker1));
+            mMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
         }
     }
 
@@ -705,7 +713,7 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
         mListener = onLocationChangedListener;
         if (mLocationClient == null) {
             //初始化定位
-            mLocationClient = new AMapLocationClient(mContext);
+            mLocationClient = new AMapLocationClient(mContext.getApplicationContext());
             //初始化定位参数
             mLocationOption = new AMapLocationClientOption();
             //设置定位回调监听
@@ -722,17 +730,14 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
         }
     }
 
-
-    private LatLng mCenterLatLngAtMap = null;
-
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
             if (amapLocation != null && amapLocation.getErrorCode() == 0) {
-                mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
-                mCenterLatLngAtMap = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+                mListener.onLocationChanged(amapLocation);
             } else {
-                String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
+                String errText = "定位失败:" + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
+                DebugLog.e(errText+"---");
             }
         }
     }
@@ -780,10 +785,16 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
 //        }
     }
 
-    // 点击Marker事件
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         mCurrentMarker = marker;
+        mCurrentMarkerTitle = marker.getTitle();
+        if (mRvAdapter != null){
+            String[] temp = marker.getTitle().split(",");
+            mSelectedVehicleCode = temp[1];
+            mRvAdapter.notifyDataSetChanged();
+        }
         return false;
     }
 
