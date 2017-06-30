@@ -55,6 +55,9 @@ public interface MainView extends BaseView {
 
     void onSelectLine();
 
-    void drawRunningCarAtMap(List<RunningCarBean> runCarList);///
+    void sendSuccessRunCarCodeList(List<RunningCarBean> runCarList);
+
+    void sendFailedRunCarCodeList();
+
 
 }

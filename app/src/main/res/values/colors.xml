@@ -18,6 +18,8 @@
     <color name="background_deep_blue">#4E6682</color>
     <color name="main">#4E6682</color>
 
+
+
     <!-- 按钮-->
     <color name="btn_app_theme1">#29b216</color>
     <color name="btn_app_theme2">#ffb0c32d</color>
@@ -27,6 +29,7 @@
     <color name="btn_app_theme7">#0074c4</color>
     <color name="btn_app_theme8">#6CB5E5</color>
     <color name="btn_app_theme9">#6a6a6a</color>
+    <color name="btn_app_theme10">#EAEEF3</color>
 
     <!-- 单选框 -->
     <color name="radio_is_clicked">#6a6a6a</color>
@@ -44,6 +47,8 @@
     <color name="font_blue">#8394A9</color>
     <color name="font_blue2">#73B9EC</color>
     <color name="font_blue3">#72869F</color>
+    <color name="font_blue4">#7B80A1</color>
+    <color name="font_blue5">#135F97</color>
 
 
     <!-- 线条样式 -->
