@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.source.DepartSource;
+import com.zxw.data.utils.LogUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -113,7 +114,7 @@ public class SendCarUtils {
                 if (sendCarResult != null) {
                     sendCarResult.onSendCarFail(lineID);
                 }
-
+                LogUtil.loadRemoteError("sendCar " + e.getMessage());
             }
 
             @Override

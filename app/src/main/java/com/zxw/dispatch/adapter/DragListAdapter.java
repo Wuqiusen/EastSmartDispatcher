@@ -2,6 +2,7 @@ package com.zxw.dispatch.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
@@ -184,23 +186,12 @@ public class DragListAdapter extends BaseAdapter {
         // 发车间隔
         tv_interval_time = (TextView) view
                 .findViewById(R.id.tv_interval_time);
-        tv_interval_time.setText(String.valueOf(mDatas.get(position).getSpaceTime()));
-        tv_interval_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isCanClick){
-                    return;
-                }
-                final int mCurrentMinute = mDatas.get(position).getSpaceTime();
-                new UpdateIntervalPickerDialog(mContext, mCurrentMinute, new UpdateIntervalPickerDialog.OnTimePickerListener() {
-                    @Override
-                    public void onTimePicker(String sMinute, BasePresenter.LoadDataStatus loadDataStatus) {
-                        presenter.updateSpaceTime(mDatas.get(position).getId(), sMinute, loadDataStatus);
-                        tv_interval_time.setText(sMinute);
-                    }
-                }).show();
-            }
-        });
+        String spaceTime = mDatas.get(position).getSpaceTime();
+        if (TextUtils.isEmpty(spaceTime)){
+            tv_interval_time.setText("首班");
+        }else{
+            tv_interval_time.setText(spaceTime);
+        }
         // 到站时刻
         TextView tv_system_enter_time = (TextView) view
                 .findViewById(R.id.tv_system_enter_time);
@@ -340,7 +331,7 @@ public class DragListAdapter extends BaseAdapter {
 
             @Override
             public void onError(Throwable e) {
-
+                LogUtil.loadRemoteError("getInformData " + e.getMessage());
             }
 
             @Override

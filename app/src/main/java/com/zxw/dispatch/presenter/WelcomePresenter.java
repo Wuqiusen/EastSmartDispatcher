@@ -7,6 +7,7 @@ import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.VersionBean;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.data.source.WelcomeSource;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.data.utils.MD5;
 import com.zxw.dispatch.presenter.view.WelcomeView;
 import com.zxw.dispatch.utils.DebugLog;
@@ -45,6 +46,7 @@ public class WelcomePresenter extends BasePresenter<WelcomeView> {
             public void onError(Throwable e) {
                    mvpView.disPlay(e.getMessage());
                    mvpView.loadMain();
+                LogUtil.loadRemoteError("checkVersion " + e.getMessage());
             }
 
             @Override
@@ -71,7 +73,7 @@ public class WelcomePresenter extends BasePresenter<WelcomeView> {
 
             @Override
             public void onError(Throwable e) {
-
+                LogUtil.loadRemoteError("upLoadLog " + e.getMessage());
             }
 
             @Override
