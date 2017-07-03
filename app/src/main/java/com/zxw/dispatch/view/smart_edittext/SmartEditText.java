@@ -19,6 +19,7 @@ import com.zxw.data.bean.FuzzyVehicleBean;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.utils.Base64;
@@ -193,6 +194,7 @@ LineAdapter.OnSelectItemListener{
                                                            @Override
                                                            public void onError(Throwable e) {
                                                                DebugLog.w(e.getMessage());
+                                                               LogUtil.loadRemoteError("queryVehcile " + e.getMessage());
                                                            }
 
                                                            @Override
@@ -219,7 +221,7 @@ LineAdapter.OnSelectItemListener{
 
                                                            @Override
                                                            public void onError(Throwable e) {
-
+                                                               LogUtil.loadRemoteError("getPersonAllList " + e.getMessage());
                                                            }
 
                                                            @Override
@@ -246,7 +248,7 @@ LineAdapter.OnSelectItemListener{
 
                                                            @Override
                                                            public void onError(Throwable e) {
-
+                                                               LogUtil.loadRemoteError("getAllLine " + e.getMessage());
                                                            }
 
                                                            @Override

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MySpinnerAdapter;
 import com.zxw.dispatch.presenter.BasePresenter;
@@ -89,7 +90,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
 
                                                   @Override
                                                   public void onError(Throwable e) {
-
+                                                      LogUtil.loadRemoteError("missionList " + e.getMessage());
                                                   }
 
                                                   @Override

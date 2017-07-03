@@ -151,47 +151,6 @@ public class HttpInterfaces {
                                                @Field("pageNo") int pageNo,
                                                @Field("pageSize") int pageSize);
 
-        /**
-         * 待操作车辆列表
-         *
-         * @param code      工号
-         * @param keyCode   唯一标识
-         * @param lineId    线路id
-         * @param stationId 场站id
-         * @param pageSize  第几页(可选,如不填默认1)
-         * @param pageNo    一页显示多少条记录(如选,如不填默认20)
-         * @return 线路列表的观察者
-         */
-        @FormUrlEncoded
-        @POST("phone/dispatcher/vehicle/wait/deal/data")
-        Observable<BaseBean<List<WaitVehicle>>> waitVehicle(@Field("userId") String code,
-                                                            @Field("keyCode") String keyCode,
-                                                            @Field("lineId") int lineId,
-                                                            @Field("stationId") int stationId,
-                                                            @Field("pageNo") int pageNo,
-                                                            @Field("pageSize") int pageSize);
-
-
-        /**
-         * 已发车车辆列表
-         *
-         * @param code      工号
-         * @param keyCode   唯一标识
-         * @param lineId    线路id
-         * @param stationId 场站id
-         * @param pageSize  第几页(可选,如不填默认1)
-         * @param pageNo    一页显示多少条记录(如选,如不填默认20)
-         * @return 线路列表的观察者
-         */
-        @FormUrlEncoded
-        @POST("phone/dispatcher/vehicle/send/history/data")
-        Observable<BaseBean<List<SendHistory>>> sendHistory(@Field("userId") String code,
-                                                            @Field("keyCode") String keyCode,
-                                                            @Field("lineId") int lineId,
-                                                            @Field("stationId") int stationId,
-                                                            @Field("pageNo") int pageNo,
-                                                            @Field("pageSize") int pageSize);
-
 
         /**
          * 已收班车辆列表
@@ -213,25 +172,6 @@ public class HttpInterfaces {
                                                             @Field("pageNo") int pageNo,
                                                             @Field("pageSize") int pageSize);
 
-        /**
-         * 已停班车辆列表
-         *
-         * @param code      工号
-         * @param keyCode   唯一标识
-         * @param lineId    线路id
-         * @param stationId 场站id
-         * @param pageSize  第几页(可选,如不填默认1)
-         * @param pageNo    一页显示多少条记录(如选,如不填默认20)
-         * @return 线路列表的观察者
-         */
-        @FormUrlEncoded
-        @POST("phone/dispatcher/vehicle/stop/history/data")
-        Observable<BaseBean<List<StopHistory>>> stopHistory(@Field("userId") String code,
-                                                            @Field("keyCode") String keyCode,
-                                                            @Field("lineId") int lineId,
-                                                            @Field("stationId") int stationId,
-                                                            @Field("pageNo") int pageNo,
-                                                            @Field("pageSize") int pageSize);
 
         /**
          * 更多车辆列表
@@ -252,23 +192,6 @@ public class HttpInterfaces {
                                                             @Field("stationId") int stationId,
                                                             @Field("pageNo") int pageNo,
                                                             @Field("pageSize") int pageSize);
-
-
-        /**
-         * 调度员输入员工名称模糊查询
-         *
-         * @param perName 员工名称,必填,编码转des
-         * @param type    1司机2乘务员
-         * @return observable
-         */
-        @FormUrlEncoded
-        @POST("phone/dispatcher/date/person/data")
-        Observable<BaseBean<List<Person>>> queryPerson(@Field("userId") String code,
-                                                       @Field("keyCode") String keyCode,
-                                                       @Field("perName") String perName,
-                                                       @Field("type") int type,
-                                                       @Field("pageNo") int pageNo,
-                                                       @Field("pageSize") int pageSize);
 
 
         /**

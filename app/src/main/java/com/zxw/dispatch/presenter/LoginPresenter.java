@@ -2,6 +2,7 @@ package com.zxw.dispatch.presenter;
 
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.data.utils.MD5;
 import com.zxw.dispatch.presenter.view.LoginView;
 import com.zxw.dispatch.utils.SpUtils;
@@ -33,6 +34,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
             @Override
             public void onError(Throwable e) {
+                LogUtil.loadRemoteError("verifyAccount " + e.getMessage());
                 mvpView.loginFail(e.getMessage());
             }
 

@@ -23,31 +23,15 @@ public class DepartSource {
     // 非营运任务
     private static final Integer TYPE_OTHER = 3;
 
-    public void loadWaitVehicle(Subscriber<List<WaitVehicle>> subscriber, String code, int lineId, int stationId, String keyCode, int pageNo, int pageSize){
-        HttpMethods.getInstance().waitVehicle(subscriber, code, lineId, stationId, keyCode, pageNo, pageSize);
-    }
-
     public void sortVehicle(Subscriber subscriber, String code, String keyCode, int opId, int replaceId){
         HttpMethods.getInstance().sortVehicle(subscriber, code, keyCode, opId, replaceId);
     }
 
-    public void addVehicle(Subscriber<BaseBean> subscriber, String code, String keyCode,
-                           int lineId, int stationId, int vehId,
-                           int sjId, String scId, String projectTime,
-                           int spaceMin, String inTime2, String sortNum){
-        HttpMethods.getInstance().addVehicle(subscriber, code, keyCode, lineId, stationId, vehId, sjId, scId, projectTime, spaceMin, inTime2, sortNum);
-    }
 
     public void sendCar(Subscriber subscriber, String code, String keyCode, int opId){
         HttpMethods.getInstance().sendCar(subscriber, code, keyCode, opId);
     }
 
-    public void updateVehicle(Subscriber subscriber, String code,
-                              String keyCode, int opId, int vehId,
-                              int sjId, String scId, String projectTime,
-                              int spaceMin, String inTime2){
-        HttpMethods.getInstance().updateVehicle(subscriber, code, keyCode, opId, vehId, sjId, scId, projectTime, spaceMin, inTime2);
-    }
 
     public void departListByLine(Subscriber<List<DepartCar>> subscriber, String userId, String keyCode, int lineId){
         HttpMethods.getInstance().getScheduleList(subscriber, userId, keyCode, lineId, TYPE_LINE);

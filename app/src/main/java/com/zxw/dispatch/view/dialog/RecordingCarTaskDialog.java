@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.http.HttpMethods;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MySpinnerAdapter;
 import com.zxw.dispatch.presenter.MainPresenter;
@@ -87,7 +88,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
 
                                                   @Override
                                                   public void onError(Throwable e) {
-
+                                                      LogUtil.loadRemoteError("missionList " + e.getMessage());
                                                   }
 
                                                   @Override
