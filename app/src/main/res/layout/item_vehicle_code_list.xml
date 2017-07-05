@@ -58,8 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/line_gray3"
-                android:layout_below="@+id/id_index_gallery_item_image"
-                android:layout_toRightOf="@+id/id_index_gallery_item_image"/>
+                android:layout_below="@+id/img_line"
+                android:layout_toRightOf="@+id/img_line"/>
 
         </RelativeLayout>
     </LinearLayout>
