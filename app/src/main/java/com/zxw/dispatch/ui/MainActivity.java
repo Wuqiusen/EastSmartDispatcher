@@ -927,6 +927,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         sendBroadcast(intent);
         presenter.onSelectLine(line);
         presenter.onAddRecordingCarTaskNameList(line.lineId);
+        vpMain.setCurrentItem(0);
+        setTabBackground(0);
     }
 
     /**
