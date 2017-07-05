@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -255,14 +254,13 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
         mCurrentMarkerTitle = null;
         mSelectedVehicleCode = null;
         setTabListener();
-        runCarSubscription = Observable.interval(0, 30, TimeUnit.SECONDS)
+        runCarSubscription = Observable.just(mList)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Long>() {
+                .subscribe(new Action1<List<RunningCarBean>>() {
                     @Override
-                    public void call(Long aLong) {
-
+                    public void call(List<RunningCarBean> list) {
                         showLoading(View.VISIBLE, View.GONE, View.GONE);
 
                         clearAdapter();
@@ -277,18 +275,12 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
 
                         mI = 0;
                         isDrawFinish = false;
-                        for (int i = 0; i < mList.size(); i++) {
-                            refreshMarkerLocation(i, mList.get(i));
+                        for (int i = 0; i < list.size(); i++) {
+                            refreshMarkerLocation(i, list.get(i));
                         }
-
                     }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-
-                    }
-                });
-
+                }
+                );
     }
 
 
