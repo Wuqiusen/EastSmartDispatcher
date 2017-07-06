@@ -34,12 +34,10 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile files('libs/library-2.4.0.jar')
     compile project(':data')
-compile 'com.facebook.stetho:stetho:1.4.2'
+    compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'cn.qqtheme.framework:WheelPicker:1.5.1'
-
     // 新增
     compile files('libs/AMap_Location_V3.3.0_20170118.jar')
-    compile files('libs/AMap_Services_V2.5.0.jar')
-    compile files('libs/Android_2DMapApi_V2.5.0.jar')
     compile 'com.jude:easyrecyclerview:4.4.0'
+    compile files('libs/AMap2DMap_5.2.0_AMapSearch_5.2.1_20170630.jar')
 }
