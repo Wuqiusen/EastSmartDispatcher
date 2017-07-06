@@ -1214,31 +1214,4 @@ public class MainPresenter extends BasePresenter<MainView> {
             runCarSubscription.unsubscribe();
     }
 
-    public void sendGroupMessage(String message) {
-
-        if (!TextUtils.isEmpty(message))
-            try {
-                message = new DESPlus().encrypt(Base64.encode(message.getBytes("utf-8")));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        mvpView.showLoading();
-        HttpMethods.getInstance().sendGroupMessage(new Subscriber<BaseBean>() {
-            @Override
-            public void onCompleted() {
-                mvpView.hideLoading();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mvpView.disPlay(e.getMessage());
-                LogUtil.loadRemoteError("sendGroupMessage " + e.getMessage());
-            }
-
-            @Override
-            public void onNext(BaseBean baseBean) {
-                mvpView.disPlay(baseBean.returnInfo);
-            }
-        }, userId(), keyCode(), lineId, message);
-    }
 }

@@ -6,6 +6,8 @@ import com.zxw.data.bean.ChangePwdBean;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.FuzzyVehicleBean;
+import com.zxw.data.bean.GroupMessageDetail;
+import com.zxw.data.bean.GroupMessagesBean;
 import com.zxw.data.bean.InformContentBean;
 import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.Line;
@@ -14,7 +16,6 @@ import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
-import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.SchedulePlanBean;
@@ -25,7 +26,6 @@ import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.bean.VersionBean;
-import com.zxw.data.bean.WaitVehicle;
 
 import java.util.List;
 
@@ -363,9 +363,26 @@ public class HttpInterfaces {
                                                                        @Field("spotId") String spotId);
 
 
-
-
-
+        /**
+         * 温馨提示(群发)发送记录(分页)
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/notice/all/list")
+        Observable<BaseBean<List<GroupMessagesBean>>> groupMessageRecord(@Field("userId") String userId,
+                                                                         @Field("keyCode") String keyCode,
+                                                                         @Field("taskLineId") String taskLineId,
+                                                                         @Field("pageNo") Integer pageNo,
+                                                                         @Field("pageSize") Integer pageSize
+        );
+        /**
+         * 温馨提示(群发)发送记录详情
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/notice/all/info")
+        Observable<BaseBean<GroupMessageDetail>> groupMessageDetailRecord(@Field("userId") String userId,
+                                                                          @Field("keyCode") String keyCode,
+                                                                          @Field("id") Integer id
+        );
     }
 
     public interface Operator {

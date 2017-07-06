@@ -18,5 +18,7 @@
     <string name="operator_empty">营运空驶(%1$d)</string>
     <string name="not_operator_empty">非营运空驶(%1$d)</string>
 
+    <string name="group_message_send_time">发送时间：(%1$s)</string>
+    <string name="group_message_send_author">发送人：(%1$s)</string>
 
 </resources>
