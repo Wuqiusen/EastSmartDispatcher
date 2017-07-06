@@ -866,16 +866,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
 
-    private AlertDialog mDialog = null;
+    private boolean isCreateDialog = false;
     private void showVehicleToScheduleDialog(final StopHistory stopCar) {
-       if (mDialog != null && mDialog.isShowing()){
-           return;
-       }
+       if (!isCreateDialog)
         createVehicleToScheduleDialog(stopCar);
-        mDialog = VehicleToScheduleDialog.dialog;
     }
 
     private void createVehicleToScheduleDialog(final StopHistory stopCar) {
+        isCreateDialog = true;
         new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
             @Override
             public void onClickNormalMission(int type, int taskId, BasePresenter.LoadDataStatus loadDataStatus) {
@@ -903,7 +901,10 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             public void onOffDuty(BasePresenter.LoadDataStatus loadDataStatus) {
                 presenter.stopCarStayToEnd(stopCar.id, loadDataStatus);
             }
-
+            @Override
+            public void onDismiss() {
+                isCreateDialog = false;
+            }
 
         }, presenter.getLineId());
     }

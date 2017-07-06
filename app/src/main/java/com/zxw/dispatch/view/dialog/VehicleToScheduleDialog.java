@@ -2,6 +2,7 @@ package com.zxw.dispatch.view.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -225,6 +226,13 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
 
         dialog = setView(container).show();
         dialog.setCancelable(false);
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (mListener != null)
+                mListener.onDismiss();
+            }
+        });
     }
 
 
@@ -412,6 +420,8 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         void onClickHelpMission(int type, int taskId, BasePresenter.LoadDataStatus loadDataStatus);
 
         void onOffDuty(BasePresenter.LoadDataStatus loadDataStatus);
+
+        void onDismiss();
 
     }
 }

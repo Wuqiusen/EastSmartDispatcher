@@ -3,6 +3,10 @@ package com.zxw.dispatch.presenter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.media.SoundPool;
 import android.text.TextUtils;
 
 import com.zxw.data.bean.BaseBean;
@@ -34,6 +38,7 @@ import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.DESPlus;
 import com.zxw.dispatch.utils.DebugLog;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -481,6 +486,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         mDepartSource.sortVehicle(new Subscriber() {
             @Override
             public void onCompleted() {
+                mLoadDataStatus.OnLoadDataFinish();
 
             }
 
@@ -579,10 +585,13 @@ public class MainPresenter extends BasePresenter<MainView> {
                             mStopHistories.addAll(stopHistories);
                             mvpView.hideLoading();
                             DebugLog.e("加载已发历史11111-----------");
+                            warningSound();
                             return;
                         }
                     }
                 } else {
+                    if (mStopHistories.size() > 1 && mStopHistories.size() < stopHistories.size())
+                        warningSound();
                     mvpView.loadStopStayCarList(stopHistories);
                     mStopHistories.clear();
                     mStopHistories.addAll(stopHistories);
@@ -592,6 +601,20 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             }
         }, userId(), keyCode(), lineId);
+    }
+
+    private void warningSound(){
+        MediaPlayer mMediaPlayer = MediaPlayer.create(mContext, RingtoneManager.getActualDefaultRingtoneUri(mContext,
+                RingtoneManager.TYPE_NOTIFICATION));
+        mMediaPlayer.setLooping(false);//设置循环
+        try {
+            mMediaPlayer.prepare();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mMediaPlayer.start();
     }
 
     /**
@@ -1165,6 +1188,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onError(Throwable e) {
                 mvpView.disPlay(e.getMessage());
+                LogUtil.loadRemoteError("loadRunningCarCodeList " + e.getMessage());
             }
 
             @Override
