@@ -36,6 +36,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.http.HttpGPsRequest;
+import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.recycler.VehicleCodeListAdapter;
@@ -385,6 +386,7 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
             @Override
             public void onError(Throwable e) {
                 refreshMarkerLocation(i, bean);
+                LogUtil.loadRemoteError("getMarkerLocation " + e.getMessage());
             }
 
             @Override
