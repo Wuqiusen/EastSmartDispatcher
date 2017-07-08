@@ -354,6 +354,17 @@ public class HttpInterfaces {
                                                                               @Field("typeId") int typeId);
 
         /**
+         * 32.	根据线路id获取已发车记录列表(新)
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/schedule/history/list")
+        Observable<BaseBean<List<SendHistory>>> getGoneHistorList(@Field("userId") String userId,
+                                                                  @Field("keyCode") String keyCode,
+                                                                  @Field("lineId") int lineId,
+                                                                  @Field("typeId") int typeIdF,
+                                                                  @Field("pageNo") int pageNo,
+                                                                  @Field("pageSize") int pageSize);
+        /**
          * 获取当前调度点下各线路的待发车辆数
           */
         @FormUrlEncoded
@@ -716,7 +727,9 @@ public class HttpInterfaces {
                                                       @Field("userId") String userId,
                                                       @Field("keyCode") String keyCode,
                                                       @Field("lineId") int lineId,
-                                                      @Field("runDate") String runDate);
+                                                      @Field("runDate") String runDate,
+                                                      @Field("pageNo") int pageNo,
+                                                      @Field("pageSize") int pageSize);
     }
 
     // 排班计划

@@ -2,19 +2,28 @@ package com.zxw.dispatch.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jude.easyrecyclerview.EasyRecyclerView;
+import com.jude.easyrecyclerview.adapter.BaseViewHolder;
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+import com.zxw.data.bean.LineParams;
+import com.zxw.data.bean.SendHistory;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MyPagerAdapter;
+import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
-import com.zxw.dispatch.recycler.GoneAdapterForNormal;
 import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
+import com.zxw.dispatch.recycler.viewHolder.GoneForNormalViewHolder;
+import com.zxw.dispatch.utils.CreateRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +34,20 @@ import java.util.List;
  * create at 2017/4/6 10:36
  * email: 1299242483@qq.com
  */
-public class StartCarView extends LinearLayout implements View.OnClickListener{
+public class StartCarView extends LinearLayout implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnLoadMoreListener {
 
     private Context mContext;
     private TextView tv_stab1;
     private TextView tv_stab2;
     private TextView tv_stab3;
     private ChildViewPager vp_start_car;
-    private RecyclerView eGoneRV1, eGoneRV2, eGoneRV3;
+    private EasyRecyclerView eGoneRV1;
+    private RecyclerView eGoneRV2, eGoneRV3;
     private List<View> startViews = new ArrayList<View>();
     private OnStartCarTabListener mListener;
     private TextView eGoneRV1_tv_steward_show, eGoneRV2_tv_steward_show, eGoneRV3_tv_steward_show;
+    private RecyclerArrayAdapter eGoneRV1Adapter;
+    private LineParams params;
 
     public StartCarView(Context context,int resId,OnStartCarTabListener listener) {
         super(context);
@@ -60,10 +72,12 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
     private List<View> inflateStartViews(){
         View view_stab1 = View.inflate(mContext,R.layout.item_gone_car1,null);
         eGoneRV1_tv_steward_show = (TextView) view_stab1.findViewById(R.id.tv_steward_show);
-        eGoneRV1 = (RecyclerView) view_stab1.findViewById(R.id.rv_gone_car);
-        eGoneRV1.setLayoutManager(new LinearLayoutManager(mContext));
-        eGoneRV1.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.VERTICAL_LIST));
+        eGoneRV1 = (EasyRecyclerView) view_stab1.findViewById(R.id.rv_gone_car);
+
+//        new CreateRecyclerView().setLayoutManager(mContext, eGoneRV1);
+//        eGoneRV1.setLayoutManager(new LinearLayoutManager(mContext));
+//        eGoneRV1.addItemDecoration(new DividerItemDecoration(mContext,
+//                DividerItemDecoration.VERTICAL_LIST));
 
         View view_stab2 = View.inflate(mContext,R.layout.item_gone_car2,null);
         eGoneRV2_tv_steward_show = (TextView) view_stab2.findViewById(R.id.tv_steward_show);
@@ -85,8 +99,8 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
     }
 
 
-    public void setTab1tStartCarCount(GoneAdapterForNormal goneAdapter){
-        tv_stab1.setText(showCount(R.string.line_operate,goneAdapter.getCount()));
+    public void setTab1tStartCarCount(int count){
+        tv_stab1.setText(showCount(R.string.line_operate,count));
     }
     public void setTab2tStartCarCount(GoneAdapterForOperatorEmpty goneAdapter){
         tv_stab2.setText(showCount(R.string.operator_empty,goneAdapter.getCount()));
@@ -101,9 +115,33 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
     }
 
 
-    public void setEGoneRVAdapterForNormal(RecyclerView.Adapter adapter){
-        eGoneRV1.setAdapter(adapter);
+    public void setEGoneRVAdapterForNormal(final MainPresenter presenter){
+        eGoneRV1Adapter = new RecyclerArrayAdapter(mContext) {
+            @Override
+            public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
+                return new GoneForNormalViewHolder(parent, params, presenter);
+            }
+        };
+        eGoneRV1.setProgressView(R.layout.view_progress);
+        new CreateRecyclerView().CreateRecyclerView(mContext, eGoneRV1, eGoneRV1Adapter, this);
+//        eGoneRV1.setAdapter(adapter);
+//        eGoneRV1.setRefreshingColor(getResources().getColor(R.color.main));
+        eGoneRV1.setRefreshListener(this);
     }
+
+    public void addGoneRV1Data(List<SendHistory> sendHistories){
+        eGoneRV1Adapter.addAll(sendHistories);
+
+    }
+
+    public RecyclerArrayAdapter geteGoneRV1Adapter(){
+        return eGoneRV1Adapter;
+    }
+
+    public void setSaleType(LineParams params){
+        this.params = params;
+    }
+
     public void setEGoneRVAdapterForOperatorEmpty(RecyclerView.Adapter adapter){
         eGoneRV2.setAdapter(adapter);
     }
@@ -172,12 +210,23 @@ public class StartCarView extends LinearLayout implements View.OnClickListener{
         return mContext.getResources().getDrawable(R.drawable.line_blue_height);
     }
 
+    @Override
+    public void onRefresh() {
+        eGoneRV1Adapter.clear();
+        mListener.onRefreshEGone();
+    }
 
+    @Override
+    public void onLoadMore() {
+        mListener.onLoadMoreEGone();
 
+    }
 
 
     public interface OnStartCarTabListener{
         void onTabIsClick(int pos);
+        void onRefreshEGone();
+        void onLoadMoreEGone();
     }
 
 

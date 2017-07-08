@@ -42,6 +42,22 @@ public class CreateRecyclerView {
 
     }
 
+    public void setLayoutManager(Context context, EasyRecyclerView easyRecycleView){
+        this.context = context;
+        this.easyRecycleView = easyRecycleView;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        easyRecycleView.setLayoutManager(layoutManager);
+        easyRecycleView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST));
+        easyRecycleView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                super.onDraw(c, parent, state);
+            }
+        });
+    }
+
+
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -53,6 +69,8 @@ public class CreateRecyclerView {
                 super.onDraw(c, parent, state);
             }
         });
+//        easyRecycleView.setProgressView(R.layout.view_progress);
+//        easyRecycleView.setEmptyView(R.layout.view_empty);
         easyRecycleView.setAdapterWithProgress(arrayAdapter);
         arrayAdapter.setMore(R.layout.list_item_load_more, listener);
         arrayAdapter.setNoMore(R.layout.list_item_no_more);

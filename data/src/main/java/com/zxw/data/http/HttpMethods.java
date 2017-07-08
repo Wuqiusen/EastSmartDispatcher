@@ -1,5 +1,7 @@
 package com.zxw.data.http;
 
+import android.provider.SyncStateContract;
+
 import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
@@ -36,6 +38,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
+import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
 
 /**
  * author：CangJie on 2016/10/12 15:23
@@ -269,9 +273,9 @@ public class HttpMethods {
     }
 
     //排班计划
-    public void schedulePlan(Subscriber<List<SchedulePlanBean>> subscriber,String userId,String keyCode,int lineId, String runDate){
+    public void schedulePlan(Subscriber<BaseBean<List<SchedulePlanBean>>> subscriber,String userId,String keyCode,int lineId, String runDate, int pageNo, int pageSize){
         HttpInterfaces.SchedulePlan schedulePlan = retrofit.create(HttpInterfaces.SchedulePlan.class);
-        Observable<List<SchedulePlanBean>> map = schedulePlan.shedulePlan(userId,keyCode,lineId, runDate).map(new HttpResultFunc<List<SchedulePlanBean>>());
+        Observable<BaseBean<List<SchedulePlanBean>>> map = schedulePlan.shedulePlan(userId,keyCode,lineId, runDate, pageNo, pageSize);
         toSubscribe(map,subscriber);
     }
 
@@ -302,6 +306,12 @@ public class HttpMethods {
     public void getScheduleHistoryList(Subscriber<List<SendHistory>> subscriber, String userId, String keyCode, int lineId, int typeId){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
         Observable<List<SendHistory>> map = browse.getScheduleHistorList(userId, keyCode, lineId, typeId).map(new HttpResultFunc<List<SendHistory>>());
+        toSubscribe(map, subscriber);
+    }
+
+    public void getGoneHistoryList(Subscriber<BaseBean<List<SendHistory>>> subscriber, String userId, String keyCode, int lineId, int typeId, int pageNo, int pageSize){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<BaseBean<List<SendHistory>>> map = browse.getGoneHistorList(userId, keyCode, lineId, typeId, pageNo, pageSize);
         toSubscribe(map, subscriber);
     }
     public void stopToSchedule(Subscriber subscriber, String userId, String keyCode, String objId, int type, String taskId, String taskType,

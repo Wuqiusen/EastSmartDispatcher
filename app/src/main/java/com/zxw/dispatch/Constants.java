@@ -6,6 +6,7 @@ package com.zxw.dispatch;
  */
 public class Constants {
     public static boolean DEBUG_LOG = true;
+    public static final int PAGE_SIZE = 20;
 
     public class Path{
         public static final String ERRORPATH = "Dispatcher/error";

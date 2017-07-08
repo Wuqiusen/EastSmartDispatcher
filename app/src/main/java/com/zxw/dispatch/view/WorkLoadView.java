@@ -106,9 +106,8 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
 
 
     private void loadData() {
-        arrayAdapter.clear();
         mCurrentPage = 1;
-        loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
+        loadWorkloadList(mVehCode, mDriverName);
     }
 
     private void deleteWorkload(long objId, final BasePresenter.LoadDataStatus loadDataStatus) {
@@ -250,11 +249,13 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
             }
 
         };
+        rvWorkLoad.setEmptyView(R.layout.view_empty);
+        rvWorkLoad.setProgressView(R.layout.view_progress);
         new CreateRecyclerView().CreateRecyclerView(mContext, rvWorkLoad, arrayAdapter, this);
         rvWorkLoad.setRefreshListener(this);
     }
 
-    private void loadWorkloadList(int pageNo, String vehCode, String driverName) {
+    private void loadWorkloadList(String vehCode, String driverName) {
         String userId = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
         String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
         try {
@@ -283,11 +284,12 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
 
             @Override
             public void onNext(BaseBean<List<DriverWorkloadItem>> basedriverWorkloadItems) {
+                if (mCurrentPage == 1) arrayAdapter.clear();
                 arrayAdapter.addAll(basedriverWorkloadItems.returnData);
                 mPageSize = basedriverWorkloadItems.returnSize;
 
             }
-        }, userId, keyCode, lineId, pageNo, LOAD_PAGE_SIZE, vehCode, driverName, mExceptionType);
+        }, userId, keyCode, lineId, mCurrentPage, LOAD_PAGE_SIZE, vehCode, driverName, mExceptionType);
     }
 
     public void updateWorkload(long objId, String outTime, String arrivalTime, String gpsStatus,
@@ -431,7 +433,7 @@ public class WorkLoadView extends LinearLayout implements View.OnClickListener, 
             arrayAdapter.stopMore();
         } else {
             mCurrentPage++;
-            loadWorkloadList(mCurrentPage, mVehCode, mDriverName);
+            loadWorkloadList(mVehCode, mDriverName);
         }
     }
 
