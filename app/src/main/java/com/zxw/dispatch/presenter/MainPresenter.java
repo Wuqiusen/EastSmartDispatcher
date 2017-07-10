@@ -25,14 +25,13 @@ import com.zxw.data.source.DepartSource;
 import com.zxw.data.source.LineSource;
 import com.zxw.data.source.StopSource;
 import com.zxw.data.utils.LogUtil;
+import com.zxw.dispatch.Constants;
 import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.presenter.view.MainView;
-import com.zxw.dispatch.recycler.GoneAdapterForNormal;
 import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
-import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.service.CarPlanService;
 import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.DESPlus;
@@ -140,11 +139,11 @@ public class MainPresenter extends BasePresenter<MainView> {
                 } else if (mLineParams.getSaleType() == TYPE_SALE_MANUAL) {
                     mvpView.showStewardName();
                 }
+                mvpView.setSaleType(lineParams);
                 mCurrentLine = line;
                 lineId = mCurrentLine.lineId;
                 lineName = mCurrentLine.lineCode;
                 mvpView.onSelectLine();
-                refreshList();
             }
         }, userId(), keyCode(), line.lineId);
     }
@@ -198,13 +197,13 @@ public class MainPresenter extends BasePresenter<MainView> {
 
 
     private void loadGoneCarList() {
-        loadGoneCarByNormal();
+        loadGoneCarByNormal(1);
         loadGoneCarByOperatorEmpty();
         loadGoneCarByNotOperatorEmpty();
     }
 
-    private void loadGoneCarByNormal() {
-        mDepartSource.goneListByLine(new Subscriber<List<SendHistory>>() {
+    public void loadGoneCarByNormal(int pageNo) {
+        mDepartSource.goneListByLine(new Subscriber<BaseBean<List<SendHistory>>>() {
             @Override
             public void onCompleted() {
             }
@@ -216,31 +215,25 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
 
             @Override
-            public void onNext(List<SendHistory> sendHistories) {
-//                DebugLog.e("加载已发历史-----------");
-//                if (mSendHistories == null || !checkList(mSendHistories, sendHistories)){
-//                    DebugLog.e("刷新已发历史-----------");
-//                    mSendHistories = sendHistories;
-//                    mvpView.loadGoneCarByNormal(new GoneAdapterForNormal(sendHistories, mContext, mLineParams, MainPresenter.this));
-//                }
-                if (mSendHistories != null && mSendHistories.size() == sendHistories.size()) {
-                    for (int i = 0; i < sendHistories.size(); i++) {
-                        if (mSendHistories.get(i).id != sendHistories.get(i).id) {
-                            mvpView.loadGoneCarByNormal(new GoneAdapterForNormal(sendHistories, mContext, mLineParams, MainPresenter.this));
+            public void onNext(BaseBean<List<SendHistory>> baseBean) {
+                if (mSendHistories != null && mSendHistories.size() == baseBean.returnData.size()) {
+                    for (int i = 0; i < baseBean.returnData.size(); i++) {
+                        if (mSendHistories.get(i).id != baseBean.returnData.get(i).id) {
+                            mvpView.loadGoneCarByNormal(baseBean.returnData, baseBean.returnSize);
                             mSendHistories.clear();
-                            mSendHistories.addAll(sendHistories);
+                            mSendHistories.addAll(baseBean.returnData);
                             mvpView.hideLoading();
                             return;
                         }
                     }
                 } else {
-                    mvpView.loadGoneCarByNormal(new GoneAdapterForNormal(sendHistories, mContext, mLineParams, MainPresenter.this));
+                    mvpView.loadGoneCarByNormal(baseBean.returnData, baseBean.returnSize);
                     mSendHistories.clear();
-                    mSendHistories.addAll(sendHistories);
+                    mSendHistories.addAll(baseBean.returnData);
                     mvpView.hideLoading();
                 }
             }
-        }, userId(), keyCode(), lineId);
+        }, userId(), keyCode(), lineId, pageNo, Constants.PAGE_SIZE);
     }
 
     private void loadGoneCarByOperatorEmpty() {

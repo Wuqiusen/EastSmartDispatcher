@@ -93,7 +93,7 @@
         android:layout_height="2dp"
         android:background="@color/line_blue" />
     <!--已发车辆列表-->
-    <android.support.v7.widget.RecyclerView
+    <com.jude.easyrecyclerview.EasyRecyclerView
         android:id="@+id/rv_gone_car"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

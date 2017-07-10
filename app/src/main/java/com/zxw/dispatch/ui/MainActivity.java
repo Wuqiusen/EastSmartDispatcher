@@ -1,7 +1,6 @@
 
 package com.zxw.dispatch.ui;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,11 +30,17 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jude.easyrecyclerview.EasyRecyclerView;
+import com.jude.easyrecyclerview.adapter.BaseViewHolder;
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.zxw.data.bean.Line;
+import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
 import com.zxw.data.bean.RunningCarBean;
+import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
+import com.zxw.dispatch.Constants;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.DragListAdapter;
@@ -46,14 +53,15 @@ import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
-import com.zxw.dispatch.recycler.GoneAdapterForNormal;
 import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
+import com.zxw.dispatch.recycler.viewHolder.GoneForNormalViewHolder;
 import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
 import com.zxw.dispatch.ui.base.PresenterActivity;
+import com.zxw.dispatch.utils.CreateRecyclerView;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.view.ChildViewPager;
@@ -88,7 +96,8 @@ import static com.zxw.dispatch.utils.ToastHelper.showToast;
 
 
 public class MainActivity extends PresenterActivity<MainPresenter> implements MainView, MainAdapter.OnSelectLineListener,
-        PopupAdapter.OnPopupWindowListener, View.OnClickListener, ScheduleModule.OnLoadingListener {
+        PopupAdapter.OnPopupWindowListener, View.OnClickListener, ScheduleModule.OnLoadingListener,
+        SwipeRefreshLayout.OnRefreshListener , RecyclerArrayAdapter.OnLoadMoreListener{
 
 
     TextView tvMenuDepart;
@@ -161,8 +170,15 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Bind(R.id.rv_line)
     RecyclerView mLineRV;
-    RecyclerView mGoneRV1, mGoneRV2, mGoneRV3;
+    EasyRecyclerView mGoneRV1;
+    RecyclerView  mGoneRV2, mGoneRV3;
     DragListView mSendRV1, mSendRV2, mSendRV3;
+    private RecyclerArrayAdapter mGoneRV1Adapter;
+    private int goneRv1PageNo = 1;
+    private int eGoneRv1PageNo = 1;
+    private LineParams mLineParams;
+    private boolean isInVertiacl = true;
+
 
     View viewCover;
     @Bind(R.id.vp_main)
@@ -475,11 +491,29 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private List<View> inflateVerStartViews() {
         View view_stab = View.inflate(mContext, R.layout.item_gone_car1,null);
-        mGoneRV1 = (RecyclerView) view_stab.findViewById(R.id.rv_gone_car);
+        mGoneRV1 = (EasyRecyclerView) view_stab.findViewById(R.id.rv_gone_car);
         mGoneRV1_StewardShow = (TextView) view_stab.findViewById(tv_steward_show);
-        mGoneRV1.setLayoutManager(new LinearLayoutManager(this));
-        mGoneRV1.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL_LIST));
+        mGoneRV1Adapter = new RecyclerArrayAdapter(mContext) {
+            @Override
+            public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
+                return new GoneForNormalViewHolder(parent, mLineParams, presenter);
+            }
+        };
+        new CreateRecyclerView().CreateRecyclerView(mContext, mGoneRV1, mGoneRV1Adapter, this);
+        mGoneRV1.setRefreshListener(this);
+
+//        mGoneRV1.setLayoutManager(new LinearLayoutManager(this));
+//        mGoneRV1.addItemDecoration(new DividerItemDecoration(this,
+//                DividerItemDecoration.VERTICAL_LIST));
+//        mGoneRV1Adapter = new RecyclerArrayAdapter() {
+//            @Override
+//            public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
+//                return new GoneForNormalViewHolder(parent,);
+//            }
+//
+//        };
+//        new CreateRecyclerView().CreateRecyclerView(mContext, mGoneRV1, arrayAdapter, this);
+//        mGoneRV1.setRefreshListener(this);
 
         View view_stab2 = View.inflate(mContext, R.layout.item_gone_car2,null);
         mGoneRV2 = (RecyclerView) view_stab2.findViewById(R.id.rv_gone_car);
@@ -519,7 +553,25 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                    public void onTabIsClick(int pos) {
                         showStartCarView(pos);
                  }
-        });
+
+                    @Override
+                    public void onRefreshEGone() {
+                        eGoneRv1PageNo = 1;
+                        presenter.loadGoneCarByNormal(eGoneRv1PageNo);
+
+                    }
+
+                    @Override
+                    public void onLoadMoreEGone() {
+                        if (eGoneRv1PageNo * Constants.PAGE_SIZE >= stab1_size) {
+                                mHorStartCarView.geteGoneRV1Adapter().stopMore();
+                        } else {
+                            eGoneRv1PageNo++;
+                            presenter.loadGoneCarByNormal(eGoneRv1PageNo);
+                        }
+                    }
+                });
+            mHorStartCarView.setEGoneRVAdapterForNormal(presenter);
         return mHorStartCarView;
     }
 
@@ -649,14 +701,21 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     @Override
-    public void loadGoneCarByNormal(GoneAdapterForNormal goneAdapter) {
-        stab1_size = goneAdapter.getCount();
+    public void loadGoneCarByNormal(List<SendHistory> sendHistories, int count) {
+        stab1_size = count;
         setStartCarCount();
-        tv_stab1.setText(showCount(R.string.line_operate,goneAdapter.getCount()));  //mGoneRV1
-        mGoneRV1.setAdapter(goneAdapter);
+        tv_stab1.setText(showCount(R.string.line_operate,count));  //mGoneRV1
 
-        mHorStartCarView.setTab1tStartCarCount(goneAdapter);
-        mHorStartCarView.setEGoneRVAdapterForNormal(goneAdapter);
+        mHorStartCarView.setTab1tStartCarCount(count);
+        if (isShow){
+            if (eGoneRv1PageNo == 1)
+                mHorStartCarView.geteGoneRV1Adapter().clear();
+            mHorStartCarView.addGoneRV1Data(sendHistories);
+        }else {
+            if (goneRv1PageNo == 1)mGoneRV1Adapter.clear();
+            mGoneRV1Adapter.addAll(sendHistories);
+        }
+
     }
 
     @Override
@@ -741,6 +800,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void refreshTimeToSendCarNum(List<VehicleNumberBean> sendCarNum) {
         mLineAdapter.setSendCarNum(sendCarNum);
 
+    }
+
+    @Override
+    public void setSaleType(LineParams lineParams) {
+        this.mLineParams = lineParams;
     }
 
 
@@ -832,14 +896,32 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void onSelectLine() {
-        // 排班计划
-        scheduleModule.initLineParams(presenter.getLineId(), presenter.getLineParams());
-        // 工作量审核
-        mWorkLoadView.initLineParams(presenter.getLineId(), presenter.getLineParams());
-
-        // 2).切换线路id，重新访问车辆列表
-        mLineRunMapView.initLineParams(presenter.getLineId());
-
+        loadData(vpMain.getCurrentItem());
+    }
+    //根据当前所在页面加载数据
+    private void loadData(int page){
+        switch (page){
+            case 0:
+                if (isShow){
+                    eGoneRv1PageNo = 1;
+                }else {
+                    goneRv1PageNo = 1;
+                }
+                presenter.refreshList();
+                break;
+            case 1:
+                // 排班计划
+                scheduleModule.initLineParams(presenter.getLineId(), presenter.getLineParams());
+                break;
+            case 2:
+                // 工作量审核
+                mWorkLoadView.initLineParams(presenter.getLineId(), presenter.getLineParams());
+                break;
+            case 3:
+                // 2).切换线路id，重新访问车辆列表
+                mLineRunMapView.initLineParams(presenter.getLineId());
+                break;
+        }
     }
 
     @Override
@@ -928,8 +1010,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         sendBroadcast(intent);
         presenter.onSelectLine(line);
         presenter.onAddRecordingCarTaskNameList(line.lineId);
-        vpMain.setCurrentItem(0);
-        setTabBackground(0);
+//        loadData(vpMain.getCurrentItem());
+//        vpMain.setCurrentItem(0);
+//        setTabBackground(0);
     }
 
     /**
@@ -1112,19 +1195,26 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_controller:
+               loadData(0);
                  vpMain.setCurrentItem(0);
                  setTabBackground(0);
                  break;
             case R.id.tv_schedule:
+                // 排班计划
+                loadData(1);
                 vpMain.setCurrentItem(1);
                 setTabBackground(1);
                 scheduleModule.loadSchedulePlan();
                 break;
             case R.id.tv_work_load:
+                // 工作量审核
+                loadData(2);
                 vpMain.setCurrentItem(2);
                 setTabBackground(2);
                 break;
             case R.id.tv_line_run_map:
+                // 2).切换线路id，重新访问车辆列表
+                loadData(3);
                 vpMain.setCurrentItem(3);
                 setTabBackground(3);
                 ///presenter.loadRunningCarCodeList();////
@@ -1136,6 +1226,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 changeControlDeckView();
                 break;
             case R.id.tv_menu_gone_car:
+                eGoneRv1PageNo = 1;
+                presenter.loadGoneCarByNormal(eGoneRv1PageNo);
                 vp_horizontal.setCurrentItem(0);
                 setScrollBarBackground(0);
                 showMenuAutoDepart(View.GONE);
@@ -1264,6 +1356,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             isPopbg = isShow;
             isShow = false;
         }else{
+            mHorStartCarView.setSaleType(presenter.getLineParams());
             initMenu(isShow);
             fl_vertical.setVisibility(View.GONE);
             fl_horizontal.setVisibility(View.VISIBLE);
@@ -1440,8 +1533,23 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         finish();
     }
 
+    @Override
+    public void onRefresh() {
+        mGoneRV1Adapter.clear();
+        goneRv1PageNo = 1;
+        presenter.loadGoneCarByNormal(goneRv1PageNo);
 
+    }
 
+    @Override
+    public void onLoadMore() {
+        if (goneRv1PageNo * Constants.PAGE_SIZE >= stab1_size) {
+            mGoneRV1Adapter.stopMore();
+        } else {
+            goneRv1PageNo++;
+            presenter.loadGoneCarByNormal(goneRv1PageNo);
+        }
+    }
 
 
     public class MsgReceiver extends BroadcastReceiver {

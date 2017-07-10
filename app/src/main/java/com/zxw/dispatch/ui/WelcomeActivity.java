@@ -120,6 +120,7 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
                         @Override
                         public void onLoadFailureListener() {
                             ToastHelper.showToast("更新失败", mContext);
+                            loadMain();
                         }
                     });
                 }

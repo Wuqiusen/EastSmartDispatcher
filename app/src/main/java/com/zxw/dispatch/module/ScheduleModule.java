@@ -2,23 +2,26 @@ package com.zxw.dispatch.module;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jude.easyrecyclerview.EasyRecyclerView;
+import com.jude.easyrecyclerview.adapter.BaseViewHolder;
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.SchedulePlanBean;
 import com.zxw.data.http.HttpMethods;
 import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
-import com.zxw.dispatch.recycler.DividerItemDecoration;
-import com.zxw.dispatch.recycler.SchedulePlanListAdapter;
+import com.zxw.dispatch.recycler.viewHolder.SchedulePlanViewHolder;
+import com.zxw.dispatch.utils.CreateRecyclerView;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 
@@ -32,16 +35,21 @@ import rx.Subscriber;
  * author：CangJie on 2017/5/17 16:11
  * email：cangjie2016@gmail.com
  */
-public class ScheduleModule extends LinearLayout {
+public class ScheduleModule extends LinearLayout implements RecyclerArrayAdapter.OnLoadMoreListener {
 
     private final Context mContext;
     TextView tv_date;
-    RecyclerView mScheduleRV;
+    EasyRecyclerView mScheduleRV;
     private int currentYear, currentMonth, currentDay;
 
     private int lineId;
     private LineParams mLineParams;
     private OnLoadingListener listener;
+
+    private RecyclerArrayAdapter mArrayAdapter;
+    private int pageNo = 1;
+    private final int pageSize = 15;
+    private int allDataSize = 0;
 
     public ScheduleModule(Context context) {
         this(context, null);
@@ -55,7 +63,7 @@ public class ScheduleModule extends LinearLayout {
 
         // init
         tv_date = (TextView) findViewById(R.id.tv_date);
-        mScheduleRV = (RecyclerView) findViewById(R.id.rv_scheduling_plan);
+        mScheduleRV = (EasyRecyclerView) findViewById(R.id.rv_scheduling_plan);
 
         Calendar calendar = Calendar.getInstance();
         currentYear = calendar.get(Calendar.YEAR);
@@ -68,9 +76,18 @@ public class ScheduleModule extends LinearLayout {
                 showDatePickerDialog(currentYear, currentMonth, currentDay);
             }
         });
-        mScheduleRV.setLayoutManager(new LinearLayoutManager(mContext));
-        mScheduleRV.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.VERTICAL_LIST));
+        mArrayAdapter = new RecyclerArrayAdapter(mContext) {
+            @Override
+            public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
+                return new SchedulePlanViewHolder(parent);
+            }
+        };
+        mScheduleRV.setProgressView(R.layout.view_progress);
+        mScheduleRV.setEmptyView(R.layout.view_empty);
+        new CreateRecyclerView().CreateRecyclerView(mContext, mScheduleRV, mArrayAdapter, this);
+//        mScheduleRV.setLayoutManager(new LinearLayoutManager(mContext));
+//        mScheduleRV.addItemDecoration(new DividerItemDecoration(mContext,
+//                DividerItemDecoration.VERTICAL_LIST));
     }
 
     public void initLineParams(int lineId, LineParams params) {
@@ -95,6 +112,7 @@ public class ScheduleModule extends LinearLayout {
                 ScheduleModule.this.currentYear = Integer.valueOf(year);
                 ScheduleModule.this.currentMonth = Integer.valueOf(month);
                 ScheduleModule.this.currentDay = Integer.valueOf(day);
+                if (mArrayAdapter != null) mArrayAdapter.clear();
                 loadSchedulePlan();
             }
         });
@@ -126,7 +144,7 @@ public class ScheduleModule extends LinearLayout {
         String runDate = strYear + strMonth + strDay;
         String userId = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
         String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
-        HttpMethods.getInstance().schedulePlan(new Subscriber<List<SchedulePlanBean>>() {
+        HttpMethods.getInstance().schedulePlan(new Subscriber<BaseBean<List<SchedulePlanBean>>>() {
             @Override
             public void onCompleted() {
 
@@ -139,26 +157,38 @@ public class ScheduleModule extends LinearLayout {
             }
 
             @Override
-            public void onNext(List<SchedulePlanBean> schedulePlanBeen) {
-                if (schedulePlanBeen != null && !schedulePlanBeen.isEmpty()) {
-                    SchedulePlanListAdapter mAdapter = new SchedulePlanListAdapter(mContext, mLineParams, schedulePlanBeen);
-                    loadSchedulePlanList(mAdapter);
+            public void onNext(BaseBean<List<SchedulePlanBean>> baseBean) {
+                allDataSize = baseBean.returnSize;
+                if (baseBean.returnData != null && !baseBean.returnData.isEmpty()) {
+                    mArrayAdapter.addAll(baseBean.returnData);
+//                    SchedulePlanListAdapter mAdapter = new SchedulePlanListAdapter(mContext, mLineParams, schedulePlanBeen);
+//                    loadSchedulePlanList(mAdapter);
                     listener.showLoading();
                 } else {
+                    mArrayAdapter.addAll(baseBean.returnData);
                     listener.disPlay("排班计划暂时无数据");
-                    mScheduleRV.setAdapter(null);
+//                    mScheduleRV.setAdapter(null);
                 }
 
             }
-        }, userId, keyCode, lineId, runDate);
+        }, userId, keyCode, lineId, runDate, pageNo, pageSize);
 
-    }
-    public void loadSchedulePlanList(SchedulePlanListAdapter adapter) {
-        mScheduleRV.setAdapter(adapter);
     }
 
     public void setOnLoadingListener(OnLoadingListener listener){
         this.listener = listener;
+    }
+
+    @Override
+    public void onLoadMore() {
+        if (pageNo * pageSize >= allDataSize) {
+            if (mArrayAdapter != null)
+                mArrayAdapter.stopMore();
+        } else {
+            pageNo++;
+            loadSchedulePlan();
+        }
+
     }
 
     public interface OnLoadingListener{

@@ -45,8 +45,8 @@ public class DepartSource {
         HttpMethods.getInstance().getScheduleList(subscriber, userId, keyCode, lineId, TYPE_OTHER);
     }
 
-    public void goneListByLine(Subscriber<List<SendHistory>> subscriber, String userId, String keyCode, int lineId){
-        HttpMethods.getInstance().getScheduleHistoryList(subscriber, userId, keyCode, lineId, TYPE_LINE);
+    public void goneListByLine(Subscriber<BaseBean<List<SendHistory>>> subscriber, String userId, String keyCode, int lineId, int pageNo, int pageSize){
+        HttpMethods.getInstance().getGoneHistoryList(subscriber, userId, keyCode, lineId, TYPE_LINE, pageNo, pageSize);
     }
 
     public void goneListByOperation(Subscriber<List<SendHistory>> subscriber, String userId, String keyCode, int lineId){

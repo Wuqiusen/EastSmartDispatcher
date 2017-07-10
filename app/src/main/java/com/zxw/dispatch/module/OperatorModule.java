@@ -390,6 +390,16 @@ public class OperatorModule extends LinearLayout implements View.OnClickListener
                     public void onTabIsClick(int pos) {
                         showStartCarView(pos);
                     }
+
+                    @Override
+                    public void onRefreshEGone() {
+
+                    }
+
+                    @Override
+                    public void onLoadMoreEGone() {
+
+                    }
                 });
         return mHorStartCarView;
     }

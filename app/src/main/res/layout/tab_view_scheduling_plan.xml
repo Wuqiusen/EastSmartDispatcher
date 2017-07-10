@@ -13,7 +13,7 @@
         android:text="2017-5-15"/>
     <include layout="@layout/head_plan_item"/>
 
-    <android.support.v7.widget.RecyclerView
+    <com.jude.easyrecyclerview.EasyRecyclerView
         android:id="@+id/rv_scheduling_plan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
