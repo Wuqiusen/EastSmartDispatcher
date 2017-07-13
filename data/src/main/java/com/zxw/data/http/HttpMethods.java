@@ -8,6 +8,8 @@ import com.zxw.data.bean.ChangePwdBean;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.FuzzyVehicleBean;
+import com.zxw.data.bean.GroupMessageDetail;
+import com.zxw.data.bean.GroupMessagesBean;
 import com.zxw.data.bean.InformContentBean;
 import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.Line;
@@ -46,8 +48,8 @@ import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-//    public static final String BASE_URL = "http://192.168.0.50:8080/yd_control_app/";
-    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+    public static final String BASE_URL = "http://192.168.0.50:8080/yd_control_app/";
+//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
 //    public static final String BASE_URL = "http://150970t1u9.51mypc.cn:52222/yd_control_app/";// 测试
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
@@ -385,10 +387,22 @@ public class HttpMethods {
         Observable<BaseBean> map = operator.deleteWorkload(userId, keyCode, objId);
         toSubscribe(map,subscriber);
     }
-    // 修改工作量审核记录
+    // 群发消息
     public void sendGroupMessage(Subscriber<BaseBean> subscriber,String userId,String keyCode,long taskLineId, String noticeInfo){
         HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
         Observable<BaseBean> map = operator.sendGroupMessage(userId, keyCode, taskLineId, noticeInfo);
+        toSubscribe(map,subscriber);
+    }
+    // 群发消息发送记录
+    public void groupMessageRecord(Subscriber<BaseBean<List<GroupMessagesBean>>> subscriber, String userId, String keyCode, String taskLineId, int pageNo, int pageSize){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<BaseBean<List<GroupMessagesBean>>> map = browse.groupMessageRecord(userId, keyCode, taskLineId, pageNo, pageSize);
+        toSubscribe(map,subscriber);
+    }
+    // 群发消息发送记录详情
+    public void groupMessageDetailRecord(Subscriber<GroupMessageDetail> subscriber, String userId, String keyCode, int id){
+        HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
+        Observable<GroupMessageDetail> map = browse.groupMessageDetailRecord(userId, keyCode, id).map(new HttpResultFunc<GroupMessageDetail>());
         toSubscribe(map,subscriber);
     }
 }

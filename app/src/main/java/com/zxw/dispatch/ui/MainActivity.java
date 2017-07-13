@@ -1293,20 +1293,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
                 break;
             case R.id.btn_group_message:
-                showSendGroupMessageDialog();
+                Intent intent = new Intent(this, GroupMessageActivity.class);
+                intent.putExtra("lineId", presenter.getLineId());
+                startActivity(intent);
                 break;
         }
     }
-
-    private void showSendGroupMessageDialog() {
-        new SendGroupMessageDialog(mContext, new SendGroupMessageDialog.OnSendGroupMessageDialogListener() {
-            @Override
-            public void sendGroupMessage(String message) {
-                presenter.sendGroupMessage(message);
-            }
-        });
-    }
-
 
     private void showAddRecordingBtn(int isVisible){
         tvAddRecroding.setVisibility(isVisible);

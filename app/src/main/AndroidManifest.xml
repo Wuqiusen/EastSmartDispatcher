@@ -42,10 +42,11 @@
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <permission android:name="android.permission.WRITE_APN_SETTINGS" />
+
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
 
     <application
         android:name=".MyApplication"
@@ -55,12 +56,12 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Light.NoTitleBar">
 
-        <!--高德地图：2.开发者申请的key-->
+        <!-- 高德地图：2.开发者申请的key -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="c9601b8c71d9ce08a3140b5bf57fe97b">
-        </meta-data>
-        <service android:name="com.amap.api.location.APSService"></service>
+            android:value="c9601b8c71d9ce08a3140b5bf57fe97b" />
+
+        <service android:name="com.amap.api.location.APSService" />
 
         <activity
             android:name=".ui.MainActivity"
@@ -68,12 +69,12 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan">
 
-             <!--<intent-filter>-->
-             <!--<action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-             <!--<category android:name="android.intent.category.LAUNCHER" />-->
-             <!--</intent-filter>-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".ui.WelcomeActivity"
@@ -91,18 +92,20 @@
 
         <activity
             android:name=".ui.WeatherDialogActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog"
-           />
+            android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity
             android:name=".ui.SelectDispatcherPointActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.TestActivity"
+        <activity
+            android:name=".ui.TestActivity"
             android:label="测试!">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <provider
@@ -115,6 +118,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <activity android:name=".ui.GroupMessageActivity" />
+        <activity android:name=".ui.GroupMessageDetailActivity"></activity>
     </application>
 
 </manifest>
