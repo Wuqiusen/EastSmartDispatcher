@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -138,7 +140,11 @@ public class DownLoadAndSetUpAPK {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                ToastHelper.showToast("更新失败", mActivity);
+                String str = "更新失败";
+                if (t instanceof SocketTimeoutException || t instanceof RuntimeException|| t instanceof SocketException){
+                    str = "网络异常，更新失败";
+                }
+                ToastHelper.showToast(str, mActivity);
                 DebugLog.e(t.getMessage());
                 isLoadSuccess = false;
                 progressDialog.dismiss();

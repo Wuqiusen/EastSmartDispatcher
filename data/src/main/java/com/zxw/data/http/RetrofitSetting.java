@@ -21,6 +21,7 @@ public class RetrofitSetting {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
             builder.readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+            builder.writeTimeout(1000, TimeUnit.SECONDS);
 //            builder.addInterceptor(new LogInterceptor());
             retrofit = new Retrofit.Builder()
                     .client(builder.build())

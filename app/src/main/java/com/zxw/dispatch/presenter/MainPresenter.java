@@ -1,12 +1,8 @@
 package com.zxw.dispatch.presenter;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
-import android.media.SoundPool;
 import android.text.TextUtils;
 
 import com.zxw.data.bean.BaseBean;
@@ -14,7 +10,6 @@ import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.MissionType;
-import com.zxw.data.bean.NonMissionType;
 import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopCarCodeBean;
@@ -32,7 +27,6 @@ import com.zxw.dispatch.adapter.DragListAdapterForOperatorEmpty;
 import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
-import com.zxw.dispatch.service.CarPlanService;
 import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.DESPlus;
 import com.zxw.dispatch.utils.DebugLog;
@@ -43,14 +37,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * author：CangJie on 2016/9/20 17:26
@@ -62,14 +51,12 @@ public class MainPresenter extends BasePresenter<MainView> {
     private StopSource mStopSource = new StopSource();
     private Line mCurrentLine;
     private Context mContext;
-    private Intent serviceIntent;
     private int lineId, stationId;
     private String lineName;
     private LineParams mLineParams;
     public final static int TYPE_SALE_AUTO = 1, TYPE_SALE_MANUAL = 2;
     private List<Line> mLineBeen;
     private boolean isAuto = false;
-    private Intent receiverIntent = new Intent("com.zxw.dispatch.service.RECEIVER");
     private List<Integer> sendNums = new ArrayList<>();
     private SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
     private Timer timer = null;
@@ -610,29 +597,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         mMediaPlayer.start();
     }
 
-    /**
-     * 点击自动发车
-     */
-    public void selectAuto() {
-        if (serviceIntent == null)
-            serviceIntent = new Intent(mContext, CarPlanService.class);
-        serviceIntent.putExtra("lineId", lineId);
-        mContext.startService(serviceIntent);
-    }
-
-    /**
-     * 点击手动发车
-     */
-    public void selectManual() {
-//        Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
-        receiverIntent.putExtra("lineId", lineId);
-        mContext.sendBroadcast(receiverIntent);
-    }
-
-    public void closeService() {
-        receiverIntent.putExtra("order", "close");
-        mContext.sendBroadcast(receiverIntent);
-    }
 
     public void manualAddStopCar(String carId, String driverId, String stewardId, LoadDataStatus loadDataStatus) {
         this.mLoadDataStatus = loadDataStatus;
