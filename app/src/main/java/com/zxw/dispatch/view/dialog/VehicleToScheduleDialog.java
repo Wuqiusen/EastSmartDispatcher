@@ -32,6 +32,8 @@ import java.util.logging.FileHandler;
 
 import rx.Subscriber;
 
+import static com.zxw.dispatch.R.id.sp_stop_car_item;
+
 /**
  * author MXQ
  * create at 2017/3/10 11:33
@@ -306,8 +308,8 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
             ToastHelper.showToast("请输入正确的时间");
             return false;
         }
-        int selectedItemPosition = sp_stop_car_item2.getSelectedItemPosition();
-        int taskId = taskContents2.get(selectedItemPosition).getTaskId();
+        int selectedItemPosition = sp_stop_car_item3.getSelectedItemPosition();
+        int taskId = taskContents3.get(selectedItemPosition).getTaskId();
         mListener.onClickOperatorNotEmptyMission(currentCategory, taskId, beginTime, endTime, count, km,remarks, loadDataStatus);
         return true;
     }
@@ -358,7 +360,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
     }
 
     private void generateOperatorNotEmptyView(MissionType missionType, LinearLayout item3) {
-        sp_stop_car_item3 = (Spinner) item3.findViewById(R.id.sp_stop_car_item);
+        sp_stop_car_item3 = (Spinner) item3.findViewById(sp_stop_car_item);
         et_stop_car_item_start_time3 = (EditText) item3.findViewById(R.id.et_stop_car_item_start_time);
         et_stop_car_item_end_time3 = (EditText) item3.findViewById(R.id.et_stop_car_item_end_time);
         et_stop_car_item_count3 = (EditText) item3.findViewById(R.id.et_stop_car_item_count);
@@ -372,7 +374,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
     }
 
     private void generateOperatorEmptyView(MissionType missionType, LinearLayout item2) {
-        sp_stop_car_item2 = (Spinner) item2.findViewById(R.id.sp_stop_car_item);
+        sp_stop_car_item2 = (Spinner) item2.findViewById(sp_stop_car_item);
         et_stop_car_item_start_time2 = (EditText) item2.findViewById(R.id.et_stop_car_item_start_time);
         et_stop_car_item_end_time2 = (EditText) item2.findViewById(R.id.et_stop_car_item_end_time);
         et_stop_car_item_count2 = (EditText) item2.findViewById(R.id.et_stop_car_item_count);

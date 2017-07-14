@@ -9,6 +9,7 @@ import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.presenter.view.SelectDispatcherPointView;
 import com.zxw.dispatch.recycler.SpotAdapter;
 import com.zxw.dispatch.ui.LoginActivity;
+import com.zxw.dispatch.ui.WelcomeActivity;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
 
@@ -39,7 +40,7 @@ public class SelectDispatcherPointPresenter extends BasePresenter<SelectDispatch
                     receiverIntent.putExtra("order", "close");
                     mActivity.sendBroadcast(receiverIntent);
                     SpUtils.logOut(mActivity);
-                    Intent intent = new Intent(mActivity, LoginActivity.class);
+                    Intent intent = new Intent(mActivity, WelcomeActivity.class);
                     mActivity.startActivity(intent);
                     mActivity.finish();
                 }

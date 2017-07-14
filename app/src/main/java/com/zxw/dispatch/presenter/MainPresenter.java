@@ -106,7 +106,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 LogUtil.loadRemoteError("loadLine " + e.getMessage());
                 mvpView.hideLoading();
                 mvpView.disPlay(e.getMessage());
-                mvpView.reLogin();
+//                mvpView.reLogin();
             }
 
             @Override
