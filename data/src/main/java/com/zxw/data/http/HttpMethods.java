@@ -1,8 +1,5 @@
 package com.zxw.data.http;
 
-import android.provider.SyncStateContract;
-
-import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
 import com.zxw.data.bean.DepartCar;
@@ -16,9 +13,7 @@ import com.zxw.data.bean.Line;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.LoginBean;
 import com.zxw.data.bean.MissionType;
-import com.zxw.data.bean.MoreHistory;
 import com.zxw.data.bean.NonMissionType;
-import com.zxw.data.bean.Person;
 import com.zxw.data.bean.PersonInfo;
 import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.bean.SchedulePlanBean;
@@ -29,27 +24,23 @@ import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.bean.VersionBean;
-import com.zxw.data.bean.WaitVehicle;
 
 import java.util.List;
 
 import retrofit2.Retrofit;
-import retrofit2.http.Field;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
-
 /**
  * author：CangJie on 2016/10/12 15:23
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-    public static final String BASE_URL = "http://192.168.0.50:8080/yd_control_app/";
-//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+//    public static final String BASE_URL = "http://192.168.0.50:8080/yd_control_app/";
+    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
 //    public static final String BASE_URL = "http://150970t1u9.51mypc.cn:52222/yd_control_app/";// 测试
     public Retrofit retrofit = RetrofitSetting.getInstance();
 

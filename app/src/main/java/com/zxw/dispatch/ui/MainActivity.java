@@ -661,14 +661,14 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void reLogin() {
-        //取消自动发车
-        if (isAuto) {
-            presenter.closeService();
-            isAuto = false;
-        }
-        SpUtils.logOut(MyApplication.mContext);
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+//        //取消自动发车
+//        if (isAuto) {
+//            presenter.closeService();
+//            isAuto = false;
+//        }
+//        SpUtils.logOut(MyApplication.mContext);
+//        startActivity(new Intent(this, LoginActivity.class));
+//        finish();
     }
 
     @Override
@@ -1527,8 +1527,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             presenter.closeService();
             isAuto = false;
         }
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         SpUtils.logOut(mContext);
+        Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
         startActivity(intent);
         finish();
     }
