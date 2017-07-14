@@ -1,6 +1,7 @@
 package com.zxw.dispatch.utils.file_download_dialog;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -17,6 +18,9 @@ public class ProgressHelper {
     public static OkHttpClient.Builder addProgress(OkHttpClient.Builder builder) {
         if (builder == null) {
             builder = new OkHttpClient.Builder();
+            builder.connectTimeout(20, TimeUnit.MINUTES);
+            builder.readTimeout(20, TimeUnit.MINUTES);
+            builder.writeTimeout(20, TimeUnit.MINUTES);
         }
 
         final ProgressListener mProgressListener = new ProgressListener() {

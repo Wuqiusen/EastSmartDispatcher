@@ -21,7 +21,6 @@ import com.zxw.dispatch.ui.base.PresenterActivity;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.DownLoadAndSetUpAPK;
 import com.zxw.dispatch.utils.SpUtils;
-import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.MyDialog;
 
 import butterknife.Bind;
@@ -119,7 +118,7 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
                     new DownLoadAndSetUpAPK().DownLoadAndSetUpAPK(WelcomeActivity.this, versionBean.url, new DownLoadAndSetUpAPK.LoadFailure() {
                         @Override
                         public void onLoadFailureListener() {
-                            ToastHelper.showToast("更新失败", mContext);
+//                            ToastHelper.showToast("更新失败", mContext);
                             loadMain();
                         }
                     });
@@ -161,8 +160,5 @@ public class WelcomeActivity extends PresenterActivity<WelcomePresenter> impleme
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();//关闭当前界面
-    }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        loadMain();
     }
 }

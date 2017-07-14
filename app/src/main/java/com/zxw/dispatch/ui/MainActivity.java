@@ -1,10 +1,7 @@
 
 package com.zxw.dispatch.ui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
@@ -16,7 +13,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +37,6 @@ import com.zxw.data.bean.SendHistory;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.Constants;
-import com.zxw.dispatch.MyApplication;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.DragListAdapter;
 import com.zxw.dispatch.adapter.DragListAdapterForNotOperatorEmpty;
@@ -55,11 +50,11 @@ import com.zxw.dispatch.presenter.view.MainView;
 import com.zxw.dispatch.recycler.DividerItemDecoration;
 import com.zxw.dispatch.recycler.GoneAdapterForNotOperatorEmpty;
 import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
-import com.zxw.dispatch.recycler.viewHolder.GoneForNormalViewHolder;
 import com.zxw.dispatch.recycler.MainAdapter;
 import com.zxw.dispatch.recycler.NonMissionTypeAdapter;
 import com.zxw.dispatch.recycler.StopEndAdapter;
 import com.zxw.dispatch.recycler.StopStayAdapter;
+import com.zxw.dispatch.recycler.viewHolder.GoneForNormalViewHolder;
 import com.zxw.dispatch.ui.base.PresenterActivity;
 import com.zxw.dispatch.utils.CreateRecyclerView;
 import com.zxw.dispatch.utils.DebugLog;
@@ -77,7 +72,6 @@ import com.zxw.dispatch.view.dialog.ManualAddStopCarDialog;
 import com.zxw.dispatch.view.dialog.MissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.NoMissionTypeWaitCarDialog;
 import com.zxw.dispatch.view.dialog.RecordingCarTaskDialog;
-import com.zxw.dispatch.view.dialog.SendGroupMessageDialog;
 import com.zxw.dispatch.view.dialog.StopCarEndToStayDialog;
 import com.zxw.dispatch.view.dialog.VehicleToScheduleDialog;
 
@@ -177,14 +171,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private int goneRv1PageNo = 1;
     private int eGoneRv1PageNo = 1;
     private LineParams mLineParams;
-    private boolean isInVertiacl = true;
 
 
     View viewCover;
     @Bind(R.id.vp_main)
     CustomViewPager vpMain;
-//    TextView tvAutomatic;
-//    TextView tvManual;
     TextView tvVerWaitCar;
     TextView tvVerStopCar;
 
@@ -194,20 +185,13 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private PopupWindow mPopupWindow = null;
     private ListView lv_popup = null;
     private LinearLayout ll_popupwindow;
-    private MsgReceiver msgReceiver;
     private List<View> views = new ArrayList<View>();
     private List<View> eViews = new ArrayList<View>();
-    private boolean isHaveSendCar = false;
     private boolean isShow = false;
     private boolean isPopbg = true;
 
-    private static final int REFRESH = 1;
-    private static final int AUTO = 2;
-    private static final int HANDLE = 3;
     private static final int SEND_CAR_COUNT = 4;
-    private boolean isAuto = false;
     private Timer mTimer = null;
-    private long clickTime = 0;
     private int spotId;
 
     Handler handler = new Handler(Looper.getMainLooper()) {
@@ -216,23 +200,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             super.handleMessage(msg);
             try {
                 switch (msg.what) {
-                    case REFRESH:
-                        Log.w("onReceive---", "刷新数据");
-                        presenter.refreshList();
-                        break;
-                    case AUTO:
-                        Log.w("onReceive---", "自动发车");
-                        isAuto = true;
-                        setTvBackground(2);
-                        setCoverBackground(View.VISIBLE);
-
-                        break;
-                    case HANDLE:
-                        Log.w("onReceive---", "手动发车");
-                        isAuto = false;
-                        setTvBackground(1);
-                        setCoverBackground(View.GONE);
-                        break;
                     case SEND_CAR_COUNT:
                         Log.w("onReceive---", "更新待发车辆数");
                         presenter.checkVehicleCount(spotId);
@@ -263,7 +230,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         setContentView(R.layout.activity_main);
         this.mSavedInstanceState = savedInstanceState;
         ButterKnife.bind(this);
-        createReceiver();
         initData();
         initView();
         initTabEvent();
@@ -617,15 +583,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
 
-    private void createReceiver() {
-        //动态注册广播接收器
-        if (msgReceiver == null) {
-            msgReceiver = new MsgReceiver();
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("com.zxw.dispatch.MSG_RECEIVER");
-            registerReceiver(msgReceiver, intentFilter);
-        }
-    }
 
     private void refreshSendCarTimer(){
         if (mTimer == null){
@@ -673,7 +630,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void loadSendCarList(DragListAdapter mDragListAdapter) {
-        isHaveSendCar = false;
         wtab1_size = mDragListAdapter.getCount();
         setWaitCarCount();
         tv_wtab1.setText(showCount(R.string.line_operate,mDragListAdapter.getCount()));
@@ -686,8 +642,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         mHorWaitCarView.setAdapterForNormal(mDragListAdapter);
         mHorWaitCarView.setMyDragListener(mListener);
 
-        if (mDragListAdapter.getCount() > 0)
-            isHaveSendCar = true;
     }
 
     private DragListView.MyDragListener createMyDragListener() {
@@ -1467,7 +1421,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(msgReceiver);
         if (mTimer != null){
             mTimer.cancel();
             mTimer = null;
@@ -1522,11 +1475,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
     private void doLoginOut() {
-        //取消自动发车
-        if (isAuto) {
-            presenter.closeService();
-            isAuto = false;
-        }
         SpUtils.logOut(mContext);
         Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
         startActivity(intent);
@@ -1552,31 +1500,6 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     }
 
 
-    public class MsgReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.w("onReceive---", "Main广播已接收");
-            Message obtain = Message.obtain();
-            if (TextUtils.equals(intent.getStringExtra("type"), "getData")) {
-                Log.w("onReceive---", "更新发车状态");
-                if (intent.getBooleanExtra("isAuto", false)) {
-                    obtain.what = AUTO;
-                    handler.sendMessage(obtain);
-                } else {
-                    obtain.what = HANDLE;
-                    handler.sendMessage(obtain);
-                }
-
-            } else {
-                Log.w("onReceive---", "刷新数据");
-                //刷新数据
-                obtain.what = REFRESH;
-                handler.sendMessage(obtain);
-            }
-        }
-
-    }
 
 
 }

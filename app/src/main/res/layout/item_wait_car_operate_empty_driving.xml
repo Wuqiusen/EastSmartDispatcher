@@ -17,6 +17,8 @@
     <TextView
         android:id="@+id/tv_car_code"
         style="@style/font_random_weight_style"
+        android:background="@drawable/ll_stop_car_red_btn_bg"
+        android:textColor="@color/white"
         android:layout_weight="3.8"
         tools:text="车号"
         />
