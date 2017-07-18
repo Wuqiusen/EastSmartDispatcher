@@ -7,12 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.R;
+import com.zxw.dispatch.utils.DebugLog;
 
 import java.util.List;
 
@@ -54,7 +54,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
             setClickView(0);
             listener.onSelectLine(mData.get(position));
         }
-        holder.mLineNumber.setText(mData.get(position).lineCode);
+        String lineName = "";
+        if (mData.get(position).lineCode.contains("上行")){
+            lineName = mData.get(position).lineCode.replace("上行", "\n上行");
+        }else if (mData.get(position).lineCode.contains("下行")){
+            lineName = mData.get(position).lineCode.replace("下行", "\n下行");
+        }else {
+            lineName = mData.get(position).lineCode;
+        }
+        holder.mLineNumber.setText(lineName);
         holder.mContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,21 +82,22 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
             holder.mContainer.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
 
         }
-
+        String vehCount = "";
         if (sendCarNum != null && !sendCarNum.isEmpty()) {
            for (VehicleNumberBean bean: sendCarNum){
                if (TextUtils.equals(bean.lineId, mData.get(position).lineId + "")){
-                   holder.tv_time_to_send_count.setVisibility(View.VISIBLE);
-                   if (bean.vehNumber != null)
-                   holder.tv_time_to_send_count.setText(bean.vehNumber + "辆");
-                   else
-                       holder.tv_time_to_send_count.setText(0 + "辆");
-               }else {
-                   holder.tv_time_to_send_count.setVisibility(View.INVISIBLE);
+                   if (bean.vehNumber != null){
+                       vehCount = bean.vehNumber + "辆";
+                       DebugLog.e("main代发车辆数:lineId" + bean.lineId + "count:" + bean.vehNumber);
+                   }else{
+                       DebugLog.e("main代发车辆数:为空");
+                       vehCount = 0 + "辆";
+                   }
                }
            }
 
         }
+        holder.tv_time_to_send_count.setText(vehCount);
     }
 
     @Override
