@@ -2,6 +2,8 @@ package com.zxw.data.http;
 
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
+import com.zxw.data.bean.CommunicateLoginBean;
+import com.zxw.data.bean.ContactInfo;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.FuzzyVehicleBean;
@@ -24,6 +26,7 @@ import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.bean.VersionBean;
+import com.zxw.data.utils.LogUtil;
 
 import java.util.List;
 
@@ -395,5 +398,17 @@ public class HttpMethods {
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
         Observable<GroupMessageDetail> map = browse.groupMessageDetailRecord(userId, keyCode, id).map(new HttpResultFunc<GroupMessageDetail>());
         toSubscribe(map,subscriber);
+    }
+    // 语音通话账号登录
+    public void callLogin(Subscriber<CommunicateLoginBean> subscriber, String code, String password, String time){
+        HttpInterfaces.Communicate communicate = retrofit.create(HttpInterfaces.Communicate.class);
+        Observable<CommunicateLoginBean> map = communicate.login(code, password, time).map(new HttpResultFunc<CommunicateLoginBean>());
+        toSubscribe(map,subscriber);
+    }
+    // 获取全部联系人
+    public void contactList(Subscriber<List<ContactInfo>> subscriber, String userId, String keyCode){
+        HttpInterfaces.Communicate communicate = retrofit.create(HttpInterfaces.Communicate.class);
+        Observable<List<ContactInfo>> observable = communicate.contactList(userId, keyCode).map(new HttpResultFunc<List<ContactInfo>>());
+        toSubscribe(observable, subscriber);
     }
 }

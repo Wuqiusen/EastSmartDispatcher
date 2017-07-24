@@ -10,7 +10,6 @@ import com.zxw.dispatch.utils.SpUtils;
  */
 public class BasePresenter<V extends BaseView> {
     public V mvpView;
-    protected int httpCount;
     protected LoadDataStatus mLoadDataStatus;
 
     public BasePresenter(V mvpView) {

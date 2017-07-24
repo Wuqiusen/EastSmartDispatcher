@@ -3,7 +3,6 @@ package com.zxw.dispatch;
 
 import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.DESPlus;
-import com.zxw.dispatch.utils.SpUtils;
 
 import junit.framework.Assert;
 
@@ -15,15 +14,6 @@ import org.junit.Test;
  */
 public class MainActivityTest{
     private static final String TAG = "MainActivityTest";
-    @Test
-    public void test_rxjava(){
-        String code = SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID);
-        String keyCode = SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE);
-
-
-        Assert.assertEquals(code, keyCode);
-    }
-
     @Test
     public void test_des() throws Exception {
         DESPlus des = new DESPlus();

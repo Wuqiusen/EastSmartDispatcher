@@ -3,6 +3,8 @@ package com.zxw.data.http;
 import com.zxw.data.bean.BackHistory;
 import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.ChangePwdBean;
+import com.zxw.data.bean.CommunicateLoginBean;
+import com.zxw.data.bean.ContactInfo;
 import com.zxw.data.bean.DepartCar;
 import com.zxw.data.bean.DriverWorkloadItem;
 import com.zxw.data.bean.FuzzyVehicleBean;
@@ -60,6 +62,23 @@ public class HttpInterfaces {
          */
         @GET
         Call<ResponseBody> getFile(@Url String url);
+    }
+
+    /**
+     * 版本更新
+     */
+    public interface Communicate {
+        @FormUrlEncoded
+        @POST("phone/control/manage/conver/login")
+        Observable<BaseBean<CommunicateLoginBean>> login(@Field("code") String code,
+                                                         @Field("password") String password,
+                                                         @Field("time") String time);
+
+        @FormUrlEncoded
+        @POST("phone/control/manage/conver/vehicle/list")
+        Observable<BaseBean<List<ContactInfo>>> contactList(@Field("userId") String userId,
+                                                @Field("keyCode") String keyCode);
+
     }
 
 

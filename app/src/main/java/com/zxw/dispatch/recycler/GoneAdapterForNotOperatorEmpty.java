@@ -141,19 +141,21 @@ public class GoneAdapterForNotOperatorEmpty extends RecyclerView.Adapter<GoneAda
         }
 
         String driverStatus = "";
-        switch (mData.get(position).opStatus){
-            case 1:
-                driverStatus = "待开始";
-                break;
-            case 2:
-                driverStatus = "进行中";
-                break;
-            case 3:
-                driverStatus = "异常终止";
-                break;
-            case 4:
-                driverStatus = "正常结束";
-                break;
+        if (mData.get(position).opStatus !=null) {
+            switch (mData.get(position).opStatus) {
+                case 1:
+                    driverStatus = "待开始";
+                    break;
+                case 2:
+                    driverStatus = "进行中";
+                    break;
+                case 3:
+                    driverStatus = "异常终止";
+                    break;
+                case 4:
+                    driverStatus = "正常结束";
+                    break;
+            }
         }
         holder.tv_driver_ok.setText(driverStatus);
     }

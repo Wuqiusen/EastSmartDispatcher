@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.zxw.eastsmartdispatch"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 25
-        versionCode 19
-        versionName "1.1.9"
+        versionCode 21
+        versionName "1.2.1"
     }
     buildTypes {
         release {
@@ -40,4 +40,8 @@ dependencies {
     compile files('libs/AMap_Location_V3.3.0_20170118.jar')
     compile 'com.jude:easyrecyclerview:4.4.0'
     compile files('libs/AMap2DMap_5.2.0_AMapSearch_5.2.1_20170630.jar')
+    compile files('libs/CallEngine_Agora.jar')
+    compile files('libs/agora-rtc-sdk.jar')
+    compile files('libs/Rong_CallLib.jar')
+    compile files('libs/Rong_IMLib.jar')
 }

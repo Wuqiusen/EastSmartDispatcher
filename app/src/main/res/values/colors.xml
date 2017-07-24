@@ -64,4 +64,9 @@
 
 
     <color name="background_gone_car">#8873B9EC</color>
+
+
+    <color name="btn_bg_back">#495568</color>
+    <color name="font_bg_normal">#828a97</color>
+    <color name="main_tab_button_selete">#3a3a3a</color>
 </resources>
