@@ -93,6 +93,7 @@ public class ScheduleModule extends LinearLayout implements RecyclerArrayAdapter
     public void initLineParams(int lineId, LineParams params) {
         this.lineId = lineId;
         this.mLineParams = params;
+        loadSchedulePlan();
     }
 
     private void showDatePickerDialog(int currentYear, int currentMonth, int currentDay) {
@@ -159,6 +160,7 @@ public class ScheduleModule extends LinearLayout implements RecyclerArrayAdapter
             @Override
             public void onNext(BaseBean<List<SchedulePlanBean>> baseBean) {
                 allDataSize = baseBean.returnSize;
+                mArrayAdapter.clear();
                 if (baseBean.returnData != null && !baseBean.returnData.isEmpty()) {
                     mArrayAdapter.addAll(baseBean.returnData);
 //                    SchedulePlanListAdapter mAdapter = new SchedulePlanListAdapter(mContext, mLineParams, schedulePlanBeen);
