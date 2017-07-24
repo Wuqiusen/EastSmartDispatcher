@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_call"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@mipmap/phone_person_icon"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_username"
+            style="@style/call_text_style"
+            android:text="布吉宝鼎场站"/>
+        <TextView
+            android:id="@+id/textView"
+            style="@style/call_text_style"
+            tools:text="通话状态" />
+
+
+    </LinearLayout>
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/hangup"
+        android:background="@mipmap/phone_red_big"
+        android:onClick="hangup"
+        android:layout_marginRight="70dp"
+        android:layout_alignBottom="@+id/accept"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/accept"
+        android:onClick="accept"
+        android:layout_marginLeft="70dp"
+        android:background="@mipmap/phone_green_big"
+        android:layout_marginBottom="23dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

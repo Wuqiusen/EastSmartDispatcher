@@ -21,6 +21,9 @@ public class SpUtils {
     public final static String KEYCODE = "keycode";
     public final static String NAME = "name";
 
+    public final static String CALL_USER_ID = "call_userId";
+    public final static String CALL_KEYCODE = "call_keycode";
+
     private static void initSp(Context mContext, String fileName) {
         sp = mContext.getSharedPreferences(fileName,Context.MODE_PRIVATE);
     }

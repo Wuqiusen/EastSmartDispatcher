@@ -1,5 +1,6 @@
 package com.zxw.dispatch;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,8 @@ import java.io.RandomAccessFile;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 
+import io.rong.imlib.RongIMClient;
+
 /**
  * author：CangJie on 2016/9/28 14:45
  * email：cangjie2016@gmail.com
@@ -33,7 +36,33 @@ public class MyApplication extends Application {
 //        Thread.currentThread().setUncaughtExceptionHandler(
 //                new MyUncaughtExceptionHandler());
         Stetho.initializeWithDefaults(this);
+        /**
+         * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIMClient 的进程和 Push 进程执行了 init。
+         * io.rong.push 为融云 push 进程名称，不可修改。
+         */
+        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
+                "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
+            RongIMClient.init(this);
+        }
     }
+
+    public static String getCurProcessName(Context context) {
+
+        int pid = android.os.Process.myPid();
+
+        ActivityManager activityManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager
+                .getRunningAppProcesses()) {
+
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return null;
+    }
+
     private class MyUncaughtExceptionHandler implements
             Thread.UncaughtExceptionHandler {
 
