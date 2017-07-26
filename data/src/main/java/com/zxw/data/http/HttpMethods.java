@@ -26,7 +26,6 @@ import com.zxw.data.bean.StopCarCodeBean;
 import com.zxw.data.bean.StopHistory;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.data.bean.VersionBean;
-import com.zxw.data.utils.LogUtil;
 
 import java.util.List;
 
@@ -42,8 +41,8 @@ import rx.schedulers.Schedulers;
  * email：cangjie2016@gmail.com
  */
 public class HttpMethods {
-//    public static final String BASE_URL = "http://192.168.0.50:8080/yd_control_app/";
-    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
+    public static final String BASE_URL = "http://192.168.0.50:8080/yd_control_app/";
+//    public static final String BASE_URL = "http://120.77.48.103:8080/yd_control_app/";
 //    public static final String BASE_URL = "http://150970t1u9.51mypc.cn:52222/yd_control_app/";// 测试
     public Retrofit retrofit = RetrofitSetting.getInstance();
 
@@ -128,9 +127,9 @@ public class HttpMethods {
 
     //查询车号
     public void queryVehcile(Subscriber<List<FuzzyVehicleBean>> subscriber, String code,
-                             String keyCode, String content){
+                             String keyCode, String content, String taskLineId){
         HttpInterfaces.Browse browse = retrofit.create(HttpInterfaces.Browse.class);
-        Observable<List<FuzzyVehicleBean>> map = browse.queryVehcile(code, keyCode, content).map(new HttpResultFunc<List<FuzzyVehicleBean>>());
+        Observable<List<FuzzyVehicleBean>> map = browse.queryVehcile(code, keyCode, content, taskLineId).map(new HttpResultFunc<List<FuzzyVehicleBean>>());
         toSubscribe(map, subscriber);
     }
 
@@ -409,6 +408,13 @@ public class HttpMethods {
     public void contactList(Subscriber<List<ContactInfo>> subscriber, String userId, String keyCode){
         HttpInterfaces.Communicate communicate = retrofit.create(HttpInterfaces.Communicate.class);
         Observable<List<ContactInfo>> observable = communicate.contactList(userId, keyCode).map(new HttpResultFunc<List<ContactInfo>>());
+        toSubscribe(observable, subscriber);
+    }
+
+    //删除手动进站车辆(新)
+    public void vehicleStopRemove(Subscriber<BaseBean> subscriber, String userId, String keyCode, String objId){
+        HttpInterfaces.Operator operator = retrofit.create(HttpInterfaces.Operator.class);
+        Observable<BaseBean> observable = operator.vehicleStopRemove(userId, keyCode, objId);
         toSubscribe(observable, subscriber);
     }
 }

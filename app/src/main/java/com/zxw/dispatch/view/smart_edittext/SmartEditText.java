@@ -117,9 +117,9 @@ LineAdapter.OnSelectItemListener{
         mEditText.setHint("请输入司机姓名或工号");
     }
 
-    public void addQueryCarCodeEditTextListener() {
+    public void addQueryCarCodeEditTextListener(String lineId) {
         initInputType(CAR_CODE);
-        initEditTextListener(null);
+        initEditTextListener(lineId);
         mEditText.setHint("请输入车牌号");
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
     }
@@ -166,7 +166,7 @@ LineAdapter.OnSelectItemListener{
                     public void call(Long aLong) {
                         switch (inputType) {
                             case CAR_CODE:
-                                queryVehicle(s);
+                                queryVehicle(s, lineId);
                                 break;
                             case DRIVER:
                             case TRAINMAN:
@@ -181,7 +181,7 @@ LineAdapter.OnSelectItemListener{
                 });
     }
 
-    private void queryVehicle(String str) {
+    private void queryVehicle(String str, String taskLineId) {
         try {
             if (str.length() >= 3) {
                 String desStr = new DESPlus().encrypt(Base64.encode(str.getBytes("utf-8")));
@@ -202,8 +202,7 @@ LineAdapter.OnSelectItemListener{
                                                                displayVehcile(vehicles);
                                                            }
                                                        }, SpUtils.getCache(MyApplication.mContext, SpUtils.USER_ID),
-                        SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE),
-                        desStr);
+                        SpUtils.getCache(MyApplication.mContext, SpUtils.KEYCODE), desStr, taskLineId);
             }
         }catch (Exception e){
 

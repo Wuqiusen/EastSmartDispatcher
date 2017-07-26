@@ -30,6 +30,7 @@ import com.zxw.dispatch.recycler.GoneAdapterForOperatorEmpty;
 import com.zxw.dispatch.utils.Base64;
 import com.zxw.dispatch.utils.DESPlus;
 import com.zxw.dispatch.utils.DebugLog;
+import com.zxw.dispatch.utils.ToastHelper;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -160,10 +161,12 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     /*旧的:*/
     public void addRecordingCarTask(String vehicleId, String driverId, String stewardId, String type, String taskId, String taskType, String runNum,
-                                    String runEmpMileage, String beginTime, String endTime) {
+                                    String runEmpMileage, String beginTime, String endTime, LoadDataStatus loadDataStatus) {
+        this.mLoadDataStatus = loadDataStatus;
         HttpMethods.getInstance().lineMakeup(new Subscriber() {
             @Override
             public void onCompleted() {
+                mLoadDataStatus.OnLoadDataFinish();
 
             }
 
@@ -564,7 +567,6 @@ public class MainPresenter extends BasePresenter<MainView> {
                             mStopHistories.clear();
                             mStopHistories.addAll(stopHistories);
                             mvpView.hideLoading();
-                            DebugLog.e("加载已发历史11111-----------");
                             warningSound();
                             return;
                         }
@@ -576,7 +578,6 @@ public class MainPresenter extends BasePresenter<MainView> {
                     mStopHistories.clear();
                     mStopHistories.addAll(stopHistories);
                     mvpView.hideLoading();
-                    DebugLog.e("加载已发历史22222-----------");
                 }
 
             }
@@ -1128,6 +1129,30 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
         }, userId(), keyCode(), objId, bean.vehicleId);
 
+    }
+
+    public void vehicleStopRemove(String objId){
+        mvpView.showLoading();
+        HttpMethods.getInstance().vehicleStopRemove(new Subscriber<BaseBean>() {
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mvpView.disPlay(e.getMessage());
+
+            }
+
+            @Override
+            public void onNext(BaseBean baseBean) {
+                ToastHelper.showToast("删除成功");
+                loadStopCarByStay();
+
+            }
+        }, userId(), keyCode(), objId);
     }
 
 

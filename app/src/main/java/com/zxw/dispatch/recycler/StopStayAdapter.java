@@ -1,20 +1,20 @@
 package com.zxw.dispatch.recycler;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zxw.data.bean.StopHistory;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.utils.ClickUtil;
 import com.zxw.dispatch.utils.ToastHelper;
 
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -75,6 +75,37 @@ public class StopStayAdapter extends RecyclerView.Adapter<StopStayAdapter.LineHo
                     if(listener != null && !ClickUtil.isFastDoubleClickStopBtn()) {
                         listener.onClickStopCarListener(mData.get(position - 1));
                     }
+                }
+            });
+            holder.llReuse.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (mData.get(position - 1).inType == 1){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setTitle("提示");
+                        builder.setMessage("确定要将" + mData.get(position - 1).code + "从停场车辆删除？");
+                        builder.create();
+
+                        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                listener.onLongClickStopCarListener(mData.get(position - 1).id + "");
+                                dialogInterface.dismiss();
+
+                            }
+                        });
+                        builder.show();
+
+                    }else {
+                        ToastHelper.showToast("自动检测进站车辆禁止删除");
+                    }
+                    return true;
                 }
             });
         }
@@ -143,5 +174,6 @@ public class StopStayAdapter extends RecyclerView.Adapter<StopStayAdapter.LineHo
     public interface OnClickStopCarListListener{
         void onClickManualButtonListener();
         void onClickStopCarListener(StopHistory stopCar);
+        void onLongClickStopCarListener(String objId);
     }
 }

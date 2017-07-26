@@ -29,12 +29,14 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
     private LinearLayout ll_steward;
     private AlertDialog dialog;
     private BasePresenter.LoadDataStatus loadDataStatus;
+    private String lineId;
 
-    public ManualAddStopCarDialog(Context context, LineParams lineParams, OnManualAddStopCarListener listener) {
+    public ManualAddStopCarDialog(Context context, LineParams lineParams, int lineId, OnManualAddStopCarListener listener) {
         super(context, R.style.alder_dialog);
         this.mContext = context;
         this.mLineParams = lineParams;
         this.mListener = listener;
+        this.lineId = String.valueOf(lineId);
         init(context);
 
     }
@@ -118,7 +120,7 @@ public class ManualAddStopCarDialog extends AlertDialog.Builder {
     }
 
     private void initSmartEditText() {
-        et_car_code.addQueryCarCodeEditTextListener();
+        et_car_code.addQueryCarCodeEditTextListener(lineId);
         et_driver.addQueryDriverEditTextListener();
         et_steward.addQueryTrainManEditTextListener();
     }

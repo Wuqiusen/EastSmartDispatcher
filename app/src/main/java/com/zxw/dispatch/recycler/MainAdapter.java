@@ -6,14 +6,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxw.data.bean.Line;
+import com.zxw.data.bean.MainTagBean;
 import com.zxw.data.bean.VehicleNumberBean;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.utils.DebugLog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,6 +34,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
     private final LayoutInflater mLayoutInflater;
     private boolean isFirst = true;
     private boolean isClick[];
+    private List<MainTagBean> tagCountList = new ArrayList<>();
 
     public MainAdapter(List<Line> mData, Context mContext,OnSelectLineListener listener) {
         this.mData = mData;
@@ -77,6 +80,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
 //            holder.mTip.setVisibility(View.VISIBLE);
               holder.mContainer.setBackgroundColor(mContext.getResources().getColor(R.color.background_bg_blue));
 
+            for (MainTagBean bean: tagCountList){
+                if (bean.lineId == mData.get(position).lineId){
+                    bean.count = 0;
+                }
+            }
+
         }else {
 //            holder.mTip.setVisibility(View.GONE);
             holder.mContainer.setBackgroundColor(mContext.getResources().getColor(R.color.background_deep_blue));
@@ -98,6 +107,18 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
 
         }
         holder.tv_time_to_send_count.setText(vehCount);
+
+        holder.tvMainTag.setVisibility(View.GONE);
+        for (MainTagBean mainTagBean: tagCountList){
+            if (mainTagBean.lineId == mData.get(position).lineId){
+                if (mainTagBean.count > 0){
+                    holder.tvMainTag.setText(mainTagBean.count + "");
+                    holder.tvMainTag.setVisibility(View.VISIBLE);
+                }else {
+                    holder.tvMainTag.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
     @Override
@@ -108,8 +129,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
     public static class LineHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_line_no)
         TextView mLineNumber;
+        @Bind(R.id.tv_main_tag)
+        TextView tvMainTag;
         @Bind(R.id.container)
-        LinearLayout mContainer;
+        RelativeLayout mContainer;
 //      @Bind(R.id.view_main_tip)
 //      View mTip;
         @Bind(R.id.tv_time_to_send_count)
@@ -140,6 +163,21 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.LineHolder> {
     public void setSendCarNum(List<VehicleNumberBean> sendCarNum){
         this.sendCarNum = sendCarNum;
         isFirst = false;
+        notifyDataSetChanged();
+    }
+
+    public void setTagCount(int lineId){
+        for (MainTagBean bean: tagCountList){
+            if (bean.lineId == lineId){
+                bean.count ++;
+                notifyDataSetChanged();
+                return;
+            }
+        }
+        MainTagBean mainTagBean = new MainTagBean();
+        mainTagBean.lineId = lineId;
+        mainTagBean.count = 1;
+        tagCountList.add(mainTagBean);
         notifyDataSetChanged();
     }
 }
