@@ -222,7 +222,8 @@ public class HttpInterfaces {
         @POST("phone/control/manage/task/vehicle/all/list")
         Observable<BaseBean<List<FuzzyVehicleBean>>> queryVehcile(@Field("userId") String code,
                                                                   @Field("keyCode") String keyCode,
-                                                                  @Field("content") String content);
+                                                                  @Field("content") String content,
+                                                                  @Field("taskLineId") String taskLineId);
 
 
         /**
@@ -743,6 +744,20 @@ public class HttpInterfaces {
                                             @Field("runEmpMileage") String runEmpMileage,
                                             @Field("beginTime") String beginTime,
                                             @Field("endTime") String endTime);
+
+
+        /**
+         * 55.	删除手动进站车辆(新)
+         * @param userId
+         * @param keyCode
+         * @param objId
+         * @return
+         */
+        @FormUrlEncoded
+        @POST("phone/control/manage/task/line/vehicle/stop/remove")
+        Observable<BaseBean> vehicleStopRemove(@Field("userId") String userId,
+                                            @Field("keyCode") String keyCode,
+                                            @Field("objId") String objId);
 
 
     }

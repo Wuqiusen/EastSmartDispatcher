@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -17,6 +18,7 @@ import com.zxw.data.http.HttpMethods;
 import com.zxw.data.utils.LogUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.adapter.MySpinnerAdapter;
+import com.zxw.dispatch.presenter.BasePresenter;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.utils.DebugLog;
 import com.zxw.dispatch.utils.SpUtils;
@@ -67,6 +69,8 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
     private List<RadioButton> radioButtonList;
     private LinearLayout ll_steward_recording_item4;
     private LinearLayout ll_steward_recording_item41;
+    private BasePresenter.LoadDataStatus loadDataStatus;
+    private Button btn_confirm;
 
 
     public RecordingCarTaskDialog(Context context, LineParams lineParams, int lineId, OnAddRecordingListener listener) {
@@ -144,6 +148,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         containerView3 = (LinearLayout) container.findViewById(R.id.item3);
         containerView4 = (LinearLayout) container.findViewById(R.id.item4);
         containerView5 = (TextView) container.findViewById(R.id.item5);
+        btn_confirm = (Button) container.findViewById(R.id.btn_confirm);
 
         recordingHelpView(containerView4);
         for (MissionType missionType : missionTypes) {
@@ -167,7 +172,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         }
 
 
-        container.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (dialog == null || !dialog.isShowing())
@@ -196,6 +201,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
                         //    dialog.dismiss();
                         break;
                 }
+
             }
         });
 
@@ -213,9 +219,21 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
 
     }
 
+    private void setBtnConfirm(){
+        btn_confirm.setClickable(false);
+        loadDataStatus = new BasePresenter.LoadDataStatus() {
+            @Override
+            public void OnLoadDataFinish() {
+                btn_confirm.setClickable(true);
+                if (dialog != null || dialog.isShowing())
+                    dialog.dismiss();
+            }
+        };
+    }
+
     private void recordingHelpView(LinearLayout item4) {
         smartEt_recording_item4_vehicleId = (SmartEditText) item4.findViewById(R.id.smartEt_recording_item4_vehicleId);
-        smartEt_recording_item4_vehicleId.addQueryCarCodeEditTextListener();
+        smartEt_recording_item4_vehicleId.addQueryCarCodeEditTextListener(mLineId + "");
         smartEt_recording_item4_driverId = (SmartEditText) item4.findViewById(R.id.smartEt_recording_item4_driverId);
         smartEt_recording_item4_driverId.addQueryDriverEditTextListener();
         ll_steward_recording_item41 = (LinearLayout) item4.findViewById(R.id.ll_steward_recording_item4);
@@ -239,7 +257,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
     private void recordingNormalView(MissionType missionType, LinearLayout item1) {
         RadioGroup rg_stop_car_item1 = (RadioGroup) item1.findViewById(R.id.rg_recording_car_item1);
         smartEt_recording_item1_vehicleId = (SmartEditText) item1.findViewById(R.id.smartEt_recording_item1_vehicleId);
-        smartEt_recording_item1_vehicleId.addQueryCarCodeEditTextListener();
+        smartEt_recording_item1_vehicleId.addQueryCarCodeEditTextListener(mLineId + "");
         smartEt_recording_item1_driverId = (SmartEditText) item1.findViewById(R.id.smartEt_recording_item1_driverId);
         smartEt_recording_item1_driverId.addQueryDriverEditTextListener();
         ll_steward_recording_item1 = (LinearLayout) item1.findViewById(R.id.ll_steward_recording_item1);
@@ -287,7 +305,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         et_recording_item2_remarks = (EditText) item2.findViewById(R.id.et_recording_item_remarks);
         et_recording_item2_remarks.setHint(mContext.getResources().getString(R.string.hint_operate_empty_dialog));
         smartEt_recording_item2_vehicleId = (SmartEditText) item2.findViewById(R.id.smartEt_recording_item_vehicleId);
-        smartEt_recording_item2_vehicleId.addQueryCarCodeEditTextListener();
+        smartEt_recording_item2_vehicleId.addQueryCarCodeEditTextListener(mLineId + "");
         smartEt_recording_item2_driverId = (SmartEditText) item2.findViewById(R.id.smartEt_recording_item_driverId);
         smartEt_recording_item2_driverId.addQueryDriverEditTextListener();
         ll_steward_recording_item2 = (LinearLayout) item2.findViewById(R.id.ll_steward_recording_item2_3);
@@ -318,7 +336,7 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         et_recording_item3_remarks = (EditText) item3.findViewById(R.id.et_recording_item_remarks);
         et_recording_item3_remarks.setHint(mContext.getResources().getString(R.string.hint_operate_empty_dialog));
         smartEt_recording_item3_vehicleId = (SmartEditText) item3.findViewById(R.id.smartEt_recording_item_vehicleId);
-        smartEt_recording_item3_vehicleId.addQueryCarCodeEditTextListener();
+        smartEt_recording_item3_vehicleId.addQueryCarCodeEditTextListener(mLineId + "");
         smartEt_recording_item3_driverId = (SmartEditText) item3.findViewById(R.id.smartEt_recording_item_driverId);
         smartEt_recording_item3_driverId.addQueryDriverEditTextListener();
         ll_steward_recording_item3 = (LinearLayout) item3.findViewById(R.id.ll_steward_recording_item2_3);
@@ -394,7 +412,8 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
             ToastHelper.showToast("请输入正确的时间");
             return false;
         }
-        mListener.onClickNormalMission(currentCategory, taskContentBean.getTaskId(), mVehicleId, mDriverId, mStewardId,mStartTime,mEndTime);
+        setBtnConfirm();
+        mListener.onClickNormalMission(currentCategory, taskContentBean.getTaskId(), mVehicleId, mDriverId, mStewardId,mStartTime,mEndTime,loadDataStatus);
         return true;
     }
 
@@ -448,7 +467,8 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         }
         int selectSpItemPosition = sp_recording_item2_car_task.getSelectedItemPosition();
         int taskId = emptyTaskContent.get(selectSpItemPosition).getTaskId();
-        mListener.onClickOperatorEmptyMissionDoConfirm(currentCategory, taskId, mVehicleId, mDriverId, mStewardId, startTime, endTime, runCount, km, remarks);
+        setBtnConfirm();
+        mListener.onClickOperatorEmptyMissionDoConfirm(currentCategory, taskId, mVehicleId, mDriverId, mStewardId, startTime, endTime, runCount, km, remarks,loadDataStatus);
         return true;
     }
 
@@ -500,7 +520,8 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
         }
         int selectSpItemPosition = sp_recording_item3_car_task.getSelectedItemPosition();
         int taskId = notEmptyTaskContent.get(selectSpItemPosition).getTaskId();
-        mListener.onClickOperatorNotEmptyMissionDoConfirm(currentCategory, taskId, mVehicleId, mDriverId, mStewardId, startTime, endTime, runCount, km, remarks);
+        setBtnConfirm();
+        mListener.onClickOperatorNotEmptyMissionDoConfirm(currentCategory, taskId, mVehicleId, mDriverId, mStewardId, startTime, endTime, runCount, km, remarks, loadDataStatus);
         return true;
     }
 
@@ -565,8 +586,8 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
                 ToastHelper.showToast("请输入正确的时间");
                 return false;
             }
-
-            mListener.onClickHelpMission(currentCategory, lineId, mVehicleId, mDriverId, mStewardId,mStartTime,mEndTime);
+            setBtnConfirm();
+            mListener.onClickHelpMission(currentCategory, lineId, mVehicleId, mDriverId, mStewardId,mStartTime,mEndTime, loadDataStatus);
         } catch (Exception e) {
             ToastHelper.showToast(e.getMessage());
             return false;
@@ -605,13 +626,15 @@ public class RecordingCarTaskDialog extends AlertDialog.Builder {
 
 
     public interface OnAddRecordingListener {
-        void onClickNormalMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime);
+        void onClickNormalMission(int type, int taskId, String vehicleId, String driverId, String stewardId, String startTime, String endTime, BasePresenter.LoadDataStatus loadDataStatus);
 
-        void onClickOperatorEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId, String startTime, String endTime, String runCount, String km, String remarks);
+        void onClickOperatorEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId,
+                                                  String stewardId, String startTime, String endTime, String runCount, String km, String remarks, BasePresenter.LoadDataStatus loadDataStatus);
 
-        void onClickOperatorNotEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId, String startTime, String endTime, String runCount, String km, String remarks);
+        void onClickOperatorNotEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId,
+                                                     String stewardId, String startTime, String endTime, String runCount, String km, String remarks, BasePresenter.LoadDataStatus loadDataStatus);
 
-        void onClickHelpMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime);
+        void onClickHelpMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime, BasePresenter.LoadDataStatus loadDataStatus);
 
     }
 }

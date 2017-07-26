@@ -733,7 +733,12 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
             public void onClickStopCarListener(StopHistory stopCar) {
                 showVehicleToScheduleDialog(stopCar);
             }
-        });
+
+           @Override
+           public void onLongClickStopCarListener(String objId) {
+               presenter.vehicleStopRemove(objId);
+           }
+       });
 
     }
 
@@ -947,7 +952,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     private void showManualAddStopCarDialog() {
-        new ManualAddStopCarDialog(mContext, presenter.getLineParams(), new ManualAddStopCarDialog.OnManualAddStopCarListener() {
+        new ManualAddStopCarDialog(mContext, presenter.getLineParams(),presenter.getLineId(), new ManualAddStopCarDialog.OnManualAddStopCarListener() {
             @Override
             public void manualAddStopCar(String carId, String driverId, String stewardId, BasePresenter.LoadDataStatus loadDataStatus) {
                 presenter.manualAddStopCar(carId, driverId, stewardId, loadDataStatus);
@@ -1158,7 +1163,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 loadData(1);
                 vpMain.setCurrentItem(1);
                 setTabBackground(1);
-                scheduleModule.loadSchedulePlan();
+//                scheduleModule.loadSchedulePlan();
                 break;
             case R.id.tv_work_load:
                 // 工作量审核
@@ -1226,22 +1231,24 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 // 新的1:
                 new RecordingCarTaskDialog(mContext, presenter.getLineParams(),presenter.getLineId(), new RecordingCarTaskDialog.OnAddRecordingListener(){
                     @Override
-                    public void onClickNormalMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime) {
+                    public void onClickNormalMission(int type, int taskId, String vehicleId, String driverId, String stewardId, String startTime, String endTime, BasePresenter.LoadDataStatus loadDataStatus) {
 
-                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, startTime, endTime);
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null, startTime, endTime, loadDataStatus);
                     }
                     @Override
-                    public void onClickOperatorEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId, String startTime, String endTime, String runCount, String km, String remarks) {
-                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),null, String.valueOf(taskType),runCount,km,startTime,endTime);
+                    public void onClickOperatorEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId,
+                                                                     String startTime, String endTime, String runCount, String km, String remarks, BasePresenter.LoadDataStatus loadDataStatus) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),null, String.valueOf(taskType),runCount,km,startTime,endTime, loadDataStatus);
                     }
                     @Override
-                    public void onClickOperatorNotEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId, String startTime, String endTime, String runCount, String km, String remarks) {
-                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),null, String.valueOf(taskType),runCount,km,startTime,endTime);
+                    public void onClickOperatorNotEmptyMissionDoConfirm(int type, int taskType, String vehicleId, String driverId, String stewardId,
+                                                                        String startTime, String endTime, String runCount, String km, String remarks, BasePresenter.LoadDataStatus loadDataStatus) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),null, String.valueOf(taskType),runCount,km,startTime,endTime, loadDataStatus);
                     }
 
                     @Override
-                    public void onClickHelpMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime) {
-                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null,startTime,endTime);
+                    public void onClickHelpMission(int type, int taskId, String vehicleId, String driverId, String stewardId,String startTime,String endTime, BasePresenter.LoadDataStatus loadDataStatus) {
+                        presenter.addRecordingCarTask(vehicleId,driverId,stewardId,String.valueOf(type),String.valueOf(taskId), null, null, null,startTime,endTime, loadDataStatus);
                     }
                 });
 

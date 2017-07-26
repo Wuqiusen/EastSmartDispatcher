@@ -8,4 +8,5 @@ public class StopHistory {
     public String code;
     public int type;
     public int id;
+    public int inType;
 }

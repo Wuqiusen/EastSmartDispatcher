@@ -1,13 +1,6 @@
 package com.zxw.data;
 
-import com.zxw.data.bean.BackHistory;
-import com.zxw.data.bean.BaseBean;
 import com.zxw.data.bean.FuzzyVehicleBean;
-import com.zxw.data.bean.MoreHistory;
-import com.zxw.data.bean.Person;
-import com.zxw.data.bean.SendHistory;
-import com.zxw.data.bean.StopHistory;
-import com.zxw.data.bean.WaitVehicle;
 import com.zxw.data.http.HttpGPsRequest;
 import com.zxw.data.http.HttpMethods;
 
@@ -114,7 +107,7 @@ public class BrowseTest {
             public void onNext(List<FuzzyVehicleBean> vehicles) {
                 result = vehicles.toString();
             }
-        }, code, keyCode, vehCode);
+        }, code, keyCode, vehCode, lineId + "");
         Assert.assertEquals("1", result);
     }
 }
