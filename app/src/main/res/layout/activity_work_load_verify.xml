@@ -137,6 +137,18 @@
         <TextView
             style="@style/main_activity_top_button"
             android:layout_weight="4"
+            android:text="任务类型"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
+            android:text="任务"
+            />
+
+        <TextView
+            style="@style/main_activity_top_button"
+            android:layout_weight="4"
             android:text="GPS"
             />
 

@@ -2,11 +2,11 @@ package com.zxw.dispatch.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.zxw.data.bean.DepartCar;
+import com.zxw.data.bean.InformContentBean;
 import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.bean.StopCarCodeBean;
@@ -28,7 +29,6 @@ import com.zxw.dispatch.utils.DisplayTimeUtil;
 import com.zxw.dispatch.utils.SpUtils;
 import com.zxw.dispatch.utils.ToastHelper;
 import com.zxw.dispatch.view.TimePlanPickerDialog;
-import com.zxw.dispatch.view.UpdateIntervalPickerDialog;
 import com.zxw.dispatch.view.dialog.AlertNameDialog;
 import com.zxw.dispatch.view.dialog.UpdateWaitCarCodeDialog;
 import com.zxw.dispatch.view.smart_edittext.SmartEditText;
@@ -47,12 +47,12 @@ public class DragListAdapter extends BaseAdapter {
     private List<DepartCar> mDatas;
 
     private Context mContext;
-    private  TextView tv_interval_time;
-    private  TextView  tv_plan_time;
+    private TextView tv_interval_time;
+    private TextView tv_plan_time;
     private MainPresenter presenter;
     private LineParams mLineParams;
     private Calendar mDate;
-    private int mHour,mMinute;
+    private int mHour, mMinute;
     private String sHour = null;
     private String sMinute = null;
     private SmartEditText seLine;
@@ -93,12 +93,12 @@ public class DragListAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_car_sequence);
         tv_car_sequence.setText((position + 1) + "");
 
-         TextView tv_car_code = (TextView) view
+        TextView tv_car_code = (TextView) view
                 .findViewById(R.id.tv_car_code);
         tv_car_code.setText(mDatas.get(position).getCode());
-        if (mDatas.get(position).getTaskEditBelongId() == mDatas.get(position).getTaskEditRunId()){
+        if (mDatas.get(position).getTaskEditBelongId() == mDatas.get(position).getTaskEditRunId()) {
             tv_car_code.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_red_btn_bg));
-        }else {
+        } else {
             tv_car_code.setBackground(mContext.getResources().getDrawable(R.drawable.ll_stop_car_green_btn_bg));
         }
 
@@ -106,13 +106,13 @@ public class DragListAdapter extends BaseAdapter {
         tv_car_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isCanClick){
+                if (!isCanClick) {
                     return;
                 }
-                 new UpdateWaitCarCodeDialog(mContext,presenter.getLineId(),new UpdateWaitCarCodeDialog.OnListener() {
-                     @Override
-                     public void onConfirmChangeCarCode(StopCarCodeBean bean, BasePresenter.LoadDataStatus loadDataStatus) {
-                          presenter.updateWaitCarCode(mDatas.get(position).getId(),bean, loadDataStatus);
+                new UpdateWaitCarCodeDialog(mContext, presenter.getLineId(), new UpdateWaitCarCodeDialog.OnListener() {
+                    @Override
+                    public void onConfirmChangeCarCode(StopCarCodeBean bean, BasePresenter.LoadDataStatus loadDataStatus) {
+                        presenter.updateWaitCarCode(mDatas.get(position).getId(), bean, loadDataStatus);
                     }
                 });
             }
@@ -125,11 +125,11 @@ public class DragListAdapter extends BaseAdapter {
         tv_driver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isCanClick){
+                if (!isCanClick) {
                     return;
                 }
-                AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
-                alertNameDialog.showDriverDialog(mDatas.get(position).getId(), mDatas.get(position).getDriverName(),new AlertNameDialog.OnAlertDriverListener() {
+                AlertNameDialog alertNameDialog = new AlertNameDialog(mContext, mDatas.get(position).getIsDouble());
+                alertNameDialog.showDriverDialog(mDatas.get(position).getId(), mDatas.get(position).getDriverName(), new AlertNameDialog.OnAlertDriverListener() {
                     @Override
                     public void onAlertDriverListener(int driverId, BasePresenter.LoadDataStatus loadDataStatus) {
 
@@ -142,19 +142,19 @@ public class DragListAdapter extends BaseAdapter {
         // 乘务员
         TextView tv_trainman = (TextView) view
                 .findViewById(R.id.tv_trainman);
-        if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO){
+        if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_AUTO) {
             tv_trainman.setVisibility(View.GONE);
-        }else if(mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL){
+        } else if (mLineParams.getSaleType() == MainPresenter.TYPE_SALE_MANUAL) {
             tv_trainman.setVisibility(View.VISIBLE);
             tv_trainman.setText(mDatas.get(position).getStewardName());
             tv_trainman.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!isCanClick){
+                    if (!isCanClick) {
                         return;
                     }
-                    AlertNameDialog alertNameDialog = new AlertNameDialog(mContext,mDatas.get(position).getIsDouble());
-                    alertNameDialog.showStewardDialog(mDatas.get(position).getId(), mDatas.get(position).getStewardName(),new AlertNameDialog.OnAlertStewardListener() {
+                    AlertNameDialog alertNameDialog = new AlertNameDialog(mContext, mDatas.get(position).getIsDouble());
+                    alertNameDialog.showStewardDialog(mDatas.get(position).getId(), mDatas.get(position).getStewardName(), new AlertNameDialog.OnAlertStewardListener() {
                         @Override
                         public void onAlertStewardListener(int stewardId, BasePresenter.LoadDataStatus loadDataStatus) {
                             // "确定"监听
@@ -172,13 +172,13 @@ public class DragListAdapter extends BaseAdapter {
         tv_plan_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isCanClick){
+                if (!isCanClick) {
                     return;
                 }
-                new TimePlanPickerDialog(mContext,mDatas.get(position).getVehTime(),new TimePlanPickerDialog.OnTimePickerListener() {
+                new TimePlanPickerDialog(mContext, mDatas.get(position).getVehTime(), new TimePlanPickerDialog.OnTimePickerListener() {
                     @Override
                     public void onTimePicker(String sHour, String sMinute, BasePresenter.LoadDataStatus loadDataStatus) {
-                             presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute, loadDataStatus);
+                        presenter.alertVehTime(mDatas.get(position).getId(), sHour + sMinute, loadDataStatus);
                     }
                 }).show();
             }
@@ -187,9 +187,9 @@ public class DragListAdapter extends BaseAdapter {
         tv_interval_time = (TextView) view
                 .findViewById(R.id.tv_interval_time);
         String spaceTime = mDatas.get(position).getSpaceTime();
-        if (TextUtils.isEmpty(spaceTime)){
+        if (TextUtils.isEmpty(spaceTime)) {
             tv_interval_time.setText("首班");
-        }else{
+        } else {
             tv_interval_time.setText(spaceTime);
         }
         // 到站时刻
@@ -205,7 +205,7 @@ public class DragListAdapter extends BaseAdapter {
         TextView tv_work_type = (TextView) view
                 .findViewById(R.id.tv_work_type);
         String isDouble = "";
-        switch(mDatas.get(position).getIsDouble()){
+        switch (mDatas.get(position).getIsDouble()) {
             case 1:
                 isDouble = "单班";
                 break;
@@ -229,10 +229,10 @@ public class DragListAdapter extends BaseAdapter {
         tv_send_car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isCanClick){
+                if (!isCanClick) {
                     return;
                 }
-                if (TextUtils.isEmpty(tv_plan_time.getText().toString())){
+                if (TextUtils.isEmpty(tv_plan_time.getText().toString())) {
                     ToastHelper.showToast("请先填写发车时间");
                     return;
                 }
@@ -244,19 +244,19 @@ public class DragListAdapter extends BaseAdapter {
         tv_withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isCanClick){
+                if (!isCanClick) {
                     return;
                 }
-                    openWithdrawCarDialog(mDatas.get(position).getId());
+                openWithdrawCarDialog(mDatas.get(position).getId());
             }
         });
 
         // 通知
         TextView tv_inform = (TextView) view.findViewById(R.id.tv_inform);
         DebugLog.w(position + " isNotice " + mDatas.get(position).getIsNotice());
-        if (mDatas.get(position).getIsNotice() == 1){
+        if (mDatas.get(position).getIsNotice() == 1) {
             tv_inform.setTextColor(mContext.getResources().getColor(R.color.font_blue2));
-        }else if(mDatas.get(position).getIsNotice() == 2){
+        } else if (mDatas.get(position).getIsNotice() == 2) {
             tv_inform.setTextColor(mContext.getResources().getColor(R.color.font_gray));
         }
         tv_inform.setOnClickListener(new View.OnClickListener() {
@@ -264,7 +264,7 @@ public class DragListAdapter extends BaseAdapter {
             public void onClick(View v) {
 
                 // 通知,新增字段
-                openInformDialog(mDatas.get(position).getId() + "",mDatas.get(position).getDriverCode());
+                openInformDialog(mDatas.get(position).getId() + "", mDatas.get(position).getDriverCode());
 
             }
         });
@@ -281,8 +281,7 @@ public class DragListAdapter extends BaseAdapter {
     }
 
 
-
-    private String noOperationStatus(int status){
+    private String noOperationStatus(int status) {
         if (status == 1)
             return "无";
         else if (status == 2)
@@ -292,11 +291,11 @@ public class DragListAdapter extends BaseAdapter {
     }
 
 
-    private void queryLine(final int poistion){
-        final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
+    private void queryLine(final int poistion) {
+        final Dialog sDialog = new Dialog(mContext, R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.dialog_query_line,null);
+        View view = View.inflate(mContext, R.layout.dialog_query_line, null);
         Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         seLine = (SmartEditText) view.findViewById(R.id.se_line);
@@ -314,7 +313,7 @@ public class DragListAdapter extends BaseAdapter {
                 sDialog.dismiss();
             }
         });
-        sDialog.setContentView(view,params);
+        sDialog.setContentView(view, params);
         sDialog.setCancelable(true);
         sDialog.show();
     }
@@ -322,7 +321,7 @@ public class DragListAdapter extends BaseAdapter {
     /**
      * 通知
      */
-    private void openInformDialog(final String objId,final String driverCode){
+    private void openInformDialog(final String objId, final String driverCode) {
         HttpMethods.getInstance().getInformData(new Subscriber<List<InformDataBean>>() {
             @Override
             public void onCompleted() {
@@ -335,12 +334,12 @@ public class DragListAdapter extends BaseAdapter {
             }
 
             @Override
-            public void onNext(List<InformDataBean> informDataBeen) {
-                if (informDialog == null){
-                    informDialog = new Dialog(mContext,R.style.customDialog);
+            public void onNext(final List<InformDataBean> informDataBeen) {
+                if (informDialog == null) {
+                    informDialog = new Dialog(mContext, R.style.customDialog);
                     params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
-                    viewDialog = View.inflate(mContext,R.layout.dialog_inform,null);
+                    viewDialog = View.inflate(mContext, R.layout.dialog_inform, null);
                     sp_inform = (Spinner) viewDialog.findViewById(R.id.sp_inform);
                     etInformContent = (EditText) viewDialog.findViewById(R.id.et_remarks);
                     btn_confirm = (Button) viewDialog.findViewById(R.id.btn_confirm);
@@ -348,15 +347,26 @@ public class DragListAdapter extends BaseAdapter {
                 }
                 informDataAdapter = new InformDataAdapter(mContext, informDataBeen, objId);
                 sp_inform.setAdapter(informDataAdapter);
-                informDataAdapter.setOnItemClick(new InformDataAdapter.SetOnItemClick() {
+
+                sp_inform.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void itemClick(String content, String typeId, String vehicleId) {
-                        etInformContent.setText(content);
-                        etInformContent.setSelection(content.length());
-                        DragListAdapter.this.typeId = typeId;
-                        DragListAdapter.this.vehicleId = vehicleId;
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        getContent(informDataBeen.get(i).type + "", objId);
+
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
                     }
                 });
+//                informDataAdapter.setOnItemClick(new InformDataAdapter.SetOnItemClick() {
+//                    @Override
+//                    public void itemClick(String content, String typeId, String vehicleId) {
+
+//                    }
+//                });
 
                 btn_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -377,7 +387,7 @@ public class DragListAdapter extends BaseAdapter {
                         informDialog.dismiss();
                     }
                 });
-                informDialog.setContentView(viewDialog,params);
+                informDialog.setContentView(viewDialog, params);
                 informDialog.setCancelable(true);
                 informDialog.show();
 
@@ -386,16 +396,43 @@ public class DragListAdapter extends BaseAdapter {
 
     }
 
+    private void getContent(String typeId, String objId) {
+        HttpMethods.getInstance().getInformContent(
+                new Subscriber<InformContentBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.loadRemoteError("getInformContent " + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(InformContentBean informContentBean) {
+                        etInformContent.setText(informContentBean.noticeInfo);
+                        etInformContent.setSelection(informContentBean.noticeInfo.length());
+                        DragListAdapter.this.typeId = informContentBean.noticeType;
+                        DragListAdapter.this.vehicleId = informContentBean.vehicleId;
+
+                    }
+                }, SpUtils.getCache(mContext, SpUtils.USER_ID), SpUtils.getCache(mContext, SpUtils.KEYCODE),
+                objId, typeId);
+    }
+
 
     /**
      * 发车
+     *
      * @param position
      */
     private void openConfirmCarDialog(final int position) {
-        final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
+        final Dialog sDialog = new Dialog(mContext, R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_message_confirm_dialog,null);
+        View view = View.inflate(mContext, R.layout.view_message_confirm_dialog, null);
         final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
@@ -417,7 +454,7 @@ public class DragListAdapter extends BaseAdapter {
                 sDialog.dismiss();
             }
         });
-        sDialog.setContentView(view,params);
+        sDialog.setContentView(view, params);
         sDialog.setCancelable(true);
         sDialog.show();
     }
@@ -426,10 +463,10 @@ public class DragListAdapter extends BaseAdapter {
      * 撤回
      */
     private void openWithdrawCarDialog(final int objId) {
-        final Dialog mDialog = new Dialog(mContext,R.style.customDialog);
+        final Dialog mDialog = new Dialog(mContext, R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_withdraw_dialog,null);
+        View view = View.inflate(mContext, R.layout.view_withdraw_dialog, null);
         TextView tv_prompt = (TextView) view.findViewById(R.id.tv_prompt);
         tv_prompt.setText("您确定把车辆撤回到停场车辆列表？");
         final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
@@ -453,7 +490,7 @@ public class DragListAdapter extends BaseAdapter {
                 mDialog.dismiss();
             }
         });
-        mDialog.setContentView(view,params);
+        mDialog.setContentView(view, params);
         mDialog.setCancelable(true);
         mDialog.show();
     }
@@ -467,10 +504,10 @@ public class DragListAdapter extends BaseAdapter {
     public void update(int start, int end) {
         final DepartCar startVehicle = mDatas.get(start);
         final DepartCar endVehicle = mDatas.get(end);
-        final Dialog sDialog = new Dialog(mContext,R.style.customDialog);
+        final Dialog sDialog = new Dialog(mContext, R.style.customDialog);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        View view = View.inflate(mContext,R.layout.view_message_confirm_dialog,null);
+        View view = View.inflate(mContext, R.layout.view_message_confirm_dialog, null);
         final Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
         TextView tv_message = (TextView) view.findViewById(R.id.tv_message);
@@ -493,7 +530,7 @@ public class DragListAdapter extends BaseAdapter {
                 sDialog.dismiss();
             }
         });
-        sDialog.setContentView(view,params);
+        sDialog.setContentView(view, params);
         sDialog.setCancelable(true);
         sDialog.show();
     }

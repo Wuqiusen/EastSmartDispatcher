@@ -24,6 +24,7 @@
             android:layout_marginRight="@dimen/dialog_margin30"
             android:layout_marginTop="@dimen/margin_fit"
             android:layout_marginBottom="@dimen/margin_fit"
+            android:spinnerMode="dropdown"
             >
 
         </Spinner>

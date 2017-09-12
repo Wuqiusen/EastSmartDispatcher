@@ -8,17 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.zxw.data.bean.InformContentBean;
 import com.zxw.data.bean.InformDataBean;
-import com.zxw.data.http.HttpMethods;
-import com.zxw.data.utils.LogUtil;
-import com.zxw.dispatch.Constants;
 import com.zxw.dispatch.R;
-import com.zxw.dispatch.utils.SpUtils;
 
 import java.util.List;
-
-import rx.Subscriber;
 
 /**
  * Created by ZXW2016 on 2017/3/27.
@@ -29,7 +22,7 @@ public class InformDataAdapter extends BaseAdapter {
     private List<InformDataBean> mData;
     private String mObjId;
     private boolean isFrist = true;
-    private SetOnItemClick setOnItemClick;
+//    private SetOnItemClick setOnItemClick;
 
     public InformDataAdapter(Context context, List<InformDataBean> informDataBeen, String objId){
         this.mContext = context;
@@ -67,53 +60,13 @@ public class InformDataAdapter extends BaseAdapter {
         }
 
         holder.tv_name.setText(mData.get(i).name);
-        holder.ll_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getContent(mData.get(i).type + "");
-            }
-        });
-        if (isFrist){
-            getContent(mData.get(0).type + "");
-            isFrist = false;
-
-        }
 
         return rootView;
     }
 
 
-    private void getContent(String typeId){
-        HttpMethods.getInstance().getInformContent(new Subscriber<InformContentBean>() {
-            @Override
-            public void onCompleted() {
 
-            }
 
-            @Override
-            public void onError(Throwable e) {
-                LogUtil.loadRemoteError("getInformContent " + e.getMessage());
-
-            }
-
-            @Override
-            public void onNext(InformContentBean informContentBean) {
-                if (setOnItemClick != null)
-                    setOnItemClick.itemClick(informContentBean.noticeInfo,
-                            informContentBean.noticeType, informContentBean.vehicleId);
-
-            }
-        }, SpUtils.getCache(mContext, SpUtils.USER_ID), SpUtils.getCache(mContext, SpUtils.KEYCODE),
-                mObjId, typeId);
-    }
-
-    public void setOnItemClick(SetOnItemClick setOnItemClick){
-        this.setOnItemClick = setOnItemClick;
-    }
-
-    public interface SetOnItemClick{
-        void itemClick(String content, String typeId, String vehicleId);
-    }
 
     public class ViewHolder{
         LinearLayout ll_setting;
