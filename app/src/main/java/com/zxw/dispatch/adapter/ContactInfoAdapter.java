@@ -43,7 +43,7 @@ public class ContactInfoAdapter extends RecyclerView.Adapter<ContactInfoAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.mBtn.setText(mData.get(position).getName());
+        holder.mBtn.setText(mData.get(position).getCode());
         if (TextUtils.isEmpty(mData.get(position).getUserId())){
             holder.mBtn.setEnabled(false);
         }else{
@@ -52,7 +52,7 @@ public class ContactInfoAdapter extends RecyclerView.Adapter<ContactInfoAdapter.
         holder.mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onClickListener(mData.get(position).getUserId());
+                mListener.onClickListener(mData.get(position).getUserId(), mData.get(position).getCode());
             }
         });
     }
@@ -73,6 +73,6 @@ public class ContactInfoAdapter extends RecyclerView.Adapter<ContactInfoAdapter.
     }
 
     public interface OnClickContactListener{
-        void onClickListener(String rongId);
+        void onClickListener(String rongId, String name);
     }
 }

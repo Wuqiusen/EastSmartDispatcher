@@ -33,17 +33,19 @@ public class CallLauncherActivity extends PresenterActivity<CallLauncherPresente
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_launcher);
+        showTitle("拨打电话");
         rv_contact = (RecyclerView) findViewById(R.id.rv_contact);
-        rv_contact.setLayoutManager(new GridLayoutManager(mContext, 3));
+        rv_contact.setLayoutManager(new GridLayoutManager(mContext, 5));
 
         presenter.contactList();
     }
 
 
 
-    private void startCallActivity(String currentCallId, boolean isCalled){
+    private void startCallActivity(String currentCallId, String name, boolean isCalled){
         Intent intent = new Intent(MyApplication.mContext, RealCallActivity.class);
         intent.putExtra("callId", currentCallId);
+        intent.putExtra("name", name);
         intent.putExtra("isCalled", isCalled);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         MyApplication.mContext.startActivity(intent);
@@ -56,10 +58,10 @@ public class CallLauncherActivity extends PresenterActivity<CallLauncherPresente
     }
 
     @Override
-    public void onClickListener(String rongId) {
+    public void onClickListener(String rongId, String name) {
         ArrayList<String> userList = new ArrayList<>();
         userList.add(rongId);
         String callId = RongCallClient.getInstance().startCall(Conversation.ConversationType.PRIVATE, rongId, userList, RongCallCommon.CallMediaType.AUDIO, null);
-        startCallActivity(callId, false);
+        startCallActivity(callId, name , false);
     }
 }

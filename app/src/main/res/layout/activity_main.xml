@@ -98,15 +98,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
-        <!--左边部分-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.6"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--左边部分-->
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_line"
-                android:layout_width="0dp"
-                android:layout_weight="0.6"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:layout_marginTop="1dp"
                 android:background="@color/background_deep_blue"
-               />
+                />
+            <ImageView
+                android:id="@+id/iv_call"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/phone_green_big"/>
+        </LinearLayout>
 
         <!--中间部分-->
             <com.zxw.dispatch.view.CustomViewPager
