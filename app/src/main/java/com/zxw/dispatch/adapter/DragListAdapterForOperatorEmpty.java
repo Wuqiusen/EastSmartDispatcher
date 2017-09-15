@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.zxw.data.bean.DepartCar;
+import com.zxw.data.bean.InformContentBean;
 import com.zxw.data.bean.InformDataBean;
 import com.zxw.data.bean.LineParams;
 import com.zxw.data.http.HttpMethods;
@@ -308,7 +310,7 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
             }
 
             @Override
-            public void onNext(List<InformDataBean> informDataBeen) {
+            public void onNext(final List<InformDataBean> informDataBeen) {
                 if (informDialog == null){
                     informDialog = new Dialog(mContext,R.style.customDialog);
                     params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -321,13 +323,18 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
                 }
                 informDataAdapter = new InformDataAdapter(mContext, informDataBeen, objId);
                 sp_inform.setAdapter(informDataAdapter);
-                informDataAdapter.setOnItemClick(new InformDataAdapter.SetOnItemClick() {
+
+                sp_inform.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void itemClick(String content, String typeId, String vehicleId) {
-                        etInformContent.setText(content);
-                        etInformContent.setSelection(content.length());
-                        DragListAdapterForOperatorEmpty.this.typeId = typeId;
-                        DragListAdapterForOperatorEmpty.this.vehicleId = vehicleId;
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        getContent(informDataBeen.get(i).type + "", objId);
+
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
                     }
                 });
 
@@ -359,6 +366,32 @@ public class DragListAdapterForOperatorEmpty extends BaseAdapter {
 
     }
 
+
+    private void getContent(String typeId, String objId) {
+        HttpMethods.getInstance().getInformContent(
+                new Subscriber<InformContentBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.loadRemoteError("getInformContent " + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(InformContentBean informContentBean) {
+                        etInformContent.setText(informContentBean.noticeInfo);
+                        etInformContent.setSelection(informContentBean.noticeInfo.length());
+                        DragListAdapterForOperatorEmpty.this.typeId = informContentBean.noticeType;
+                        DragListAdapterForOperatorEmpty.this.vehicleId = informContentBean.vehicleId;
+
+                    }
+                }, SpUtils.getCache(mContext, SpUtils.USER_ID), SpUtils.getCache(mContext, SpUtils.KEYCODE),
+                objId, typeId);
+    }
 
     /**
      * 发车

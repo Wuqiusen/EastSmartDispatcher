@@ -16,8 +16,9 @@ public class DriverWorkloadItem {
     private String taskName;
     private String content;
 
-    private String remarks
-            ;
+    private String remarks;
+    private String typeName;
+
     public String getRemarks() {
         return remarks;
     }
@@ -105,5 +106,13 @@ public class DriverWorkloadItem {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

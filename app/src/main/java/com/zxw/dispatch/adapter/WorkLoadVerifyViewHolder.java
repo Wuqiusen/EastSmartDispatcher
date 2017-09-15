@@ -33,6 +33,8 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
     TextView tvDriverOk;
     TextView tv_delete;
     TextView tv_remarks;
+    TextView tv_work_type;
+    TextView tv_work_content;
 
     private OnWorkLoadItemClickListener mListener;
     private final static int DIALOG_TYPE_OUT_TIME = 1, DIALOG_TYPE_ARRIVE_TIME = 2;
@@ -52,6 +54,8 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
         tvDriverOk = $(R.id.tv_driver_ok);
         tv_delete = $(R.id.tv_delete);
         tv_remarks = $(R.id.tv_remarks);
+        tv_work_type = $(R.id.tv_work_type);
+        tv_work_content = $(R.id.tv_work_content);
         this.mListener = listener;
     }
 
@@ -90,6 +94,8 @@ public class WorkLoadVerifyViewHolder extends BaseViewHolder<DriverWorkloadItem>
                 driverStatus = "正常结束";
                 break;
         }
+        tv_work_type.setText(data.getTypeName());//任务类型
+        tv_work_content.setText(data.getContent());//任务
         tvDriverOk.setText(driverStatus);
         tvDriverOk.setOnClickListener(new View.OnClickListener() {
             @Override
