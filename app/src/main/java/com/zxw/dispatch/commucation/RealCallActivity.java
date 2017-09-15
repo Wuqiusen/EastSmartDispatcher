@@ -1,6 +1,7 @@
 package com.zxw.dispatch.commucation;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
@@ -24,12 +25,16 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 public class RealCallActivity extends BaseHeadActivity {
     private static final String TAG = "CallActivity";
     private String callId;
+    private String name;
     private Button accept;
     private Button hangup;
     private TextView status;
+    private TextView tv_username;
     private Subscription subscribe;
 
     @Override
@@ -40,7 +45,11 @@ public class RealCallActivity extends BaseHeadActivity {
         accept = (Button) findViewById(R.id.accept);
         hangup = (Button) findViewById(R.id.hangup);
         status = (TextView) findViewById(R.id.textView);
+        tv_username = (TextView) findViewById(R.id.tv_username);
         callId = getIntent().getStringExtra("callId");
+        name = getIntent().getStringExtra("name");
+        if (!TextUtils.isEmpty(name))
+            tv_username.setText(name);
         boolean isCalled = getIntent().getBooleanExtra("isCalled", true);
         if (!isCalled) {
             accept.setVisibility(View.INVISIBLE);

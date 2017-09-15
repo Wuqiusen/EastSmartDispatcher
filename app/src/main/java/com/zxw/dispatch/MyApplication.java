@@ -40,10 +40,11 @@ public class MyApplication extends Application {
          * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIMClient 的进程和 Push 进程执行了 init。
          * io.rong.push 为融云 push 进程名称，不可修改。
          */
-        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
-                "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
-            RongIMClient.init(this);
-        }
+        //未启用语音通话
+//        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
+//                "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
+//            RongIMClient.init(this);
+//        }
     }
 
     public static String getCurProcessName(Context context) {

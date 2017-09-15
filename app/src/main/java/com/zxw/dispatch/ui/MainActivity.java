@@ -84,6 +84,7 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.zxw.dispatch.R.id.tv_steward_show;
 import static com.zxw.dispatch.utils.ToastHelper.showToast;
@@ -160,6 +161,9 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     // 设置
     @Bind(R.id.img_setting)
     ImageView imgSetting;
+    // 设置
+    @Bind(R.id.iv_call)
+    ImageView iv_call;
 
 
     @Bind(R.id.rv_line)
@@ -1259,6 +1263,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 startActivity(intent);
                 break;
         }
+    }
+
+    @OnClick(R.id.iv_call)
+    public void call(){
+        startActivity(new Intent(MainActivity.this, CallLoginActivity.class));
     }
 
     private void showAddRecordingBtn(int isVisible){

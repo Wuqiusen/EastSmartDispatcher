@@ -169,7 +169,7 @@ public class DragListAdapterForNotOperatorEmpty extends BaseAdapter {
         // 空驶里程
         tv_empty_km = (TextView) view
                 .findViewById(R.id.tv_empty_km);
-        tv_empty_km.setText(String.valueOf(mDatas.get(position).getRunEmpMileage()));
+        tv_empty_km.setText(mDatas.get(position).getRunEmpMileage());
 
 
         // 到站时刻

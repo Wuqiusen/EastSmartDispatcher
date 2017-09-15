@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/phone_user_icon"
         android:hint="请输入工号"
-        android:text="bdcs"
+        android:text="suhuabing"
         android:maxLines="1"
         android:singleLine="true"
         />

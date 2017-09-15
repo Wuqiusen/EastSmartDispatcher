@@ -46,8 +46,6 @@ public class CallLoginActivity extends PresenterActivity<CallLoginPresenter> imp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_login);
         ButterKnife.bind(this);
-        String token = "tPVt59myZ0CAtwYWy8QyI1qTWmUx1yakeXAwiP7BXEVWgTIq2m1r/5IyljXVt3j4GPk9w+sOERHuyNGYA1TCMg==";
-        ConnectUtil.connect(MyApplication.mContext.getApplicationInfo(), mContext, token);
     }
 
     @OnClick({R.id.btn_login,R.id.tv_forget_password})

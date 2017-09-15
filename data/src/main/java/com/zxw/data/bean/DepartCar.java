@@ -47,7 +47,7 @@ public class DepartCar implements Serializable {
     private String taskName;
     private int runNum;
     private int runNumReal;
-    private int runEmpMileage;
+    private String runEmpMileage;
     private int isNotice;  //1 未通知 2 已通知
 
     public String getDriverCode() {
@@ -102,11 +102,11 @@ public class DepartCar implements Serializable {
         this.runNumReal = runNumReal;
     }
 
-    public int getRunEmpMileage() {
+    public String getRunEmpMileage() {
         return runEmpMileage;
     }
 
-    public void setRunEmpMileage(int runEmpMileage) {
+    public void setRunEmpMileage(String runEmpMileage) {
         this.runEmpMileage = runEmpMileage;
     }
 
