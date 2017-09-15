@@ -37,6 +37,7 @@ import com.amap.api.maps2d.model.MyLocationStyle;
 import com.zxw.data.bean.RunningCarBean;
 import com.zxw.data.http.HttpGPsRequest;
 import com.zxw.data.utils.LogUtil;
+import com.zxw.data.utils.PollingUtil;
 import com.zxw.dispatch.R;
 import com.zxw.dispatch.presenter.MainPresenter;
 import com.zxw.dispatch.recycler.VehicleCodeListAdapter;
@@ -46,8 +47,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -96,6 +99,8 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
     private String isClickTab = "0";
     private static int mI = 0;
     private  Bundle mSavedInstanceState;
+    private PollingUtil pollingUtil;
+    private Map<Integer, PollingUtil> utilMap = new HashMap<>();
 
 
     public LineRunMapView(Context context, MainPresenter presenter, Bundle savedInstanceState) {
@@ -261,7 +266,7 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<RunningCarBean>>() {
                     @Override
-                    public void call(List<RunningCarBean> list) {
+                    public void call(final List<RunningCarBean> list) {
                         showLoading(View.VISIBLE, View.GONE, View.GONE);
 
                         clearAdapter();
@@ -276,9 +281,17 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
 
                         mI = 0;
                         isDrawFinish = false;
+                        utilMap.clear();
                         for (int i = 0; i < list.size(); i++) {
-                            refreshMarkerLocation(i, list.get(i));
+                            final int finalI = i;
+                            utilMap.put(i, new PollingUtil(mContext, new PollingUtil.PollingCallBack() {
+                                @Override
+                                public void callBack() {
+                                    refreshMarkerLocation(finalI, list.get(finalI));
+                                }
+                            }, 10, 60));
                         }
+
                     }
                 }
                 );
@@ -385,7 +398,7 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
 
             @Override
             public void onError(Throwable e) {
-                refreshMarkerLocation(i, bean);
+//                refreshMarkerLocation(i, bean);
                 LogUtil.loadRemoteError("getMarkerLocation " + e.getMessage());
             }
 
@@ -393,6 +406,7 @@ public class LineRunMapView extends LinearLayout implements View.OnClickListener
             public void onNext(HttpGPsRequest.GpsBaseBean gpsBean) {
                 try {
                     if (gpsBean.success) {
+                        utilMap.get(i).setSuccess();
                         LatLng latLng = converterGps(gpsBean);
                         Marker marker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
                                 .position(latLng)

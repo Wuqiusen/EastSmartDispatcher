@@ -11,6 +11,21 @@ android {
         versionCode 23
         versionName "1.2.3"
     }
+    signingConfigs {
+        release {
+            storeFile file("zxzs.jks")
+            storePassword "zxzs123456789"
+            keyAlias "dmxy"
+            keyPassword "dmxy123456789"
+        }
+        debug {
+            storeFile file("zxzs.jks")
+            storePassword "zxzs123456789"
+            keyAlias "dmxy"
+            keyPassword "dmxy123456789"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

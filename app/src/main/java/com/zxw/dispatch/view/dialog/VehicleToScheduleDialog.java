@@ -28,7 +28,6 @@ import com.zxw.dispatch.view.smart_edittext.SmartEditText;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.FileHandler;
 
 import rx.Subscriber;
 
@@ -235,6 +234,7 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
                 mListener.onDismiss();
             }
         });
+        mListener.showDialog(dialog);
     }
 
 
@@ -343,6 +343,14 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         return false;
     }
 
+    public int getLineId(){
+        return lineId;
+    }
+
+    public void setDismiss(){
+        dialog.dismiss();
+    }
+
     private boolean onClickNormalMission() {
         MissionType.TaskContentBean taskContentBean = null;
         for (RadioButton radioButton : radioButtonList) {
@@ -424,6 +432,8 @@ public class VehicleToScheduleDialog extends AlertDialog.Builder {
         void onOffDuty(BasePresenter.LoadDataStatus loadDataStatus);
 
         void onDismiss();
+
+        void showDialog(AlertDialog alertDialog);
 
     }
 }

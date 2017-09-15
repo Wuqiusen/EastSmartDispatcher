@@ -112,6 +112,11 @@ public class StopStayAdapter extends RecyclerView.Adapter<StopStayAdapter.LineHo
 
     }
 
+    public void refreshData(){
+        mData.clear();
+        notifyDataSetChanged();
+    }
+
 
 
     private void setBtnStyle(LineHolder holder, final StopHistory stop){

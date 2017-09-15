@@ -1,6 +1,7 @@
 
 package com.zxw.dispatch.ui;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -198,6 +199,8 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private Timer mTimer = null;
     private int spotId;
 
+    private int showingLineId;
+
     Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -225,6 +228,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
     private WorkLoadView mWorkLoadView;
     private LineRunMapView mLineRunMapView;
     private Bundle mSavedInstanceState;
+    private StopStayAdapter stopStayAdapter;
 
 
     @Override
@@ -239,7 +243,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         initTabEvent();
         spotId = getIntent().getIntExtra("spotId", -1);
         presenter.loadLineList(spotId);
-        presenter.checkStopCar();
+//        presenter.checkStopCar();
     }
 
 
@@ -611,6 +615,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void loadLine(List<Line> lineList) {
+        presenter.checkStopCar();
         mLineRV.setLayoutManager(new LinearLayoutManager(this));
         mLineAdapter = new MainAdapter(lineList, this, this);
         mLineRV.setAdapter(mLineAdapter);
@@ -681,11 +686,11 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
         ptab1_size = stopHistories.size()-1;
         setStopCarCount();
         tv_ver_stop_tab1.setText(showCount(R.string.stop_stay,ptab1_size));
-        StopStayAdapter mAdapter = createStopStayAdapter(stopHistories);
-        mStopRV1.setAdapter(mAdapter);
+        stopStayAdapter = createStopStayAdapter(stopHistories);
+        mStopRV1.setAdapter(stopStayAdapter);
 
-        mHorStopCarView.setTab1tStopCarCount(mAdapter);
-        mHorStopCarView.setAdapterForStay(mAdapter);
+        mHorStopCarView.setTab1tStopCarCount(stopStayAdapter);
+        mHorStopCarView.setAdapterForStay(stopStayAdapter);
 //      eStopRV.setAdapter(mAdapter);
     }
 
@@ -912,6 +917,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
 
     private boolean isCreateDialog = false;
+    private VehicleToScheduleDialog vehicleToScheduleDialog;
     private void showVehicleToScheduleDialog(final StopHistory stopCar) {
        if (!isCreateDialog)
         createVehicleToScheduleDialog(stopCar);
@@ -919,7 +925,7 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     private void createVehicleToScheduleDialog(final StopHistory stopCar) {
         isCreateDialog = true;
-        new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
+        vehicleToScheduleDialog = new VehicleToScheduleDialog(mContext, stopCar, new VehicleToScheduleDialog.OnClickListener() {
             @Override
             public void onClickNormalMission(int type, int taskId, BasePresenter.LoadDataStatus loadDataStatus) {
                 presenter.stopCarMission(stopCar, type, String.valueOf(taskId),null, null, null, null, null,null, loadDataStatus);
@@ -951,6 +957,13 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
                 isCreateDialog = false;
             }
 
+            @Override
+            public void showDialog(AlertDialog alertDialog) {
+                if (showingLineId != vehicleToScheduleDialog.getLineId()){
+                    vehicleToScheduleDialog.setDismiss();
+                }
+            }
+
         }, presenter.getLineId());
     }
 
@@ -966,11 +979,17 @@ public class MainActivity extends PresenterActivity<MainPresenter> implements Ma
 
     @Override
     public void onSelectLine(Line line) {
+        if (stopStayAdapter != null)
+        stopStayAdapter.refreshData();
         //传递线路id查询是否该线路已开启自动发车
         Intent intent = new Intent("com.zxw.dispatch.service.RECEIVER");
         intent.putExtra("type", "getData");
         intent.putExtra("lineKey", line.lineId);
         sendBroadcast(intent);
+        if (vehicleToScheduleDialog != null && line.lineId != vehicleToScheduleDialog.getLineId()){
+            vehicleToScheduleDialog.setDismiss();
+        }
+        showingLineId = line.lineId;
         presenter.onSelectLine(line);
         presenter.onAddRecordingCarTaskNameList(line.lineId);
 //        loadData(vpMain.getCurrentItem());

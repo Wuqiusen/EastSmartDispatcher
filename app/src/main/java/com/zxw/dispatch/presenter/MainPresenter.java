@@ -35,7 +35,9 @@ import com.zxw.dispatch.utils.ToastHelper;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -73,6 +75,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private List<StopHistory> endStopHistories = new ArrayList<>();
     private List<VehicleNumberBean> mVehicleNumberBeen = new ArrayList<>();
     private List<RunningCarBean> mRunningCarBean = new ArrayList<>();
+    private Map<Integer, Integer> soundMap = new HashMap<>();
 
 
     public MainPresenter(Context context, MainView mvpView) {
@@ -540,48 +543,56 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     private void loadStopCarByStay() {
-        mStopSource.loadStopByStay(new Subscriber<List<StopHistory>>() {
-            @Override
-            public void onCompleted() {
+        for (final Line line: mLineBeen){
+            mStopSource.loadStopByStay(new Subscriber<List<StopHistory>>() {
+                @Override
+                public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LogUtil.loadRemoteError("loadStopByStay " + e.getMessage());
-            }
-
-            @Override
-            public void onNext(List<StopHistory> stopHistories) {
-//                if (mStopHistories == null || !checkList(mStopHistories, stopHistories)){
-//                    stopHistories.add(new StopHistory());
-//                    mStopHistories = stopHistories;
-//                    mvpView.loadStopStayCarList(stopHistories);
-//                }
-                DebugLog.e("加载已发历史0000-----------");
-                stopHistories.add(new StopHistory());
-                if (mStopHistories != null && mStopHistories.size() == stopHistories.size()) {
-                    for (int i = 0; i < stopHistories.size(); i++) {
-                        if (mStopHistories.get(i).id != stopHistories.get(i).id) {
-                            mvpView.loadStopStayCarList(stopHistories);
-                            mStopHistories.clear();
-                            mStopHistories.addAll(stopHistories);
-                            mvpView.hideLoading();
-                            warningSound();
-                            return;
-                        }
-                    }
-                } else {
-                    if (mStopHistories.size() > 1 && mStopHistories.size() < stopHistories.size())
-                        warningSound();
-                    mvpView.loadStopStayCarList(stopHistories);
-                    mStopHistories.clear();
-                    mStopHistories.addAll(stopHistories);
-                    mvpView.hideLoading();
                 }
 
-            }
-        }, userId(), keyCode(), lineId);
+                @Override
+                public void onError(Throwable e) {
+                    LogUtil.loadRemoteError("loadStopByStay " + e.getMessage());
+                }
+
+                @Override
+                public void onNext(List<StopHistory> stopHistories) {
+                    DebugLog.e("加载已发历史0000-----------");
+                    if (soundMap.containsKey(line.lineId)){
+                        if (soundMap.get(line.lineId) < stopHistories.size()){
+                            warningSound();
+                        }
+                    }
+                    soundMap.put(line.lineId, stopHistories.size());
+                    stopHistories.add(new StopHistory());
+                    if (line.lineId == lineId){
+                        mvpView.loadStopStayCarList(stopHistories);
+                        mvpView.hideLoading();
+                    }
+//
+//                    if (mStopHistories != null && mStopHistories.size() == stopHistories.size()) {
+//                        for (int i = 0; i < stopHistories.size(); i++) {
+//                            if (mStopHistories.get(i).id != stopHistories.get(i).id) {
+//                                mvpView.loadStopStayCarList(stopHistories);
+//                                mStopHistories.clear();
+//                                mStopHistories.addAll(stopHistories);
+//                                mvpView.hideLoading();
+//                                warningSound();
+//                                return;
+//                            }
+//                        }
+//                    } else {
+//                        if (mStopHistories.size() > 1 && mStopHistories.size() < stopHistories.size())
+//                            warningSound();
+//                        mvpView.loadStopStayCarList(stopHistories);
+//                        mStopHistories.clear();
+//                        mStopHistories.addAll(stopHistories);
+//                        mvpView.hideLoading();
+//                    }
+
+                }
+            }, userId(), keyCode(), line.lineId);
+        }
     }
 
     private void warningSound(){
